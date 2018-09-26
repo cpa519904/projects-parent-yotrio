@@ -17,15 +17,57 @@
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">登录名</label>
+                    <label class="layui-form-label">ID</label>
                     <div class="layui-input-block">
-                        <input type="text" name="loginname" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="id" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">手机</label>
+                    <label class="layui-form-label">供货单号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="telphone" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="id" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">车牌号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="id" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">供应商</label>
+                    <div class="layui-input-block">
+                        <select name="poundName" lay-search="">
+                            <option value="">直接选择或搜索选择</option>
+                            <option value="0">公司1</option>
+                            <option value="1">公司2</option>
+                            <option value="2">公司3</option>
+                            <option value="3">公司4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">收货单位</label>
+                    <div class="layui-input-block">
+                        <select name="poundName" lay-search="">
+                            <option value="">直接选择或搜索选择</option>
+                            <option value="0">集团东大门1号磅房</option>
+                            <option value="1">西大门2号磅房</option>
+                            <option value="2">西大门3号磅房</option>
+                            <option value="3">北大门4号磅房</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">商品</label>
+                    <div class="layui-input-block">
+                        <select name="poundName" lay-search="">
+                            <option value="">直接选择或搜索选择</option>
+                            <option value="0">黄金</option>
+                            <option value="1">铁棍</option>
+                            <option value="2">铝合金</option>
+                            <option value="3">塑料</option>
+                        </select>
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -63,6 +105,12 @@
             </div>
 
             <table id="LAY-pound-log-manage" lay-filter="LAY-pound-log-manage"></table>
+            <script type="text/html" id="imgTpl1">
+                <img style="display: inline-block; width: 100%; height: 100%;" src= {{ d.grossImgUrl }}>
+            </script>
+            <script type="text/html" id="imgTpl2">
+                <img style="display: inline-block; width: 100%; height: 100%;" src= {{ d.tareImgUrl }}>
+            </script>
             <script type="text/html" id="buttonTpl">
                 {{#  if(d.check == true){ }}
                 <button class="layui-btn layui-btn-xs">已审核</button>
@@ -72,7 +120,7 @@
             </script>
             <script type="text/html" id="table-pound-log">
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-                <a class="layui-btn layui-btn-normal layui-btn-xs"><i class="layui-icon layui-icon-delete"></i>删除</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs"><i class="layui-icon layui-icon-delete"></i>删除</a>
             </script>
         </div>
     </div>

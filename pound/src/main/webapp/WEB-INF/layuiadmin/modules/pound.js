@@ -16,11 +16,11 @@ layui.define(['table', 'form'], function (exports) {
             , {field: 'goodsName', title: '货品', minWidth: 80}
             , {field: 'deliveryNumb', title: '送货单号', minWidth: 100}
             , {field: 'plateNumb', title: '车牌号', minWidth: 80}
-            , {field: 'grossWeight', title: '总重', minWidth: 100, sort: true}
-            , {field: 'tareWeight', title: '皮重', minWidth: 100, sort: true}
-            , {field: 'netWeight', title: '净重', minWidth: 80, sort: true}
-            , {field: 'grossImgUrl', title: '图1', templet: '#imgTpl'}
-            , {field: 'tareImgUrl', title: '图2', templet: '#imgTpl'}
+            , {field: 'grossWeight', title: '总重', minWidth: 80, sort: true}
+            , {field: 'tareWeight', title: '皮重', minWidth: 80, sort: true}
+            , {field: 'netWeight', title: '净重', minWidth: 60, sort: true}
+            , {field: 'grossImgUrl', title: '图1', templet: '#imgTpl1'}
+            , {field: 'tareImgUrl', title: '图2', templet: '#imgTpl2'}
             , {field: 'createTime', title: '创建时间', sort: true, minWidth: 150}
             , {field: 'remark', title: '备注'}
             // , {field: 'status', title: '状态'}
@@ -28,7 +28,7 @@ layui.define(['table', 'form'], function (exports) {
             , {title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-pound-log'}
         ]]
         , page: true
-        , limit: 20
+        , limit: 10
         // , height: 'full-220'
         , text: '对不起，加载出现异常！'
     });
