@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/pound/sql/pound-2018-09-26.sql" dialect="MySQL" />
+  </component>
+</project>

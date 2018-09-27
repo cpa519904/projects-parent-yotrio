@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">商品</label>
+                    <label class="layui-form-label">货品</label>
                     <div class="layui-input-block">
                         <select name="poundName" lay-search="">
                             <option value="">直接选择或搜索选择</option>
@@ -71,23 +71,15 @@
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">邮箱</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="email" placeholder="请输入" autocomplete="off" class="layui-input">
+                    <label class="layui-form-label">开始时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="laydate-type-datetime-start" placeholder="yyyy-MM-dd HH:mm:ss">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">角色</label>
-                    <div class="layui-input-block">
-                        <select name="role">
-                            <option value="0">管理员</option>
-                            <option value="1">超级管理员</option>
-                            <option value="2">纠错员</option>
-                            <option value="3">采购员</option>
-                            <option value="4">推销员</option>
-                            <option value="5">运营人员</option>
-                            <option value="6">编辑</option>
-                        </select>
+                    <label class="layui-form-label">结束时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="laydate-type-datetime-end" placeholder="yyyy-MM-dd HH:mm:ss">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -106,10 +98,10 @@
 
             <table id="LAY-pound-log-manage" lay-filter="LAY-pound-log-manage"></table>
             <script type="text/html" id="imgTpl1">
-                <img style="display: inline-block; width: 100%; height: 100%;" src= {{ d.grossImgUrl }}>
+                <img style="display: inline-block; width: 100%; height: 100%;" src={{ d.grossImgUrl }}>
             </script>
             <script type="text/html" id="imgTpl2">
-                <img style="display: inline-block; width: 100%; height: 100%;" src= {{ d.tareImgUrl }}>
+                <img style="display: inline-block; width: 100%; height: 100%;" src={{ d.tareImgUrl }}>
             </script>
             <script type="text/html" id="buttonTpl">
                 {{#  if(d.check == true){ }}
@@ -132,10 +124,11 @@
         base: '../../../layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'pound', 'table'], function () {
+    }).use(['index', 'pound', 'table', 'laydate'], function () {
         var $ = layui.$
             , form = layui.form
-            , table = layui.table;
+            , table = layui.table
+            , laydate = layui.laydate;
 
         //监听搜索
         form.on('submit(LAY-user-back-search)', function (data) {
@@ -183,6 +176,18 @@
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });
+
+        //开始时间
+        laydate.render({
+            elem: '#laydate-type-datetime-start'
+            , type: 'datetime'
+        });
+        //结束时间
+        laydate.render({
+            elem: '#laydate-type-datetime-end'
+            , type: 'datetime'
+        });
+
     });
 </script>
 </body>

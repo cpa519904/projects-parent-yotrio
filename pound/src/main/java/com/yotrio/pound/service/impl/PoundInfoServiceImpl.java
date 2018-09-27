@@ -29,8 +29,8 @@ public class PoundInfoServiceImpl implements IPoundInfoService {
 
     /**
      * 分页获取地磅数据
-     * @param dataTablePage
-     * @param poundInfo
+     * @param dataTablePage 分页条件
+     * @param poundInfo 查询条件
      * @return
      */
     @Override
@@ -39,5 +39,25 @@ public class PoundInfoServiceImpl implements IPoundInfoService {
         List<PoundInfo> poundInfos = poundInfoMapper.selectListByMap(BeanUtil.beanToMap(poundInfo));
         PageInfo pageInfo = new PageInfo(poundInfos);
         return pageInfo;
+    }
+
+    /**
+     * 根据id获取对象
+     * @param id 主键id
+     * @return
+     */
+    @Override
+    public PoundInfo findById(Integer id) {
+       return poundInfoMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 更新地磅数据
+     * @param poundInfo
+     * @return
+     */
+    @Override
+    public int updateById(PoundInfo poundInfo) {
+        return poundInfoMapper.updateByPrimaryKeySelective(poundInfo);
     }
 }

@@ -3,6 +3,92 @@ layui.define(['table', 'form'], function (exports) {
         , table = layui.table
         , form = layui.form;
 
+    //地磅管理
+    table.render({
+        elem: '#LAY-pound-info-manage'
+        , url: '/poundInfo/list'
+        , cols: [[
+            {type: 'checkbox', fixed: 'left'}
+            , {field: 'id', width: 50, title: 'ID', sort: true}
+            , {field: 'poundName', title: '磅名'}
+            , {field: 'model', title: '型号'}
+            , {field: 'unitId', title: '单位id'}
+            , {field: 'createTime', title: '创建时间', sort: true}
+            , {field: 'status', title: '状态', templet: '#buttonTpl', align: 'center'}
+            // , {field: 'remark', title: '备注'}
+            , {title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-pound-info'}
+        ]]
+        , page: true
+        , text: '对不起，加载出现异常！'
+    });
+
+    //监听工具条
+    table.on('tool(LAY-pound-info-manage)', function (obj) {
+        var data = obj.data;
+        if (obj.event === 'del') {
+            layer.prompt({
+                formType: 1
+                , title: '敏感操作，请验证口令'
+            }, function (value, index) {
+                layer.close(index);
+                layer.confirm('确定删除此管理员？', function (index) {
+                    console.log(obj)
+                    obj.del();
+                    layer.close(index);
+                });
+            });
+        } else if (obj.event === 'edit') {
+            console.log("obj", obj);
+
+            layer.open({
+                type: 2
+                , title: '编辑地磅'
+                , content: '/poundInfo/form.htm'
+                , maxmin: true
+                , area: ['500px', '450px']
+                , btn: ['确定', '取消']
+                , yes: function (index, layero) {
+                    var iframeWindow = window['layui-layer-iframe' + index]
+                        , submitID = 'LAY-pound-info-submit'
+                        , submit = layero.find('iframe').contents().find('#' + submitID);
+
+                    //监听提交
+                    iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                        var field = data.field; //获取提交的字段
+                        console.log("fieldL", field);
+                        //提交 Ajax 成功后，静态更新表格中的数据
+                        //$.ajax({});
+                        table.reload('LAY-pound-info-submit'); //数据刷新
+                        layer.close(index); //关闭弹层
+                    });
+
+                    submit.trigger('click');
+                }
+                , success: function (layero, index) {
+                    var body = layui.layer.getChildFrame('body', index);
+                    // 取到弹出层里的元素，并把编辑的内容放进去
+
+                    body.find("#id").val(obj.data.id);  //将选中的数据的id传到编辑页面的隐藏域，便于根据ID修改数据
+                    body.find("#poundName").val(obj.data.poundName);
+                    body.find("#model").val(obj.data.model);
+                    body.find("#unitId").val(obj.data.unitId);
+                    if (obj.data.status == 1) {
+                        body.find("#radio-1").attr("checked","checked");
+                    }else if (obj.data.status == 0) {
+                        body.find("#radio-2").attr("checked","checked");
+                    }
+                    // 记得重新渲染表单
+                    form.render();
+
+                    setTimeout(function () {
+                        layui.layer.tips('点击此处返回地磅列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    }, 500);
+                }
+            })
+        }
+    });
 
     //过磅记录管理
     table.render({
@@ -49,18 +135,17 @@ layui.define(['table', 'form'], function (exports) {
                 });
             });
         } else if (obj.event === 'edit') {
-            var tr = $(obj.tr);
 
             layer.open({
                 type: 2
-                , title: '编辑用户'
-                , content: '../../../views/user/user/userform.html'
+                , title: '编辑过磅记录'
+                , content: '/poundLog/form.htm'
                 , maxmin: true
                 , area: ['500px', '450px']
                 , btn: ['确定', '取消']
                 , yes: function (index, layero) {
                     var iframeWindow = window['layui-layer-iframe' + index]
-                        , submitID = 'LAY-user-front-submit'
+                        , submitID = 'LAY-pound-log-submit'
                         , submit = layero.find('iframe').contents().find('#' + submitID);
 
                     //监听提交
@@ -69,7 +154,7 @@ layui.define(['table', 'form'], function (exports) {
 
                         //提交 Ajax 成功后，静态更新表格中的数据
                         //$.ajax({});
-                        table.reload('LAY-user-front-submit'); //数据刷新
+                        table.reload('LAY-pound-log-submit'); //数据刷新
                         layer.close(index); //关闭弹层
                     });
 
@@ -81,74 +166,6 @@ layui.define(['table', 'form'], function (exports) {
             });
         }
     });
-
-    //地磅管理
-    table.render({
-        elem: '#LAY-pound-info-manage'
-        , url: '/poundInfo/list'
-        , cols: [[
-            {type: 'checkbox', fixed: 'left'}
-            , {field: 'id', width: 50, title: 'ID', sort: true}
-            , {field: 'poundName', title: '磅名'}
-            , {field: 'model', title: '型号'}
-            , {field: 'unitId', title: '单位id'}
-            , {field: 'createTime', title: '创建时间', sort: true}
-            , {field: 'status', title: '状态', templet: '#buttonTpl', align: 'center'}
-            // , {field: 'remark', title: '备注'}
-            , {title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-pound-info'}
-        ]]
-        , page: true
-        , text: '对不起，加载出现异常！'
-    });
-
-    //监听工具条
-    table.on('tool(LAY-pound-info-manage)', function (obj) {
-        var data = obj.data;
-        if (obj.event === 'del') {
-            layer.prompt({
-                formType: 1
-                , title: '敏感操作，请验证口令'
-            }, function (value, index) {
-                layer.close(index);
-                layer.confirm('确定删除此管理员？', function (index) {
-                    console.log(obj)
-                    obj.del();
-                    layer.close(index);
-                });
-            });
-        } else if (obj.event === 'edit') {
-            var tr = $(obj.tr);
-
-            layer.open({
-                type: 2
-                , title: '编辑管理员'
-                , content: '/sysUser/adminform.htm'
-                , area: ['420px', '420px']
-                , btn: ['确定', '取消']
-                , yes: function (index, layero) {
-                    var iframeWindow = window['layui-layer-iframe' + index]
-                        , submitID = 'LAY-user-back-submit'
-                        , submit = layero.find('iframe').contents().find('#' + submitID);
-
-                    //监听提交
-                    iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
-                        var field = data.field; //获取提交的字段
-
-                        //提交 Ajax 成功后，静态更新表格中的数据
-                        //$.ajax({});
-                        table.reload('LAY-user-front-submit'); //数据刷新
-                        layer.close(index); //关闭弹层
-                    });
-
-                    submit.trigger('click');
-                }
-                , success: function (layero, index) {
-
-                }
-            })
-        }
-    });
-
 
     exports('pound', {})
 });

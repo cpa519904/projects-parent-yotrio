@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>地磅系统</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
+</head>
+<body>
+
+  <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
+    <!-- 使用隐藏域用于保存编辑项的ID值，便于提交修改 -->
+    <input type="hidden" id="id" name="id">
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">地磅名称</label>
+      <div class="layui-input-inline">
+        <input type="text" id="poundName" name="poundName" lay-verify="required" placeholder="请输入磅名" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">型号</label>
+      <div class="layui-input-inline">
+        <input type="text" id="model" name="model" lay-verify="required" placeholder="请输入型号" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">所属单位id</label>
+      <div class="layui-input-inline">
+        <input type="text" id="unitId" name="unitId" lay-verify="required" placeholder="所属单位id" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item" lay-filter="sex">
+      <label class="layui-form-label">状态</label>
+      <div class="layui-input-block">
+        <input id="radio-1" type="radio" name="status" value="1" title="正常">
+        <input id="radio-2" type="radio" name="status" value="0" title="停机">
+      </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+      <input type="button" lay-submit lay-filter="LAY-pound-info-submit" id="LAY-pound-info-submit" value="确认">
+    </div>
+  </div>
+
+  <script src="../../../layuiadmin/layui/layui.js"></script>  
+  <script>
+  layui.config({
+    base: '../../../layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form'], function(){
+    var $ = layui.$
+    ,form = layui.form
+  })
+  </script>
+</body>
+</html>

@@ -42,6 +42,30 @@ public class PoundLogController extends BaseController {
     }
 
     /**
+     * 分页获取过磅记录列表
+     * @param dataTablePage 分页条件
+     * @param poundLog 过磅记录查询条件
+     * @return
+     */
+    @RequestMapping(value = "/list", method = {RequestMethod.GET})
+    @ResponseBody
+    public Callback list(DataTablePage dataTablePage, PoundLog poundLog) {
+        PageInfo pageInfo = poundLogService.findAllPaging(dataTablePage, poundLog);
+        return returnSuccess(pageInfo.getTotal(), pageInfo.getList());
+    }
+
+    /**
+     * 过磅记录报表展示
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = {"/form.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String form(Model model) {
+        return "pound/pound_log_form";
+    }
+
+    /**
      * 过磅记录报表展示
      *
      * @param model
@@ -52,17 +76,5 @@ public class PoundLogController extends BaseController {
         return "pound/report_form";
     }
 
-    /**
-     * 过磅记录列表
-     * @param dataTablePage 分页条件
-     * @param poundLog 过磅记录查询条件
-     * @return
-     */
-    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
-    @ResponseBody
-    public Callback userList(DataTablePage dataTablePage, PoundLog poundLog) {
-        PageInfo pageInfo = poundLogService.findAllPaging(dataTablePage, poundLog);
-//        List<PoundInfo> pageInfoList = pageInfo.getList();
-        return returnSuccess(pageInfo.getTotal(), pageInfo.getList());
-    }
+
 }

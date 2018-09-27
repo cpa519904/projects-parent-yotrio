@@ -13,4 +13,8 @@ import com.yotrio.pound.model.PoundInfo;
  **/
 public interface IPoundInfoService {
     PageInfo findAllPaging(DataTablePage dataTablePage, PoundInfo poundInfo);
+
+    PoundInfo findById(Integer id);
+
+    int updateById(PoundInfo poundInfo);
 }

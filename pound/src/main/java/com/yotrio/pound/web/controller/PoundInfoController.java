@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
-
 /**
  * 地磅接口控制类
  * 模块名称：projects-parent com.yotrio.pound.web.controller
@@ -30,7 +28,8 @@ public class PoundInfoController extends BaseController {
     private IPoundInfoService poundInfoService;
 
     /**
-     * 过磅记录列表
+     * 地磅列表页面
+     *
      * @param model
      * @return
      */
@@ -40,17 +39,47 @@ public class PoundInfoController extends BaseController {
         return "pound/pound_list";
     }
 
-    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
+    /**
+     * 分页获取地磅列表
+     *
+     * @param dataTablePage
+     * @param poundInfo
+     * @return
+     */
+    @RequestMapping(value = "/list", method = {RequestMethod.GET})
     @ResponseBody
-    public Callback userList(DataTablePage dataTablePage, PoundInfo poundInfo) {
+    public Callback list(DataTablePage dataTablePage, PoundInfo poundInfo) {
         PageInfo pageInfo = poundInfoService.findAllPaging(dataTablePage, poundInfo);
-        List<PoundInfo> sysUserList = pageInfo.getList();
-//        List<PoundInfo> data = new ArrayList<>(200);
-//        for (PoundInfo info : sysUserList) {
-//            PoundInfo item = new PoundInfo();
-//            item.setId(info.getId());
-//            item.setNickname(user.getNickname());
-//        }
+
         return returnSuccess(pageInfo.getTotal(), pageInfo.getList());
     }
+
+    /**
+     * 地磅表单页面
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = {"/form.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String form(Model model) {
+
+        return "pound/pound_form";
+    }
+
+    @RequestMapping(value = "/update", method = {RequestMethod.POST})
+    @ResponseBody
+    public Callback update(PoundInfo poundInfo) {
+        if (poundInfo == null || poundInfo.getId() == null) {
+            return returnError("请输入您要更新的内容");
+        }
+
+        int result = poundInfoService.updateById(poundInfo);
+        if (result >= 1) {
+            return returnSuccess("更新成功");
+        } else {
+            return returnError("更新失败");
+        }
+    }
+
+
 }
