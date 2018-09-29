@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/pound/pound.iml" filepath="$PROJECT_DIR$/pound/pound.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pound-client/pound-client.iml" filepath="$PROJECT_DIR$/pound-client/pound-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/projects-parent.iml" filepath="$PROJECT_DIR$/projects-parent.iml" />
     </modules>
   </component>

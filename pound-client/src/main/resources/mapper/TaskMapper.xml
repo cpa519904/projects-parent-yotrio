@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yotrio.pound.dao.TaskMapper">
+    <resultMap id="BaseResultMap" type="com.yotrio.pound.model.Task">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="task_name" jdbcType="VARCHAR" property="taskName"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="other_id" jdbcType="VARCHAR" property="otherId"/>
+        <result column="datas" jdbcType="VARCHAR" property="datas"/>
+        <result column="weight" jdbcType="INTEGER" property="weight"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="execute_time" jdbcType="TIMESTAMP" property="executeTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, task_name, description, other_id, datas, weight, status, create_time, update_time
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from task
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from task
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.yotrio.pound.model.Task">
+    insert into task (id, task_name, description, 
+      other_id, datas, weight, 
+      status, create_time, update_time, execute_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{taskName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{otherId,jdbcType=VARCHAR}, #{datas,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{executeTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.yotrio.pound.model.Task">
+        insert into task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="taskName != null">
+                task_name,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="otherId != null">
+                other_id,
+            </if>
+            <if test="datas != null">
+                datas,
+            </if>
+            <if test="weight != null">
+                weight,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="executeTime != null">
+                execute_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="taskName != null">
+                #{taskName,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="otherId != null">
+                #{otherId,jdbcType=VARCHAR},
+            </if>
+            <if test="datas != null">
+                #{datas,jdbcType=VARCHAR},
+            </if>
+            <if test="weight != null">
+                #{weight,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="executeTime != null">
+                #{executeTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yotrio.pound.model.Task">
+        update task
+        <set>
+            <if test="taskName != null">
+                task_name = #{taskName,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="otherId != null">
+                other_id = #{otherId,jdbcType=VARCHAR},
+            </if>
+            <if test="datas != null">
+                datas = #{datas,jdbcType=VARCHAR},
+            </if>
+            <if test="weight != null">
+                weight = #{weight,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="executeTime != null">
+                execute_time = #{executeTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yotrio.pound.model.Task">
+    update task
+    set task_name = #{taskName,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      other_id = #{otherId,jdbcType=VARCHAR},
+      datas = #{datas,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      execute_time = #{executeTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="selectCountByMap" parameterType="map" resultType="int">
+        select count(*) from
+        <if test="dynamicTableName != null and dynamicTableName != ''">${dynamicTableName}</if>
+        <if test="dynamicTableName == null or dynamicTableName == ''">task</if>
+        <include refid="Base_Query_Map_Condition"/>
+    </select>
+    <select id="selectListByMap" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <if test="dynamicTableName != null and dynamicTableName != ''">${dynamicTableName}</if>
+        <if test="dynamicTableName == null or dynamicTableName == ''">task</if>
+        <include refid="Base_Query_Map_Condition"/>
+        order by id desc
+    </select>
+    <sql id="Base_Query_Map_Condition">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="id != null and id != ''">
+                AND id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="taskName != null and taskName != ''">
+                AND task_name = #{taskName,jdbcType=VARCHAR}
+            </if>
+            <if test="description != null and description != ''">
+                AND description = #{description,jdbcType=VARCHAR}
+            </if>
+            <if test="otherId != null and otherId != ''">
+                AND other_id = #{otherId,jdbcType=VARCHAR}
+            </if>
+            <if test="datas != null and datas != ''">
+                AND datas = #{datas,jdbcType=VARCHAR}
+            </if>
+            <if test="weight != null and weight != ''">
+                AND weight = #{weight,jdbcType=INTEGER}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="executeTime != null and executeTime != ''">
+                AND execute_time = #{executeTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myGreater_id != null and myGreater_id != ''">
+                AND id &gt; #{myGreater_id,jdbcType=INTEGER}
+            </if>
+            <if test="myGreater_taskName != null and myGreater_taskName != ''">
+                AND task_name &gt; #{myGreater_taskName,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_description != null and myGreater_description != ''">
+                AND description &gt; #{myGreater_description,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_otherId != null and myGreater_otherId != ''">
+                AND other_id &gt; #{myGreater_otherId,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_datas != null and myGreater_datas != ''">
+                AND datas &gt; #{myGreater_datas,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_weight != null and myGreater_weight != ''">
+                AND weight &gt; #{myGreater_weight,jdbcType=INTEGER}
+            </if>
+            <if test="myGreater_status != null and myGreater_status != ''">
+                AND status &gt; #{myGreater_status,jdbcType=INTEGER}
+            </if>
+            <if test="myGreater_createTime != null and myGreater_createTime != ''">
+                AND create_time &gt; #{myGreater_createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myGreater_updateTime != null and myGreater_updateTime != ''">
+                AND update_time &gt; #{myGreater_updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myGreater_executeTime != null and myGreater_executeTime != ''">
+                AND execute_time &gt; #{myGreater_executeTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myLesser_id != null and myLesser_id != ''">
+                AND id &lt; #{myLesser_id,jdbcType=INTEGER}
+            </if>
+            <if test="myLesser_taskName != null and myLesser_taskName != ''">
+                AND task_name &lt; #{myLesser_taskName,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_description != null and myLesser_description != ''">
+                AND description &lt; #{myLesser_description,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_otherId != null and myLesser_otherId != ''">
+                AND other_id &lt; #{myLesser_otherId,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_datas != null and myLesser_datas != ''">
+                AND datas &lt; #{myLesser_datas,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_weight != null and myLesser_weight != ''">
+                AND weight &lt; #{myLesser_weight,jdbcType=INTEGER}
+            </if>
+            <if test="myLesser_status != null and myLesser_status != ''">
+                AND status &lt; #{myLesser_status,jdbcType=INTEGER}
+            </if>
+            <if test="myLesser_createTime != null and myLesser_createTime != ''">
+                AND create_time &lt; #{myLesser_createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myLesser_updateTime != null and myLesser_updateTime != ''">
+                AND update_time &lt; #{myLesser_updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myLesser_executeTime != null and myLesser_executeTime != ''">
+                AND execute_time &lt; #{myLesser_executeTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myLike_id != null and myLike_id != ''">
+                AND id like CONCAT('%', #{myLike_id,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLike_taskName != null and myLike_taskName != ''">
+                AND task_name like CONCAT('%', #{myLike_taskName,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_description != null and myLike_description != ''">
+                AND description like CONCAT('%', #{myLike_description,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_otherId != null and myLike_otherId != ''">
+                AND other_id like CONCAT('%', #{myLike_otherId,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_datas != null and myLike_datas != ''">
+                AND datas like CONCAT('%', #{myLike_datas,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_weight != null and myLike_weight != ''">
+                AND weight like CONCAT('%', #{myLike_weight,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLike_status != null and myLike_status != ''">
+                AND status like CONCAT('%', #{myLike_status,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLike_createTime != null and myLike_createTime != ''">
+                AND create_time like CONCAT('%', #{myLike_createTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myLike_updateTime != null and myLike_updateTime != ''">
+                AND update_time like CONCAT('%', #{myLike_updateTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myLike_executeTime != null and myLike_executeTime != ''">
+                AND execute_time like CONCAT('%', #{myLike_executeTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myLikeStart_id != null and myLikeStart_id != ''">
+                AND id like CONCAT('%', #{myLikeStart_id,jdbcType=INTEGER})
+            </if>
+            <if test="myLikeStart_taskName != null and myLikeStart_taskName != ''">
+                AND task_name like CONCAT('%', #{myLikeStart_taskName,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_description != null and myLikeStart_description != ''">
+                AND description like CONCAT('%', #{myLikeStart_description,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_otherId != null and myLikeStart_otherId != ''">
+                AND other_id like CONCAT('%', #{myLikeStart_otherId,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_datas != null and myLikeStart_datas != ''">
+                AND datas like CONCAT('%', #{myLikeStart_datas,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_weight != null and myLikeStart_weight != ''">
+                AND weight like CONCAT('%', #{myLikeStart_weight,jdbcType=INTEGER})
+            </if>
+            <if test="myLikeStart_status != null and myLikeStart_status != ''">
+                AND status like CONCAT('%', #{myLikeStart_status,jdbcType=INTEGER})
+            </if>
+            <if test="myLikeStart_createTime != null and myLikeStart_createTime != ''">
+                AND create_time like CONCAT('%', #{myLikeStart_createTime,jdbcType=TIMESTAMP})
+            </if>
+            <if test="myLikeStart_updateTime != null and myLikeStart_updateTime != ''">
+                AND update_time like CONCAT('%', #{myLikeStart_updateTime,jdbcType=TIMESTAMP})
+            </if>
+            <if test="myLikeStart_executeTime != null and myLikeStart_executeTime != ''">
+                AND execute_time like CONCAT('%', #{myLikeStart_executeTime,jdbcType=TIMESTAMP})
+            </if>
+            <if test="myLikeEnd_id != null and myLikeEnd_id != ''">
+                AND id like CONCAT( #{myLikeEnd_id,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLikeEnd_taskName != null and myLikeEnd_taskName != ''">
+                AND task_name like CONCAT( #{myLikeEnd_taskName,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_description != null and myLikeEnd_description != ''">
+                AND description like CONCAT( #{myLikeEnd_description,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_otherId != null and myLikeEnd_otherId != ''">
+                AND other_id like CONCAT( #{myLikeEnd_otherId,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_datas != null and myLikeEnd_datas != ''">
+                AND datas like CONCAT( #{myLikeEnd_datas,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_weight != null and myLikeEnd_weight != ''">
+                AND weight like CONCAT( #{myLikeEnd_weight,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLikeEnd_status != null and myLikeEnd_status != ''">
+                AND status like CONCAT( #{myLikeEnd_status,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLikeEnd_createTime != null and myLikeEnd_createTime != ''">
+                AND create_time like CONCAT( #{myLikeEnd_createTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myLikeEnd_updateTime != null and myLikeEnd_updateTime != ''">
+                AND update_time like CONCAT( #{myLikeEnd_updateTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myLikeEnd_executeTime != null and myLikeEnd_executeTime != ''">
+                AND execute_time like CONCAT( #{myLikeEnd_executeTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myIn_id != null and myIn_id != ''">
+                AND id in
+                <foreach item="item" index="index" collection="myIn_id" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="myIn_taskName != null and myIn_taskName != ''">
+                AND task_name in
+                <foreach item="item" index="index" collection="myIn_taskName" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="myIn_description != null and myIn_description != ''">
+                AND description in
+                <foreach item="item" index="index" collection="myIn_description" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="myIn_otherId != null and myIn_otherId != ''">
+                AND other_id in
+                <foreach item="item" index="index" collection="myIn_otherId" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="myIn_datas != null and myIn_datas != ''">
+                AND datas in
+                <foreach item="item" index="index" collection="myIn_datas" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="myIn_weight != null and myIn_weight != ''">
+                AND weight in
+                <foreach item="item" index="index" collection="myIn_weight" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="myIn_status != null and myIn_status != ''">
+                AND status in
+                <foreach item="item" index="index" collection="myIn_status" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="myIn_createTime != null and myIn_createTime != ''">
+                AND create_time in
+                <foreach item="item" index="index" collection="myIn_createTime" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="myIn_updateTime != null and myIn_updateTime != ''">
+                AND update_time in
+                <foreach item="item" index="index" collection="myIn_updateTime" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+            <if test="myIn_executeTime != null and myIn_executeTime != ''">
+                AND update_time in
+                <foreach item="item" index="index" collection="myIn_executeTime" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </trim>
+    </sql>
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+</mapper>

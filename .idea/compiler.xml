@@ -8,11 +8,13 @@
         <outputRelativeToContentRoot value="true" />
         <module name="common" />
         <module name="pound" />
+        <module name="pound-client" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="common" target="1.8" />
       <module name="pound" target="1.8" />
+      <module name="pound-client" target="1.8" />
       <module name="projects-parent" target="1.8" />
     </bytecodeTargetLevel>
   </component>

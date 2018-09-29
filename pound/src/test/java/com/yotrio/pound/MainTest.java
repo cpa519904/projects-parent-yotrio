@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class MainTest {
     public static void main(String[] args) {
-//        String accessToken = DingTalkUtils.getAccessToken();
+//        String accessToken = DingTalkUtil.getAccessToken();
 //        System.out.println("token:" + accessToken);
 
         ArrayList<String> ports = SerialPortUtil.findPort();

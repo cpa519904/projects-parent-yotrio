@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 地磅接口控制类
  * 模块名称：projects-parent com.yotrio.pound.web.controller
@@ -66,6 +69,12 @@ public class PoundInfoController extends BaseController {
         return "pound/pound_form";
     }
 
+    /**
+     * 跟新地磅信息
+     *
+     * @param poundInfo 地磅信息
+     * @return
+     */
     @RequestMapping(value = "/update", method = {RequestMethod.POST})
     @ResponseBody
     public Callback update(PoundInfo poundInfo) {
@@ -78,6 +87,53 @@ public class PoundInfoController extends BaseController {
             return returnSuccess("更新成功");
         } else {
             return returnError("更新失败");
+        }
+    }
+
+    /**
+     * 根据id删除地磅信息
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/delete", method = {RequestMethod.GET})
+    @ResponseBody
+    public Callback delete(Integer id) {
+        if (id == null) {
+            return returnError("请选择您要删除的数据");
+        }
+
+        int result = poundInfoService.deleteById(id);
+        if (result >= 1) {
+            return returnSuccess("删除成功");
+        } else {
+            return returnError("删除失败");
+        }
+    }
+
+    /**
+     * 根据ids删除地磅信息
+     *
+     * @param ids [1,2,3]
+     * @return
+     */
+    @RequestMapping(value = "/deleteByIds", method = {RequestMethod.GET})
+    @ResponseBody
+    public Callback deleteByIds(String ids) {
+        if (ids == null || ids.split(",").length == 0) {
+            return returnError("请选择您要删除的数据");
+        }
+        //解析ids
+        List<Integer> idList = new ArrayList<>(100);
+        String[] strs = ids.split(",");
+        for (int i = 0; i < strs.length; i++) {
+            idList.add(Integer.valueOf(strs[i]));
+        }
+        int result = poundInfoService.deleteByIds(idList);
+        if (result >= 1) {
+            return returnSuccess("删除成功");
+        } else {
+            return returnError("删除失败");
         }
     }
 
