@@ -37,4 +37,15 @@ public class IndexController extends BaseController {
 //
 //        return "home/console";
 //    }
+
+    /**
+     * totalRow
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = {"/totalRow.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String totalRow(Model model) {
+
+        return "component/table/totalRow";
+    }
 }

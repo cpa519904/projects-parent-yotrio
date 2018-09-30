@@ -75,12 +75,17 @@
         </div>
 
         <div class="layui-card-body">
-            <div style="padding-bottom: 10px;">
-                <button class="layui-btn layuiadmin-btn-admin" data-type="batchdel">删除</button>
-                <!--<button class="layui-btn layuiadmin-btn-admin" data-type="add">添加</button>-->
-            </div>
+            <table id="LAY-pound-log-manage" lay-filter="LAY-pound-log-manage" class="layui-hide"></table>
 
-            <table id="LAY-pound-log-manage" lay-filter="LAY-pound-log-manage"></table>
+            <script type="text/html" id="table-pound-log-toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn " data-type="batchdel">删除</button>
+                    <!--<button class="layui-btn layuiadmin-btn-admin" data-type="add">添加</button>-->
+                    <!--<button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>-->
+                    <!--<button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>-->
+                    <!--<button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>-->
+                </div>
+            </script>
             <script type="text/html" id="imgTpl1">
                 <img style="display: inline-block; width: 100%; height: 100%;" src={{ d.grossImgUrl }}>
             </script>

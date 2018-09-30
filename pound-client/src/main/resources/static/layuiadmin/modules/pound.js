@@ -6,7 +6,8 @@ layui.define(['table', 'form'], function (exports) {
     //过磅记录管理
     table.render({
         elem: '#LAY-pound-log-manage'
-        , url: 'http://localhost:8008/api/poundLog/list' //模拟接口
+        , url: 'http://localhost:8008/api/poundLog/list'
+        // , toolbar: '#table-pound-log-toolbar'
         , totalRow: true
         , cols: [[
             {type: 'checkbox', fixed: 'left'}
@@ -18,7 +19,7 @@ layui.define(['table', 'form'], function (exports) {
             , {field: 'plateNumb', title: '车牌号', minWidth: 80}
             , {field: 'grossWeight', title: '总重', minWidth: 80, sort: true, totalRow: true}
             , {field: 'tareWeight', title: '皮重', minWidth: 80, sort: true, totalRow: true}
-            , {field: 'netWeight', title: '净重', minWidth: 60, sort: true, totalRow: true}
+            , {field: 'netWeight', title: '净重', minWidth: 80, sort: true, totalRow: true}
             , {field: 'grossImgUrl', title: '图1', templet: '#imgTpl1'}
             , {field: 'tareImgUrl', title: '图2', templet: '#imgTpl2'}
             , {field: 'createTime', title: '创建时间', sort: true, minWidth: 150}
