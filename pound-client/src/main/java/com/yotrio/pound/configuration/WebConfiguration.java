@@ -1,6 +1,8 @@
 package com.yotrio.pound.configuration;
 
 import org.apache.catalina.filters.RemoteIpFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +23,7 @@ import java.io.IOException;
 
 @Configuration
 public class WebConfiguration {
+    private static Logger logger = LoggerFactory.getLogger(WebConfiguration.class);
 
     @Bean
     public RemoteIpFilter remoteIpFilter() {
@@ -51,7 +54,7 @@ public class WebConfiguration {
         @Override
         public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
             HttpServletRequest request = (HttpServletRequest) servletRequest;
-            System.out.println("this is MyFilter,url :" + request.getRequestURI());
+            logger.info("this is MyFilter,url={}", request.getRequestURI());
             filterChain.doFilter(servletRequest, servletResponse);
         }
 

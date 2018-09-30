@@ -32,9 +32,9 @@ public class IndexController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = { "/console.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String console(Model model) {
-
-        return "home/console";
-    }
+//    @RequestMapping(value = { "/console.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
+//    public String console(Model model) {
+//
+//        return "home/console";
+//    }
 }

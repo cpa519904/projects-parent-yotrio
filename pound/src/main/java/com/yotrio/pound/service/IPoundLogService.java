@@ -2,7 +2,9 @@ package com.yotrio.pound.service;
 
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
-import com.yotrio.pound.model.PoundLog;
+import com.yotrio.pound.model.dto.PoundLogDto;
+
+import java.util.List;
 
 /**
  * 模块名称：projects-parent com.yotrio.pound.service
@@ -12,6 +14,9 @@ import com.yotrio.pound.model.PoundLog;
  * 系统版本：1.0.0
  **/
 public interface IPoundLogService {
-    PageInfo findAllPaging(DataTablePage dataTablePage, PoundLog poundLog);
+    PageInfo findAllPaging(DataTablePage dataTablePage, PoundLogDto poundLogDto);
 
+    int deleteById(Integer id);
+
+    int deleteByIds(List<Integer> idList);
 }

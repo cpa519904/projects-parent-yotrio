@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.pound.dao.PoundLogMapper;
 import com.yotrio.pound.model.PoundLog;
+import com.yotrio.pound.model.dto.PoundLogDto;
 import com.yotrio.pound.service.IPoundLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,14 +31,36 @@ public class PoundLogServiceImpl implements IPoundLogService {
     /**
      * 分页获取过磅数据
      * @param dataTablePage
-     * @param poundLog
+     * @param poundLogDto
      * @return
      */
     @Override
-    public PageInfo findAllPaging(DataTablePage dataTablePage, PoundLog poundLog) {
+    public PageInfo findAllPaging(DataTablePage dataTablePage, PoundLogDto poundLogDto) {
         PageHelper.startPage(dataTablePage.getPage(), dataTablePage.getLimit());
-        List<PoundLog> poundLogs = poundLogMapper.selectListByMap(BeanUtil.beanToMap(poundLog));
+        List<PoundLog> poundLogs = poundLogMapper.selectListByMap(BeanUtil.beanToMap(poundLogDto));
         PageInfo pageInfo = new PageInfo(poundLogs);
         return pageInfo;
+    }
+
+    /**
+     * 根据id删除过磅数据
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public int deleteById(Integer id) {
+        return poundLogMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 根据id删除过磅数据
+     *
+     * @param ids
+     * @return
+     */
+    @Override
+    public int deleteByIds(List<Integer> ids) {
+        return poundLogMapper.deleteByIds(ids);
     }
 }

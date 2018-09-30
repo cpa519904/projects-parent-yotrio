@@ -1,5 +1,7 @@
 package com.yotrio.pound.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -65,6 +67,7 @@ public class Task implements Serializable {
      *
      * @mbg.generated
      */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**
@@ -72,6 +75,7 @@ public class Task implements Serializable {
      *
      * @mbg.generated
      */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     /**
@@ -79,6 +83,7 @@ public class Task implements Serializable {
      *
      * @mbg.generated
      */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date executeTime;
 
 

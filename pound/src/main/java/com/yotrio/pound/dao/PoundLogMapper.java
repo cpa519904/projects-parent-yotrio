@@ -21,4 +21,6 @@ public interface PoundLogMapper {
     int updateByPrimaryKey(PoundLog record);
 
     List<PoundLog> selectListByMap(Map<String, Object> map);
+
+    int deleteByIds(List<Integer> ids);
 }

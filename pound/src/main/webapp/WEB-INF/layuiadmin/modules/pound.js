@@ -164,8 +164,28 @@ layui.define(['table', 'form'], function (exports) {
                 layer.close(index);
 
                 layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
+                    //提交 Ajax 成功后，静态更新表格中的数据
+                    $.ajax({
+                        type: 'get',
+                        url: '/poundLog/delete',
+                        data: {
+                            id: data.id
+                        },
+                        cache: false,
+                        dataType: 'json',
+                        success: function (result) {
+                            if (result.code == 0) {
+                                obj.del();
+                                layer.close(index);
+                                layer.msg('已删除');
+                            } else {
+                                layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                            }
+                        },
+                        error:function (error) {
+                            layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                        }
+                    });
                 });
             });
         } else if (obj.event === 'edit') {

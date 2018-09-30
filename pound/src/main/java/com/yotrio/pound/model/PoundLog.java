@@ -123,6 +123,17 @@ public class PoundLog implements Serializable {
      */
     private Date updateTime;
 
+    /*=== =冗余数据=====*/
+    /**
+     * 开始创建时间
+     */
+    private Date myLesser_createTime;
+
+    /**
+     * 截止创建时间
+     */
+    private Date myGreater_createTime;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -259,6 +270,22 @@ public class PoundLog implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Date getMyLesser_createTime() {
+        return myLesser_createTime;
+    }
+
+    public void setMyLesser_createTime(Date myLesser_createTime) {
+        this.myLesser_createTime = myLesser_createTime;
+    }
+
+    public Date getMyGreater_createTime() {
+        return myGreater_createTime;
+    }
+
+    public void setMyGreater_createTime(Date myGreater_createTime) {
+        this.myGreater_createTime = myGreater_createTime;
     }
 
     @Override

@@ -5,7 +5,8 @@
     <title>layuiAdmin 控制台主页一</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
 </head>
@@ -25,75 +26,36 @@
                                     <div class="layui-inline">
                                         <label class="layui-form-label">单号</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入单号" class="layui-input">
+                                            <input type="text" name="title" lay-verify="required" autocomplete="off"
+                                                   placeholder="扫码获取" class="layui-input" readonly="readonly">
                                         </div>
                                     </div>
                                     <div class="layui-inline">
                                         <label class="layui-form-label">车牌号</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入车牌号" class="layui-input">
+                                            <input type="text" name="title" lay-verify="required" autocomplete="off"
+                                                   placeholder="扫码获取" class="layui-input" readonly="readonly">
                                         </div>
                                     </div>
                                     <div class="layui-inline">
                                         <label class="layui-form-label">货品名称</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入货品名称" class="layui-input">
+                                            <input type="text" name="title" lay-verify="required" autocomplete="off"
+                                                   placeholder="扫码获取" class="layui-input" readonly="readonly">
                                         </div>
                                     </div>
                                     <div class="layui-inline">
                                         <label class="layui-form-label">送货单位</label>
-                                        <div class="layui-input-inline">
-                                            <select name="modules" lay-verify="required" lay-search="">
-                                                <option value="">直接选择或搜索选择</option>
-                                                <option value="1">layer</option>
-                                                <option value="2">form</option>
-                                                <option value="3">layim</option>
-                                                <option value="4">element</option>
-                                                <option value="5">laytpl</option>
-                                                <option value="6">upload</option>
-                                                <option value="7">laydate</option>
-                                                <option value="8">laypage</option>
-                                                <option value="9">flow</option>
-                                                <option value="10">util</option>
-                                                <option value="11">code</option>
-                                                <option value="12">tree</option>
-                                                <option value="13">layedit</option>
-                                                <option value="14">nav</option>
-                                                <option value="15">tab</option>
-                                                <option value="16">table</option>
-                                                <option value="17">select</option>
-                                                <option value="18">checkbox</option>
-                                                <option value="19">switch</option>
-                                                <option value="20">radio</option>
-                                            </select>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" lay-verify="required" autocomplete="off"
+                                                   placeholder="扫码获取" class="layui-input" readonly="readonly">
                                         </div>
                                     </div>
                                     <div class="layui-inline">
                                         <label class="layui-form-label">收货单位</label>
-                                        <div class="layui-input-inline">
-                                            <select name="modules" lay-verify="required" lay-search="">
-                                                <option value="">直接选择或搜索选择</option>
-                                                <option value="1">layer</option>
-                                                <option value="2">form</option>
-                                                <option value="3">layim</option>
-                                                <option value="4">element</option>
-                                                <option value="5">laytpl</option>
-                                                <option value="6">upload</option>
-                                                <option value="7">laydate</option>
-                                                <option value="8">laypage</option>
-                                                <option value="9">flow</option>
-                                                <option value="10">util</option>
-                                                <option value="11">code</option>
-                                                <option value="12">tree</option>
-                                                <option value="13">layedit</option>
-                                                <option value="14">nav</option>
-                                                <option value="15">tab</option>
-                                                <option value="16">table</option>
-                                                <option value="17">select</option>
-                                                <option value="18">checkbox</option>
-                                                <option value="19">switch</option>
-                                                <option value="20">radio</option>
-                                            </select>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" lay-verify="required" autocomplete="off"
+                                                   placeholder="扫码获取" class="layui-input" readonly="readonly">
                                         </div>
                                     </div>
                                 </div>
@@ -110,23 +72,29 @@
 
                 <div class="layui-col-md3">
                     <div class="layui-card">
-                        <div class="layui-card-header">地磅数值</div>
+                        <div class="layui-card-header">实时重量</div>
                         <div class="layui-card-body layuiadmin-card-list">
-                            <p class="layuiadmin-big-font" style="color: #F74C31;">9,999</p>
+                            <p class="layuiadmin-big-font" style="color: #009688;">9,999</p>
                             <p>
                                 +9,999,666
                                 <!--<span class="layuiadmin-span-color">88万 <i class="layui-inline layui-icon layui-icon-flag"></i></span>-->
                             </p>
                         </div>
+                        <div class="layui-card-header" style="color: #F74C31;">净重</div>
+                        <div class="layui-card">
+                            <div class="layui-card-body">
+                                <div class="layui-card-body layuiadmin-card-list">
+                                    <p class="layuiadmin-big-font" style="color: #F74C31;">6,666</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
                 <div class="layui-col-md3">
                     <div class="layui-card">
                         <div class="layui-card-header">视频</div>
                         <div class="layui-card-body">
                             <img src="../../layuiadmin/layui/images/face/0.gif" style="width:220px;height:220px">
-
                         </div>
                     </div>
                 </div>
@@ -135,139 +103,114 @@
         <div class="layui-col-md12">
             <div class="layui-row layui-col-space10">
                 <div class="layui-col-md6">
-                    <div class="layui-col-md5">
-                        <div class="layui-card">
-                            <div class="layui-card-body">
-                                <!--表单数据-->
-                                <img src="../../layuiadmin/layui/images/face/0.gif" style="width: 150px;height: 150px">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-md7">
-                        <div class="layui-card">
-                            <div class="layui-card-body">
+                    <div class="layui-card">
+                        <div class="layui-card-header">第一次过磅扫码结果</div>
+                        <div class="layui-card-body">
+                            <div class="layui-col-md8">
                                 <!--表单数据-->
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
                                         <label class="layui-form-label">总重</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入单号" class="layui-input">
+                                            <input type="text" name="title" lay-verify="required"
+                                                   autocomplete="off"
+                                                   placeholder="载货扫码获取" class="layui-input" readonly="readonly">
                                         </div>
                                     </div>
                                     <div class="layui-inline">
                                         <label class="layui-form-label">日期</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入货品名称" class="layui-input">
+                                            <input type="text" name="title" lay-verify="required"
+                                                   autocomplete="off"
+                                                   placeholder="载货扫码获取" class="layui-input" readonly="readonly">
                                         </div>
                                     </div>
                                     <div class="layui-inline">
                                         <label class="layui-form-label">时间</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入车牌号" class="layui-input">
+                                            <input type="text" name="title" lay-verify="required"
+                                                   autocomplete="off"
+                                                   placeholder="载货扫码获取" class="layui-input" readonly="readonly">
                                         </div>
                                     </div>
-                                    <!--<div class="layui-inline">-->
-                                    <!--<label class="layui-form-label">日期</label>-->
-                                    <!--<div class="layui-input-inline">-->
-                                    <!--<div id="test-laydate-normElem" style="height: 38px; line-height: 38px; cursor: pointer; border-bottom: 1px solid #e2e2e2;"></div>-->
-                                    <!--</div>-->
-                                    <!--</div>-->
-                                    <!--<div class="layui-inline">-->
-                                    <!--<label class="layui-form-label">时间</label>-->
-                                    <!--<div class="layui-input-inline">-->
-                                    <!--<div id="test-laydate-normElem" style="height: 38px; line-height: 38px; cursor: pointer; border-bottom: 1px solid #e2e2e2;"></div>-->
-                                    <!--</div>-->
-                                    <!--</div>-->
                                 </div>
+                            </div>
+                            <!--图片一-->
+                            <div>
+                                <img src="../../layuiadmin/layui/images/face/0.gif" style="width: 150px;height: 150px">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="layui-col-md6">
-                    <div class="layui-col-md5">
-                        <div class="layui-card">
-                            <div class="layui-card-body">
+                    <div class="layui-card">
+                        <div class="layui-card-header">第二次过磅扫码结果</div>
+                        <div class="layui-card-body">
+                            <div class="layui-col-md8">
                                 <!--表单数据-->
-                                <img src="../../layuiadmin/layui/images/face/0.gif" style="width: 150px;height: 150px">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-md7">
-                        <div class="layui-card">
-                            <div class="layui-card-body">
                                 <div class="layui-form-item">
                                     <div class="layui-inline">
                                         <label class="layui-form-label">皮重</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入单号" class="layui-input">
-                                        </div>
-                                    </div>
-                                    <div class="layui-inline">
-                                        <label class="layui-form-label">时间</label>
-                                        <div class="layui-input-block">
-                                            <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入车牌号" class="layui-input">
+                                            <input type="text" name="title" lay-verify="required"
+                                                   autocomplete="off"
+                                                   placeholder="卸货后扫码获取" class="layui-input" readonly="readonly">
                                         </div>
                                     </div>
                                     <div class="layui-inline">
                                         <label class="layui-form-label">日期</label>
                                         <div class="layui-input-block">
-                                            <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入货品名称" class="layui-input">
+                                            <input type="text" name="title" lay-verify="required"
+                                                   autocomplete="off"
+                                                   placeholder="卸货后扫码获取" class="layui-input" readonly="readonly">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">时间</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="title" lay-verify="required"
+                                                   autocomplete="off"
+                                                   placeholder="卸货后扫码获取" class="layui-input" readonly="readonly">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="layui-col-md12">
-            <div class="layui-row layui-col-space10">
-                <div class="layui-col-md12">
-                    <div class="layui-card">
-                        <div class="layui-card-body">
-                            <!--表单数据-->
-                            <div class="layui-form-item" style="margin-bottom: 0">
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">净重</label>
-                                    <div class="layui-input-block">
-                                        <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入单号" class="layui-input">
-                                    </div>
-                                </div>
+                            <!--图片-->
+                            <div>
+                                <img src="../../layuiadmin/layui/images/face/0.gif" style="width: 150px;height: 150px">
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-        <div class="layui-col-md3">
-            <!--<div class="layui-card">-->
-            <!--&lt;!&ndash;<div class="layui-card-header">版本信息</div>&ndash;&gt;-->
-            <!--<div class="layui-card-body">-->
-            <!--<div style="margin-bottom: 10px">-->
-            <!--<button class="layui-btn layui-btn-primary">复位</button>-->
-            <!--</div>-->
-            <!--<div style="margin-bottom: 10px">-->
-            <!--<form class="layui-form" action="">-->
-            <!--<div class="layui-form-item">-->
-            <!--<label class="layui-form-label" style="margin-left: -20px;width: 40px">调试</label>-->
-            <!--<div class="layui-input-block" style="margin-left: -100px">-->
-            <!--<input type="checkbox" name="close" lay-skin="switch" lay-text="ON|OFF">-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</form>-->
-            <!--</div>-->
-            <!--<div style="margin-bottom: 10px">-->
-            <!--<button class="layui-btn layui-btn-primary">视频</button>-->
-            <!--</div>-->
-            <!--<div style="margin-bottom: 10px">-->
-            <!--<button class="layui-btn layui-btn-primary">停止</button>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
+        <!--<div class="layui-col-md3">-->
+        <!--<div class="layui-card">-->
+        <!--&lt;!&ndash;<div class="layui-card-header">版本信息</div>&ndash;&gt;-->
+        <!--<div class="layui-card-body">-->
+        <!--<div style="margin-bottom: 10px">-->
+        <!--<button class="layui-btn layui-btn-primary">复位</button>-->
+        <!--</div>-->
+        <!--<div style="margin-bottom: 10px">-->
+        <!--<form class="layui-form" action="">-->
+        <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label" style="margin-left: -20px;width: 40px">调试</label>-->
+        <!--<div class="layui-input-block" style="margin-left: -100px">-->
+        <!--<input type="checkbox" name="close" lay-skin="switch" lay-text="ON|OFF">-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</form>-->
+        <!--</div>-->
+        <!--<div style="margin-bottom: 10px">-->
+        <!--<button class="layui-btn layui-btn-primary">视频</button>-->
+        <!--</div>-->
+        <!--<div style="margin-bottom: 10px">-->
+        <!--<button class="layui-btn layui-btn-primary">停止</button>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
 
-        </div>
+        <!--</div>-->
 
     </div>
 

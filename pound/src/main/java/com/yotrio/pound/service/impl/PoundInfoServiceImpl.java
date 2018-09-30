@@ -75,6 +75,12 @@ public class PoundInfoServiceImpl implements IPoundInfoService {
         return poundInfoMapper.deleteByPrimaryKey(id);
     }
 
+    /**
+     * 根据id删除地磅数据
+     *
+     * @param ids
+     * @return
+     */
     @Override
     public int deleteByIds(List<Integer> idList) {
         return poundInfoMapper.deleteByIds(idList);

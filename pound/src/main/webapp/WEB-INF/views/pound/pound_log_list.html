@@ -25,65 +25,49 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">供货单号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="id" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="deliveryNumb" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">车牌号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="id" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="plateNumb" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">供应商</label>
                     <div class="layui-input-block">
-                        <select name="poundName" lay-search="">
-                            <option value="">直接选择或搜索选择</option>
-                            <option value="0">公司1</option>
-                            <option value="1">公司2</option>
-                            <option value="2">公司3</option>
-                            <option value="3">公司4</option>
-                        </select>
+                        <input type="text" name="compName" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">收货单位</label>
                     <div class="layui-input-block">
-                        <select name="poundName" lay-search="">
-                            <option value="">直接选择或搜索选择</option>
-                            <option value="0">集团东大门1号磅房</option>
-                            <option value="1">西大门2号磅房</option>
-                            <option value="2">西大门3号磅房</option>
-                            <option value="3">北大门4号磅房</option>
-                        </select>
+                        <input type="text" name="unitName" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">货品</label>
                     <div class="layui-input-block">
-                        <select name="poundName" lay-search="">
-                            <option value="">直接选择或搜索选择</option>
-                            <option value="0">黄金</option>
-                            <option value="1">铁棍</option>
-                            <option value="2">铝合金</option>
-                            <option value="3">塑料</option>
-                        </select>
+                        <input type="text" name="goodsName" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">开始时间</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input" id="laydate-type-datetime-start" placeholder="yyyy-MM-dd HH:mm:ss">
+                        <input type="text" name="myGreater_createTime" class="layui-input" id="laydate-type-datetime-start"
+                               placeholder="yyyy-MM-dd HH:mm:ss">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">结束时间</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input" id="laydate-type-datetime-end" placeholder="yyyy-MM-dd HH:mm:ss">
+                        <input type="text" name="myLesser_createTime" class="layui-input" id="laydate-type-datetime-end"
+                               placeholder="yyyy-MM-dd HH:mm:ss">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <button class="layui-btn layuiadmin-btn-admin" lay-submit lay-filter="LAY-user-back-search">
+                    <button class="layui-btn layuiadmin-btn-admin" lay-submit lay-filter="LAY-pound-log-search">
                         <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
                     </button>
                 </div>
@@ -111,8 +95,8 @@
                 {{#  } }}
             </script>
             <script type="text/html" id="table-pound-log">
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
                 <!--<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>-->
-                <a class="layui-btn layui-btn-danger layui-btn-xs"><i class="layui-icon layui-icon-delete"></i>删除</a>
             </script>
         </div>
     </div>
@@ -131,11 +115,11 @@
             , laydate = layui.laydate;
 
         //监听搜索
-        form.on('submit(LAY-user-back-search)', function (data) {
+        form.on('submit(LAY-pound-log-search)', function (data) {
             var field = data.field;
 
             //执行重载
-            table.reload('LAY-user-back-manage', {
+            table.reload('LAY-pound-log-manage', {
                 where: field
             });
         });
@@ -143,8 +127,18 @@
         //事件
         var active = {
             batchdel: function () {
-                var checkStatus = table.checkStatus('LAY-user-back-manage')
+                var checkStatus = table.checkStatus('LAY-pound-log-manage')
                     , checkData = checkStatus.data; //得到选中的数据
+
+                var ids = [];
+                for (var i = 0; i < checkData.length; i++) {
+                    var id = checkData[i].id;
+                    if (id) {
+                        ids.push(id);
+                    }
+                }
+
+                console.log("checkData", checkData, "ids", ids);
 
                 if (checkData.length === 0) {
                     return layer.msg('请选择数据');
@@ -159,14 +153,27 @@
                     layer.confirm('确定删除吗？', function (index) {
 
                         //执行 Ajax 后重载
-                        /*
-                         admin.req({
-                         url: 'xxx'
-                         //,……
-                         });
-                         */
-                        table.reload('LAY-user-back-manage');
-                        layer.msg('已删除');
+                        //提交 Ajax 成功后，静态更新表格中的数据
+                        $.ajax({
+                            type: 'get',
+                            url: '/poundLog/deleteByIds',
+                            data: {
+                                ids: ids.toString()
+                            },
+                            cache: false,
+                            dataType: 'json',
+                            success: function (result) {
+                                if (result.code == 0) {
+                                    table.reload('LAY-pound-log-manage');
+                                    layer.msg('已删除');
+                                } else {
+                                    layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                                }
+                            },
+                            error:function (error) {
+                                layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                            }
+                        });
                     });
                 });
             }

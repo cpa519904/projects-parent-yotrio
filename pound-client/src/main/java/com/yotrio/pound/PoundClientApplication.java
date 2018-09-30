@@ -3,7 +3,10 @@ package com.yotrio.pound;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 
+
+@ServletComponentScan
 // mapper 接口类扫描包配置
 @MapperScan("com.yotrio.pound.dao")
 @SpringBootApplication

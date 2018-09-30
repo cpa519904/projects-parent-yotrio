@@ -1,41 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yotrio.pound.dao.PoundLogMapper">
-  <resultMap id="BaseResultMap" type="com.yotrio.pound.model.PoundLog">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="pound_id" jdbcType="INTEGER" property="poundId" />
-    <result column="pound_name" jdbcType="VARCHAR" property="poundName" />
-    <result column="gross_weight" jdbcType="DOUBLE" property="grossWeight" />
-    <result column="tare_weight" jdbcType="DOUBLE" property="tareWeight" />
-    <result column="net_weight" jdbcType="DOUBLE" property="netWeight" />
-    <result column="gross_img_url" jdbcType="VARCHAR" property="grossImgUrl" />
-    <result column="tare_img_url" jdbcType="VARCHAR" property="tareImgUrl" />
-    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
-    <result column="comp_name" jdbcType="VARCHAR" property="compName" />
-    <result column="unit_name" jdbcType="VARCHAR" property="unitName" />
-    <result column="delivery_numb" jdbcType="VARCHAR" property="deliveryNumb" />
-    <result column="plate_numb" jdbcType="VARCHAR" property="plateNumb" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.yotrio.pound.model.PoundLog">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="pound_id" jdbcType="INTEGER" property="poundId"/>
+        <result column="pound_name" jdbcType="VARCHAR" property="poundName"/>
+        <result column="gross_weight" jdbcType="DOUBLE" property="grossWeight"/>
+        <result column="tare_weight" jdbcType="DOUBLE" property="tareWeight"/>
+        <result column="net_weight" jdbcType="DOUBLE" property="netWeight"/>
+        <result column="gross_img_url" jdbcType="VARCHAR" property="grossImgUrl"/>
+        <result column="tare_img_url" jdbcType="VARCHAR" property="tareImgUrl"/>
+        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="comp_name" jdbcType="VARCHAR" property="compName"/>
+        <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
+        <result column="delivery_numb" jdbcType="VARCHAR" property="deliveryNumb"/>
+        <result column="plate_numb" jdbcType="VARCHAR" property="plateNumb"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, pound_id, pound_name, gross_weight, tare_weight, net_weight, gross_img_url, tare_img_url, 
     goods_name, comp_name, unit_name, delivery_numb, plate_numb, remark, status, create_time, 
     update_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from pound_log
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from pound_log
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from pound_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yotrio.pound.model.PoundLog">
+    <delete id="deleteByIds" parameterType="java.lang.Integer">
+        delete from pound_log
+        where id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <insert id="insert" parameterType="com.yotrio.pound.model.PoundLog">
     insert into pound_log (id, pound_id, pound_name, 
       gross_weight, tare_weight, net_weight, 
       gross_img_url, tare_img_url, goods_name, 
@@ -49,170 +56,170 @@
       #{plateNumb,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.yotrio.pound.model.PoundLog">
-    insert into pound_log
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="poundId != null">
-        pound_id,
-      </if>
-      <if test="poundName != null">
-        pound_name,
-      </if>
-      <if test="grossWeight != null">
-        gross_weight,
-      </if>
-      <if test="tareWeight != null">
-        tare_weight,
-      </if>
-      <if test="netWeight != null">
-        net_weight,
-      </if>
-      <if test="grossImgUrl != null">
-        gross_img_url,
-      </if>
-      <if test="tareImgUrl != null">
-        tare_img_url,
-      </if>
-      <if test="goodsName != null">
-        goods_name,
-      </if>
-      <if test="compName != null">
-        comp_name,
-      </if>
-      <if test="unitName != null">
-        unit_name,
-      </if>
-      <if test="deliveryNumb != null">
-        delivery_numb,
-      </if>
-      <if test="plateNumb != null">
-        plate_numb,
-      </if>
-      <if test="remark != null">
-        remark,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="poundId != null">
-        #{poundId,jdbcType=INTEGER},
-      </if>
-      <if test="poundName != null">
-        #{poundName,jdbcType=VARCHAR},
-      </if>
-      <if test="grossWeight != null">
-        #{grossWeight,jdbcType=DOUBLE},
-      </if>
-      <if test="tareWeight != null">
-        #{tareWeight,jdbcType=DOUBLE},
-      </if>
-      <if test="netWeight != null">
-        #{netWeight,jdbcType=DOUBLE},
-      </if>
-      <if test="grossImgUrl != null">
-        #{grossImgUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="tareImgUrl != null">
-        #{tareImgUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="goodsName != null">
-        #{goodsName,jdbcType=VARCHAR},
-      </if>
-      <if test="compName != null">
-        #{compName,jdbcType=VARCHAR},
-      </if>
-      <if test="unitName != null">
-        #{unitName,jdbcType=VARCHAR},
-      </if>
-      <if test="deliveryNumb != null">
-        #{deliveryNumb,jdbcType=VARCHAR},
-      </if>
-      <if test="plateNumb != null">
-        #{plateNumb,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yotrio.pound.model.PoundLog">
-    update pound_log
-    <set>
-      <if test="poundId != null">
-        pound_id = #{poundId,jdbcType=INTEGER},
-      </if>
-      <if test="poundName != null">
-        pound_name = #{poundName,jdbcType=VARCHAR},
-      </if>
-      <if test="grossWeight != null">
-        gross_weight = #{grossWeight,jdbcType=DOUBLE},
-      </if>
-      <if test="tareWeight != null">
-        tare_weight = #{tareWeight,jdbcType=DOUBLE},
-      </if>
-      <if test="netWeight != null">
-        net_weight = #{netWeight,jdbcType=DOUBLE},
-      </if>
-      <if test="grossImgUrl != null">
-        gross_img_url = #{grossImgUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="tareImgUrl != null">
-        tare_img_url = #{tareImgUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="goodsName != null">
-        goods_name = #{goodsName,jdbcType=VARCHAR},
-      </if>
-      <if test="compName != null">
-        comp_name = #{compName,jdbcType=VARCHAR},
-      </if>
-      <if test="unitName != null">
-        unit_name = #{unitName,jdbcType=VARCHAR},
-      </if>
-      <if test="deliveryNumb != null">
-        delivery_numb = #{deliveryNumb,jdbcType=VARCHAR},
-      </if>
-      <if test="plateNumb != null">
-        plate_numb = #{plateNumb,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yotrio.pound.model.PoundLog">
+    <insert id="insertSelective" parameterType="com.yotrio.pound.model.PoundLog">
+        insert into pound_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="poundId != null">
+                pound_id,
+            </if>
+            <if test="poundName != null">
+                pound_name,
+            </if>
+            <if test="grossWeight != null">
+                gross_weight,
+            </if>
+            <if test="tareWeight != null">
+                tare_weight,
+            </if>
+            <if test="netWeight != null">
+                net_weight,
+            </if>
+            <if test="grossImgUrl != null">
+                gross_img_url,
+            </if>
+            <if test="tareImgUrl != null">
+                tare_img_url,
+            </if>
+            <if test="goodsName != null">
+                goods_name,
+            </if>
+            <if test="compName != null">
+                comp_name,
+            </if>
+            <if test="unitName != null">
+                unit_name,
+            </if>
+            <if test="deliveryNumb != null">
+                delivery_numb,
+            </if>
+            <if test="plateNumb != null">
+                plate_numb,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="poundId != null">
+                #{poundId,jdbcType=INTEGER},
+            </if>
+            <if test="poundName != null">
+                #{poundName,jdbcType=VARCHAR},
+            </if>
+            <if test="grossWeight != null">
+                #{grossWeight,jdbcType=DOUBLE},
+            </if>
+            <if test="tareWeight != null">
+                #{tareWeight,jdbcType=DOUBLE},
+            </if>
+            <if test="netWeight != null">
+                #{netWeight,jdbcType=DOUBLE},
+            </if>
+            <if test="grossImgUrl != null">
+                #{grossImgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="tareImgUrl != null">
+                #{tareImgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="compName != null">
+                #{compName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitName != null">
+                #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryNumb != null">
+                #{deliveryNumb,jdbcType=VARCHAR},
+            </if>
+            <if test="plateNumb != null">
+                #{plateNumb,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yotrio.pound.model.PoundLog">
+        update pound_log
+        <set>
+            <if test="poundId != null">
+                pound_id = #{poundId,jdbcType=INTEGER},
+            </if>
+            <if test="poundName != null">
+                pound_name = #{poundName,jdbcType=VARCHAR},
+            </if>
+            <if test="grossWeight != null">
+                gross_weight = #{grossWeight,jdbcType=DOUBLE},
+            </if>
+            <if test="tareWeight != null">
+                tare_weight = #{tareWeight,jdbcType=DOUBLE},
+            </if>
+            <if test="netWeight != null">
+                net_weight = #{netWeight,jdbcType=DOUBLE},
+            </if>
+            <if test="grossImgUrl != null">
+                gross_img_url = #{grossImgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="tareImgUrl != null">
+                tare_img_url = #{tareImgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                goods_name = #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="compName != null">
+                comp_name = #{compName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitName != null">
+                unit_name = #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryNumb != null">
+                delivery_numb = #{deliveryNumb,jdbcType=VARCHAR},
+            </if>
+            <if test="plateNumb != null">
+                plate_numb = #{plateNumb,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yotrio.pound.model.PoundLog">
     update pound_log
     set pound_id = #{poundId,jdbcType=INTEGER},
       pound_name = #{poundName,jdbcType=VARCHAR},
@@ -232,372 +239,426 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectCountByMap" parameterType="map" resultType="int">
-    select count(*) from  <if test="dynamicTableName != null and dynamicTableName != ''"> ${dynamicTableName}  </if><if test="dynamicTableName == null or dynamicTableName == ''"> pound_log</if> <include refid="Base_Query_Map_Condition" /> 
-  </select>
-  <select id="selectListByMap" parameterType="map" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" /> from  <if test="dynamicTableName != null and dynamicTableName != ''"> ${dynamicTableName}  </if><if test="dynamicTableName == null or dynamicTableName == ''"> pound_log</if> <include refid="Base_Query_Map_Condition" />  order by  id desc
-  </select>
-  <sql id="Base_Query_Map_Condition">
-    <trim prefix="where" prefixOverrides="and | or">
-      <if test="id != null and id != ''">
-         AND id = #{id,jdbcType=INTEGER}
-      </if>
-      <if test="poundId != null and poundId != ''">
-         AND pound_id = #{poundId,jdbcType=INTEGER}
-      </if>
-      <if test="poundName != null and poundName != ''">
-         AND pound_name = #{poundName,jdbcType=VARCHAR}
-      </if>
-      <if test="grossWeight != null and grossWeight != ''">
-         AND gross_weight = #{grossWeight,jdbcType=DOUBLE}
-      </if>
-      <if test="tareWeight != null and tareWeight != ''">
-         AND tare_weight = #{tareWeight,jdbcType=DOUBLE}
-      </if>
-      <if test="netWeight != null and netWeight != ''">
-         AND net_weight = #{netWeight,jdbcType=DOUBLE}
-      </if>
-      <if test="grossImgUrl != null and grossImgUrl != ''">
-         AND gross_img_url = #{grossImgUrl,jdbcType=VARCHAR}
-      </if>
-      <if test="tareImgUrl != null and tareImgUrl != ''">
-         AND tare_img_url = #{tareImgUrl,jdbcType=VARCHAR}
-      </if>
-      <if test="goodsName != null and goodsName != ''">
-         AND goods_name = #{goodsName,jdbcType=VARCHAR}
-      </if>
-      <if test="compName != null and compName != ''">
-         AND comp_name = #{compName,jdbcType=VARCHAR}
-      </if>
-      <if test="unitName != null and unitName != ''">
-         AND unit_name = #{unitName,jdbcType=VARCHAR}
-      </if>
-      <if test="deliveryNumb != null and deliveryNumb != ''">
-         AND delivery_numb = #{deliveryNumb,jdbcType=VARCHAR}
-      </if>
-      <if test="plateNumb != null and plateNumb != ''">
-         AND plate_numb = #{plateNumb,jdbcType=VARCHAR}
-      </if>
-      <if test="remark != null and remark != ''">
-         AND remark = #{remark,jdbcType=VARCHAR}
-      </if>
-      <if test="status != null and status != ''">
-         AND status = #{status,jdbcType=INTEGER}
-      </if>
-      <if test="createTime != null and createTime != ''">
-         AND create_time = #{createTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="updateTime != null and updateTime != ''">
-         AND update_time = #{updateTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="myGreater_id != null and myGreater_id != ''">
-         AND id &gt; #{myGreater_id,jdbcType=INTEGER}
-      </if>
-      <if test="myGreater_poundId != null and myGreater_poundId != ''">
-         AND pound_id &gt; #{myGreater_poundId,jdbcType=INTEGER}
-      </if>
-      <if test="myGreater_poundName != null and myGreater_poundName != ''">
-         AND pound_name &gt; #{myGreater_poundName,jdbcType=VARCHAR}
-      </if>
-      <if test="myGreater_grossWeight != null and myGreater_grossWeight != ''">
-         AND gross_weight &gt; #{myGreater_grossWeight,jdbcType=DOUBLE}
-      </if>
-      <if test="myGreater_tareWeight != null and myGreater_tareWeight != ''">
-         AND tare_weight &gt; #{myGreater_tareWeight,jdbcType=DOUBLE}
-      </if>
-      <if test="myGreater_netWeight != null and myGreater_netWeight != ''">
-         AND net_weight &gt; #{myGreater_netWeight,jdbcType=DOUBLE}
-      </if>
-      <if test="myGreater_grossImgUrl != null and myGreater_grossImgUrl != ''">
-         AND gross_img_url &gt; #{myGreater_grossImgUrl,jdbcType=VARCHAR}
-      </if>
-      <if test="myGreater_tareImgUrl != null and myGreater_tareImgUrl != ''">
-         AND tare_img_url &gt; #{myGreater_tareImgUrl,jdbcType=VARCHAR}
-      </if>
-      <if test="myGreater_goodsName != null and myGreater_goodsName != ''">
-         AND goods_name &gt; #{myGreater_goodsName,jdbcType=VARCHAR}
-      </if>
-      <if test="myGreater_compName != null and myGreater_compName != ''">
-         AND comp_name &gt; #{myGreater_compName,jdbcType=VARCHAR}
-      </if>
-      <if test="myGreater_unitName != null and myGreater_unitName != ''">
-         AND unit_name &gt; #{myGreater_unitName,jdbcType=VARCHAR}
-      </if>
-      <if test="myGreater_deliveryNumb != null and myGreater_deliveryNumb != ''">
-         AND delivery_numb &gt; #{myGreater_deliveryNumb,jdbcType=VARCHAR}
-      </if>
-      <if test="myGreater_plateNumb != null and myGreater_plateNumb != ''">
-         AND plate_numb &gt; #{myGreater_plateNumb,jdbcType=VARCHAR}
-      </if>
-      <if test="myGreater_remark != null and myGreater_remark != ''">
-         AND remark &gt; #{myGreater_remark,jdbcType=VARCHAR}
-      </if>
-      <if test="myGreater_status != null and myGreater_status != ''">
-         AND status &gt; #{myGreater_status,jdbcType=INTEGER}
-      </if>
-      <if test="myGreater_createTime != null and myGreater_createTime != ''">
-         AND create_time &gt; #{myGreater_createTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="myGreater_updateTime != null and myGreater_updateTime != ''">
-         AND update_time &gt; #{myGreater_updateTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="myLesser_id != null and myLesser_id != ''">
-         AND id &lt; #{myLesser_id,jdbcType=INTEGER}
-      </if>
-      <if test="myLesser_poundId != null and myLesser_poundId != ''">
-         AND pound_id &lt; #{myLesser_poundId,jdbcType=INTEGER}
-      </if>
-      <if test="myLesser_poundName != null and myLesser_poundName != ''">
-         AND pound_name &lt; #{myLesser_poundName,jdbcType=VARCHAR}
-      </if>
-      <if test="myLesser_grossWeight != null and myLesser_grossWeight != ''">
-         AND gross_weight &lt; #{myLesser_grossWeight,jdbcType=DOUBLE}
-      </if>
-      <if test="myLesser_tareWeight != null and myLesser_tareWeight != ''">
-         AND tare_weight &lt; #{myLesser_tareWeight,jdbcType=DOUBLE}
-      </if>
-      <if test="myLesser_netWeight != null and myLesser_netWeight != ''">
-         AND net_weight &lt; #{myLesser_netWeight,jdbcType=DOUBLE}
-      </if>
-      <if test="myLesser_grossImgUrl != null and myLesser_grossImgUrl != ''">
-         AND gross_img_url &lt; #{myLesser_grossImgUrl,jdbcType=VARCHAR}
-      </if>
-      <if test="myLesser_tareImgUrl != null and myLesser_tareImgUrl != ''">
-         AND tare_img_url &lt; #{myLesser_tareImgUrl,jdbcType=VARCHAR}
-      </if>
-      <if test="myLesser_goodsName != null and myLesser_goodsName != ''">
-         AND goods_name &lt; #{myLesser_goodsName,jdbcType=VARCHAR}
-      </if>
-      <if test="myLesser_compName != null and myLesser_compName != ''">
-         AND comp_name &lt; #{myLesser_compName,jdbcType=VARCHAR}
-      </if>
-      <if test="myLesser_unitName != null and myLesser_unitName != ''">
-         AND unit_name &lt; #{myLesser_unitName,jdbcType=VARCHAR}
-      </if>
-      <if test="myLesser_deliveryNumb != null and myLesser_deliveryNumb != ''">
-         AND delivery_numb &lt; #{myLesser_deliveryNumb,jdbcType=VARCHAR}
-      </if>
-      <if test="myLesser_plateNumb != null and myLesser_plateNumb != ''">
-         AND plate_numb &lt; #{myLesser_plateNumb,jdbcType=VARCHAR}
-      </if>
-      <if test="myLesser_remark != null and myLesser_remark != ''">
-         AND remark &lt; #{myLesser_remark,jdbcType=VARCHAR}
-      </if>
-      <if test="myLesser_status != null and myLesser_status != ''">
-         AND status &lt; #{myLesser_status,jdbcType=INTEGER}
-      </if>
-      <if test="myLesser_createTime != null and myLesser_createTime != ''">
-         AND create_time &lt; #{myLesser_createTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="myLesser_updateTime != null and myLesser_updateTime != ''">
-         AND update_time &lt; #{myLesser_updateTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="myLike_id != null and myLike_id != ''">
-         AND id like CONCAT('%', #{myLike_id,jdbcType=INTEGER},'%' )
-      </if>
-      <if test="myLike_poundId != null and myLike_poundId != ''">
-         AND pound_id like CONCAT('%', #{myLike_poundId,jdbcType=INTEGER},'%' )
-      </if>
-      <if test="myLike_poundName != null and myLike_poundName != ''">
-         AND pound_name like CONCAT('%', #{myLike_poundName,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLike_grossWeight != null and myLike_grossWeight != ''">
-         AND gross_weight like CONCAT('%', #{myLike_grossWeight,jdbcType=DOUBLE},'%' )
-      </if>
-      <if test="myLike_tareWeight != null and myLike_tareWeight != ''">
-         AND tare_weight like CONCAT('%', #{myLike_tareWeight,jdbcType=DOUBLE},'%' )
-      </if>
-      <if test="myLike_netWeight != null and myLike_netWeight != ''">
-         AND net_weight like CONCAT('%', #{myLike_netWeight,jdbcType=DOUBLE},'%' )
-      </if>
-      <if test="myLike_grossImgUrl != null and myLike_grossImgUrl != ''">
-         AND gross_img_url like CONCAT('%', #{myLike_grossImgUrl,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLike_tareImgUrl != null and myLike_tareImgUrl != ''">
-         AND tare_img_url like CONCAT('%', #{myLike_tareImgUrl,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLike_goodsName != null and myLike_goodsName != ''">
-         AND goods_name like CONCAT('%', #{myLike_goodsName,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLike_compName != null and myLike_compName != ''">
-         AND comp_name like CONCAT('%', #{myLike_compName,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLike_unitName != null and myLike_unitName != ''">
-         AND unit_name like CONCAT('%', #{myLike_unitName,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLike_deliveryNumb != null and myLike_deliveryNumb != ''">
-         AND delivery_numb like CONCAT('%', #{myLike_deliveryNumb,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLike_plateNumb != null and myLike_plateNumb != ''">
-         AND plate_numb like CONCAT('%', #{myLike_plateNumb,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLike_remark != null and myLike_remark != ''">
-         AND remark like CONCAT('%', #{myLike_remark,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLike_status != null and myLike_status != ''">
-         AND status like CONCAT('%', #{myLike_status,jdbcType=INTEGER},'%' )
-      </if>
-      <if test="myLike_createTime != null and myLike_createTime != ''">
-         AND create_time like CONCAT('%', #{myLike_createTime,jdbcType=TIMESTAMP},'%' )
-      </if>
-      <if test="myLike_updateTime != null and myLike_updateTime != ''">
-         AND update_time like CONCAT('%', #{myLike_updateTime,jdbcType=TIMESTAMP},'%' )
-      </if>
-      <if test="myLikeStart_id != null and myLikeStart_id != ''">
-         AND id like CONCAT('%', #{myLikeStart_id,jdbcType=INTEGER})
-      </if>
-      <if test="myLikeStart_poundId != null and myLikeStart_poundId != ''">
-         AND pound_id like CONCAT('%', #{myLikeStart_poundId,jdbcType=INTEGER})
-      </if>
-      <if test="myLikeStart_poundName != null and myLikeStart_poundName != ''">
-         AND pound_name like CONCAT('%', #{myLikeStart_poundName,jdbcType=VARCHAR})
-      </if>
-      <if test="myLikeStart_grossWeight != null and myLikeStart_grossWeight != ''">
-         AND gross_weight like CONCAT('%', #{myLikeStart_grossWeight,jdbcType=DOUBLE})
-      </if>
-      <if test="myLikeStart_tareWeight != null and myLikeStart_tareWeight != ''">
-         AND tare_weight like CONCAT('%', #{myLikeStart_tareWeight,jdbcType=DOUBLE})
-      </if>
-      <if test="myLikeStart_netWeight != null and myLikeStart_netWeight != ''">
-         AND net_weight like CONCAT('%', #{myLikeStart_netWeight,jdbcType=DOUBLE})
-      </if>
-      <if test="myLikeStart_grossImgUrl != null and myLikeStart_grossImgUrl != ''">
-         AND gross_img_url like CONCAT('%', #{myLikeStart_grossImgUrl,jdbcType=VARCHAR})
-      </if>
-      <if test="myLikeStart_tareImgUrl != null and myLikeStart_tareImgUrl != ''">
-         AND tare_img_url like CONCAT('%', #{myLikeStart_tareImgUrl,jdbcType=VARCHAR})
-      </if>
-      <if test="myLikeStart_goodsName != null and myLikeStart_goodsName != ''">
-         AND goods_name like CONCAT('%', #{myLikeStart_goodsName,jdbcType=VARCHAR})
-      </if>
-      <if test="myLikeStart_compName != null and myLikeStart_compName != ''">
-         AND comp_name like CONCAT('%', #{myLikeStart_compName,jdbcType=VARCHAR})
-      </if>
-      <if test="myLikeStart_unitName != null and myLikeStart_unitName != ''">
-         AND unit_name like CONCAT('%', #{myLikeStart_unitName,jdbcType=VARCHAR})
-      </if>
-      <if test="myLikeStart_deliveryNumb != null and myLikeStart_deliveryNumb != ''">
-         AND delivery_numb like CONCAT('%', #{myLikeStart_deliveryNumb,jdbcType=VARCHAR})
-      </if>
-      <if test="myLikeStart_plateNumb != null and myLikeStart_plateNumb != ''">
-         AND plate_numb like CONCAT('%', #{myLikeStart_plateNumb,jdbcType=VARCHAR})
-      </if>
-      <if test="myLikeStart_remark != null and myLikeStart_remark != ''">
-         AND remark like CONCAT('%', #{myLikeStart_remark,jdbcType=VARCHAR})
-      </if>
-      <if test="myLikeStart_status != null and myLikeStart_status != ''">
-         AND status like CONCAT('%', #{myLikeStart_status,jdbcType=INTEGER})
-      </if>
-      <if test="myLikeStart_createTime != null and myLikeStart_createTime != ''">
-         AND create_time like CONCAT('%', #{myLikeStart_createTime,jdbcType=TIMESTAMP})
-      </if>
-      <if test="myLikeStart_updateTime != null and myLikeStart_updateTime != ''">
-         AND update_time like CONCAT('%', #{myLikeStart_updateTime,jdbcType=TIMESTAMP})
-      </if>
-      <if test="myLikeEnd_id != null and myLikeEnd_id != ''">
-         AND id like CONCAT( #{myLikeEnd_id,jdbcType=INTEGER},'%' )
-      </if>
-      <if test="myLikeEnd_poundId != null and myLikeEnd_poundId != ''">
-         AND pound_id like CONCAT( #{myLikeEnd_poundId,jdbcType=INTEGER},'%' )
-      </if>
-      <if test="myLikeEnd_poundName != null and myLikeEnd_poundName != ''">
-         AND pound_name like CONCAT( #{myLikeEnd_poundName,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLikeEnd_grossWeight != null and myLikeEnd_grossWeight != ''">
-         AND gross_weight like CONCAT( #{myLikeEnd_grossWeight,jdbcType=DOUBLE},'%' )
-      </if>
-      <if test="myLikeEnd_tareWeight != null and myLikeEnd_tareWeight != ''">
-         AND tare_weight like CONCAT( #{myLikeEnd_tareWeight,jdbcType=DOUBLE},'%' )
-      </if>
-      <if test="myLikeEnd_netWeight != null and myLikeEnd_netWeight != ''">
-         AND net_weight like CONCAT( #{myLikeEnd_netWeight,jdbcType=DOUBLE},'%' )
-      </if>
-      <if test="myLikeEnd_grossImgUrl != null and myLikeEnd_grossImgUrl != ''">
-         AND gross_img_url like CONCAT( #{myLikeEnd_grossImgUrl,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLikeEnd_tareImgUrl != null and myLikeEnd_tareImgUrl != ''">
-         AND tare_img_url like CONCAT( #{myLikeEnd_tareImgUrl,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLikeEnd_goodsName != null and myLikeEnd_goodsName != ''">
-         AND goods_name like CONCAT( #{myLikeEnd_goodsName,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLikeEnd_compName != null and myLikeEnd_compName != ''">
-         AND comp_name like CONCAT( #{myLikeEnd_compName,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLikeEnd_unitName != null and myLikeEnd_unitName != ''">
-         AND unit_name like CONCAT( #{myLikeEnd_unitName,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLikeEnd_deliveryNumb != null and myLikeEnd_deliveryNumb != ''">
-         AND delivery_numb like CONCAT( #{myLikeEnd_deliveryNumb,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLikeEnd_plateNumb != null and myLikeEnd_plateNumb != ''">
-         AND plate_numb like CONCAT( #{myLikeEnd_plateNumb,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLikeEnd_remark != null and myLikeEnd_remark != ''">
-         AND remark like CONCAT( #{myLikeEnd_remark,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLikeEnd_status != null and myLikeEnd_status != ''">
-         AND status like CONCAT( #{myLikeEnd_status,jdbcType=INTEGER},'%' )
-      </if>
-      <if test="myLikeEnd_createTime != null and myLikeEnd_createTime != ''">
-         AND create_time like CONCAT( #{myLikeEnd_createTime,jdbcType=TIMESTAMP},'%' )
-      </if>
-      <if test="myLikeEnd_updateTime != null and myLikeEnd_updateTime != ''">
-         AND update_time like CONCAT( #{myLikeEnd_updateTime,jdbcType=TIMESTAMP},'%' )
-      </if>
-      <if test="myIn_id != null and myIn_id != ''">
-         AND id in <foreach item="item" index="index" collection="myIn_id" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_poundId != null and myIn_poundId != ''">
-         AND pound_id in <foreach item="item" index="index" collection="myIn_poundId" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_poundName != null and myIn_poundName != ''">
-         AND pound_name in <foreach item="item" index="index" collection="myIn_poundName" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_grossWeight != null and myIn_grossWeight != ''">
-         AND gross_weight in <foreach item="item" index="index" collection="myIn_grossWeight" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_tareWeight != null and myIn_tareWeight != ''">
-         AND tare_weight in <foreach item="item" index="index" collection="myIn_tareWeight" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_netWeight != null and myIn_netWeight != ''">
-         AND net_weight in <foreach item="item" index="index" collection="myIn_netWeight" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_grossImgUrl != null and myIn_grossImgUrl != ''">
-         AND gross_img_url in <foreach item="item" index="index" collection="myIn_grossImgUrl" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_tareImgUrl != null and myIn_tareImgUrl != ''">
-         AND tare_img_url in <foreach item="item" index="index" collection="myIn_tareImgUrl" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_goodsName != null and myIn_goodsName != ''">
-         AND goods_name in <foreach item="item" index="index" collection="myIn_goodsName" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_compName != null and myIn_compName != ''">
-         AND comp_name in <foreach item="item" index="index" collection="myIn_compName" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_unitName != null and myIn_unitName != ''">
-         AND unit_name in <foreach item="item" index="index" collection="myIn_unitName" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_deliveryNumb != null and myIn_deliveryNumb != ''">
-         AND delivery_numb in <foreach item="item" index="index" collection="myIn_deliveryNumb" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_plateNumb != null and myIn_plateNumb != ''">
-         AND plate_numb in <foreach item="item" index="index" collection="myIn_plateNumb" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_remark != null and myIn_remark != ''">
-         AND remark in <foreach item="item" index="index" collection="myIn_remark" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_status != null and myIn_status != ''">
-         AND status in <foreach item="item" index="index" collection="myIn_status" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_createTime != null and myIn_createTime != ''">
-         AND create_time in <foreach item="item" index="index" collection="myIn_createTime" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_updateTime != null and myIn_updateTime != ''">
-         AND update_time in <foreach item="item" index="index" collection="myIn_updateTime" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-    </trim>
-  </sql>
-  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+    <select id="selectCountByMap" parameterType="map" resultType="int">
+        select count(*) from
+        <if test="dynamicTableName != null and dynamicTableName != ''">${dynamicTableName}</if>
+        <if test="dynamicTableName == null or dynamicTableName == ''">pound_log</if>
+        <include refid="Base_Query_Map_Condition"/>
+    </select>
+    <select id="selectListByMap" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <if test="dynamicTableName != null and dynamicTableName != ''">${dynamicTableName}</if>
+        <if test="dynamicTableName == null or dynamicTableName == ''">pound_log</if>
+        <include refid="Base_Query_Map_Condition"/>
+        order by id desc
+    </select>
+    <sql id="Base_Query_Map_Condition">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="id != null and id != ''">
+                AND id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="poundId != null and poundId != ''">
+                AND pound_id = #{poundId,jdbcType=INTEGER}
+            </if>
+            <if test="poundName != null and poundName != ''">
+                AND pound_name = #{poundName,jdbcType=VARCHAR}
+            </if>
+            <if test="grossWeight != null and grossWeight != ''">
+                AND gross_weight = #{grossWeight,jdbcType=DOUBLE}
+            </if>
+            <if test="tareWeight != null and tareWeight != ''">
+                AND tare_weight = #{tareWeight,jdbcType=DOUBLE}
+            </if>
+            <if test="netWeight != null and netWeight != ''">
+                AND net_weight = #{netWeight,jdbcType=DOUBLE}
+            </if>
+            <if test="grossImgUrl != null and grossImgUrl != ''">
+                AND gross_img_url = #{grossImgUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="tareImgUrl != null and tareImgUrl != ''">
+                AND tare_img_url = #{tareImgUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsName != null and goodsName != ''">
+                AND goods_name = #{goodsName,jdbcType=VARCHAR}
+            </if>
+            <if test="compName != null and compName != ''">
+                AND comp_name = #{compName,jdbcType=VARCHAR}
+            </if>
+            <if test="unitName != null and unitName != ''">
+                AND unit_name = #{unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="deliveryNumb != null and deliveryNumb != ''">
+                AND delivery_numb = #{deliveryNumb,jdbcType=VARCHAR}
+            </if>
+            <if test="plateNumb != null and plateNumb != ''">
+                AND plate_numb = #{plateNumb,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null and remark != ''">
+                AND remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myGreater_id != null and myGreater_id != ''">
+                AND id &gt; #{myGreater_id,jdbcType=INTEGER}
+            </if>
+            <if test="myGreater_poundId != null and myGreater_poundId != ''">
+                AND pound_id &gt; #{myGreater_poundId,jdbcType=INTEGER}
+            </if>
+            <if test="myGreater_poundName != null and myGreater_poundName != ''">
+                AND pound_name &gt; #{myGreater_poundName,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_grossWeight != null and myGreater_grossWeight != ''">
+                AND gross_weight &gt; #{myGreater_grossWeight,jdbcType=DOUBLE}
+            </if>
+            <if test="myGreater_tareWeight != null and myGreater_tareWeight != ''">
+                AND tare_weight &gt; #{myGreater_tareWeight,jdbcType=DOUBLE}
+            </if>
+            <if test="myGreater_netWeight != null and myGreater_netWeight != ''">
+                AND net_weight &gt; #{myGreater_netWeight,jdbcType=DOUBLE}
+            </if>
+            <if test="myGreater_grossImgUrl != null and myGreater_grossImgUrl != ''">
+                AND gross_img_url &gt; #{myGreater_grossImgUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_tareImgUrl != null and myGreater_tareImgUrl != ''">
+                AND tare_img_url &gt; #{myGreater_tareImgUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_goodsName != null and myGreater_goodsName != ''">
+                AND goods_name &gt; #{myGreater_goodsName,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_compName != null and myGreater_compName != ''">
+                AND comp_name &gt; #{myGreater_compName,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_unitName != null and myGreater_unitName != ''">
+                AND unit_name &gt; #{myGreater_unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_deliveryNumb != null and myGreater_deliveryNumb != ''">
+                AND delivery_numb &gt; #{myGreater_deliveryNumb,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_plateNumb != null and myGreater_plateNumb != ''">
+                AND plate_numb &gt; #{myGreater_plateNumb,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_remark != null and myGreater_remark != ''">
+                AND remark &gt; #{myGreater_remark,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_status != null and myGreater_status != ''">
+                AND status &gt; #{myGreater_status,jdbcType=INTEGER}
+            </if>
+            <if test="myGreater_createTime != null and myGreater_createTime != ''">
+                AND create_time &gt; #{myGreater_createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myGreater_updateTime != null and myGreater_updateTime != ''">
+                AND update_time &gt; #{myGreater_updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myLesser_id != null and myLesser_id != ''">
+                AND id &lt; #{myLesser_id,jdbcType=INTEGER}
+            </if>
+            <if test="myLesser_poundId != null and myLesser_poundId != ''">
+                AND pound_id &lt; #{myLesser_poundId,jdbcType=INTEGER}
+            </if>
+            <if test="myLesser_poundName != null and myLesser_poundName != ''">
+                AND pound_name &lt; #{myLesser_poundName,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_grossWeight != null and myLesser_grossWeight != ''">
+                AND gross_weight &lt; #{myLesser_grossWeight,jdbcType=DOUBLE}
+            </if>
+            <if test="myLesser_tareWeight != null and myLesser_tareWeight != ''">
+                AND tare_weight &lt; #{myLesser_tareWeight,jdbcType=DOUBLE}
+            </if>
+            <if test="myLesser_netWeight != null and myLesser_netWeight != ''">
+                AND net_weight &lt; #{myLesser_netWeight,jdbcType=DOUBLE}
+            </if>
+            <if test="myLesser_grossImgUrl != null and myLesser_grossImgUrl != ''">
+                AND gross_img_url &lt; #{myLesser_grossImgUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_tareImgUrl != null and myLesser_tareImgUrl != ''">
+                AND tare_img_url &lt; #{myLesser_tareImgUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_goodsName != null and myLesser_goodsName != ''">
+                AND goods_name &lt; #{myLesser_goodsName,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_compName != null and myLesser_compName != ''">
+                AND comp_name &lt; #{myLesser_compName,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_unitName != null and myLesser_unitName != ''">
+                AND unit_name &lt; #{myLesser_unitName,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_deliveryNumb != null and myLesser_deliveryNumb != ''">
+                AND delivery_numb &lt; #{myLesser_deliveryNumb,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_plateNumb != null and myLesser_plateNumb != ''">
+                AND plate_numb &lt; #{myLesser_plateNumb,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_remark != null and myLesser_remark != ''">
+                AND remark &lt; #{myLesser_remark,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_status != null and myLesser_status != ''">
+                AND status &lt; #{myLesser_status,jdbcType=INTEGER}
+            </if>
+            <if test="myLesser_createTime != null and myLesser_createTime != ''">
+                AND create_time &lt; #{myLesser_createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myLesser_updateTime != null and myLesser_updateTime != ''">
+                AND update_time &lt; #{myLesser_updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myLike_id != null and myLike_id != ''">
+                AND id like CONCAT('%', #{myLike_id,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLike_poundId != null and myLike_poundId != ''">
+                AND pound_id like CONCAT('%', #{myLike_poundId,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLike_poundName != null and myLike_poundName != ''">
+                AND pound_name like CONCAT('%', #{myLike_poundName,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_grossWeight != null and myLike_grossWeight != ''">
+                AND gross_weight like CONCAT('%', #{myLike_grossWeight,jdbcType=DOUBLE},'%' )
+            </if>
+            <if test="myLike_tareWeight != null and myLike_tareWeight != ''">
+                AND tare_weight like CONCAT('%', #{myLike_tareWeight,jdbcType=DOUBLE},'%' )
+            </if>
+            <if test="myLike_netWeight != null and myLike_netWeight != ''">
+                AND net_weight like CONCAT('%', #{myLike_netWeight,jdbcType=DOUBLE},'%' )
+            </if>
+            <if test="myLike_grossImgUrl != null and myLike_grossImgUrl != ''">
+                AND gross_img_url like CONCAT('%', #{myLike_grossImgUrl,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_tareImgUrl != null and myLike_tareImgUrl != ''">
+                AND tare_img_url like CONCAT('%', #{myLike_tareImgUrl,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_goodsName != null and myLike_goodsName != ''">
+                AND goods_name like CONCAT('%', #{myLike_goodsName,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_compName != null and myLike_compName != ''">
+                AND comp_name like CONCAT('%', #{myLike_compName,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_unitName != null and myLike_unitName != ''">
+                AND unit_name like CONCAT('%', #{myLike_unitName,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_deliveryNumb != null and myLike_deliveryNumb != ''">
+                AND delivery_numb like CONCAT('%', #{myLike_deliveryNumb,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_plateNumb != null and myLike_plateNumb != ''">
+                AND plate_numb like CONCAT('%', #{myLike_plateNumb,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_remark != null and myLike_remark != ''">
+                AND remark like CONCAT('%', #{myLike_remark,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_status != null and myLike_status != ''">
+                AND status like CONCAT('%', #{myLike_status,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLike_createTime != null and myLike_createTime != ''">
+                AND create_time like CONCAT('%', #{myLike_createTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myLike_updateTime != null and myLike_updateTime != ''">
+                AND update_time like CONCAT('%', #{myLike_updateTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myLikeStart_id != null and myLikeStart_id != ''">
+                AND id like CONCAT('%', #{myLikeStart_id,jdbcType=INTEGER})
+            </if>
+            <if test="myLikeStart_poundId != null and myLikeStart_poundId != ''">
+                AND pound_id like CONCAT('%', #{myLikeStart_poundId,jdbcType=INTEGER})
+            </if>
+            <if test="myLikeStart_poundName != null and myLikeStart_poundName != ''">
+                AND pound_name like CONCAT('%', #{myLikeStart_poundName,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_grossWeight != null and myLikeStart_grossWeight != ''">
+                AND gross_weight like CONCAT('%', #{myLikeStart_grossWeight,jdbcType=DOUBLE})
+            </if>
+            <if test="myLikeStart_tareWeight != null and myLikeStart_tareWeight != ''">
+                AND tare_weight like CONCAT('%', #{myLikeStart_tareWeight,jdbcType=DOUBLE})
+            </if>
+            <if test="myLikeStart_netWeight != null and myLikeStart_netWeight != ''">
+                AND net_weight like CONCAT('%', #{myLikeStart_netWeight,jdbcType=DOUBLE})
+            </if>
+            <if test="myLikeStart_grossImgUrl != null and myLikeStart_grossImgUrl != ''">
+                AND gross_img_url like CONCAT('%', #{myLikeStart_grossImgUrl,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_tareImgUrl != null and myLikeStart_tareImgUrl != ''">
+                AND tare_img_url like CONCAT('%', #{myLikeStart_tareImgUrl,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_goodsName != null and myLikeStart_goodsName != ''">
+                AND goods_name like CONCAT('%', #{myLikeStart_goodsName,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_compName != null and myLikeStart_compName != ''">
+                AND comp_name like CONCAT('%', #{myLikeStart_compName,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_unitName != null and myLikeStart_unitName != ''">
+                AND unit_name like CONCAT('%', #{myLikeStart_unitName,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_deliveryNumb != null and myLikeStart_deliveryNumb != ''">
+                AND delivery_numb like CONCAT('%', #{myLikeStart_deliveryNumb,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_plateNumb != null and myLikeStart_plateNumb != ''">
+                AND plate_numb like CONCAT('%', #{myLikeStart_plateNumb,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_remark != null and myLikeStart_remark != ''">
+                AND remark like CONCAT('%', #{myLikeStart_remark,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_status != null and myLikeStart_status != ''">
+                AND status like CONCAT('%', #{myLikeStart_status,jdbcType=INTEGER})
+            </if>
+            <if test="myLikeStart_createTime != null and myLikeStart_createTime != ''">
+                AND create_time like CONCAT('%', #{myLikeStart_createTime,jdbcType=TIMESTAMP})
+            </if>
+            <if test="myLikeStart_updateTime != null and myLikeStart_updateTime != ''">
+                AND update_time like CONCAT('%', #{myLikeStart_updateTime,jdbcType=TIMESTAMP})
+            </if>
+            <if test="myLikeEnd_id != null and myLikeEnd_id != ''">
+                AND id like CONCAT( #{myLikeEnd_id,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLikeEnd_poundId != null and myLikeEnd_poundId != ''">
+                AND pound_id like CONCAT( #{myLikeEnd_poundId,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLikeEnd_poundName != null and myLikeEnd_poundName != ''">
+                AND pound_name like CONCAT( #{myLikeEnd_poundName,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_grossWeight != null and myLikeEnd_grossWeight != ''">
+                AND gross_weight like CONCAT( #{myLikeEnd_grossWeight,jdbcType=DOUBLE},'%' )
+            </if>
+            <if test="myLikeEnd_tareWeight != null and myLikeEnd_tareWeight != ''">
+                AND tare_weight like CONCAT( #{myLikeEnd_tareWeight,jdbcType=DOUBLE},'%' )
+            </if>
+            <if test="myLikeEnd_netWeight != null and myLikeEnd_netWeight != ''">
+                AND net_weight like CONCAT( #{myLikeEnd_netWeight,jdbcType=DOUBLE},'%' )
+            </if>
+            <if test="myLikeEnd_grossImgUrl != null and myLikeEnd_grossImgUrl != ''">
+                AND gross_img_url like CONCAT( #{myLikeEnd_grossImgUrl,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_tareImgUrl != null and myLikeEnd_tareImgUrl != ''">
+                AND tare_img_url like CONCAT( #{myLikeEnd_tareImgUrl,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_goodsName != null and myLikeEnd_goodsName != ''">
+                AND goods_name like CONCAT( #{myLikeEnd_goodsName,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_compName != null and myLikeEnd_compName != ''">
+                AND comp_name like CONCAT( #{myLikeEnd_compName,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_unitName != null and myLikeEnd_unitName != ''">
+                AND unit_name like CONCAT( #{myLikeEnd_unitName,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_deliveryNumb != null and myLikeEnd_deliveryNumb != ''">
+                AND delivery_numb like CONCAT( #{myLikeEnd_deliveryNumb,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_plateNumb != null and myLikeEnd_plateNumb != ''">
+                AND plate_numb like CONCAT( #{myLikeEnd_plateNumb,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_remark != null and myLikeEnd_remark != ''">
+                AND remark like CONCAT( #{myLikeEnd_remark,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_status != null and myLikeEnd_status != ''">
+                AND status like CONCAT( #{myLikeEnd_status,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLikeEnd_createTime != null and myLikeEnd_createTime != ''">
+                AND create_time like CONCAT( #{myLikeEnd_createTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myLikeEnd_updateTime != null and myLikeEnd_updateTime != ''">
+                AND update_time like CONCAT( #{myLikeEnd_updateTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myIn_id != null and myIn_id != ''">
+                AND id in
+                <foreach item="item" index="index" collection="myIn_id" open="(" separator="," close=")">#{item}
+                </foreach>
+            </if>
+            <if test="myIn_poundId != null and myIn_poundId != ''">
+                AND pound_id in
+                <foreach item="item" index="index" collection="myIn_poundId" open="(" separator="," close=")">#{item}
+                </foreach>
+            </if>
+            <if test="myIn_poundName != null and myIn_poundName != ''">
+                AND pound_name in
+                <foreach item="item" index="index" collection="myIn_poundName" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_grossWeight != null and myIn_grossWeight != ''">
+                AND gross_weight in
+                <foreach item="item" index="index" collection="myIn_grossWeight" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_tareWeight != null and myIn_tareWeight != ''">
+                AND tare_weight in
+                <foreach item="item" index="index" collection="myIn_tareWeight" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_netWeight != null and myIn_netWeight != ''">
+                AND net_weight in
+                <foreach item="item" index="index" collection="myIn_netWeight" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_grossImgUrl != null and myIn_grossImgUrl != ''">
+                AND gross_img_url in
+                <foreach item="item" index="index" collection="myIn_grossImgUrl" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_tareImgUrl != null and myIn_tareImgUrl != ''">
+                AND tare_img_url in
+                <foreach item="item" index="index" collection="myIn_tareImgUrl" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_goodsName != null and myIn_goodsName != ''">
+                AND goods_name in
+                <foreach item="item" index="index" collection="myIn_goodsName" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_compName != null and myIn_compName != ''">
+                AND comp_name in
+                <foreach item="item" index="index" collection="myIn_compName" open="(" separator="," close=")">#{item}
+                </foreach>
+            </if>
+            <if test="myIn_unitName != null and myIn_unitName != ''">
+                AND unit_name in
+                <foreach item="item" index="index" collection="myIn_unitName" open="(" separator="," close=")">#{item}
+                </foreach>
+            </if>
+            <if test="myIn_deliveryNumb != null and myIn_deliveryNumb != ''">
+                AND delivery_numb in
+                <foreach item="item" index="index" collection="myIn_deliveryNumb" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_plateNumb != null and myIn_plateNumb != ''">
+                AND plate_numb in
+                <foreach item="item" index="index" collection="myIn_plateNumb" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_remark != null and myIn_remark != ''">
+                AND remark in
+                <foreach item="item" index="index" collection="myIn_remark" open="(" separator="," close=")">#{item}
+                </foreach>
+            </if>
+            <if test="myIn_status != null and myIn_status != ''">
+                AND status in
+                <foreach item="item" index="index" collection="myIn_status" open="(" separator="," close=")">#{item}
+                </foreach>
+            </if>
+            <if test="myIn_createTime != null and myIn_createTime != ''">
+                AND create_time in
+                <foreach item="item" index="index" collection="myIn_createTime" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_updateTime != null and myIn_updateTime != ''">
+                AND update_time in
+                <foreach item="item" index="index" collection="myIn_updateTime" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </trim>
+    </sql>
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
 </mapper>

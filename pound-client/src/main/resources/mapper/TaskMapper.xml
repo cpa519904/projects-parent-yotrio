@@ -22,6 +22,12 @@
         from task
         where id = #{id,jdbcType=INTEGER}
     </select>
+    <select id="selectListByStatus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from task
+        where status = #{status,jdbcType=INTEGER}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from task
     where id = #{id,jdbcType=INTEGER}
@@ -184,7 +190,7 @@
             <if test="weight != null and weight != ''">
                 AND weight = #{weight,jdbcType=INTEGER}
             </if>
-            <if test="status != null and status != ''">
+            <if test="status != null and status != '' or status==0">
                 AND status = #{status,jdbcType=INTEGER}
             </if>
             <if test="createTime != null and createTime != ''">

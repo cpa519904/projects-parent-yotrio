@@ -5,8 +5,6 @@ import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.pound.model.Task;
 import com.yotrio.pound.service.ITaskService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/task")
 public class TaskController extends BaseController {
-    private Logger logger = LoggerFactory.getLogger(TaskController.class);
 
     @Autowired
     private ITaskService taskService;

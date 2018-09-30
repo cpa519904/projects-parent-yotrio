@@ -73,7 +73,7 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                    <a href="javascript:;" layadmin-event="about"><i class="layui-icon layui-icon-more-vertical"></i></a>
+                    <a href="javascript:;" layadmin-event=""><i class="layui-icon layui-icon-more-vertical"></i></a>
                 </li>
                 <!--<li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect>-->
                     <!--<a href="javascript:;" layadmin-event="more"><i class="layui-icon layui-icon-more-vertical"></i></a>-->
@@ -84,33 +84,33 @@
         <!-- 侧边菜单 -->
         <div class="layui-side layui-side-menu">
             <div class="layui-side-scroll">
-                <div class="layui-logo" lay-href="console.htm">
+                <div class="layui-logo" lay-href="/poundLog/list.htm">
                     <span>地磅系统</span>
                 </div>
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
-                    <li data-name="home" class="layui-nav-item layui-nav-itemed">
-                        <a href="javascript:;" lay-tips="主页" lay-direction="2">
-                            <i class="layui-icon layui-icon-home"></i>
-                            <cite>主页</cite>
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd data-name="console" class="layui-this">
-                                <a lay-href="console.htm">控制台</a>
-                            </dd>
-                        </dl>
-                    </li>
-                    <li data-name="app" class="layui-nav-item">
-                        <a href="javascript:;" lay-tips="过磅记录管理" lay-direction="2">
-                            <i class="layui-icon layui-icon-log"></i>
-                            <cite>任务管理</cite>
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd>
-                                <a lay-href="task/list.htm">任务中心</a>
-                            </dd>
-                        </dl>
-                    </li>
+                    <!--<li data-name="home" class="layui-nav-item layui-nav-itemed">-->
+                        <!--<a href="javascript:;" lay-tips="主页" lay-direction="2">-->
+                            <!--<i class="layui-icon layui-icon-home"></i>-->
+                            <!--<cite>主页</cite>-->
+                        <!--</a>-->
+                        <!--<dl class="layui-nav-child">-->
+                            <!--<dd data-name="console" class="layui-this">-->
+                                <!--<a lay-href="console.htm">控制台</a>-->
+                            <!--</dd>-->
+                        <!--</dl>-->
+                    <!--</li>-->
+                    <!--<li data-name="app" class="layui-nav-item">-->
+                        <!--<a href="javascript:;" lay-tips="任务管理" lay-direction="2">-->
+                            <!--<i class="layui-icon layui-icon-log"></i>-->
+                            <!--<cite>任务管理</cite>-->
+                        <!--</a>-->
+                        <!--<dl class="layui-nav-child">-->
+                            <!--<dd>-->
+                                <!--<a lay-href="task/list.htm">任务中心</a>-->
+                            <!--</dd>-->
+                        <!--</dl>-->
+                    <!--</li>-->
                     <li data-name="app" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="过磅记录管理" lay-direction="2">
                             <i class="layui-icon layui-icon-app"></i>
@@ -158,7 +158,7 @@
             </div>
             <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
                 <ul class="layui-tab-title" id="LAY_app_tabsheader">
-                    <li lay-id="console.htm" lay-attr="console.htm" class="layui-this"><i class="layui-icon layui-icon-home"></i></li>
+                    <li lay-id="/poundLog/list.htm" lay-attr="/poundLog/list.htm" class="layui-this"><i class="layui-icon layui-icon-home"></i></li>
                 </ul>
             </div>
         </div>
@@ -166,7 +166,7 @@
         <!-- 主体内容 -->
         <div class="layui-body" id="LAY_app_body">
             <div class="layadmin-tabsbody-item layui-show">
-                <iframe src="console.htm" frameborder="0" class="layadmin-iframe"></iframe>
+                <iframe src="/poundLog/list.htm" frameborder="0" class="layadmin-iframe"></iframe>
             </div>
         </div>
 

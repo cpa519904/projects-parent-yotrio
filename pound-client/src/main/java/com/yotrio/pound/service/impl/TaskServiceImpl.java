@@ -29,8 +29,9 @@ public class TaskServiceImpl implements ITaskService {
 
     /**
      * 分页获取任务数据
+     *
      * @param dataTablePage 分页条件
-     * @param task 查询条件
+     * @param task          查询条件
      * @return
      */
     @Override
@@ -43,16 +44,18 @@ public class TaskServiceImpl implements ITaskService {
 
     /**
      * 根据id获取对象
+     *
      * @param id 主键id
      * @return
      */
     @Override
     public Task findById(Integer id) {
-       return taskMapper.selectByPrimaryKey(id);
+        return taskMapper.selectByPrimaryKey(id);
     }
 
     /**
      * 更新任务数据
+     *
      * @param task
      * @return
      */

@@ -1,6 +1,7 @@
 package com.yotrio.pound.controller;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.pound.domain.Result;
@@ -13,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Map;
 
 /**
  * 任务控制接口类
@@ -50,6 +53,7 @@ public class TaskController extends BaseController {
     @RequestMapping(value = "/list", method = {RequestMethod.GET})
     @ResponseBody
     public Result list(DataTablePage dataTablePage, Task task) {
+        Map<String, Object> map = BeanUtil.beanToMap(task);
         PageInfo pageInfo = taskService.findAllPaging(dataTablePage, task);
         return ResultUtil.success(pageInfo.getTotal(), pageInfo.getList());
     }

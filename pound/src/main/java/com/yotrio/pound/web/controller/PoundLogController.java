@@ -3,16 +3,17 @@ package com.yotrio.pound.web.controller;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
-import com.yotrio.pound.model.PoundLog;
+import com.yotrio.pound.model.dto.PoundLogDto;
 import com.yotrio.pound.service.IPoundLogService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 过磅记录接口控制类
@@ -25,7 +26,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/poundLog")
 public class PoundLogController extends BaseController {
-    private Logger logger = LoggerFactory.getLogger(PoundLogController.class);
 
     @Autowired
     private IPoundLogService poundLogService;
@@ -44,13 +44,13 @@ public class PoundLogController extends BaseController {
     /**
      * 分页获取过磅记录列表
      * @param dataTablePage 分页条件
-     * @param poundLog 过磅记录查询条件
+     * @param poundLogDto 过磅记录查询条件
      * @return
      */
     @RequestMapping(value = "/list", method = {RequestMethod.GET})
     @ResponseBody
-    public Callback list(DataTablePage dataTablePage, PoundLog poundLog) {
-        PageInfo pageInfo = poundLogService.findAllPaging(dataTablePage, poundLog);
+    public Callback list(DataTablePage dataTablePage, PoundLogDto poundLogDto ) {
+        PageInfo pageInfo = poundLogService.findAllPaging(dataTablePage, poundLogDto);
         return returnSuccess(pageInfo.getTotal(), pageInfo.getList());
     }
 
@@ -76,5 +76,50 @@ public class PoundLogController extends BaseController {
         return "pound/report_form";
     }
 
+    /**
+     * 根据id删除过磅信息
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/delete", method = {RequestMethod.GET})
+    @ResponseBody
+    public Callback delete(Integer id) {
+        if (id == null) {
+            return returnError("请选择您要删除的数据");
+        }
 
+        int result = poundLogService.deleteById(id);
+        if (result >= 1) {
+            return returnSuccess("删除成功");
+        } else {
+            return returnError("删除失败");
+        }
+    }
+
+    /**
+     * 根据ids删除过磅信息
+     *
+     * @param ids [1,2,3]
+     * @return
+     */
+    @RequestMapping(value = "/deleteByIds", method = {RequestMethod.GET})
+    @ResponseBody
+    public Callback deleteByIds(String ids) {
+        if (ids == null || ids.split(",").length == 0) {
+            return returnError("请选择您要删除的数据");
+        }
+        //解析ids
+        List<Integer> idList = new ArrayList<>(100);
+        String[] strs = ids.split(",");
+        for (int i = 0; i < strs.length; i++) {
+            idList.add(Integer.valueOf(strs[i]));
+        }
+        int result = poundLogService.deleteByIds(idList);
+        if (result >= 1) {
+            return returnSuccess("删除成功");
+        } else {
+            return returnError("删除失败");
+        }
+    }
 }

@@ -86,4 +86,22 @@
         <property name="suffix" value=".html"/>
     </bean>
 
+    <!--跨域拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/api/**"/>
+            <bean class="com.yotrio.pound.interceptor.AccessCheckInterceptor">
+                <property name="allowedHosts">
+                    <list>
+                        <value>localhost</value>
+                        <value>127.0.0.1</value>
+                        <value>192.168.1.127</value>
+                        <value>47.98.181.17</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
 </beans>

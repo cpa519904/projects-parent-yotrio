@@ -175,7 +175,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
+                    <fork>true</fork> <!-- 如果没有该配置，devtools不会生效,设置了该参数调试断点无效 -->
                 </configuration>
             </plugin>
         </plugins>

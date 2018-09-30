@@ -1,5 +1,8 @@
 package com.yotrio.pound.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 模块名称：demo com.example.demo.controller
  * 功能说明：<br>
@@ -9,4 +12,6 @@ package com.yotrio.pound.controller;
  **/
 
 public class BaseController {
+    private static Logger logger = LoggerFactory.getLogger(BaseController.class);
+
 }
