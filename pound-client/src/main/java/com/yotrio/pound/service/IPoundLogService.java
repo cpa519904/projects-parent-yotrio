@@ -13,4 +13,8 @@ import com.yotrio.pound.model.PoundLog;
  **/
 public interface IPoundLogService {
     PageInfo findAllPaging(DataTablePage dataTablePage, PoundLog poundLog);
+
+    Integer save(PoundLog poundLog);
+
+    String checkForm(PoundLog poundLog);
 }

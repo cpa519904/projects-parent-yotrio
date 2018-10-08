@@ -6,7 +6,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -21,17 +20,18 @@ public class AccessCheckInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String refer = request.getHeader("Referer");
+//        String refer = request.getHeader("Referer");
+//
+//        if (refer == null) {
+//            return false;
+//        }
+//        URL url = new URL(refer);
+//        String host = url.getHost().toLowerCase();
+//
+//        if (!allowedHosts.contains(host)) {
+//            return false;
+//        }
 
-        if (refer == null) {
-            return false;
-        }
-        URL url = new URL(refer);
-        String host = url.getHost().toLowerCase();
-
-        if (!allowedHosts.contains(host)) {
-            return false;
-        }
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
         return true;

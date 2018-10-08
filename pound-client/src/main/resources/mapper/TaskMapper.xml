@@ -8,13 +8,14 @@
         <result column="other_id" jdbcType="VARCHAR" property="otherId"/>
         <result column="datas" jdbcType="VARCHAR" property="datas"/>
         <result column="weight" jdbcType="INTEGER" property="weight"/>
+        <result column="types" jdbcType="INTEGER" property="types"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="execute_time" jdbcType="TIMESTAMP" property="executeTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, task_name, description, other_id, datas, weight, status, create_time, update_time
+    id, task_name, description, other_id, datas, weight, types, status, create_time, update_time
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -34,11 +35,11 @@
   </delete>
     <insert id="insert" parameterType="com.yotrio.pound.model.Task">
     insert into task (id, task_name, description, 
-      other_id, datas, weight, 
+      other_id, datas, weight, types
       status, create_time, update_time, execute_time
       )
     values (#{id,jdbcType=INTEGER}, #{taskName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
-      #{otherId,jdbcType=VARCHAR}, #{datas,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, 
+      #{otherId,jdbcType=VARCHAR}, #{datas,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{types,jdbcType=INTEGER},
       #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{executeTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -62,6 +63,9 @@
             </if>
             <if test="weight != null">
                 weight,
+            </if>
+            <if test="types != null">
+                types,
             </if>
             <if test="status != null">
                 status,
@@ -95,6 +99,9 @@
             <if test="weight != null">
                 #{weight,jdbcType=INTEGER},
             </if>
+            <if test="types != null">
+                #{types,jdbcType=INTEGER},
+            </if>
             <if test="status != null">
                 #{status,jdbcType=INTEGER},
             </if>
@@ -127,6 +134,9 @@
             <if test="weight != null">
                 weight = #{weight,jdbcType=INTEGER},
             </if>
+            <if test="types != null">
+                types = #{types,jdbcType=INTEGER},
+            </if>
             <if test="status != null">
                 status = #{status,jdbcType=INTEGER},
             </if>
@@ -149,6 +159,7 @@
       other_id = #{otherId,jdbcType=VARCHAR},
       datas = #{datas,jdbcType=VARCHAR},
       weight = #{weight,jdbcType=INTEGER},
+      types = #{types,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -189,6 +200,9 @@
             </if>
             <if test="weight != null and weight != ''">
                 AND weight = #{weight,jdbcType=INTEGER}
+            </if>
+            <if test="types != null and types != ''">
+                AND types = #{types,jdbcType=INTEGER}
             </if>
             <if test="status != null and status != '' or status==0">
                 AND status = #{status,jdbcType=INTEGER}

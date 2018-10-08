@@ -12,7 +12,7 @@ layui.define(['table', 'form'], function (exports) {
             , {field: 'id', width: 50, title: 'ID', sort: true}
             , {field: 'poundName', title: '磅名'}
             , {field: 'model', title: '型号'}
-            , {field: 'unitId', title: '单位id'}
+            // , {field: 'unitId', title: '单位id'}
             , {field: 'createTime', title: '创建时间', sort: true}
             , {field: 'status', title: '状态', templet: '#buttonTpl', align: 'center'}
             // , {field: 'remark', title: '备注'}

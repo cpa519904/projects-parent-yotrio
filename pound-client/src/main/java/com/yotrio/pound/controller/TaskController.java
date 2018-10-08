@@ -4,6 +4,8 @@ package com.yotrio.pound.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.common.utils.NetStateUtil;
+import com.yotrio.pound.constants.TaskConstant;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.model.Task;
 import com.yotrio.pound.service.ITaskService;
@@ -35,10 +37,11 @@ public class TaskController extends BaseController {
 
     /**
      * 任务列表页面
+     *
      * @param model
      * @return
      */
-    @RequestMapping(value = { "/list.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = {"/list.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String list(Model model) {
 
         return "task/task_list";
@@ -46,8 +49,9 @@ public class TaskController extends BaseController {
 
     /**
      * 分页获取任务列表
+     *
      * @param dataTablePage 分页条件
-     * @param task 查询条件
+     * @param task          查询条件
      * @return
      */
     @RequestMapping(value = "/list", method = {RequestMethod.GET})
@@ -59,14 +63,36 @@ public class TaskController extends BaseController {
     }
 
     /**
-     * 控制台
-     * @param model
+     * 执行任务
+     *
+     * @param taskId
      * @return
      */
-    @RequestMapping(value = { "/form.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String form(Model model) {
+    @RequestMapping(value = "/execute", method = {RequestMethod.GET})
+    @ResponseBody
+    public Result execute(Integer taskId) {
+        //判断网络是否异常
+        if (!NetStateUtil.isConnect()) {
+            ResultUtil.error("网络连接失败，请稍后再试...");
+        }
+        if (taskId == null) {
+            ResultUtil.error("请输入任务ID");
+        }
+        Task task = taskService.findById(taskId);
+        if (task == null) {
+            ResultUtil.error("找不到您要执行的任务");
+        }
+        if (task.getStatus() == TaskConstant.STATUS_FINISHED) {
+            ResultUtil.success("已执行");
+        }
 
-        return "task/task_form";
+        //执行任务
+        String result = taskService.executeTask(task);
+        if (result == null) {
+            return ResultUtil.success("执行成功");
+        } else {
+            return ResultUtil.success(result);
+        }
     }
 
 

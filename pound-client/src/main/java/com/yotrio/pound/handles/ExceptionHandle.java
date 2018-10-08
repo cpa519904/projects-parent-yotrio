@@ -3,6 +3,7 @@ package com.yotrio.pound.handles;
 
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.enums.ResultEnum;
+import com.yotrio.pound.exceptions.TaskException;
 import com.yotrio.pound.exceptions.UserException;
 import com.yotrio.pound.utils.ResultUtil;
 import org.slf4j.Logger;
@@ -25,10 +26,22 @@ public class ExceptionHandle {
 
     @ExceptionHandler(value = UserException.class)
     @ResponseBody
-    public Result handle(Exception e) {
+    public Result handleUserExc(Exception e) {
         if (e instanceof UserException) {
             UserException userException = (UserException) e;
             return ResultUtil.error(userException.getCode(), userException.getMessage());
+        } else {
+            logger.error("【系统异常】{}", e);
+            return ResultUtil.error(ResultEnum.UNKNOWN_ERROR.getCode(), ResultEnum.UNKNOWN_ERROR.getMsg());
+        }
+    }
+
+    @ExceptionHandler(value = TaskException.class)
+    @ResponseBody
+    public Result handleTaskExc(Exception e) {
+        if (e instanceof TaskException) {
+            TaskException taskException = (TaskException) e;
+            return ResultUtil.error(taskException.getCode(), taskException.getMessage());
         } else {
             logger.error("【系统异常】{}", e);
             return ResultUtil.error(ResultEnum.UNKNOWN_ERROR.getCode(), ResultEnum.UNKNOWN_ERROR.getMsg());

@@ -17,4 +17,6 @@ public interface ITaskService {
     Task findById(Integer id);
 
     int updateById(Task task);
+
+    String executeTask(Task task);
 }

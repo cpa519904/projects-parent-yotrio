@@ -658,3 +658,275 @@
 13:32:11.742 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED paused. 
 13:32:11.742 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete. 
 13:32:11.745 [Thread-4] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default' 
+16:13:35.954 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.yotrio.pound.PoundClientApplicationTests], using SpringBootContextLoader 
+16:13:35.981 [main] INFO  o.s.t.c.s.AbstractContextLoader - Could not detect default resource locations for test class [com.yotrio.pound.PoundClientApplicationTests]: no resource found for suffixes {-context.xml, Context.groovy}. 
+16:13:35.982 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.yotrio.pound.PoundClientApplicationTests]: PoundClientApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration. 
+16:13:36.133 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.yotrio.pound.PoundClientApplication for test class com.yotrio.pound.PoundClientApplicationTests 
+16:13:36.285 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+16:13:36.305 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@349c1daf, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@dfddc9a, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@4b9df8a, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@5e8ac0e1, org.springframework.test.context.support.DirtiesContextTestExecutionListener@aafcffa, org.springframework.test.context.transaction.TransactionalTestExecutionListener@6955cb39, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@235a0c16, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@2b5f4d54, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@5f7b97da, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@18b0930f, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@6b7906b3, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@3a1dd365] 
+16:13:36.686 [main] INFO  c.y.p.PoundClientApplicationTests - Starting PoundClientApplicationTests on LHVBGXDQTP1D5SY with PID 9560 (started by Administrator in E:\Work\Yotrio\projects-parent\pound-client) 
+16:13:36.686 [main] INFO  c.y.p.PoundClientApplicationTests - The following profiles are active: dev 
+16:13:36.744 [main] INFO  o.s.w.c.s.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@114a85c2: startup date [Mon Oct 08 16:13:36 CST 2018]; root of context hierarchy 
+16:13:37.850 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode! 
+16:13:38.026 [main] INFO  o.s.b.f.s.DefaultListableBeanFactory - Overriding bean definition for bean 'taskRepository' with a different definition: replacing [Generic bean: class [org.mybatis.spring.mapper.MapperFactoryBean]; scope=singleton; abstract=false; lazyInit=false; autowireMode=2; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in file [E:\Work\Yotrio\projects-parent\pound-client\target\classes\com\yotrio\pound\dao\TaskRepository.class]] with [Root bean: class [org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] 
+16:13:38.041 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode! 
+16:13:38.062 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.yotrio.pound.dao.TaskRepository. 
+16:13:38.663 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$741a4aad] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying) 
+16:13:39.908 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'default' 
+16:13:39.938 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...] 
+16:13:40.057 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.2.17.Final} 
+16:13:40.060 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found 
+16:13:40.143 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.1.Final} 
+16:13:40.329 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect 
+16:13:41.506 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default' 
+16:13:41.780 [main] WARN  n.s.e.config.ConfigurationFactory - No configuration found. Configuring ehcache from ehcache-failsafe.xml  found in the classpath: jar:file:/C:/Users/Administrator/.m2/repository/net/sf/ehcache/ehcache-core/2.0.0/ehcache-core-2.0.0.jar!/ehcache-failsafe.xml 
+16:13:43.076 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler] 
+16:13:43.432 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.web.context.support.GenericWebApplicationContext@114a85c2: startup date [Mon Oct 08 16:13:36 CST 2018]; root of context hierarchy 
+16:13:43.489 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning 
+16:13:43.533 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/ || /index.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.IndexController.index(org.springframework.ui.Model) 
+16:13:43.534 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/console.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.IndexController.console(org.springframework.ui.Model) 
+16:13:43.535 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/poundLog/list.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.PoundLogController.list(org.springframework.ui.Model) 
+16:13:43.536 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/poundLog/save],methods=[POST]}" onto public com.yotrio.pound.domain.Result com.yotrio.pound.controller.PoundLogController.save(com.yotrio.pound.model.PoundLog) 
+16:13:43.537 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/task/execute],methods=[GET]}" onto public com.yotrio.pound.domain.Result com.yotrio.pound.controller.TaskController.execute(java.lang.Integer) 
+16:13:43.537 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/task/list.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.TaskController.list(org.springframework.ui.Model) 
+16:13:43.538 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/task/list],methods=[GET]}" onto public com.yotrio.pound.domain.Result com.yotrio.pound.controller.TaskController.list(com.yotrio.common.domain.DataTablePage,com.yotrio.pound.model.Task) 
+16:13:43.541 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest) 
+16:13:43.542 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) 
+16:13:43.576 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler] 
+16:13:43.576 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler] 
+16:13:43.604 [main] INFO  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Detected @ExceptionHandler methods in exceptionHandle 
+16:13:43.751 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index 
+16:13:44.227 [main] INFO  org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor 
+16:13:44.256 [main] INFO  o.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl 
+16:13:44.256 [main] INFO  org.quartz.core.QuartzScheduler - Quartz Scheduler v.2.3.0 created. 
+16:13:44.257 [main] INFO  org.quartz.simpl.RAMJobStore - RAMJobStore initialized. 
+16:13:44.258 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.3.0) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+ 
+16:13:44.259 [main] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance. 
+16:13:44.259 [main] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.3.0 
+16:13:44.259 [main] INFO  org.quartz.core.QuartzScheduler - JobFactory set to: org.springframework.boot.autoconfigure.quartz.AutowireCapableBeanJobFactory@7be6dabb 
+16:13:44.358 [main] INFO  o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147483647 
+16:13:44.359 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
+16:13:44.361 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
+16:13:44.378 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Mon Oct 08 16:13:44 CST 2018 
+16:13:44.382 [main] INFO  c.y.p.PoundClientApplicationTests - Started PoundClientApplicationTests in 8.007 seconds (JVM running for 10.122) 
+16:14:08.200 [Thread-4] INFO  o.s.w.c.s.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@114a85c2: startup date [Mon Oct 08 16:13:36 CST 2018]; root of context hierarchy 
+16:14:08.211 [Thread-4] INFO  o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147483647 
+16:14:08.212 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED paused. 
+16:14:08.212 [Thread-4] INFO  o.s.s.quartz.SchedulerFactoryBean - Shutting down Quartz Scheduler 
+16:14:08.213 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED shutting down. 
+16:14:08.213 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED paused. 
+16:14:08.213 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete. 
+16:14:08.215 [Thread-4] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default' 
+16:14:15.413 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.yotrio.pound.PoundClientApplicationTests], using SpringBootContextLoader 
+16:14:15.492 [main] INFO  o.s.t.c.s.AbstractContextLoader - Could not detect default resource locations for test class [com.yotrio.pound.PoundClientApplicationTests]: no resource found for suffixes {-context.xml, Context.groovy}. 
+16:14:15.493 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.yotrio.pound.PoundClientApplicationTests]: PoundClientApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration. 
+16:14:15.652 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.yotrio.pound.PoundClientApplication for test class com.yotrio.pound.PoundClientApplicationTests 
+16:14:15.843 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+16:14:16.027 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@349c1daf, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@dfddc9a, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@4b9df8a, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@5e8ac0e1, org.springframework.test.context.support.DirtiesContextTestExecutionListener@aafcffa, org.springframework.test.context.transaction.TransactionalTestExecutionListener@6955cb39, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@235a0c16, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@2b5f4d54, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@5f7b97da, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@18b0930f, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@6b7906b3, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@3a1dd365] 
+16:14:16.422 [main] INFO  c.y.p.PoundClientApplicationTests - Starting PoundClientApplicationTests on LHVBGXDQTP1D5SY with PID 8584 (started by Administrator in E:\Work\Yotrio\projects-parent\pound-client) 
+16:14:16.423 [main] INFO  c.y.p.PoundClientApplicationTests - The following profiles are active: dev 
+16:14:16.475 [main] INFO  o.s.w.c.s.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@1601e47: startup date [Mon Oct 08 16:14:16 CST 2018]; root of context hierarchy 
+16:14:17.440 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode! 
+16:14:17.517 [main] INFO  o.s.b.f.s.DefaultListableBeanFactory - Overriding bean definition for bean 'taskRepository' with a different definition: replacing [Generic bean: class [org.mybatis.spring.mapper.MapperFactoryBean]; scope=singleton; abstract=false; lazyInit=false; autowireMode=2; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in file [E:\Work\Yotrio\projects-parent\pound-client\target\classes\com\yotrio\pound\dao\TaskRepository.class]] with [Root bean: class [org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] 
+16:14:17.537 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode! 
+16:14:17.585 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.yotrio.pound.dao.TaskRepository. 
+16:14:18.286 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$edeb3736] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying) 
+16:14:19.851 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'default' 
+16:14:19.882 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...] 
+16:14:19.982 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.2.17.Final} 
+16:14:19.984 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found 
+16:14:20.031 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.1.Final} 
+16:14:20.175 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect 
+16:14:20.863 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default' 
+16:14:21.093 [main] WARN  n.s.e.config.ConfigurationFactory - No configuration found. Configuring ehcache from ehcache-failsafe.xml  found in the classpath: jar:file:/C:/Users/Administrator/.m2/repository/net/sf/ehcache/ehcache-core/2.0.0/ehcache-core-2.0.0.jar!/ehcache-failsafe.xml 
+16:14:22.285 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler] 
+16:14:22.674 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.web.context.support.GenericWebApplicationContext@1601e47: startup date [Mon Oct 08 16:14:16 CST 2018]; root of context hierarchy 
+16:14:22.724 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning 
+16:14:22.767 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/ || /index.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.IndexController.index(org.springframework.ui.Model) 
+16:14:22.768 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/console.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.IndexController.console(org.springframework.ui.Model) 
+16:14:22.769 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/poundLog/list.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.PoundLogController.list(org.springframework.ui.Model) 
+16:14:22.769 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/poundLog/save],methods=[POST]}" onto public com.yotrio.pound.domain.Result com.yotrio.pound.controller.PoundLogController.save(com.yotrio.pound.model.PoundLog) 
+16:14:22.771 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/task/execute],methods=[GET]}" onto public com.yotrio.pound.domain.Result com.yotrio.pound.controller.TaskController.execute(java.lang.Integer) 
+16:14:22.771 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/task/list.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.TaskController.list(org.springframework.ui.Model) 
+16:14:22.771 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/task/list],methods=[GET]}" onto public com.yotrio.pound.domain.Result com.yotrio.pound.controller.TaskController.list(com.yotrio.common.domain.DataTablePage,com.yotrio.pound.model.Task) 
+16:14:22.774 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest) 
+16:14:22.775 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) 
+16:14:22.810 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler] 
+16:14:22.810 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler] 
+16:14:22.829 [main] INFO  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Detected @ExceptionHandler methods in exceptionHandle 
+16:14:22.973 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index 
+16:14:23.447 [main] INFO  org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor 
+16:14:23.466 [main] INFO  o.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl 
+16:14:23.467 [main] INFO  org.quartz.core.QuartzScheduler - Quartz Scheduler v.2.3.0 created. 
+16:14:23.468 [main] INFO  org.quartz.simpl.RAMJobStore - RAMJobStore initialized. 
+16:14:23.469 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.3.0) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+ 
+16:14:23.469 [main] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance. 
+16:14:23.469 [main] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.3.0 
+16:14:23.469 [main] INFO  org.quartz.core.QuartzScheduler - JobFactory set to: org.springframework.boot.autoconfigure.quartz.AutowireCapableBeanJobFactory@b9c9bf5 
+16:14:23.570 [main] INFO  o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147483647 
+16:14:23.570 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
+16:14:23.570 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
+16:14:23.587 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Mon Oct 08 16:14:23 CST 2018 
+16:14:23.588 [main] INFO  c.y.p.PoundClientApplicationTests - Started PoundClientApplicationTests in 7.496 seconds (JVM running for 9.122) 
+16:14:44.826 [Thread-4] INFO  o.s.w.c.s.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@1601e47: startup date [Mon Oct 08 16:14:16 CST 2018]; root of context hierarchy 
+16:14:44.830 [Thread-4] INFO  o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147483647 
+16:14:44.831 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED paused. 
+16:14:44.832 [Thread-4] INFO  o.s.s.quartz.SchedulerFactoryBean - Shutting down Quartz Scheduler 
+16:14:44.833 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED shutting down. 
+16:14:44.833 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED paused. 
+16:14:44.834 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete. 
+16:14:44.838 [Thread-4] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default' 
+16:16:43.588 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.yotrio.pound.PoundClientApplicationTests], using SpringBootContextLoader 
+16:16:43.595 [main] INFO  o.s.t.c.s.AbstractContextLoader - Could not detect default resource locations for test class [com.yotrio.pound.PoundClientApplicationTests]: no resource found for suffixes {-context.xml, Context.groovy}. 
+16:16:43.596 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.yotrio.pound.PoundClientApplicationTests]: PoundClientApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration. 
+16:16:43.720 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.yotrio.pound.PoundClientApplication for test class com.yotrio.pound.PoundClientApplicationTests 
+16:16:44.093 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+16:16:44.112 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@dfddc9a, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@4b9df8a, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@5e8ac0e1, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@aafcffa, org.springframework.test.context.support.DirtiesContextTestExecutionListener@6955cb39, org.springframework.test.context.transaction.TransactionalTestExecutionListener@235a0c16, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@2b5f4d54, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@5f7b97da, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@18b0930f, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@6b7906b3, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@3a1dd365, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@395b56bb] 
+16:16:44.769 [main] INFO  c.y.p.PoundClientApplicationTests - Starting PoundClientApplicationTests on LHVBGXDQTP1D5SY with PID 3148 (started by Administrator in E:\Work\Yotrio\projects-parent\pound-client) 
+16:16:44.770 [main] INFO  c.y.p.PoundClientApplicationTests - The following profiles are active: dev 
+16:16:44.871 [main] INFO  o.s.w.c.s.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@f415a95: startup date [Mon Oct 08 16:16:44 CST 2018]; root of context hierarchy 
+16:16:45.818 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode! 
+16:16:45.895 [main] INFO  o.s.b.f.s.DefaultListableBeanFactory - Overriding bean definition for bean 'taskRepository' with a different definition: replacing [Generic bean: class [org.mybatis.spring.mapper.MapperFactoryBean]; scope=singleton; abstract=false; lazyInit=false; autowireMode=2; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in file [E:\Work\Yotrio\projects-parent\pound-client\target\classes\com\yotrio\pound\dao\TaskRepository.class]] with [Root bean: class [org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] 
+16:16:45.912 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode! 
+16:16:45.932 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.yotrio.pound.dao.TaskRepository. 
+16:16:46.495 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$5ad62347] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying) 
+16:16:47.379 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'default' 
+16:16:47.398 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...] 
+16:16:47.487 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.2.17.Final} 
+16:16:47.490 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found 
+16:16:47.535 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.1.Final} 
+16:16:47.705 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect 
+16:16:48.676 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default' 
+16:16:49.157 [main] WARN  n.s.e.config.ConfigurationFactory - No configuration found. Configuring ehcache from ehcache-failsafe.xml  found in the classpath: jar:file:/C:/Users/Administrator/.m2/repository/net/sf/ehcache/ehcache-core/2.0.0/ehcache-core-2.0.0.jar!/ehcache-failsafe.xml 
+16:16:50.307 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler] 
+16:16:50.636 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.web.context.support.GenericWebApplicationContext@f415a95: startup date [Mon Oct 08 16:16:44 CST 2018]; root of context hierarchy 
+16:16:50.687 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning 
+16:16:50.730 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/ || /index.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.IndexController.index(org.springframework.ui.Model) 
+16:16:50.732 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/console.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.IndexController.console(org.springframework.ui.Model) 
+16:16:50.733 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/poundLog/list.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.PoundLogController.list(org.springframework.ui.Model) 
+16:16:50.733 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/poundLog/save],methods=[POST]}" onto public com.yotrio.pound.domain.Result com.yotrio.pound.controller.PoundLogController.save(com.yotrio.pound.model.PoundLog) 
+16:16:50.735 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/task/execute],methods=[GET]}" onto public com.yotrio.pound.domain.Result com.yotrio.pound.controller.TaskController.execute(java.lang.Integer) 
+16:16:50.736 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/task/list.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.TaskController.list(org.springframework.ui.Model) 
+16:16:50.736 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/task/list],methods=[GET]}" onto public com.yotrio.pound.domain.Result com.yotrio.pound.controller.TaskController.list(com.yotrio.common.domain.DataTablePage,com.yotrio.pound.model.Task) 
+16:16:50.740 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest) 
+16:16:50.741 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) 
+16:16:50.780 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler] 
+16:16:50.780 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler] 
+16:16:50.802 [main] INFO  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Detected @ExceptionHandler methods in exceptionHandle 
+16:16:50.938 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index 
+16:16:51.396 [main] INFO  org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor 
+16:16:51.414 [main] INFO  o.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl 
+16:16:51.414 [main] INFO  org.quartz.core.QuartzScheduler - Quartz Scheduler v.2.3.0 created. 
+16:16:51.415 [main] INFO  org.quartz.simpl.RAMJobStore - RAMJobStore initialized. 
+16:16:51.416 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.3.0) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+ 
+16:16:51.416 [main] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance. 
+16:16:51.416 [main] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.3.0 
+16:16:51.416 [main] INFO  org.quartz.core.QuartzScheduler - JobFactory set to: org.springframework.boot.autoconfigure.quartz.AutowireCapableBeanJobFactory@166d576b 
+16:16:51.520 [main] INFO  o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147483647 
+16:16:51.520 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
+16:16:51.520 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
+16:16:51.535 [main] INFO  c.y.p.PoundClientApplicationTests - Started PoundClientApplicationTests in 7.366 seconds (JVM running for 8.885) 
+16:16:51.543 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Mon Oct 08 16:16:51 CST 2018 
+16:17:20.296 [Thread-4] INFO  o.s.w.c.s.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@f415a95: startup date [Mon Oct 08 16:16:44 CST 2018]; root of context hierarchy 
+16:17:20.300 [Thread-4] INFO  o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147483647 
+16:17:20.301 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED paused. 
+16:17:20.303 [Thread-4] INFO  o.s.s.quartz.SchedulerFactoryBean - Shutting down Quartz Scheduler 
+16:17:20.303 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED shutting down. 
+16:17:20.303 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED paused. 
+16:17:20.304 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete. 
+16:17:20.309 [Thread-4] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default' 
+17:09:28.829 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.yotrio.pound.PoundClientApplicationTests], using SpringBootContextLoader 
+17:09:28.836 [main] INFO  o.s.t.c.s.AbstractContextLoader - Could not detect default resource locations for test class [com.yotrio.pound.PoundClientApplicationTests]: no resource found for suffixes {-context.xml, Context.groovy}. 
+17:09:28.837 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.yotrio.pound.PoundClientApplicationTests]: PoundClientApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration. 
+17:09:29.050 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.yotrio.pound.PoundClientApplication for test class com.yotrio.pound.PoundClientApplicationTests 
+17:09:29.236 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+17:09:29.307 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@349c1daf, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@dfddc9a, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@4b9df8a, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@5e8ac0e1, org.springframework.test.context.support.DirtiesContextTestExecutionListener@aafcffa, org.springframework.test.context.transaction.TransactionalTestExecutionListener@6955cb39, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@235a0c16, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@2b5f4d54, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@5f7b97da, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@18b0930f, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@6b7906b3, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@3a1dd365] 
+17:09:29.914 [main] INFO  c.y.p.PoundClientApplicationTests - Starting PoundClientApplicationTests on LHVBGXDQTP1D5SY with PID 7676 (started by Administrator in E:\Work\Yotrio\projects-parent\pound-client) 
+17:09:29.914 [main] INFO  c.y.p.PoundClientApplicationTests - The following profiles are active: dev 
+17:09:30.006 [main] INFO  o.s.w.c.s.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@1601e47: startup date [Mon Oct 08 17:09:30 CST 2018]; root of context hierarchy 
+17:09:30.851 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode! 
+17:09:30.936 [main] INFO  o.s.b.f.s.DefaultListableBeanFactory - Overriding bean definition for bean 'taskRepository' with a different definition: replacing [Generic bean: class [org.mybatis.spring.mapper.MapperFactoryBean]; scope=singleton; abstract=false; lazyInit=false; autowireMode=2; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in file [E:\Work\Yotrio\projects-parent\pound-client\target\classes\com\yotrio\pound\dao\TaskRepository.class]] with [Root bean: class [org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] 
+17:09:30.954 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode! 
+17:09:30.978 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.yotrio.pound.dao.TaskRepository. 
+17:09:31.591 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$ef02722] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying) 
+17:09:32.562 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'default' 
+17:09:32.585 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...] 
+17:09:32.677 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.2.17.Final} 
+17:09:32.679 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found 
+17:09:32.739 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.1.Final} 
+17:09:32.902 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect 
+17:09:33.645 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default' 
+17:09:33.875 [main] WARN  n.s.e.config.ConfigurationFactory - No configuration found. Configuring ehcache from ehcache-failsafe.xml  found in the classpath: jar:file:/C:/Users/Administrator/.m2/repository/net/sf/ehcache/ehcache-core/2.0.0/ehcache-core-2.0.0.jar!/ehcache-failsafe.xml 
+17:09:35.169 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler] 
+17:09:35.515 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.web.context.support.GenericWebApplicationContext@1601e47: startup date [Mon Oct 08 17:09:30 CST 2018]; root of context hierarchy 
+17:09:35.570 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning 
+17:09:35.614 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/ || /index.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.IndexController.index(org.springframework.ui.Model) 
+17:09:35.616 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/console.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.IndexController.console(org.springframework.ui.Model) 
+17:09:35.616 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/poundLog/list.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.PoundLogController.list(org.springframework.ui.Model) 
+17:09:35.617 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/poundLog/save],methods=[POST]}" onto public com.yotrio.pound.domain.Result com.yotrio.pound.controller.PoundLogController.save(com.yotrio.pound.model.PoundLog) 
+17:09:35.618 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/task/execute],methods=[GET]}" onto public com.yotrio.pound.domain.Result com.yotrio.pound.controller.TaskController.execute(java.lang.Integer) 
+17:09:35.619 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/task/list.htm],methods=[GET || POST]}" onto public java.lang.String com.yotrio.pound.controller.TaskController.list(org.springframework.ui.Model) 
+17:09:35.619 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/task/list],methods=[GET]}" onto public com.yotrio.pound.domain.Result com.yotrio.pound.controller.TaskController.list(com.yotrio.common.domain.DataTablePage,com.yotrio.pound.model.Task) 
+17:09:35.622 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest) 
+17:09:35.624 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) 
+17:09:35.676 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler] 
+17:09:35.677 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler] 
+17:09:35.702 [main] INFO  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Detected @ExceptionHandler methods in exceptionHandle 
+17:09:35.846 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index 
+17:09:36.313 [main] INFO  org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor 
+17:09:36.335 [main] INFO  o.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl 
+17:09:36.335 [main] INFO  org.quartz.core.QuartzScheduler - Quartz Scheduler v.2.3.0 created. 
+17:09:36.336 [main] INFO  org.quartz.simpl.RAMJobStore - RAMJobStore initialized. 
+17:09:36.338 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.3.0) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+ 
+17:09:36.338 [main] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance. 
+17:09:36.338 [main] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.3.0 
+17:09:36.338 [main] INFO  org.quartz.core.QuartzScheduler - JobFactory set to: org.springframework.boot.autoconfigure.quartz.AutowireCapableBeanJobFactory@1a53ac0c 
+17:09:36.461 [main] INFO  o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147483647 
+17:09:36.461 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
+17:09:36.462 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
+17:09:36.476 [main] INFO  c.y.p.PoundClientApplicationTests - Started PoundClientApplicationTests in 7.083 seconds (JVM running for 8.644) 
+17:09:36.482 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Mon Oct 08 17:09:36 CST 2018 
+17:09:46.538 [Thread-4] INFO  o.s.w.c.s.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@1601e47: startup date [Mon Oct 08 17:09:30 CST 2018]; root of context hierarchy 
+17:09:46.543 [Thread-4] INFO  o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147483647 
+17:09:46.544 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED paused. 
+17:09:46.546 [Thread-4] INFO  o.s.s.quartz.SchedulerFactoryBean - Shutting down Quartz Scheduler 
+17:09:46.547 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED shutting down. 
+17:09:46.547 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED paused. 
+17:09:46.548 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete. 
+17:09:46.554 [Thread-4] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default' 

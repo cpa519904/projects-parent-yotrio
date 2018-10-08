@@ -4,7 +4,9 @@ import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.pound.dao.PoundLogMapper;
 import com.yotrio.pound.dao.TaskMapper;
+import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.Task;
 import com.yotrio.pound.service.ITaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class TaskServiceImpl implements ITaskService {
 
     @Autowired
     private TaskMapper taskMapper;
+    @Autowired
+    private PoundLogMapper poundLogMapper;
 
     /**
      * 分页获取任务数据
@@ -35,6 +39,7 @@ public class TaskServiceImpl implements ITaskService {
      * @return
      */
     @Override
+
     public PageInfo findAllPaging(DataTablePage dataTablePage, Task task) {
         PageHelper.startPage(dataTablePage.getPage(), dataTablePage.getLimit());
         List<Task> taskList = taskMapper.selectListByMap(BeanUtil.beanToMap(task));
@@ -62,5 +67,23 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public int updateById(Task task) {
         return taskMapper.updateByPrimaryKeySelective(task);
+    }
+
+    /**
+     * 执行任务
+     *
+     * @param task
+     * @return
+     */
+    @Override
+    public String executeTask(Task task) {
+        //获取过磅记录
+        PoundLog poundLog = poundLogMapper.selectByPrimaryKey(Integer.valueOf(task.getOtherId()));
+        if (poundLog == null) {
+            return "找不到您要执行的任务信息";
+        }
+
+
+        return null;
     }
 }

@@ -3,11 +3,14 @@ package com.yotrio.pound.web.controller.api;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.pound.model.PoundInfo;
 import com.yotrio.pound.model.dto.PoundLogDto;
+import com.yotrio.pound.service.IPoundInfoService;
 import com.yotrio.pound.service.IPoundLogService;
 import com.yotrio.pound.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,6 +29,8 @@ public class ApiController extends BaseController {
 
     @Autowired
     private IPoundLogService poundLogService;
+    @Autowired
+    private IPoundInfoService poundInfoService;
 
     /**
      * 分页获取过磅记录列表
@@ -38,6 +43,21 @@ public class ApiController extends BaseController {
     public Callback list(DataTablePage dataTablePage, PoundLogDto poundLogDto) {
         PageInfo pageInfo = poundLogService.findAllPaging(dataTablePage, poundLogDto);
         return returnSuccess(pageInfo.getTotal(), pageInfo.getList());
+    }
+
+    /**
+     * 根据id获取地磅信息
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/pound/info/{id}", method = {RequestMethod.GET})
+    @ResponseBody
+    public Callback info(@PathVariable(value="id") Integer id) {
+        if (id == null) {
+            return returnError("地磅ID不能为空");
+        }
+        PoundInfo poundInfo = poundInfoService.findById(id);
+        return returnSuccess(poundInfo);
     }
 
 }

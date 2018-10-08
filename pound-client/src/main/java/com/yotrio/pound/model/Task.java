@@ -56,6 +56,13 @@ public class Task implements Serializable {
     private Integer weight;
 
     /**
+     * 类型
+     *
+     * @mbg.generated
+     */
+    private Integer types;
+
+    /**
      * 状态
      *
      * @mbg.generated
@@ -169,6 +176,14 @@ public class Task implements Serializable {
         this.executeTime = executeTime;
     }
 
+    public Integer getTypes() {
+        return types;
+    }
+
+    public void setTypes(Integer types) {
+        this.types = types;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -181,6 +196,7 @@ public class Task implements Serializable {
         sb.append(", otherId=").append(otherId);
         sb.append(", datas=").append(datas);
         sb.append(", weight=").append(weight);
+        sb.append(", type=").append(types);
         sb.append(", status=").append(status);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
@@ -207,6 +223,7 @@ public class Task implements Serializable {
             && (this.getOtherId() == null ? other.getOtherId() == null : this.getOtherId().equals(other.getOtherId()))
             && (this.getDatas() == null ? other.getDatas() == null : this.getDatas().equals(other.getDatas()))
             && (this.getWeight() == null ? other.getWeight() == null : this.getWeight().equals(other.getWeight()))
+            && (this.getTypes() == null ? other.getTypes() == null : this.getTypes().equals(other.getTypes()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
@@ -223,6 +240,7 @@ public class Task implements Serializable {
         result = prime * result + ((getOtherId() == null) ? 0 : getOtherId().hashCode());
         result = prime * result + ((getDatas() == null) ? 0 : getDatas().hashCode());
         result = prime * result + ((getWeight() == null) ? 0 : getWeight().hashCode());
+        result = prime * result + ((getTypes() == null) ? 0 : getTypes().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
