@@ -1,7 +1,14 @@
 package com.yotrio.pound.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.yotrio.common.utils.DingTalkUtil;
 import com.yotrio.pound.service.IDingTalkService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 钉钉服务层接口类
@@ -14,4 +21,46 @@ import org.springframework.stereotype.Service;
 
 @Service("dingTaskService")
 public class DingTalkServiceImpl implements IDingTalkService {
+
+    private static final int SUCCESS_CODE = 0;
+
+    @Override
+    public boolean sendConfirmMessage(String token, Integer poundLogId) {
+        //获取accessToken
+        String accessToken = DingTalkUtil.getAccessToken();
+        //获取用户ids
+        JSONObject json = DingTalkUtil.getAuthScopes(accessToken);
+        JSONObject authOrgScopes = json.getJSONObject("auth_org_scopes");
+        JSONArray authed_user = authOrgScopes.getJSONArray("authed_user");
+        List<String> userIds = new ArrayList<>();
+        for (int i = 0; i < authed_user.size(); i++) {
+            String userId = String.valueOf(authed_user.get(i));
+            if (StringUtils.isNotEmpty(userId)) {
+                userIds.add(userId);
+            }
+        }
+        String userIdList = StringUtils.join(userIds, ",");
+        //编辑消息内容
+        JSONObject msg = new JSONObject();
+        msg.put("msg_type", "action_card");
+        JSONObject actionCard = new JSONObject();
+        actionCard.put("title", "确认过磅信息");
+        StringBuilder builder = new StringBuilder();
+        builder.append("# 审批\n");
+        builder.append("#### 请确认过磅信息是否有误\n");
+        builder.append("> A man who stands for nothing will fall for anything. \n");
+        actionCard.put("markdown", builder.toString());
+        actionCard.put("single_title", "查看详情");
+        actionCard.put("single_url", "http://47.98.181.17:8080/#/confirmOrder");
+        msg.put("action_card", actionCard);
+        //发送消息
+        JSONObject jsonObject = DingTalkUtil.sendWorkMessage(userIdList, null, false, msg);
+        if (jsonObject != null) {
+            int code = jsonObject.getIntValue("code");
+            if (code == SUCCESS_CODE) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

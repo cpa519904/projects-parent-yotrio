@@ -10,4 +10,5 @@ package com.yotrio.pound.service;
 public interface IDingTalkService {
 
 
+    boolean sendConfirmMessage(String token, Integer poundLogId);
 }

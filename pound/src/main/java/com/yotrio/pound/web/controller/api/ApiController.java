@@ -1,28 +1,22 @@
 package com.yotrio.pound.web.controller.api;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
-import com.yotrio.common.utils.DingTalkUtil;
 import com.yotrio.pound.constants.PoundConstant;
 import com.yotrio.pound.model.PoundInfo;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.dto.PoundLogDto;
+import com.yotrio.pound.service.IDingTalkService;
 import com.yotrio.pound.service.IPoundInfoService;
 import com.yotrio.pound.service.IPoundLogService;
 import com.yotrio.pound.web.controller.BaseController;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 外部接口控制类
@@ -40,6 +34,8 @@ public class ApiController extends BaseController {
     private IPoundLogService poundLogService;
     @Autowired
     private IPoundInfoService poundInfoService;
+    @Autowired
+    private IDingTalkService dingTalkService;
 
     /**
      * 分页获取过磅记录列表
@@ -109,37 +105,12 @@ public class ApiController extends BaseController {
         }
 
         //执行钉钉消息推送
-        //获取accessToken
-        String accessToken = DingTalkUtil.getAccessToken();
-        //获取用户id
-        JSONObject json = DingTalkUtil.getAuthScopes(accessToken);
-        JSONObject authOrgScopes = json.getJSONObject("auth_org_scopes");
-        JSONArray authed_user = authOrgScopes.getJSONArray("authed_user");
-        List<String> userIds = new ArrayList<>();
-        for (int i = 0; i < authed_user.size(); i++) {
-            String userId = String.valueOf(authed_user.get(i));
-            if (StringUtils.isNotEmpty(userId)) {
-                userIds.add(userId);
-            }
+        String token = "123";
+        boolean success = dingTalkService.sendConfirmMessage(token, poundLog.getId());
+        if (success) {
+            return returnSuccess("更新成功，消息已推送，请查收！");
         }
-        String userIdList = StringUtils.join(userIds, ",");
-
-        JSONObject msg = new JSONObject();
-        msg.put("msg_type", "action_card");
-        JSONObject actionCard = new JSONObject();
-        actionCard.put("title", "确认过磅信息");
-        StringBuilder builder = new StringBuilder();
-        builder.append("# 审批\n");
-        builder.append("#### 请确认过磅信息是否有误\n");
-        builder.append("> A man who stands for nothing will fall for anything. \n");
-        actionCard.put("markdown", builder.toString());
-        actionCard.put("single_title", "查看详情");
-        actionCard.put("single_url", "http://client.wangyq.site:8010/#/");
-        msg.put("action_card", actionCard);
-
-        JSONObject jsonObject = DingTalkUtil.sendWorkMessage(userIdList, null, false, msg);
-
-        return returnSuccess("更新成功，消息已推送，请查收确认！");
+        return returnSuccess("消息推送失败！");
     }
 
     /**

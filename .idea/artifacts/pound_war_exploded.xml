@@ -83,6 +83,7 @@
           <element id="library" level="project" name="Maven: javax.servlet.jsp:jsp-api:2.1" />
           <element id="library" level="project" name="Maven: javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1" />
           <element id="library" level="project" name="Maven: net.coobird:thumbnailator:0.4.8" />
+          <element id="library" level="project" name="Maven: com.auth0:java-jwt:3.3.0" />
         </element>
       </element>
       <element id="directory" name="META-INF">

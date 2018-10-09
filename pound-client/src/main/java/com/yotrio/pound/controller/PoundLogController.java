@@ -1,6 +1,7 @@
 package com.yotrio.pound.controller;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -98,7 +99,7 @@ public class PoundLogController extends BaseController {
     }
 
     /**
-     * 更新供货单
+     * 更新过磅记录
      *
      * @param poundLog
      * @return
@@ -118,10 +119,19 @@ public class PoundLogController extends BaseController {
         }
 
         Integer result = poundLogService.update(poundLog);
-        if (result >= 1) {
-            return ResultUtil.success("本地更新成功");
-        } else {
+        if (result < 1) {
             return ResultUtil.error("本地更新失败");
         }
+
+        poundLog = poundLogService.findById(poundLog.getId());
+
+        //上传线上服务器
+        String url = sysProperties.getPoundMasterBaseUrl() + ApiUrlConstant.SAVE_POUND_LOG;
+        String response = HttpUtil.post(url, BeanUtil.beanToMap(poundLog));
+        if (response==null||JSONObject.parseObject(response)==null) {
+
+        }
+
+        return ResultUtil.success("本地更新成功");
     }
 }
