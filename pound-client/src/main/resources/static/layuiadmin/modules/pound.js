@@ -23,6 +23,7 @@ layui.define(['table', 'form'], function (exports) {
             , {field: 'grossImgUrl', title: '图1', templet: '#imgTpl1'}
             , {field: 'tareImgUrl', title: '图2', templet: '#imgTpl2'}
             , {field: 'createTime', title: '创建时间', sort: true, minWidth: 150}
+            , {field: 'updateTime', title: '更新时间', sort: true, minWidth: 150}
             , {field: 'remark', title: '备注'}
             // , {field: 'status', title: '状态'}
             // , {field: 'updateTime', title: '更新时间', sort: true}

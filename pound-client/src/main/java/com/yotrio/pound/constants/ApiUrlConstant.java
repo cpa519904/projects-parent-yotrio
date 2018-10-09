@@ -15,4 +15,8 @@ public class ApiUrlConstant {
      */
     public static final String GET_POUND_INFO = "/api/pound/info/";
 
+    /**
+     * 根据id获取地磅信息
+     */
+    public static final String GET_POUND_SAVE = "/api/pound/save/";
 }

@@ -1,7 +1,6 @@
 package com.yotrio.pound;
 
-import cn.hutool.http.HttpUtil;
-import com.yotrio.pound.constants.ApiUrlConstant;
+import com.yotrio.common.utils.DateUtil;
 import com.yotrio.pound.domain.SystemProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,10 +17,8 @@ public class PoundClientApplicationTests {
 
     @Test
     public void contextLoads() {
-        //请求接口获取地磅信息
-        String baseUrl = systemProperties.getPoundMasterBaseUrl();
-        String response = HttpUtil.get(systemProperties.getPoundMasterBaseUrl() + ApiUrlConstant.GET_POUND_INFO + 3);
-        System.out.println(response);
+        int timeToDay = DateUtil.getCurrentTimeToDay();
+
     }
 
 }

@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.pound.model.Task;
 
+import java.util.List;
+
 /**
  * 模块名称：projects-parent com.yotrio.pound.service
  * 功能说明：<br>
@@ -19,4 +21,6 @@ public interface ITaskService {
     int updateById(Task task);
 
     String executeTask(Task task);
+
+    List<Task> findUnFinishTasksLimit(int taskAccount);
 }

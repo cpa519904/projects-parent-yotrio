@@ -2,6 +2,7 @@ package com.yotrio.pound.service;
 
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.dto.PoundLogDto;
 
 import java.util.List;
@@ -19,4 +20,14 @@ public interface IPoundLogService {
     int deleteById(Integer id);
 
     int deleteByIds(List<Integer> idList);
+
+    String checkFormSave(PoundLog poundLog);
+
+    PoundLog findByDeliveryNumb(String deliveryNumb);
+
+    Integer save(PoundLog poundLog);
+
+    PoundLog findById(Integer id);
+
+    Integer update(PoundLog poundLog);
 }

@@ -26,4 +26,5 @@ public interface TaskMapper {
 
     List<Task> selectListByStatus(Integer status);
 
+    List<Task> findUnFinishTasksLimit(int account);
 }

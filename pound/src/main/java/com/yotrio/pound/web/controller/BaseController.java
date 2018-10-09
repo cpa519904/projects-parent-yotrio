@@ -27,7 +27,7 @@ import java.util.Map;
  **/
 
 public class BaseController {
-    private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
+    protected static final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
     protected Callback callback = new Callback();
     protected Map<String, Object> callbackMap = new HashMap<String, Object>();

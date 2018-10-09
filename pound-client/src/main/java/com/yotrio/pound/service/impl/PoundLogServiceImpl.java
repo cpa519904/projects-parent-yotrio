@@ -32,6 +32,7 @@ public class PoundLogServiceImpl implements IPoundLogService {
 
     /**
      * 分页获取过磅数据
+     *
      * @param dataTablePage
      * @param poundLog
      * @return
@@ -46,6 +47,7 @@ public class PoundLogServiceImpl implements IPoundLogService {
 
     /**
      * 新增过磅记录
+     *
      * @param poundLog
      * @return
      */
@@ -56,10 +58,19 @@ public class PoundLogServiceImpl implements IPoundLogService {
         return poundLogMapper.insert(poundLog);
     }
 
+    /**
+     * 添加过磅记录表单校验
+     *
+     * @param poundLog
+     * @return
+     */
     @Override
-    public String checkForm(PoundLog poundLog) {
+    public String checkFormSave(PoundLog poundLog) {
         if (poundLog == null) {
             return "过磅信息为空,请检查设备是否异常";
+        }
+        if (poundLog.getPoundId() == null) {
+            return "地磅ID不能为空";
         }
         if (StringUtils.isEmpty(poundLog.getDeliveryNumb())) {
             return "供货单号不能为空";
@@ -76,7 +87,74 @@ public class PoundLogServiceImpl implements IPoundLogService {
         if (StringUtils.isEmpty(poundLog.getUnitName())) {
             return "收货单位不能为空";
         }
+        if (poundLog.getGrossWeight() == null || poundLog.getGrossWeight() <= 0.0d) {
+            return "过磅重量不能为空";
+        }
+        if (poundLog.getGrossImgUrl() == null) {
+            return "过磅照片不能为空";
+        }
+
         return null;
+    }
+
+    /**
+     * 更新过磅记录表单校验
+     *
+     * @param poundLog
+     * @return
+     */
+    @Override
+    public String checkFormUpdate(PoundLog poundLog) {
+        if (poundLog == null) {
+            return "过磅信息为空,请检查设备是否异常";
+        }
+        if (poundLog.getPoundId() == null) {
+            return "地磅ID不能为空";
+        }
+        if (poundLog.getTareWeight() == null) {
+            return "过磅重量不能为空";
+        }
+        if (poundLog.getTareImgUrl() == null) {
+            return "过磅照片不能为空";
+        }
+        return null;
+    }
+
+    /**
+     * 根据供货单号获取过磅记录
+     *
+     * @param deliveryNumb
+     * @return
+     */
+    @Override
+    public PoundLog findByDeliveryNumb(String deliveryNumb) {
+        return poundLogMapper.findByDeliveryNumb(deliveryNumb);
+    }
+
+    /**
+     * 根据ID获取过磅记录
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public PoundLog findById(Integer id) {
+        return poundLogMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 更新供货单
+     *
+     * @param poundLog
+     * @return
+     */
+    @Override
+    public Integer update(PoundLog poundLog) {
+        double netWeight = poundLog.getGrossWeight() - poundLog.getTareWeight();
+        poundLog.setNetWeight(netWeight);
+        poundLog.setStatus(PoundLogConstant.STATUS_POUND_SECOND);
+        poundLog.setUpdateTime(new Date());
+        return poundLogMapper.updateByPrimaryKeySelective(poundLog);
     }
 
 

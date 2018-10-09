@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.pound.model.dto.PoundLogDto;
+import com.yotrio.pound.service.IPoundInfoService;
 import com.yotrio.pound.service.IPoundLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,8 @@ public class PoundLogController extends BaseController {
 
     @Autowired
     private IPoundLogService poundLogService;
+    @Autowired
+    private IPoundInfoService poundInfoService;
 
     /**
      * 过磅记录列表
@@ -122,4 +125,6 @@ public class PoundLogController extends BaseController {
             return returnError("删除失败");
         }
     }
+
+
 }

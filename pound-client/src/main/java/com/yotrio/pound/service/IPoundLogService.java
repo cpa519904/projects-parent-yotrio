@@ -16,5 +16,13 @@ public interface IPoundLogService {
 
     Integer save(PoundLog poundLog);
 
-    String checkForm(PoundLog poundLog);
+    String checkFormSave(PoundLog poundLog);
+
+    String checkFormUpdate(PoundLog poundLog);
+
+    PoundLog findByDeliveryNumb(String deliveryNumb);
+
+    PoundLog findById(Integer id);
+
+    Integer update(PoundLog poundLog);
 }

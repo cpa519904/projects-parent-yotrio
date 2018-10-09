@@ -59,7 +59,7 @@
 11:05:04.861 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
 11:05:04.862 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
 11:05:04.873 [main] INFO  com.yotrio.pound.dao.TaskMapperTest - Started TaskMapperTest in 7.329 seconds (JVM running for 9.46) 
-11:05:04.883 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Sun Sep 30 11:05:04 CST 2018 
+11:05:04.883 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TaskQuartz - 定时任务 quartz task Sun Sep 30 11:05:04 CST 2018
 11:05:20.618 [Thread-4] INFO  o.s.w.c.s.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@50687efb: startup date [Sun Sep 30 11:04:57 CST 2018]; root of context hierarchy 
 11:05:20.621 [Thread-4] INFO  o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147483647 
 11:05:20.622 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED paused. 
@@ -130,7 +130,7 @@
 13:09:44.416 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
 13:09:44.416 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
 13:09:44.431 [main] INFO  com.yotrio.pound.dao.TaskMapperTest - Started TaskMapperTest in 7.216 seconds (JVM running for 8.95) 
-13:09:44.434 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Sun Sep 30 13:09:44 CST 2018 
+13:09:44.434 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TaskQuartz - 定时任务 quartz task Sun Sep 30 13:09:44 CST 2018
 13:09:47.178 [main] DEBUG com.yotrio.pound.dao.TaskMapper - Cache Hit Ratio [com.yotrio.pound.dao.TaskMapper]: 0.0 
 13:09:47.241 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==>  Preparing: select id, task_name, description, other_id, datas, weight, status, create_time, update_time from task where status = ? order by id desc  
 13:09:47.915 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==> Parameters: 1(Integer) 
@@ -207,7 +207,7 @@
 13:12:22.030 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
 13:12:22.030 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
 13:12:22.041 [main] INFO  com.yotrio.pound.dao.TaskMapperTest - Started TaskMapperTest in 6.976 seconds (JVM running for 8.565) 
-13:12:22.047 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Sun Sep 30 13:12:22 CST 2018 
+13:12:22.047 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TaskQuartz - 定时任务 quartz task Sun Sep 30 13:12:22 CST 2018
 13:12:26.414 [main] DEBUG com.yotrio.pound.dao.TaskMapper - Cache Hit Ratio [com.yotrio.pound.dao.TaskMapper]: 0.0 
 13:12:26.476 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==>  Preparing: select id, task_name, description, other_id, datas, weight, status, create_time, update_time from task order by id desc  
 13:12:26.983 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==> Parameters:  
@@ -280,7 +280,7 @@
 13:12:53.011 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
 13:12:53.011 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
 13:12:53.025 [main] INFO  com.yotrio.pound.dao.TaskMapperTest - Started TaskMapperTest in 7.605 seconds (JVM running for 9.409) 
-13:12:53.027 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Sun Sep 30 13:12:53 CST 2018 
+13:12:53.027 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TaskQuartz - 定时任务 quartz task Sun Sep 30 13:12:53 CST 2018
 13:12:56.149 [main] DEBUG com.yotrio.pound.dao.TaskMapper - Cache Hit Ratio [com.yotrio.pound.dao.TaskMapper]: 0.0 
 13:12:56.213 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==>  Preparing: select id, task_name, description, other_id, datas, weight, status, create_time, update_time from task where weight = ? order by id desc  
 13:12:56.819 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==> Parameters: 1(Integer) 
@@ -353,7 +353,7 @@
 13:21:46.839 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
 13:21:46.839 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
 13:21:46.849 [main] INFO  com.yotrio.pound.dao.TaskMapperTest - Started TaskMapperTest in 6.697 seconds (JVM running for 8.122) 
-13:21:46.855 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Sun Sep 30 13:21:46 CST 2018 
+13:21:46.855 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TaskQuartz - 定时任务 quartz task Sun Sep 30 13:21:46 CST 2018
 13:21:46.999 [main] DEBUG com.yotrio.pound.dao.TaskMapper - Cache Hit Ratio [com.yotrio.pound.dao.TaskMapper]: 0.0 
 13:21:47.010 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==>  Preparing: select id, task_name, description, other_id, datas, weight, status, create_time, update_time from task where status = ? order by id desc  
 13:21:47.145 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==> Parameters: 0(Integer) 
@@ -426,7 +426,7 @@
 13:22:00.461 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
 13:22:00.461 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
 13:22:00.469 [main] INFO  com.yotrio.pound.dao.TaskMapperTest - Started TaskMapperTest in 5.819 seconds (JVM running for 6.972) 
-13:22:00.473 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Sun Sep 30 13:22:00 CST 2018 
+13:22:00.473 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TaskQuartz - 定时任务 quartz task Sun Sep 30 13:22:00 CST 2018
 13:22:00.607 [main] DEBUG com.yotrio.pound.dao.TaskMapper - Cache Hit Ratio [com.yotrio.pound.dao.TaskMapper]: 0.0 
 13:22:00.618 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==>  Preparing: select id, task_name, description, other_id, datas, weight, status, create_time, update_time from task where status = ? order by id desc  
 13:22:00.746 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==> Parameters: 0(Integer) 
@@ -499,7 +499,7 @@
 13:22:12.495 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
 13:22:12.495 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
 13:22:12.509 [main] INFO  com.yotrio.pound.dao.TaskMapperTest - Started TaskMapperTest in 6.313 seconds (JVM running for 7.789) 
-13:22:12.512 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Sun Sep 30 13:22:12 CST 2018 
+13:22:12.512 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TaskQuartz - 定时任务 quartz task Sun Sep 30 13:22:12 CST 2018
 13:22:16.573 [main] DEBUG com.yotrio.pound.dao.TaskMapper - Cache Hit Ratio [com.yotrio.pound.dao.TaskMapper]: 0.0 
 13:22:16.634 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==>  Preparing: select id, task_name, description, other_id, datas, weight, status, create_time, update_time from task where status = ? order by id desc  
 13:22:17.241 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==> Parameters: 0(Integer) 
@@ -572,7 +572,7 @@
 13:31:27.210 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
 13:31:27.210 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
 13:31:27.220 [main] INFO  com.yotrio.pound.dao.TaskMapperTest - Started TaskMapperTest in 7.16 seconds (JVM running for 8.47) 
-13:31:27.223 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Sun Sep 30 13:31:27 CST 2018 
+13:31:27.223 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TaskQuartz - 定时任务 quartz task Sun Sep 30 13:31:27 CST 2018
 13:31:27.350 [main] DEBUG com.yotrio.pound.dao.TaskMapper - Cache Hit Ratio [com.yotrio.pound.dao.TaskMapper]: 0.0 
 13:31:27.359 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==>  Preparing: select id, task_name, description, other_id, datas, weight, status, create_time, update_time from task where status = ? order by id desc  
 13:31:27.470 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==> Parameters: 0(Integer) 
@@ -645,7 +645,7 @@
 13:32:11.411 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
 13:32:11.411 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
 13:32:11.423 [main] INFO  com.yotrio.pound.dao.TaskMapperTest - Started TaskMapperTest in 5.87 seconds (JVM running for 7.133) 
-13:32:11.426 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Sun Sep 30 13:32:11 CST 2018 
+13:32:11.426 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TaskQuartz - 定时任务 quartz task Sun Sep 30 13:32:11 CST 2018
 13:32:11.581 [main] DEBUG com.yotrio.pound.dao.TaskMapper - Cache Hit Ratio [com.yotrio.pound.dao.TaskMapper]: 0.0 
 13:32:11.590 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==>  Preparing: select id, task_name, description, other_id, datas, weight, status, create_time, update_time from task where status = ? order by id desc  
 13:32:11.706 [main] DEBUG c.y.p.d.TaskMapper.selectListByMap - ==> Parameters: 0(Integer) 
@@ -716,7 +716,7 @@
 16:13:44.358 [main] INFO  o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147483647 
 16:13:44.359 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
 16:13:44.361 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
-16:13:44.378 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Mon Oct 08 16:13:44 CST 2018 
+16:13:44.378 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TaskQuartz - 定时任务 quartz task Mon Oct 08 16:13:44 CST 2018
 16:13:44.382 [main] INFO  c.y.p.PoundClientApplicationTests - Started PoundClientApplicationTests in 8.007 seconds (JVM running for 10.122) 
 16:14:08.200 [Thread-4] INFO  o.s.w.c.s.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@114a85c2: startup date [Mon Oct 08 16:13:36 CST 2018]; root of context hierarchy 
 16:14:08.211 [Thread-4] INFO  o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147483647 
@@ -784,7 +784,7 @@
 16:14:23.570 [main] INFO  o.s.c.s.DefaultLifecycleProcessor - Starting beans in phase 2147483647 
 16:14:23.570 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
 16:14:23.570 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
-16:14:23.587 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Mon Oct 08 16:14:23 CST 2018 
+16:14:23.587 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TaskQuartz - 定时任务 quartz task Mon Oct 08 16:14:23 CST 2018
 16:14:23.588 [main] INFO  c.y.p.PoundClientApplicationTests - Started PoundClientApplicationTests in 7.496 seconds (JVM running for 9.122) 
 16:14:44.826 [Thread-4] INFO  o.s.w.c.s.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@1601e47: startup date [Mon Oct 08 16:14:16 CST 2018]; root of context hierarchy 
 16:14:44.830 [Thread-4] INFO  o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147483647 
@@ -853,7 +853,7 @@
 16:16:51.520 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
 16:16:51.520 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
 16:16:51.535 [main] INFO  c.y.p.PoundClientApplicationTests - Started PoundClientApplicationTests in 7.366 seconds (JVM running for 8.885) 
-16:16:51.543 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Mon Oct 08 16:16:51 CST 2018 
+16:16:51.543 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TaskQuartz - 定时任务 quartz task Mon Oct 08 16:16:51 CST 2018
 16:17:20.296 [Thread-4] INFO  o.s.w.c.s.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@f415a95: startup date [Mon Oct 08 16:16:44 CST 2018]; root of context hierarchy 
 16:17:20.300 [Thread-4] INFO  o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147483647 
 16:17:20.301 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED paused. 
@@ -921,7 +921,7 @@
 17:09:36.461 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now 
 17:09:36.462 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started. 
 17:09:36.476 [main] INFO  c.y.p.PoundClientApplicationTests - Started PoundClientApplicationTests in 7.083 seconds (JVM running for 8.644) 
-17:09:36.482 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TestQuartz - 定时任务 quartz task Mon Oct 08 17:09:36 CST 2018 
+17:09:36.482 [quartzScheduler_Worker-1] INFO  com.yotrio.pound.task.TaskQuartz - 定时任务 quartz task Mon Oct 08 17:09:36 CST 2018
 17:09:46.538 [Thread-4] INFO  o.s.w.c.s.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@1601e47: startup date [Mon Oct 08 17:09:30 CST 2018]; root of context hierarchy 
 17:09:46.543 [Thread-4] INFO  o.s.c.s.DefaultLifecycleProcessor - Stopping beans in phase 2147483647 
 17:09:46.544 [Thread-4] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED paused. 

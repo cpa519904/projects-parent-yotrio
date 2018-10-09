@@ -1,8 +1,6 @@
 package com.yotrio.pound;
 
-import com.yotrio.common.utils.SerialPortUtil;
-
-import java.util.ArrayList;
+import com.yotrio.common.utils.DingTalkUtil;
 
 /**
  * 测试类
@@ -15,10 +13,10 @@ import java.util.ArrayList;
 
 public class MainTest {
     public static void main(String[] args) {
-//        String accessToken = DingTalkUtil.getAccessToken();
-//        System.out.println("token:" + accessToken);
+        String accessToken = DingTalkUtil.getAccessToken();
+        System.out.println("token:" + accessToken);
 
-        ArrayList<String> ports = SerialPortUtil.findPort();
-        System.out.println("prots:"+ports.toString());
+//        ArrayList<String> ports = SerialPortUtil.findPort();
+//        System.out.println("prots:"+ports.toString());
     }
 }

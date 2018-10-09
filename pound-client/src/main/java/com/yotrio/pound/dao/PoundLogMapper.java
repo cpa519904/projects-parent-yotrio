@@ -23,4 +23,6 @@ public interface PoundLogMapper {
     int updateByPrimaryKey(PoundLog record);
 
     List<PoundLog> selectListByMap(Map<String, Object> map);
+
+    PoundLog findByDeliveryNumb(String deliveryNumb);
 }

@@ -12,6 +12,6 @@ import org.slf4j.LoggerFactory;
  **/
 
 public class BaseController {
-    private static Logger logger = LoggerFactory.getLogger(BaseController.class);
+    protected static Logger logger = LoggerFactory.getLogger(BaseController.class);
 
 }

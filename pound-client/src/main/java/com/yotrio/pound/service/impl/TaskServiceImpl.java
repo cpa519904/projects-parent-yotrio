@@ -86,4 +86,14 @@ public class TaskServiceImpl implements ITaskService {
 
         return null;
     }
+
+    /**
+     * 限量查找未完成任务
+     * @param taskAccount
+     * @return
+     */
+    @Override
+    public List<Task> findUnFinishTasksLimit(int taskAccount) {
+        return taskMapper.findUnFinishTasksLimit(taskAccount);
+    }
 }
