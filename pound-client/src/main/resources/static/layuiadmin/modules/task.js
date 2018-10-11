@@ -16,7 +16,7 @@ layui.define(['table', 'form'], function (exports) {
             // , {field: 'weight', title: '权重值'}
             , {field: 'createTime', title: '创建时间', sort: true}
             , {field: 'updateTime', title: '执行时间', sort: true}
-            , {field: 'executeTime', title: '定时时间', sort: true}
+            // , {field: 'executeTime', title: '定时时间', sort: true}
             , {field: 'status', title: '状态', templet: '#buttonTpl', align: 'center'}
             , {title: '操作', width: 100, align: 'center', fixed: 'right', toolbar: '#table-task'}
         ]]

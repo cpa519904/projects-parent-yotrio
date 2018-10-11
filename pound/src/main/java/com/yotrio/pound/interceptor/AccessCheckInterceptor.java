@@ -20,20 +20,10 @@ public class AccessCheckInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//        String refer = request.getHeader("Referer");
-//
-//        if (refer == null) {
-//            return false;
-//        }
-//        URL url = new URL(refer);
-//        String host = url.getHost().toLowerCase();
-//
-//        if (!allowedHosts.contains(host)) {
-//            return false;
-//        }
-
+        //支持跨域
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+
         return true;
     }
 

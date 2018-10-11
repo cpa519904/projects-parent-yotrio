@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +20,7 @@ import java.io.IOException;
  * 系统版本：1.0.0
  **/
 
-@Configuration
+//@Configuration
 public class WebConfiguration {
     private static Logger logger = LoggerFactory.getLogger(WebConfiguration.class);
 

@@ -28,8 +28,13 @@ public class TaskConstant {
     /**
      * 更新第二次过磅信息
      */
-
     public static final int TYPE_UPDATE_MSG = 2;
+
+    /**
+     * 默认权重值
+     */
+    public static final int WEIGHT_INIT = 0;
+
 
 
 }

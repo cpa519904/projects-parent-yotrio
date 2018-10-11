@@ -12,6 +12,7 @@ import com.yotrio.pound.service.ITaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -95,5 +96,16 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public List<Task> findUnFinishTasksLimit(int taskAccount) {
         return taskMapper.findUnFinishTasksLimit(taskAccount);
+    }
+
+    /**
+     * 创建任务
+     * @param task
+     * @return
+     */
+    @Override
+    public int save(Task task) {
+        task.setCreateTime(new Date());
+        return taskMapper.insert(task);
     }
 }

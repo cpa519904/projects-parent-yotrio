@@ -75,6 +75,7 @@ public class FileController extends BaseController {
                 return returnError("图片上传失败:" + e.getMessage());
             }
         }
+
         return returnError("上传文件为空");
     }
 }

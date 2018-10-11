@@ -33,4 +33,15 @@ public class IndexController extends BaseController{
 
         return "home/console";
     }
+
+    /**
+     * 控制台
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = { "/webSocket.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String webSocket(Model model) {
+
+        return "socket";
+    }
 }

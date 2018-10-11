@@ -67,16 +67,20 @@ public class ApiController extends BaseController {
         return returnSuccess(poundInfo);
     }
 
-
     /**
-     * 存储过磅记录
+     * 存储过磅记录,推送钉钉消息
      *
      * @param poundLog
      * @return
      */
     @RequestMapping(value = "/poundLog/save", method = {RequestMethod.POST})
     @ResponseBody
-    public Callback savePoundLog(PoundLog poundLog) {
+    public Callback savePoundLog(PoundLog poundLog, String token) {
+        Integer userId = getAppUserId(token);
+        if (userId == null) {
+            return returnError("无效的token");
+        }
+
         //校验表单
         String checkResult = poundLogService.checkFormSave(poundLog);
         if (checkResult != null) {
@@ -100,30 +104,17 @@ public class ApiController extends BaseController {
 
         Integer result = poundLogService.save(poundLog);
         if (result < 1) {
-            logger.info("存储失败|poundId:{}", poundInfo.getId());
-            return returnError("存储失败|poundId:" + poundInfo.getId());
+            logger.info("存储失败|poundLogId:{}", poundLog.getId());
+            return returnError("存储失败|poundLogId:" + poundLog.getId());
         }
 
         //执行钉钉消息推送
-        String token = "123";
-        boolean success = dingTalkService.sendConfirmMessage(token, poundLog.getId());
+        String u9Token = getU9Token("301", "301", "001326601", "123456");
+        boolean success = dingTalkService.sendConfirmMessage(u9Token, poundLog.getId());
         if (success) {
             return returnSuccess("更新成功，消息已推送，请查收！");
         }
-        return returnSuccess("消息推送失败！");
+        return returnError("消息推送失败！");
     }
 
-    /**
-     * 更新供货单
-     *
-     * @param token
-     * @return
-     */
-    @RequestMapping(value = "/poundLog/update", method = {RequestMethod.POST})
-    @ResponseBody
-    public Callback updateDeliveryOrder(String token, Integer deliveryNumb) {
-
-
-        return returnSuccess("更新成功，消息已推送，请查收确认！");
-    }
 }

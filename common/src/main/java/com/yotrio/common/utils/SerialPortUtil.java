@@ -87,7 +87,6 @@ public class SerialPortUtil {
             if (commPort instanceof SerialPort) {
             	
                 SerialPort serialPort = (SerialPort) commPort;
-                
                 try {                    	
                     //设置一下串口的波特率等参数
                     serialPort.setSerialPortParams(baudrate, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);                              
@@ -111,7 +110,7 @@ public class SerialPortUtil {
     
     /**
      * 关闭串口
-     * @param serialport 待关闭的串口对象
+     * @param serialPort 待关闭的串口对象
      */
     public static void closePort(SerialPort serialPort) {
     	if (serialPort != null) {
@@ -203,6 +202,17 @@ public class SerialPortUtil {
         } catch (TooManyListenersException e) {
         	throw new TooManyListeners();
         }
+    }
+
+    /**
+     * 删除监听器
+     * @param port     串口对象
+     * @param listener 串口监听器
+     * @throws TooManyListeners 监听类对象过多
+     */
+    public static void removeListener(SerialPort port, SerialPortEventListener listener)  {
+        //删除串口监听器
+        port.removeEventListener();
     }
 
 }

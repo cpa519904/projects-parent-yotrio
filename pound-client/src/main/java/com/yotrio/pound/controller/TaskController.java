@@ -73,17 +73,17 @@ public class TaskController extends BaseController {
     public Result execute(Integer taskId) {
         //判断网络是否异常
         if (!NetStateUtil.isConnect()) {
-            ResultUtil.error("网络连接失败，请稍后再试...");
+           return ResultUtil.error("网络连接失败，请稍后再试...");
         }
         if (taskId == null) {
-            ResultUtil.error("请输入任务ID");
+            return ResultUtil.error("请输入任务ID");
         }
         Task task = taskService.findById(taskId);
         if (task == null) {
-            ResultUtil.error("找不到您要执行的任务");
+            return ResultUtil.error("找不到您要执行的任务");
         }
         if (task.getStatus() == TaskConstant.STATUS_FINISHED) {
-            ResultUtil.success("已执行");
+            return ResultUtil.success("已执行");
         }
 
         //执行任务

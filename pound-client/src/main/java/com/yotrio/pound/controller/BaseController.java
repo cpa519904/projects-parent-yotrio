@@ -14,4 +14,8 @@ import org.slf4j.LoggerFactory;
 public class BaseController {
     protected static Logger logger = LoggerFactory.getLogger(BaseController.class);
 
+    /**
+     * 成功码
+     */
+    protected static final int SUCCESS_CODE = 0;
 }

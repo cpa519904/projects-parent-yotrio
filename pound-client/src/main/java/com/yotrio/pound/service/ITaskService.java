@@ -23,4 +23,6 @@ public interface ITaskService {
     String executeTask(Task task);
 
     List<Task> findUnFinishTasksLimit(int taskAccount);
+
+    int save(Task task);
 }
