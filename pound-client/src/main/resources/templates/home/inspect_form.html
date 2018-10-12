@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>地磅系统-磅房</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
+</head>
+<body>
+
+<div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin"
+     style="padding: 20px 0 0 0;">
+    <!-- 使用隐藏域用于保存编辑项的ID值，便于提交修改 -->
+    <input type="hidden" id="id" name="id">
+        <!--表单数据-->
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">报检单单号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" lay-verify="required" autocomplete="off"
+                           placeholder="" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">报检单重量</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" lay-verify="required" autocomplete="off"
+                           placeholder="" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">车牌号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" lay-verify="required" autocomplete="off"
+                           placeholder="" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">货品类型：</label>
+                <div class="layui-input-block">
+                    <select name="goodsKind" lay-verify="required" >
+                        <option value=""></option>
+                        <option value="1">铝</option>
+                        <option value="2">铁</option>
+                        <option value="3">藤条</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">过磅单位</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" lay-verify="required" autocomplete="off"
+                           placeholder="" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">是否样品</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="like[write]" title="样品">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">
+            <input type="button" lay-submit lay-filter="LAY-inspection-submit" id="LAY-pound-info-submit" value="确认">
+        </div>
+
+</div>
+
+<script src="../../../layuiadmin/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form'], function () {
+        var $ = layui.$
+            , form = layui.form
+    })
+</script>
+</body>
+</html>

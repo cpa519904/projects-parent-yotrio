@@ -39,9 +39,9 @@ public class IndexController extends BaseController{
      * @param model
      * @return
      */
-    @RequestMapping(value = { "/webSocket.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String webSocket(Model model) {
+    @RequestMapping(value = { "/inspection/form.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String inspection(Model model) {
 
-        return "socket";
+        return "home/inspect_form";
     }
 }

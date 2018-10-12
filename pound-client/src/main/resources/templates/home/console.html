@@ -9,6 +9,7 @@
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="../../layuiadmin/style/pound/console.css" media="all">
 </head>
 <body>
 
@@ -16,6 +17,7 @@
     <div class="layui-row layui-col-space10">
         <div class="layui-col-md12">
             <div class="layui-col-md2">
+                <p class="wait-list-title">未处理磅单列表：</p>
                 <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo"
                     style="margin-right: 10px;width: 160px">
                     <li class="layui-nav-item"><a href="">浙J123</a></li>
@@ -28,77 +30,41 @@
                 <div class="layui-row layui-col-space10">
                     <div class="md12">
                         <div>
-                            <button class="layui-btn">新增过磅单</button>
-                            <button class="layui-btn">添加报检单</button>
-                            <button class="layui-btn layui-btn-danger">确认</button>
+                            <button class="layui-btn">新增</button>
+                            <button class="layui-btn">保存</button>
+                            <button class="layui-btn layui-btn-danger">提交</button>
                             <button class="layui-btn layui-btn-normal">打印</button>
                         </div>
                     </div>
                     <div class="layui-col-md12">
                         <div class="layui-card">
-                            <div class="layui-card-header">送货单
-                                <button class="layui-btn layui-btn-sm" style="margin-left: 50px;">删除</button>
-                            </div>
-                            <div class="layui-card-body">
-                                <!--表单数据-->
-                                <form class="layui-form" action="">
-                                    <div class="layui-form-item">
-                                        <div class="layui-inline">
-                                            <label class="layui-form-label">报检单号</label>
-                                            <div class="layui-input-block">
-                                                <input type="text" name="title" lay-verify="required" autocomplete="off"
-                                                       placeholder="" class="layui-input">
-                                            </div>
-                                        </div>
-                                        <div class="layui-inline">
-                                            <label class="layui-form-label">报检单重量</label>
-                                            <div class="layui-input-block">
-                                                <input type="text" name="title" lay-verify="required" autocomplete="off"
-                                                       placeholder="" class="layui-input">
-                                            </div>
-                                        </div>
-                                        <div class="layui-inline">
-                                            <label class="layui-form-label">车牌号</label>
-                                            <div class="layui-input-block">
-                                                <input type="text" name="title" lay-verify="required" autocomplete="off"
-                                                       placeholder="" class="layui-input">
-                                            </div>
-                                        </div>
-                                        <div class="layui-inline">
-                                            <label class="layui-form-label">货品名称</label>
-                                            <div class="layui-input-block">
-                                                <input type="text" name="title" lay-verify="required" autocomplete="off"
-                                                       placeholder="" class="layui-input">
-                                            </div>
-                                        </div>
-                                        <div class="layui-inline">
-                                            <label class="layui-form-label">货品类型</label>
-                                            <div class="layui-input-block">
-                                                <input type="text" name="title" lay-verify="required" autocomplete="off"
-                                                       placeholder="" class="layui-input">
-                                            </div>
-                                        </div>
-                                        <div class="layui-inline">
-                                            <label class="layui-form-label">过磅单位</label>
-                                            <div class="layui-input-block">
-                                                <input type="text" name="title" lay-verify="required" autocomplete="off"
-                                                       placeholder="" class="layui-input">
-                                            </div>
-                                        </div>
-                                        <div class="layui-inline">
-                                            <!--<label class="layui-form-label">样品</label>-->
-                                            <div class="layui-input-block">
-                                                <input type="checkbox" name="like[write]" title="样品">
-                                            </div>
-                                        </div>
+                            <div class="layui-card-header">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">送货单</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="title" lay-verify="required" autocomplete="off"
+                                               placeholder="" class="layui-input">
                                     </div>
-                                    <!--<div class="layui-form-item">-->
-                                    <!--<div class="layui-input-block">-->
-                                    <!--<button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>-->
-                                    <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
-                                    <!--</div>-->
-                                    <!--</div>-->
-                                </form>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">收货组织</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="title" lay-verify="required" autocomplete="off"
+                                               placeholder="" class="layui-input">
+                                    </div>
+                                </div>
+                                <button class="layui-btn btn-inspection layui-btn-sm" data-type="add" style="margin-left: 50px;">添加</button>
+                                <button class="layui-btn btn-inspection layui-btn-sm layui-btn-danger" data-type="batchdel">删除</button>
+
+                            </div>
+                            <div class="layui-card-body" style="padding: 0">
+                                <table id="LAY-inspection-manage" lay-filter="LAY-inspection-manage" class="layui-hide">
+                                </table>
+
+                                <script type="text/html" id="table-inspection">
+                                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+                                    <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>-->
+                                </script>
                             </div>
                         </div>
                     </div>
@@ -108,25 +74,108 @@
                         <div class="layui-row layui-col-space10">
                             <div class="layui-col-md6">
                                 <div class="layui-card">
-                                    <div class="layui-card-header">总重</div>
-                                    <div class="layui-card-body">
+                                    <div class="layui-form-item" style="margin-bottom: 0">
+                                        <div class="layui-card-body layuiadmin-card-list" style="padding:5px">
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label"
+                                                       style="padding-left:0;width:120px;">实时重量</label>
+                                                <div class="layui-input-inline">
+                                                    <input id="currentWeight" type="number"
+                                                           autocomplete="off" class="layui-input"
+                                                           style="color: #009688;" readonly="readonly">
+                                                </div>
+                                            </div>
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label"
+                                                       style="padding-left: 0 ;width: 120px">磅差</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="email" lay-verify="email"
+                                                           autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label"
+                                                       style="padding-left: 0;width: 120px">净重（不含样品）</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="email" lay-verify="email"
+                                                           autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label" style="padding-left: 0 ;width: 120px">样品净重</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="email" lay-verify="email"
+                                                           autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="layui-inline">
+                                                <label class="layui-form-label" style="padding-left: 0;width: 120px">随车退货重量</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="email" lay-verify="email"
+                                                           autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--<div class="layui-card-header">实时重量</div>-->
+                                        <!--<div class="layui-card-body layuiadmin-card-list">-->
+                                        <!--<p id="currentWeight" class="layuiadmin-big-font" style="color: #009688;">0</p>-->
+                                        <!--<p>-->
+                                        <!--+9,999,666-->
+                                        <!--&lt;!&ndash;<span class="layuiadmin-span-color">88万 <i class="layui-inline layui-icon layui-icon-flag"></i></span>&ndash;&gt;-->
+                                        <!--</p>-->
+                                        <!--</div>-->
+                                        <!--<div class="layui-card-header" style="color: #F74C31;">净重</div>-->
+                                        <!--<div class="layui-card">-->
+                                        <!--<div class="layui-card-body">-->
+                                        <!--<div class="layui-card-body layuiadmin-card-list">-->
+                                        <!--<p class="layuiadmin-big-font" style="color: #F74C31;">6,666</p>-->
+                                        <!--</div>-->
+                                        <!--</div>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md6">
+                                <div class="layui-card">
+                                    <!--<div class="layui-card-header">视频</div>-->
+                                    <div class="layui-card-body" style="padding:5px">
+                                        <img src="../../layuiadmin/layui/images/face/0.gif"
+                                             style="width:200px;height:200px">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-row layui-col-space10">
+                    <div class="layui-col-md12">
+                        <div class="layui-row layui-col-space10">
+                            <div class="layui-col-md6">
+                                <div class="layui-card">
+                                    <div class="layui-card-header">
+                                        <button class="layui-btn layui-btn-sm">称毛重</button>
+                                    </div>
+                                    <div class="layui-card-body" style="padding: 5px">
                                         <div class="layui-col-md8">
                                             <!--表单数据-->
                                             <div class="layui-form-item">
                                                 <div class="layui-inline">
-                                                    <label class="layui-form-label">总重</label>
-                                                    <div class="layui-input-block">
+                                                    <label class="layui-form-label" style="padding-left:0;width: 50px">毛重</label>
+                                                    <div class="layui-input-block" style="margin-left: 75px">
                                                         <input type="text" name="title" lay-verify="required"
                                                                autocomplete="off"
-                                                               placeholder="" class="layui-input" readonly="readonly">
+                                                               placeholder="" class="layui-input"
+                                                               readonly="readonly">
                                                     </div>
                                                 </div>
                                                 <div class="layui-inline">
-                                                    <label class="layui-form-label">时间</label>
-                                                    <div class="layui-input-block">
+                                                    <label class="layui-form-label" style="padding-left:0;width: 50px">时间</label>
+                                                    <div class="layui-input-block" style="margin-left: 75px">
                                                         <input type="text" name="title" lay-verify="required"
                                                                autocomplete="off"
-                                                               placeholder="" class="layui-input" readonly="readonly">
+                                                               placeholder="" class="layui-input"
+                                                               readonly="readonly">
                                                     </div>
                                                 </div>
                                             </div>
@@ -142,26 +191,28 @@
                             <div class="layui-col-md6">
                                 <div class="layui-card">
                                     <div class="layui-card-header">
-                                        <button class="layui-btn layui-btn-sm">获取</button>
+                                        <button class="layui-btn layui-btn-sm">称皮重</button>
                                     </div>
-                                    <div class="layui-card-body">
+                                    <div class="layui-card-body" style="padding: 5px">
                                         <div class="layui-col-md8">
                                             <!--表单数据-->
                                             <div class="layui-form-item">
                                                 <div class="layui-inline">
-                                                    <label class="layui-form-label">皮重</label>
-                                                    <div class="layui-input-block">
+                                                    <label class="layui-form-label" style="padding-left:0;width: 50px">皮重</label>
+                                                    <div class="layui-input-block" style="margin-left: 75px">
                                                         <input type="text" name="title" lay-verify="required"
                                                                autocomplete="off"
-                                                               placeholder="" class="layui-input" readonly="readonly">
+                                                               placeholder="" class="layui-input"
+                                                               readonly="readonly">
                                                     </div>
                                                 </div>
                                                 <div class="layui-inline">
-                                                    <label class="layui-form-label">时间</label>
-                                                    <div class="layui-input-block">
+                                                    <label class="layui-form-label" style="padding-left:0;width: 50px">时间</label>
+                                                    <div class="layui-input-block" style="margin-left: 75px">
                                                         <input type="text" name="title" lay-verify="required"
                                                                autocomplete="off"
-                                                               placeholder="" class="layui-input" readonly="readonly">
+                                                               placeholder="" class="layui-input"
+                                                               readonly="readonly">
                                                     </div>
                                                 </div>
                                             </div>
@@ -178,48 +229,14 @@
                     </div>
                 </div>
                 <div class="layui-row layui-col-space10">
-
                     <div class="layui-col-md12">
                         <div class="layui-row layui-col-space10">
-                            <div class="layui-col-md3">
+                            <div class="layui-col-md12">
                                 <div class="layui-card">
-                                    <div class="layui-card-header">实时重量</div>
-                                    <div class="layui-card-body layuiadmin-card-list">
-                                        <p id="currentWeight" class="layuiadmin-big-font" style="color: #009688;">0</p>
-                                        <p>
-                                            +9,999,666
-                                            <!--<span class="layuiadmin-span-color">88万 <i class="layui-inline layui-icon layui-icon-flag"></i></span>-->
-                                        </p>
-                                    </div>
-                                    <div class="layui-card-header" style="color: #F74C31;">净重</div>
-                                    <div class="layui-card">
-                                        <div class="layui-card-body">
-                                            <div class="layui-card-body layuiadmin-card-list">
-                                                <p class="layuiadmin-big-font" style="color: #F74C31;">6,666</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="layui-col-md3">
-                                <div class="layui-card">
-                                    <div class="layui-card-header">视频</div>
-                                    <div class="layui-card-body">
-                                        <img src="../../layuiadmin/layui/images/face/0.gif"
-                                             style="width:220px;height:220px">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="layui-col-md3">
-                                <div class="page-header" id="tou">
-                                    webSocket多终端聊天测试
-                                </div>
-                                <div class="well" id="msg"></div>
-                                <div class="col-lg">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="发送信息..." id="message">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-default" type="button" id="send">发送</button>
+                                    <div class="layui-card-header">备注</div>
+                                    <div class="layui-card-body layui-row layui-col-space10">
+                                        <div class="layui-col-md12">
+                                            <textarea name="" placeholder="请输入" class="layui-textarea" style="min-height: 60px"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -228,6 +245,7 @@
                     </div>
                 </div>
             </div>
+
 
         </div>
 

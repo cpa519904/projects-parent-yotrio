@@ -1,0 +1,11 @@
+/**
+控制台样式
+ */
+.wait-list-title {
+    width: 160px;
+    height: 42px;
+    line-height: 42px;
+    text-align: center;
+    background-color: #20222A !important;
+    color: rgba(255,255,255,.8)
+}
