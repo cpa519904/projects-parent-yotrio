@@ -20,26 +20,40 @@
             <div class="layui-inline">
                 <label class="layui-form-label">报检单单号</label>
                 <div class="layui-input-block">
-                    <input type="text" name="title" lay-verify="required" autocomplete="off"
+                    <input type="text" name="inspNo" lay-verify="required" autocomplete="off"
                            placeholder="" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">报检单重量</label>
                 <div class="layui-input-block">
-                    <input type="text" name="title" lay-verify="required" autocomplete="off"
+                    <input type="text" name="inspWeight" lay-verify="required" autocomplete="off"
+                           placeholder="" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">供货商名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="compName" lay-verify="required" autocomplete="off"
                            placeholder="" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">车牌号</label>
                 <div class="layui-input-block">
-                    <input type="text" name="title" lay-verify="required" autocomplete="off"
+                    <input type="text" name="plateNo" lay-verify="required" autocomplete="off"
                            placeholder="" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">货品类型：</label>
+                <label class="layui-form-label">退货重量</label>
+                <div class="layui-input-block">
+                    <input type="text" name="returnWeight"  autocomplete="off" value="0"
+                           placeholder="选填" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">货品类型</label>
                 <div class="layui-input-block">
                     <select name="goodsKind" lay-verify="required" >
                         <option value=""></option>
@@ -50,21 +64,14 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">过磅单位</label>
-                <div class="layui-input-block">
-                    <input type="text" name="title" lay-verify="required" autocomplete="off"
-                           placeholder="" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
                 <label class="layui-form-label">是否样品</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="like[write]" title="样品">
+                    <input id="isSample" type="checkbox" name="types" title="样品">
                 </div>
             </div>
         </div>
         <div class="layui-form-item layui-hide">
-            <input type="button" lay-submit lay-filter="LAY-inspection-submit" id="LAY-pound-info-submit" value="确认">
+            <input type="button" lay-submit lay-filter="LAY-inspection-submit" id="LAY-inspection-submit" value="确认">
         </div>
 
 </div>

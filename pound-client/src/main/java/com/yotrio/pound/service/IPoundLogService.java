@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.pound.model.PoundLog;
 
+import java.util.List;
+
 /**
  * 模块名称：projects-parent com.yotrio.pound.service
  * 功能说明：<br>
@@ -20,9 +22,12 @@ public interface IPoundLogService {
 
     String checkFormUpdate(PoundLog poundLog);
 
-    PoundLog findByDeliveryNumb(String deliveryNumb);
-
     PoundLog findById(Integer id);
 
     Integer update(PoundLog poundLog);
+
+    PoundLog findByPoundLogNo(String plNo);
+
+    List<PoundLog> listUnFinished();
+
 }

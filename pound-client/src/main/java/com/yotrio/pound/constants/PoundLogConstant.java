@@ -25,4 +25,18 @@ public class PoundLogConstant {
      */
     public static final int STATUS_POUND_SECOND = 2;
 
+    /**
+     * 第儿次过磅信息
+     */
+    public static final int STATUS_POUND_FINISH = 10;
+
+    /**
+     * 类型：0 进货
+     */
+    public static final int TYPES_IN = 0;
+
+    /**
+     * 类型：1 退货
+     */
+    public static final int TYPES_OUT = 0;
 }

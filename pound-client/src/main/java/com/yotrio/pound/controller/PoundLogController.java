@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 /**
  * 任务控制接口类
  * 模块名称：study-boot com.wangyq.controller
@@ -55,6 +57,18 @@ public class PoundLogController extends BaseController {
         Integer poundId = sysProperties.getPoundClientId();
         model.addAttribute("poundId", poundId);
         return "pound/pound_log_list";
+    }
+
+    /**
+     * 获取未处理过磅记录列表
+     *
+     * @return
+     */
+    @RequestMapping(value = "/listUnFinished", method = {RequestMethod.GET})
+    @ResponseBody
+    public Result listUnFinished() {
+        List<PoundLog> poundLogs = poundLogService.listUnFinished();
+        return ResultUtil.success(poundLogs);
     }
 
     /**
@@ -91,10 +105,10 @@ public class PoundLogController extends BaseController {
         }
 
         //过磅记录是否已生成
-        PoundLog logInDB = poundLogService.findByDeliveryNumb(poundLog.getDeliveryNumb());
-        if (logInDB != null) {
-            return ResultUtil.error("过磅单已生成，请勿重复扫码");
-        }
+//        PoundLog logInDB = poundLogService.findByDeliveryNumb(poundLog.getDeliveryNumb());
+//        if (logInDB != null) {
+//            return ResultUtil.error("过磅单已生成，请勿重复扫码");
+//        }
 
         Integer result = poundLogService.save(poundLog);
         if (result >= 1) {
@@ -123,7 +137,7 @@ public class PoundLogController extends BaseController {
         if (logInDB == null) {
             return ResultUtil.error("找不到您要更新的过磅记录");
         }
-        BeansUtil.copyPropertiesIgnoreNull(poundLog,logInDB);
+        BeansUtil.copyPropertiesIgnoreNull(poundLog, logInDB);
 
         Integer result = poundLogService.update(logInDB);
         if (result < 1) {

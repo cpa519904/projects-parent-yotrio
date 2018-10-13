@@ -18,19 +18,18 @@
         <div class="layui-col-md12">
             <div class="layui-col-md2">
                 <p class="wait-list-title">未处理磅单列表：</p>
-                <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo"
+                <ul id="unFinishList" class="layui-nav layui-nav-tree layui-inline" lay-filter="demo"
                     style="margin-right: 10px;width: 160px">
-                    <li class="layui-nav-item"><a href="">浙J123</a></li>
-                    <li class="layui-nav-item"><a href="">浙J456</a></li>
-                    <li class="layui-nav-item"><a href="">浙J236</a></li>
-                    <li class="layui-nav-item"><a href="">浙J365</a></li>
+                    <!--<li class="layui-nav-item"><a href="">浙J123</a></li>-->
+                    <!--<li class="layui-nav-item"><a href="">浙J456</a></li>-->
+                    <!--<li class="layui-nav-item"><a href="">浙J236</a></li>-->
                 </ul>
             </div>
             <div class="layui-col-md10">
                 <div class="layui-row layui-col-space10">
                     <div class="md12">
                         <div>
-                            <button class="layui-btn">新增</button>
+                            <button class="layui-btn btn-inspection" data-type="newPoundLog">新增</button>
                             <button class="layui-btn">保存</button>
                             <button class="layui-btn layui-btn-danger">提交</button>
                             <button class="layui-btn layui-btn-normal">打印</button>
@@ -40,29 +39,35 @@
                         <div class="layui-card">
                             <div class="layui-card-header">
                                 <div class="layui-inline">
-                                    <label class="layui-form-label">送货单</label>
+                                    <label class="layui-form-label">过磅单单号</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="title" lay-verify="required" autocomplete="off"
-                                               placeholder="" class="layui-input">
+                                        <input id="poundLogNo" type="text" name="poundLogNo" lay-verify="required"
+                                               autocomplete="off"
+                                               placeholder="" class="layui-input" readonly="readonly">
                                     </div>
                                 </div>
                                 <div class="layui-inline">
                                     <label class="layui-form-label">收货组织</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="title" lay-verify="required" autocomplete="off"
-                                               placeholder="" class="layui-input">
+                                        <input id="unitName" type="text" name="unitName" lay-verify="required"
+                                               autocomplete="off"
+                                               placeholder="请输入" class="layui-input">
                                     </div>
                                 </div>
-                                <button class="layui-btn btn-inspection layui-btn-sm" data-type="add" style="margin-left: 50px;">添加</button>
-                                <button class="layui-btn btn-inspection layui-btn-sm layui-btn-danger" data-type="batchdel">删除</button>
+                                <button class="layui-btn btn-inspection layui-btn-sm" data-type="add"
+                                        style="margin-left: 50px;">添加
+                                </button>
+                                <button class="layui-btn btn-inspection layui-btn-sm layui-btn-danger"
+                                        data-type="batchdel">删除
+                                </button>
 
                             </div>
                             <div class="layui-card-body" style="padding: 0">
                                 <table id="LAY-inspection-manage" lay-filter="LAY-inspection-manage" class="layui-hide">
                                 </table>
-
                                 <script type="text/html" id="table-inspection">
-                                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+                                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i
+                                            class="layui-icon layui-icon-edit"></i>编辑</a>
                                     <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>-->
                                 </script>
                             </div>
@@ -90,7 +95,7 @@
                                                        style="padding-left: 0 ;width: 120px">磅差</label>
                                                 <div class="layui-input-inline">
                                                     <input type="text" name="email" lay-verify="email"
-                                                           autocomplete="off" class="layui-input">
+                                                           placeholder="0" autocomplete="off" class="layui-input" readonly="readonly">
                                                 </div>
                                             </div>
                                             <div class="layui-inline">
@@ -98,21 +103,21 @@
                                                        style="padding-left: 0;width: 120px">净重（不含样品）</label>
                                                 <div class="layui-input-inline">
                                                     <input type="text" name="email" lay-verify="email"
-                                                           autocomplete="off" class="layui-input">
+                                                           placeholder="0"  autocomplete="off" class="layui-input" readonly="readonly">
                                                 </div>
                                             </div>
                                             <div class="layui-inline">
                                                 <label class="layui-form-label" style="padding-left: 0 ;width: 120px">样品净重</label>
                                                 <div class="layui-input-inline">
                                                     <input type="text" name="email" lay-verify="email"
-                                                           autocomplete="off" class="layui-input">
+                                                           placeholder="0" autocomplete="off" class="layui-input" readonly="readonly">
                                                 </div>
                                             </div>
                                             <div class="layui-inline">
                                                 <label class="layui-form-label" style="padding-left: 0;width: 120px">随车退货重量</label>
                                                 <div class="layui-input-inline">
-                                                    <input type="text" name="email" lay-verify="email"
-                                                           autocomplete="off" class="layui-input">
+                                                    <input type="text" name="returnWeightTotal" lay-verify="text"
+                                                           placeholder="0" autocomplete="off" class="layui-input" readonly="readonly">
                                                 </div>
                                             </div>
                                         </div>
@@ -236,7 +241,8 @@
                                     <div class="layui-card-header">备注</div>
                                     <div class="layui-card-body layui-row layui-col-space10">
                                         <div class="layui-col-md12">
-                                            <textarea name="" placeholder="请输入" class="layui-textarea" style="min-height: 60px"></textarea>
+                                            <textarea name="" placeholder="请输入" class="layui-textarea"
+                                                      style="min-height: 60px"></textarea>
                                         </div>
                                     </div>
                                 </div>

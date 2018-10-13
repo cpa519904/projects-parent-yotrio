@@ -137,7 +137,7 @@
                                 cache: false,
                                 dataType: 'json',
                                 success: function (result) {
-                                    if (result.code == 1) {
+                                    if (result.code == 0) {
                                         table.reload('LAY-task-submit'); //数据刷新
                                         layer.close(index); //关闭弹层
                                     }else {

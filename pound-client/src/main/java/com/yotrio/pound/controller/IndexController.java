@@ -1,5 +1,7 @@
 package com.yotrio.pound.controller;
 
+import com.yotrio.pound.service.IPoundLogService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/")
 public class IndexController extends BaseController{
 
+    @Autowired
+    private IPoundLogService poundLogService;
+
     @RequestMapping(value = {"/", "/index.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String index(Model model) {
 
@@ -29,19 +34,15 @@ public class IndexController extends BaseController{
      * @return
      */
     @RequestMapping(value = { "/console.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String console(Model model) {
+    public String console(Model model,String plNo) {
+        //未处理过磅记录列表
+//        List<PoundLog> poundLogs = poundLogService.listUnFinished();
+        //报检单列表及过磅单数据
 
+//        model.addAttribute("poundLogs", poundLogs);
+        model.addAttribute("plNo", plNo);
         return "home/console";
     }
 
-    /**
-     * 控制台
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = { "/inspection/form.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String inspection(Model model) {
 
-        return "home/inspect_form";
-    }
 }

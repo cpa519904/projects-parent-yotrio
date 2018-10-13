@@ -168,7 +168,7 @@ public class PoundWebSocket {
      * @throws IOException
      */
     public void sendMessage(String message) throws IOException {
-        logger.info("session:id=" + session.getId());
+//        logger.info("session:id=" + session.getId());
         this.session.getBasicRemote().sendText(message);
     }
 

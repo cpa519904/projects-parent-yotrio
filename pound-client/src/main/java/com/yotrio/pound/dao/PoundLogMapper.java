@@ -24,5 +24,8 @@ public interface PoundLogMapper {
 
     List<PoundLog> selectListByMap(Map<String, Object> map);
 
-    PoundLog findByDeliveryNumb(String deliveryNumb);
+    PoundLog findByPoundLogNo(String plNo);
+
+    List<PoundLog> listUnFinished(Integer status);
+
 }
