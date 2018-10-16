@@ -128,9 +128,6 @@ public class PoundLogServiceImpl implements IPoundLogService {
      */
     @Override
     public Integer update(PoundLog poundLog) {
-        double netWeight = poundLog.getGrossWeight() - poundLog.getTareWeight();
-        poundLog.setNetWeight(netWeight);
-        poundLog.setStatus(PoundLogConstant.STATUS_POUND_SECOND);
         poundLog.setUpdateTime(new Date());
         return poundLogMapper.updateByPrimaryKeySelective(poundLog);
     }

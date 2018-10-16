@@ -21,12 +21,12 @@ public class PoundLogConstant {
     public static final int STATUS_POUND_FIRST = 1;
 
     /**
-     * 第儿次过磅信息
+     * 第二次过磅信息
      */
     public static final int STATUS_POUND_SECOND = 2;
 
     /**
-     * 第儿次过磅信息
+     * 完成过磅已保存
      */
     public static final int STATUS_POUND_FINISH = 10;
 
@@ -38,5 +38,5 @@ public class PoundLogConstant {
     /**
      * 类型：1 退货
      */
-    public static final int TYPES_OUT = 0;
+    public static final int TYPES_OUT = 1;
 }

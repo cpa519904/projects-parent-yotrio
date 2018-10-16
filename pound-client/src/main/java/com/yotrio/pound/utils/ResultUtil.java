@@ -37,6 +37,20 @@ public class ResultUtil {
     }
 
     /**
+     * 成功
+     *
+     * @param msg 返回信息
+     * @return
+     */
+    public static Result success(String msg) {
+        Result result = new Result();
+        result.setCode(CODE_SUCCESS);
+        result.setMsg(msg);
+        result.setData(null);
+        return result;
+    }
+
+    /**
      * 成功（分页）
      *
      * @param count data中数据条数

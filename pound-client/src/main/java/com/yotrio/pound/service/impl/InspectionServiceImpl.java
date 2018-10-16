@@ -6,7 +6,6 @@ import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.pound.constants.InspectionConstant;
 import com.yotrio.pound.dao.InspectionMapper;
-import com.yotrio.pound.enums.GoodsKindEnum;
 import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.service.IInspectionService;
 import org.apache.commons.lang.StringUtils;
@@ -32,13 +31,13 @@ public class InspectionServiceImpl implements IInspectionService {
     private InspectionMapper inspectionMapper;
 
     /**
-     * 新增过磅记录
+     * 新增报检单
      *
      * @param inspection
      * @return
      */
     @Override
-    public Integer save(Inspection inspection) {
+    public int save(Inspection inspection) {
         if (inspection.getTypes() == null) {
             //默认为非样品
             inspection.setTypes(InspectionConstant.TYPE_INIT);
@@ -46,6 +45,43 @@ public class InspectionServiceImpl implements IInspectionService {
         inspection.setCreateTime(new Date());
         inspection.setStatus(InspectionConstant.STATUS_INIT);
         return inspectionMapper.insert(inspection);
+    }
+
+    /**
+     * 修改报检单
+     *
+     * @param inspection
+     * @return
+     */
+    @Override
+    public int update(Inspection inspection) {
+        if (inspection.getTypes() == null) {
+            //默认为非样品
+            inspection.setTypes(InspectionConstant.TYPE_INIT);
+        }
+        inspection.setUpdateTime(new Date());
+        inspection.setStatus(InspectionConstant.STATUS_INIT);
+        return inspectionMapper.updateByPrimaryKeySelective(inspection);
+    }
+
+    /**
+     * 根据id删除
+     * @param idList
+     * @return
+     */
+    @Override
+    public int deleteByIds(List<Integer> idList) {
+        return inspectionMapper.deleteByIds(idList);
+    }
+
+    /**
+     * 根据过磅单号获取过磅单列表
+     * @param poundLogNo
+     * @return
+     */
+    @Override
+    public List<Inspection> findListByPlNo(String poundLogNo) {
+        return inspectionMapper.findListByPlNo(poundLogNo);
     }
 
     /**
@@ -76,7 +112,7 @@ public class InspectionServiceImpl implements IInspectionService {
      * 分页获取任务数据
      *
      * @param dataTablePage 分页条件
-     * @param inspection          查询条件
+     * @param inspection    查询条件
      * @return
      */
     @Override
@@ -84,18 +120,9 @@ public class InspectionServiceImpl implements IInspectionService {
     public PageInfo findAllPaging(DataTablePage dataTablePage, Inspection inspection) {
         PageHelper.startPage(dataTablePage.getPage(), dataTablePage.getLimit());
         List<Inspection> inspectionList = inspectionMapper.selectListByMap(BeanUtil.beanToMap(inspection));
-        for (Inspection item : inspectionList) {
-            //获取货物种类名称
-            GoodsKindEnum kindEnum = GoodsKindEnum.valueOf("KIND_" + item.getGoodsKind());
-            item.setGoodsKindName(kindEnum.getKindName());
-            //是否样品
-            if (item.getTypes() == InspectionConstant.TYPE_INIT) {
-                item.setSample("否");
-            } else {
-                item.setSample("是");
-            }
-        }
         PageInfo pageInfo = new PageInfo(inspectionList);
         return pageInfo;
     }
+
+
 }

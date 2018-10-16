@@ -104,7 +104,6 @@ layui.define(['table', 'form'], function (exports) {
                 , success: function (layero, index) {
                     var body = layui.layer.getChildFrame('body', index);
                     // 取到弹出层里的元素，并把编辑的内容放进去
-
                     body.find("#id").val(obj.data.id);  //将选中的数据的id传到编辑页面的隐藏域，便于根据ID修改数据
                     body.find("#poundName").val(obj.data.poundName);
                     body.find("#model").val(obj.data.model);
@@ -116,12 +115,6 @@ layui.define(['table', 'form'], function (exports) {
                     }
                     // 记得重新渲染表单
                     form.render();
-
-                    setTimeout(function () {
-                        layui.layer.tips('点击此处返回地磅列表', '.layui-layer-setwin .layui-layer-close', {
-                            tips: 3
-                        });
-                    }, 500);
                 }
             })
         }

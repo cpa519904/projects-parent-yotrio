@@ -75,7 +75,7 @@ public class PoundWebSocket {
                                 byte[] bytes = SerialPortUtil.readFromPort(serialPort);
 //                                System.out.println("收到的数据：" + new String(bytes, "GB2312"));
 
-                                sendMessage(new String(bytes, "GB2312")+ new Date().getSeconds());
+                                sendMessage(new String(bytes, "GB2312") + new Date().getSeconds() * 100);
                             } catch (ReadDataFromSerialPortFailure readDataFromSerialPortFailure) {
                                 logger.error(readDataFromSerialPortFailure.toString());
                             } catch (SerialPortInputStreamCloseFailure serialPortInputStreamCloseFailure) {

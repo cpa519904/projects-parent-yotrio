@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.pound.model.Inspection;
 
+import java.util.List;
+
 /**
  * 模块名称：projects-parent com.yotrio.pound.service
  * 功能说明：<br>
@@ -13,9 +15,15 @@ import com.yotrio.pound.model.Inspection;
  **/
 public interface IInspectionService {
 
-    Integer save(Inspection inspection);
+    int save(Inspection inspection);
 
     String checkFormSave(Inspection inspection);
 
     PageInfo findAllPaging(DataTablePage dataTablePage, Inspection inspection);
+
+    int update(Inspection inspection);
+
+    int deleteByIds(List<Integer> idList);
+
+    List<Inspection> findListByPlNo(String poundLogNo);
 }

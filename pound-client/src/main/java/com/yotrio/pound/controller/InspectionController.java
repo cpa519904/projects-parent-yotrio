@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 报检单控制接口类
@@ -71,7 +73,7 @@ public class InspectionController extends BaseController {
             return ResultUtil.error("车牌号码不能为空");
         }
 
-        //查询是否已生产过磅记录，未生成的先生成过磅记录
+        //查询是否已生成过磅记录，未生成的先生成过磅记录
         PoundLog logInDB = poundLogService.findByPoundLogNo(inspection.getPlNo());
         if (logInDB == null) {
             PoundLog poundLog = new PoundLog();
@@ -102,6 +104,56 @@ public class InspectionController extends BaseController {
             return ResultUtil.success("添加成功");
         } else {
             return ResultUtil.error("添加失败");
+        }
+    }
+
+    @RequestMapping(value = "/update", method = {RequestMethod.POST})
+    @ResponseBody
+    public Result update(Inspection inspection) {
+        if (inspection == null) {
+            return ResultUtil.error("报检单信息不能为空");
+        }
+        if (StringUtils.isEmpty(inspection.getPlNo())) {
+            return ResultUtil.error("过磅单单号不能为空");
+        }
+
+        //查询是否已生成过磅记录，未生成的先生成过磅记录
+        PoundLog logInDB = poundLogService.findByPoundLogNo(inspection.getPlNo());
+        if (logInDB == null) {
+            return ResultUtil.error("找不到相应的过磅记录，无法修改报检单");
+        }
+
+        int result = inspectionService.update(inspection);
+        if (result >= 1) {
+            return ResultUtil.success("修改成功");
+        } else {
+            return ResultUtil.error("修改失败");
+        }
+    }
+
+    /**
+     * 根据ids删除过磅信息
+     *
+     * @param ids [1,2,3]
+     * @return
+     */
+    @RequestMapping(value = "/deleteByIds", method = {RequestMethod.GET})
+    @ResponseBody
+    public Result deleteByIds(String ids) {
+        if (ids == null || ids.split(",").length == 0) {
+            return ResultUtil.error("请选择您要删除的数据");
+        }
+        //解析ids
+        List<Integer> idList = new ArrayList<>(100);
+        String[] strs = ids.split(",");
+        for (int i = 0; i < strs.length; i++) {
+            idList.add(Integer.valueOf(strs[i]));
+        }
+        int result = inspectionService.deleteByIds(idList);
+        if (result >= 1) {
+            return ResultUtil.success("删除成功");
+        } else {
+            return ResultUtil.error("删除失败");
         }
     }
 

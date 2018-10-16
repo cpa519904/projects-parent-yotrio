@@ -24,4 +24,7 @@ public interface InspectionMapper {
 
     List<Inspection> selectListByMap(Map<String, Object> map);
 
+    int deleteByIds(List<Integer> idList);
+
+    List<Inspection> findListByPlNo(String poundLogNo);
 }
