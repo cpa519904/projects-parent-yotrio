@@ -1,6 +1,6 @@
 package com.yotrio.pound.configuration;
 
-import com.yotrio.pound.task.TaskQuartz;
+import com.yotrio.pound.tasks.TaskQuartz;
 import org.quartz.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

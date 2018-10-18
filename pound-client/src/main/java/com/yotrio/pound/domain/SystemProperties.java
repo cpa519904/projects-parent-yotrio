@@ -33,6 +33,24 @@ public class SystemProperties {
     @Value("${pound.client.name}")
     private String poundClientName;
 
+    /**
+     * 文件存储地址
+     */
+    @Value("${file.location}")
+    private String fileLocation;
+
+    /**
+     * 服务器端口号
+     */
+    @Value("${server.port}")
+    private String serverPort;
+
+    /**
+     * 服务器域名
+     */
+    @Value("${server.domain.name}")
+    private String serverDomainName;
+
     public String getPoundMasterBaseUrl() {
         return PoundMasterBaseUrl;
     }
@@ -55,5 +73,29 @@ public class SystemProperties {
 
     public void setPoundClientName(String poundClientName) {
         this.poundClientName = poundClientName;
+    }
+
+    public String getFileLocation() {
+        return fileLocation;
+    }
+
+    public void setFileLocation(String fileLocation) {
+        this.fileLocation = fileLocation;
+    }
+
+    public String getServerPort() {
+        return serverPort;
+    }
+
+    public void setServerPort(String serverPort) {
+        this.serverPort = serverPort;
+    }
+
+    public String getServerDomainName() {
+        return serverDomainName;
+    }
+
+    public void setServerDomainName(String serverDomainName) {
+        this.serverDomainName = serverDomainName;
     }
 }

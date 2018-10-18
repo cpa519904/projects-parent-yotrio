@@ -37,7 +37,7 @@ layui.define(['table', 'form'], function (exports) {
             //查询条件
             var json = {};
             json.poundLogNo = poundLogNo;
-            console.log("json", json);
+            // console.log("json", json);
             $.ajax({
                 type: 'get',
                 url: '/poundLog/listUnFinishedAndPoundLog',
@@ -45,6 +45,7 @@ layui.define(['table', 'form'], function (exports) {
                 cache: false,
                 dataType: 'json',
                 success: function (result) {
+                    console.log("result:", result);
                     if (result.code == 0) {
                         var unfinishedLogs = result.data.unFinishedLogs;
                         if (unfinishedLogs) {
@@ -52,7 +53,20 @@ layui.define(['table', 'form'], function (exports) {
                             var htmlStr = '';
                             for (var i = 0; i < unfinishedLogs.length; i++) {
                                 var item = unfinishedLogs[i];
-                                htmlStr += '<li class="layui-nav-item unfinished" plNo="' + item.poundLogNo + '"><a >' + item.plateNo + '</a></li>';
+                                if (item.plateNo) {
+                                    if (item.poundLogNo == poundLogNo) {
+                                        htmlStr += '<li class="layui-nav-item unfinished layui-this" plNo="' + item.poundLogNo + '"><a >' + item.plateNo + '</a></li>';
+                                    } else {
+                                        htmlStr += '<li class="layui-nav-item unfinished" plNo="' + item.poundLogNo + '"><a >' + item.plateNo + '</a></li>';
+                                    }
+                                } else {
+                                    if (item.poundLogNo == poundLogNo) {
+                                        htmlStr += '<li class="layui-nav-item unfinished layui-this" plNo="' + item.poundLogNo + '"><a >' + item.poundLogNo + '</a></li>';
+                                    } else {
+                                        htmlStr += '<li class="layui-nav-item unfinished" plNo="' + item.poundLogNo + '"><a >' + item.poundLogNo + '</a></li>';
+                                    }
+
+                                }
                             }
                             $("#unFinishList").html(htmlStr);
 
@@ -82,11 +96,12 @@ layui.define(['table', 'form'], function (exports) {
                             $("#tareImgUrl").attr("src", currPoundLog.tareImgUrl);
                             $("#diffWeight").val(currPoundLog.diffWeight);
                             $("#netWeight").val(currPoundLog.netWeight);
-                            console.log("currPoundLog.diff:", currPoundLog.diffWeight);
+                            // console.log("currPoundLog.diff:", currPoundLog.diffWeight);
                             if (parseFloat(currPoundLog.diffWeight) > 10 || parseFloat(currPoundLog.diffWeight) < -10) {
                                 $("#diffWeight").css("color", "#FF5722");
                             }
-
+                            methods.drawCanvasImage("canvas1", currPoundLog.grossImgUrl);
+                            methods.drawCanvasImage("canvas2", currPoundLog.tareImgUrl);
                         }
                     } else {
                         layer.alert("获取未处理过磅单异常：" + result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
@@ -142,13 +157,32 @@ layui.define(['table', 'form'], function (exports) {
             $("#poundLogNo").val(poundLogNoStr);
             return poundLogNoStr;
         }
+        //canvas显示图片
+        , drawCanvasImage(id, src) {
+            var canvas = document.getElementById(id);
+            var context = canvas.getContext('2d');
+            var img = new Image();
+            img.src = src;
+            img.onload = function () {
+                context.drawImage(img, 0, 0);
+            };
+        }
+        //获取二维码扫码结果
+        , getScanningCode: function (ele) {
 
+                var start = new Date();
+                var code = "";
+                ele.onkeypress = function (event) {
+                    console.log("二维码扫描", event);
+                };
+
+        }
     }
 
     //获取过磅单号,定义全部变量
     var poundLogNoStr = methods.getPoundLogNo();
 
-    //获取未处理榜单
+    //获取未处理榜单及当前过磅记录信息
     methods.listUnFinishedAndPoundLog(poundLogNoStr);
 
     //查询条件
@@ -181,7 +215,7 @@ layui.define(['table', 'form'], function (exports) {
         }
     });
 
-    //监听工具条
+    //监听报检单表格工具条
     table.on('tool(LAY-inspection-manage)', function (obj) {
         var data = obj.data;
         if (obj.event === 'edit') {
@@ -268,37 +302,238 @@ layui.define(['table', 'form'], function (exports) {
     /**监听控制台表单提交**/
     //称毛重
     form.on('submit(weigh-gross-submit)', function (data) {
-        // console.log("称毛重", data);
-        //todo: 抓取图片并上传图片,返回图片url
-
-        var field = data.field; //获取提交的字段
-        //获取地磅数据
-        field.grossWeight = field.currentWeight;
-        field.grossImgUrl = 'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1060505026,1164560887&fm=173&app=25&f=JPEG?w=218&h=146&s=69525288401315E700A5F99A03008094';
-        //更新磅单数据
-
-        // console.log("fieldL", field);
-
-        //提交 Ajax 成功后，静态更新表单中的数据
+        //抓取图片并上传图片,返回图片url
+        var canvas = document.getElementById("canvas1");
+        var context = canvas.getContext('2d');
+        context.drawImage(video, 0, 0, 330, 212, 0, 0, 120, 80);
+        //将Canvas的数据转换为base64位编码的PNG图像
+        var imageData = canvas.toDataURL("image/png");
+        //截取22位以后的字符串作为图像数据
+        var imgStr = imageData.substr(22);
+        //Ajax上传图片
         $.ajax({
             type: 'post',
-            url: '/poundLog/updateGross',
-            data: field,
+            url: '/file/uploadBase64Img',
+            data: {
+                imgStr: imgStr,
+                poundLogNo: poundLogNoStr,
+                uploadType: 1 //上传图片类型 1：称毛重图片 2：称皮重图片
+            },
             cache: false,
             dataType: 'json',
             success: function (result) {
-                // console.log("result:update:", result);
+                // console.log("uploadBase64Img", result);
+                if (result.code == 0) {
+                    //执行称重跟表单提交
+                    doFormSubmit();
+                } else {
+                    layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                    return;
+                }
+            },
+            error: function (error) {
+                layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+            }
+        });
+
+        function doFormSubmit() {
+            var field = data.field; //获取提交的字段
+            //获取地磅数据
+            field.grossWeight = field.currentWeight;
+            //更新磅单数据
+
+            // console.log("fieldL", field);
+
+            //提交 Ajax 成功后，静态更新表单中的数据
+            $.ajax({
+                type: 'post',
+                url: '/poundLog/updateGross',
+                data: field,
+                cache: false,
+                dataType: 'json',
+                success: function (result) {
+                    // console.log("result:update:", result);
+                    if (result.code == 0) {
+                        //数据刷新
+                        $("#grossWeight").val(result.data.grossWeight);
+                        $("#firstTime").val(result.data.firstTime);
+                        $("#grossImgUrl").attr("src", result.data.grossImgUrl);
+                        $("#diffWeight").val(result.data.diffWeight);
+                        $("#netWeight").val(result.data.netWeight);
+                        if (parseFloat(result.data.diffWeight) > 10 || parseFloat(result.data.diffWeight) < -10) {
+                            $("#diffWeight").css("color", "#FF5722");
+                        }
+                        // todo: 显示图片
+                    } else {
+                        layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                    }
+                },
+                error: function (error) {
+                    layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                }
+            });
+        }
+    });
+    //称皮重
+    form.on('submit(weigh-tare-submit)', function (data) {
+        // console.log("称毛重", data);
+        //抓取图片并上传图片,返回图片url
+        var canvas = document.getElementById("canvas2");
+        var context = canvas.getContext('2d');
+        context.drawImage(video, 0, 0, 330, 212, 0, 0, 120, 80);
+        //将Canvas的数据转换为base64位编码的PNG图像
+        var imageData = canvas.toDataURL("image/png");
+        //截取22位以后的字符串作为图像数据
+        var imgStr = imageData.substr(22);
+        //Ajax上传图片
+        $.ajax({
+            type: 'post',
+            url: '/file/uploadBase64Img',
+            data: {
+                imgStr: imgStr,
+                poundLogNo: poundLogNoStr,
+                uploadType: 2 //上传图片类型 1：称毛重图片 2：称皮重图片
+            },
+            cache: false,
+            dataType: 'json',
+            success: function (result) {
+                // console.log("uploadBase64Img", result);
+                if (result.code == 0) {
+                    //执行称重跟表单提交
+                    doFormSubmit();
+                } else {
+                    layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                    return;
+                }
+            },
+            error: function (error) {
+                layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+            }
+        });
+
+        function doFormSubmit() {
+            var field = data.field; //获取提交的字段
+            //获取地磅数据
+            field.tareWeight = field.currentWeight;
+            //更新磅单数据
+            // console.log("fieldL", field);
+            //提交 Ajax 成功后，静态更新表单中的数据
+            $.ajax({
+                type: 'post',
+                url: '/poundLog/updateTare',
+                data: field,
+                cache: false,
+                dataType: 'json',
+                success: function (result) {
+                    console.log("result:update:", result);
+                    if (result.code == 0) {
+                        //数据刷新
+                        $("#tareWeight").val(result.data.tareWeight);
+                        $("#secondTime").val(result.data.secondTime);
+                        $("#tareImgUrl").attr("src", result.data.tareImgUrl);
+                        $("#diffWeight").val(result.data.diffWeight);
+                        $("#netWeight").val(result.data.netWeight);
+                        if (parseFloat(result.data.diffWeight) > 10 || parseFloat(result.data.diffWeight) < -10) {
+                            $("#diffWeight").css("color", "#FF5722");
+                        }
+                    } else {
+                        //如果还未生成过磅单就称皮重，提示用户是否要执行退货或者卖废铁操作
+                        if (result.msg == '找不到您要更新的过磅记录') {
+                            layer.confirm('系统认定您要执行卖废品或者退货过磅，您确定要执行该操作吗？', {icon: 3, title: '提示'}, function (index) {
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/poundLog/saveReturnTare',
+                                    data: field,
+                                    cache: false,
+                                    dataType: 'json',
+                                    success: function (result) {
+                                        if (result.code == 0) {
+                                            $("#tareWeight").val(result.data.tareWeight);
+                                            $("#secondTime").val(result.data.secondTime);
+                                            $("#tareImgUrl").attr("src", result.data.tareImgUrl);
+                                        } else {
+                                            layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                                        }
+                                    },
+                                    error: function (error) {
+                                        layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                                    }
+                                });
+
+                                layer.close(index);
+                            });
+
+                        } else {
+                            layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                        }
+                    }
+                },
+                error: function (error) {
+                    layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                }
+            });
+        }
+
+    })
+    //保存
+    form.on('submit(btn-save-submit)', function (data) {
+        // console.log("保存数据", data);
+        var field = data.field;
+        var fieldData = {};
+        //这里只保存备注跟收货单位两个字段，因为其他字段都已经保存过了，这里就不再保存一遍了
+        fieldData.remark = field.remark;
+        fieldData.unitName = field.unitName;
+        fieldData.poundLogNo = field.poundLogNo;
+
+        // console.log("保存数据", field);
+        //提交 Ajax 成功后，静态更新表单中的数据
+        $.ajax({
+            type: 'post',
+            url: '/poundLog/updatePoundLog',
+            data: fieldData,
+            cache: false,
+            dataType: 'json',
+            success: function (result) {
+                console.log("result:update:", result);
                 if (result.code == 0) {
                     //数据刷新
-                    $("#grossWeight").val(result.data.grossWeight);
-                    $("#firstTime").val(result.data.firstTime);
-                    $("#grossImgUrl").attr("src", result.data.grossImgUrl);
-                    $("#diffWeight").val(result.data.diffWeight);
-                    $("#netWeight").val(result.data.netWeight);
-                    if (parseFloat(result.data.diffWeight) > 10 || parseFloat(result.data.diffWeight) < -10) {
-                        $("#diffWeight").css("color", "#FF5722");
-                    }
-                    // todo: 显示图片
+                    $("#unitName").val(result.data.unitName);
+                    $("#remark").val(result.data.remark);
+                    return layer.msg('保存成功');
+                } else {
+                    layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                }
+            },
+            error: function (error) {
+                layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+            }
+        });
+    })
+        //提交到服务器
+        , form.on('submit(btn-submit-server)', function (data) {
+        // console.log("保存数据", data);
+        var field = data.field;
+        var fieldData = {};
+        //这里只保存备注跟收货单位两个字段，因为其他字段都已经保存过了，这里就不再保存一遍了
+        fieldData.remark = field.remark;
+        fieldData.unitName = field.unitName;
+        fieldData.poundLogNo = field.poundLogNo;
+
+        // console.log("保存数据", field);
+        //提交 Ajax 成功后，静态更新表单中的数据
+        $.ajax({
+            type: 'post',
+            url: '/poundLog/updatePoundLog',
+            data: fieldData,
+            cache: false,
+            dataType: 'json',
+            success: function (result) {
+                console.log("result:update:", result);
+                if (result.code == 0) {
+                    //数据刷新
+                    $("#unitName").val(result.data.unitName);
+                    $("#remark").val(result.data.remark);
+                    return layer.msg('保存成功');
                 } else {
                     layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
                 }
@@ -308,80 +543,10 @@ layui.define(['table', 'form'], function (exports) {
             }
         });
     });
-    //称皮重
-    form.on('submit(weigh-tare-submit)', function (data) {
-        // console.log("称毛重", data);
-        //todo: 抓取图片并上传图片,返回图片url
-
-        var field = data.field; //获取提交的字段
-        //获取地磅数据
-        field.tareWeight = field.currentWeight;
-        field.tareImgUrl = 'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1060505026,1164560887&fm=173&app=25&f=JPEG?w=218&h=146&s=69525288401315E700A5F99A03008094';
-        //更新磅单数据
-        // console.log("fieldL", field);
-        //提交 Ajax 成功后，静态更新表单中的数据
-        $.ajax({
-            type: 'post',
-            url: '/poundLog/updateTare',
-            data: field,
-            cache: false,
-            dataType: 'json',
-            success: function (result) {
-                console.log("result:update:", result);
-                if (result.code == 0) {
-                    //数据刷新
-                    $("#tareWeight").val(result.data.tareWeight);
-                    $("#secondTime").val(result.data.secondTime);
-                    $("#tareImgUrl").attr("src", result.data.tareImgUrl);
-                    $("#diffWeight").val(result.data.diffWeight);
-                    $("#netWeight").val(result.data.netWeight);
-                    if (parseFloat(result.data.diffWeight) > 10 || parseFloat(result.data.diffWeight) < -10) {
-                        $("#diffWeight").css("color", "#FF5722");
-                    }
-                } else {
-                    //如果还未生成过磅单就称皮重，提示用户是否要执行退货或者卖废铁操作
-                    if (result.msg = '找不到您要更新的过磅记录') {
-                        layer.confirm('系统认定您要执行卖废品或者退货过磅，您确定要执行该操作吗？', {icon: 3, title:'提示'}, function(index){
-                            //do something
-                            // $.ajax({
-                            //     type: 'get',
-                            //     url: '/inspection/deleteByIds',
-                            //     data: {
-                            //         ids: ids.toString()
-                            //     },
-                            //     cache: false,
-                            //     dataType: 'json',
-                            //     success: function (result) {
-                            //         if (result.code == 0) {
-                            //             //数据刷新
-                            //             table.reload('LAY-inspection-manage', {
-                            //                 done: function (result) {
-                            //                     methods.reloadWeight(result);
-                            //                 }
-                            //             });
-                            //             layer.msg('已删除');
-                            //         } else {
-                            //             layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-                            //         }
-                            //     },
-                            //     error: function (error) {
-                            //         layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-                            //     }
-                            // });
-
-                            layer.close(index);
-                        });
-
-                    } else {
-                        layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-                    }
-                }
-            },
-            error: function (error) {
-                layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-            }
-        });
-    })
+    //打印
+    form.on('submit(btn-print)', function (data) {
+        //执行打印操作
+    });
 
     //事件
     var active = {
@@ -497,6 +662,8 @@ layui.define(['table', 'form'], function (exports) {
                     // 记得重新渲染表单
                     form.render();
 
+                    //监听扫码事件
+                    methods.getScanningCode(body.find("#inspNo"));
                 }
             });
         }
@@ -510,6 +677,7 @@ layui.define(['table', 'form'], function (exports) {
             //刷新页面
             window.location.reload();
         }
+
     }
 
     //监听点击事件
@@ -545,8 +713,7 @@ layui.define(['table', 'form'], function (exports) {
         //兼容webkit核心浏览器
         var CompatibleURL = window.URL || window.webkitURL;
         //将视频流设置为video元素的源
-        console.log(stream);
-
+        // console.log(stream);
         //video.src = CompatibleURL.createObjectURL(stream);
         video.srcObject = stream;
         video.play();
@@ -562,20 +729,6 @@ layui.define(['table', 'form'], function (exports) {
     } else {
         alert('不支持访问用户媒体');
     }
-
-    document.getElementById('weigh-gross-submit').addEventListener('click', function () {
-        context1.drawImage(video, 0, 0, 330, 212, 0, 0, 120, 80);
-        //将Canvas的数据转换为base64位编码的PNG图像
-        var imgData1 = canvas1.toDataURL("image/png");
-        console.log("imgData1", imgData1.length);
-        //截取22位以后的字符串作为图像数据
-        var data1 = imgData1.substr(22);
-
-        $("#grossImgUrl").attr("src", imgData1);
-    });
-    document.getElementById('weigh-tare-submit').addEventListener('click', function () {
-        context2.drawImage(video, 0, 0, 330, 212, 0, 0, 120, 80);
-    });
 
     //websocket实现
     var websocket;

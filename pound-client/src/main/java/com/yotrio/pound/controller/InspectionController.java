@@ -3,6 +3,7 @@ package com.yotrio.pound.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.pound.constants.PoundLogConstant;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.domain.SystemProperties;
 import com.yotrio.pound.model.Inspection;
@@ -82,6 +83,8 @@ public class InspectionController extends BaseController {
             poundLog.setPoundLogNo(inspection.getPlNo());
             poundLog.setPlateNo(inspection.getPlateNo());
             poundLog.setCreateTime(new Date());
+            poundLog.setStatus(PoundLogConstant.STATUS_INIT);
+            poundLog.setTypes(PoundLogConstant.TYPES_IN);
             //如果填了收货单位，先保存
             if (StringUtils.isNotEmpty(inspection.getUnit_name())) {
                 poundLog.setUnitName(inspection.getUnit_name());
@@ -99,7 +102,6 @@ public class InspectionController extends BaseController {
         }
 
         int saveResult = inspectionService.save(inspection);
-//        int saveResult = 1;
         if (saveResult >= 1) {
             return ResultUtil.success("添加成功");
         } else {

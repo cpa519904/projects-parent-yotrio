@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+</head>
+<body class="hold-transition login-page">
+<script>
+    window.onload = function(e){
+        var code = "";
+        var lastTime,nextTime;
+        var lastCode,nextCode;
+
+        document.onkeypress = function(e) {
+            nextCode = e.which;
+            nextTime = new Date().getTime();
+
+            if(lastCode != null && lastTime != null && nextTime - lastTime <= 30) {
+                code += String.fromCharCode(lastCode);
+            } else if(lastCode != null && lastTime != null && nextTime - lastTime > 100){
+                code = "";
+            }
+            lastCode = nextCode;
+            lastTime = nextTime;
+        }
+        this.onkeypress = function(e){
+            if(e.which == 13){
+                console.log(code);
+                code = "";
+            }
+        }
+    }
+</script>
+</body>
+</html>

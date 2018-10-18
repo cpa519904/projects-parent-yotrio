@@ -1,5 +1,6 @@
 package com.yotrio.pound.sockets;
 
+import cn.hutool.core.util.RandomUtil;
 import com.yotrio.common.exceptions.*;
 import com.yotrio.common.utils.SerialPortUtil;
 import gnu.io.SerialPort;
@@ -13,7 +14,6 @@ import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -75,7 +75,7 @@ public class PoundWebSocket {
                                 byte[] bytes = SerialPortUtil.readFromPort(serialPort);
 //                                System.out.println("收到的数据：" + new String(bytes, "GB2312"));
 
-                                sendMessage(new String(bytes, "GB2312") + new Date().getSeconds() * 100);
+                                sendMessage(String.valueOf(Integer.valueOf(new String(bytes, "GB2312")) - RandomUtil.randomInt(1000,10000)));
                             } catch (ReadDataFromSerialPortFailure readDataFromSerialPortFailure) {
                                 logger.error(readDataFromSerialPortFailure.toString());
                             } catch (SerialPortInputStreamCloseFailure serialPortInputStreamCloseFailure) {

@@ -149,8 +149,8 @@ public class PoundLogController extends BaseController {
         if (poundLog.getGrossWeight() == null) {
             return ResultUtil.error("过磅数据为空，请检查设备是否异常");
         }
-        if (poundLog.getPoundLogNo() == null) {
-            return ResultUtil.error("过磅单号为空，请先填写报检单相关信息");
+        if (StringUtils.isEmpty(poundLog.getPoundLogNo())) {
+            return ResultUtil.error("过磅单号为空");
         }
         PoundLog logInDB = poundLogService.findByPoundLogNo(poundLog.getPoundLogNo());
         if (logInDB == null) {
@@ -159,49 +159,71 @@ public class PoundLogController extends BaseController {
 
         BeansUtil.copyPropertiesIgnoreNull(poundLog, logInDB);
 
-        //计算净重 = 总皮重 - 随车退 - 样品
-        double netWeight = 0.0d;
-        double totalReturnWeight = 0.0d;
-        double totalSampleWeight = 0.0d;
-        double totalInspWeight = 0.0d;
-        double tareWeight = logInDB.getTareWeight() != null ? logInDB.getTareWeight() : 0.0d;
-        List<Inspection> inspectionList = inspectionService.findListByPlNo(poundLog.getPoundLogNo());
-        for (Inspection inspection : inspectionList) {
-            if (inspection.getReturnWeight() != null && inspection.getReturnWeight() > 0) {
-                totalReturnWeight += inspection.getReturnWeight();
+        //判断是退货还是进货
+        if (logInDB.getTypes() == PoundLogConstant.TYPES_OUT) {
+            //出货
+            logInDB.setFirstTime(new Date());
+            logInDB.setNetWeight(logInDB.getGrossWeight() - logInDB.getTareWeight());
+            if (logInDB.getStatus() < PoundLogConstant.STATUS_POUND_SECOND) {
+                logInDB.setStatus(PoundLogConstant.STATUS_POUND_SECOND);
             }
-            if (inspection.getInspWeight() != null && inspection.getInspWeight() > 0) {
-                totalInspWeight += inspection.getInspWeight();
+            if (logInDB.getTareWeight() != null && logInDB.getTareWeight() > 0) {
+                if (logInDB.getGrossWeight() < logInDB.getTareWeight()) {
+                    return ResultUtil.error("数据异常，毛重不能小于皮重");
+                }
+                logInDB.setNetWeight(logInDB.getGrossWeight() - logInDB.getTareWeight());
             }
-            if (inspection.getTypes() == InspectionConstant.TYPE_SAMPLE) {
+            int result = poundLogService.update(logInDB);
+            if (result < 1) {
+                return ResultUtil.error("称毛重失败");
+            }
+            return ResultUtil.success(logInDB);
+        } else {
+            //进货
+            //计算净重 = 总皮重 - 随车退 - 样品
+            double netWeight = 0.0d;
+            double totalReturnWeight = 0.0d;
+            double totalSampleWeight = 0.0d;
+            double totalInspWeight = 0.0d;
+            double tareWeight = logInDB.getTareWeight() != null ? logInDB.getTareWeight() : 0.0d;
+            List<Inspection> inspectionList = inspectionService.findListByPlNo(poundLog.getPoundLogNo());
+            for (Inspection inspection : inspectionList) {
+                if (inspection.getReturnWeight() != null && inspection.getReturnWeight() > 0) {
+                    totalReturnWeight += inspection.getReturnWeight();
+                }
                 if (inspection.getInspWeight() != null && inspection.getInspWeight() > 0) {
-                    totalSampleWeight += inspection.getInspWeight();
+                    totalInspWeight += inspection.getInspWeight();
+                }
+                if (inspection.getTypes() == InspectionConstant.TYPE_SAMPLE) {
+                    if (inspection.getInspWeight() != null && inspection.getInspWeight() > 0) {
+                        totalSampleWeight += inspection.getInspWeight();
+                    }
                 }
             }
-        }
-        //计算磅差和净重,有了皮重之后才可以计算
-        if (logInDB.getTareWeight() != null && logInDB.getTareWeight() > 0) {
-            logInDB.setDiffWeight(logInDB.getGrossWeight() - tareWeight - totalInspWeight);
-            netWeight = logInDB.getGrossWeight() - tareWeight - totalSampleWeight - totalReturnWeight;
-            logInDB.setNetWeight(netWeight);
-        }
-        if (logInDB.getGrossWeight() < tareWeight) {
-            return ResultUtil.error("数据异常，皮重怎么能比毛重大呢");
-        }
-        if (netWeight < 0) {
-            return ResultUtil.error("数据异常，请检查退货数量是否填写有误");
-        }
-        logInDB.setReturnWeightTotal(totalReturnWeight);
-        logInDB.setFirstTime(new Date());
-        if (logInDB.getStatus() < PoundLogConstant.STATUS_POUND_FIRST) {
-            logInDB.setStatus(PoundLogConstant.STATUS_POUND_FIRST);
-        }
+            //计算磅差和净重,有了皮重之后才可以计算
+            if (logInDB.getTareWeight() != null && logInDB.getTareWeight() > 0) {
+                logInDB.setDiffWeight(logInDB.getGrossWeight() - tareWeight - totalInspWeight);
+                netWeight = logInDB.getGrossWeight() - tareWeight - totalSampleWeight - totalReturnWeight;
+                logInDB.setNetWeight(netWeight);
+            }
+            if (logInDB.getGrossWeight() != null && logInDB.getGrossWeight() < tareWeight) {
+                return ResultUtil.error("数据异常，皮重怎么能比毛重大呢");
+            }
+            if (netWeight < 0) {
+                return ResultUtil.error("数据异常，请检查退货数量是否填写有误");
+            }
+            logInDB.setReturnWeightTotal(totalReturnWeight);
+            logInDB.setFirstTime(new Date());
+            if (logInDB.getStatus() < PoundLogConstant.STATUS_POUND_FIRST) {
+                logInDB.setStatus(PoundLogConstant.STATUS_POUND_FIRST);
+            }
 
-        Integer result = poundLogService.update(logInDB);
-        if (result < 1) {
-            return ResultUtil.error("更新失败");
+            Integer result = poundLogService.update(logInDB);
+            if (result < 1) {
+                return ResultUtil.error("更新失败");
+            }
+            return ResultUtil.success(logInDB);
         }
-        return ResultUtil.success(logInDB);
     }
 
     /**
@@ -220,8 +242,8 @@ public class PoundLogController extends BaseController {
         if (poundLog.getTareWeight() == null) {
             return ResultUtil.error("过磅数据为空，请检查设备是否异常");
         }
-        if (poundLog.getPoundLogNo() == null) {
-            return ResultUtil.error("过磅单号为空，请先填写报检单相关信息");
+        if (StringUtils.isEmpty(poundLog.getPoundLogNo())) {
+            return ResultUtil.error("过磅单号为空");
         }
         PoundLog logInDB = poundLogService.findByPoundLogNo(poundLog.getPoundLogNo());
         if (logInDB == null) {
@@ -230,63 +252,82 @@ public class PoundLogController extends BaseController {
 
         BeansUtil.copyPropertiesIgnoreNull(poundLog, logInDB);
 
-        //计算净重 = 总毛重 - 随车退 - 样品 - 皮重
-        double netWeight = 0.0d;
-        double totalReturnWeight = 0.0d;
-        double totalSampleWeight = 0.0d;
-        double totalInspWeight = 0.0d;
-        double tareWeight = logInDB.getTareWeight() != null ? logInDB.getTareWeight() : 0.0d;
+        //判断是退货还是进货
+        if (logInDB.getTypes() == PoundLogConstant.TYPES_OUT) {
+            logInDB.setSecondTime(new Date());
+            if (logInDB.getStatus() < PoundLogConstant.STATUS_POUND_FIRST) {
+                logInDB.setStatus(PoundLogConstant.STATUS_POUND_FIRST);
+            }
+            if (logInDB.getGrossWeight() != null && logInDB.getGrossWeight() > 0) {
+                if (logInDB.getGrossWeight() < logInDB.getTareWeight()) {
+                    return ResultUtil.error("数据异常，毛重不能小于皮重");
+                }
+                logInDB.setNetWeight(logInDB.getGrossWeight() - logInDB.getTareWeight());
+            }
+            int result = poundLogService.update(logInDB);
+            if (result < 1) {
+                return ResultUtil.error("称皮重失败");
+            }
+            return ResultUtil.success(logInDB);
+        } else {
+            //计算净重 = 总毛重 - 随车退 - 样品 - 皮重
+            double netWeight = 0.0d;
+            double totalReturnWeight = 0.0d;
+            double totalSampleWeight = 0.0d;
+            double totalInspWeight = 0.0d;
+            double tareWeight = logInDB.getTareWeight() != null ? logInDB.getTareWeight() : 0.0d;
 
-        List<Inspection> inspectionList = inspectionService.findListByPlNo(poundLog.getPoundLogNo());
-        //遍历计算各种总重
-        for (Inspection inspection : inspectionList) {
-            if (inspection.getReturnWeight() != null && inspection.getReturnWeight() > 0) {
-                totalReturnWeight += inspection.getReturnWeight();
-            }
-            if (inspection.getInspWeight() != null && inspection.getInspWeight() > 0) {
-                totalInspWeight += inspection.getInspWeight();
-            }
-            if (inspection.getTypes() == InspectionConstant.TYPE_SAMPLE) {
+            List<Inspection> inspectionList = inspectionService.findListByPlNo(poundLog.getPoundLogNo());
+            //遍历计算各种总重
+            for (Inspection inspection : inspectionList) {
+                if (inspection.getReturnWeight() != null && inspection.getReturnWeight() > 0) {
+                    totalReturnWeight += inspection.getReturnWeight();
+                }
                 if (inspection.getInspWeight() != null && inspection.getInspWeight() > 0) {
-                    totalSampleWeight += inspection.getInspWeight();
+                    totalInspWeight += inspection.getInspWeight();
+                }
+                if (inspection.getTypes() == InspectionConstant.TYPE_SAMPLE) {
+                    if (inspection.getInspWeight() != null && inspection.getInspWeight() > 0) {
+                        totalSampleWeight += inspection.getInspWeight();
+                    }
                 }
             }
-        }
 
-        //计算磅差及净重，有了毛重之后才可以计算
-        if (logInDB.getGrossWeight() != null && logInDB.getGrossWeight() > 0) {
-            logInDB.setDiffWeight(logInDB.getGrossWeight() - tareWeight - totalInspWeight);
-            //计算净重
-            netWeight = logInDB.getGrossWeight() - totalSampleWeight - totalReturnWeight - tareWeight;
-            logInDB.setNetWeight(netWeight);
-        }
+            //计算磅差及净重，有了毛重之后才可以计算
+            if (logInDB.getGrossWeight() != null && logInDB.getGrossWeight() > 0) {
+                logInDB.setDiffWeight(logInDB.getGrossWeight() - tareWeight - totalInspWeight);
+                //计算净重
+                netWeight = logInDB.getGrossWeight() - totalSampleWeight - totalReturnWeight - tareWeight;
+                logInDB.setNetWeight(netWeight);
+            }
 
-        if (logInDB.getGrossWeight() < tareWeight) {
-            return ResultUtil.error("数据异常，皮重怎么能比毛重大呢");
-        }
-        if (netWeight < 0) {
-            return ResultUtil.error("数据异常，请检查退货数量是否填写有误");
-        }
-        logInDB.setReturnWeightTotal(totalReturnWeight);
-        logInDB.setSecondTime(new Date());
-        logInDB.setStatus(PoundLogConstant.STATUS_POUND_SECOND);
+            if (logInDB.getGrossWeight() != null && logInDB.getGrossWeight() < tareWeight) {
+                return ResultUtil.error("数据异常，皮重怎么能比毛重大呢");
+            }
+            if (netWeight < 0) {
+                return ResultUtil.error("数据异常，请检查退货数量是否填写有误");
+            }
+            logInDB.setReturnWeightTotal(totalReturnWeight);
+            logInDB.setSecondTime(new Date());
+            logInDB.setStatus(PoundLogConstant.STATUS_POUND_SECOND);
 
-        Integer result = poundLogService.update(logInDB);
-        if (result < 1) {
-            return ResultUtil.error("更新失败");
+            Integer result = poundLogService.update(logInDB);
+            if (result < 1) {
+                return ResultUtil.error("更新失败");
+            }
+            return ResultUtil.success(logInDB);
         }
-        return ResultUtil.success(logInDB);
     }
 
     /**
-     * 更新退货 皮重过磅记录
+     * 生成出（退）货 皮重过磅记录
      *
      * @param poundLog
      * @return
      */
-    @RequestMapping(value = "/updateReturnTare", method = {RequestMethod.POST})
+    @RequestMapping(value = "/saveReturnTare", method = {RequestMethod.POST})
     @ResponseBody
-    public Result updateReturnTare(PoundLog poundLog) {
+    public Result saveReturnTare(PoundLog poundLog) {
         //校验表单
         if (poundLog == null) {
             return ResultUtil.error("过磅信息为空，请先填写报检单相关信息");
@@ -294,25 +335,62 @@ public class PoundLogController extends BaseController {
         if (poundLog.getTareWeight() == null) {
             return ResultUtil.error("过磅数据为空，请检查设备是否异常");
         }
-        if (poundLog.getPoundLogNo() == null) {
+        if (StringUtils.isEmpty(poundLog.getPoundLogNo())) {
+            return ResultUtil.error("过磅单号为空");
+        }
+        PoundLog logInDB = poundLogService.findByPoundLogNo(poundLog.getPoundLogNo());
+        if (logInDB != null) {
+            return ResultUtil.error("过磅记录已存在");
+        }
+
+        //生成退货过磅单
+        poundLog.setPoundId(sysProperties.getPoundClientId());
+        poundLog.setPoundName(sysProperties.getPoundClientName());
+        poundLog.setSecondTime(new Date());
+        poundLog.setTypes(PoundLogConstant.TYPES_OUT);
+        poundLog.setStatus(PoundLogConstant.STATUS_POUND_FIRST);
+        if (StringUtils.isEmpty(poundLog.getRemark())) {
+            poundLog.setRemark("出货");
+        }
+        int result = poundLogService.save(poundLog);
+        if (result < 1) {
+            return ResultUtil.error("称重失败");
+        }
+        return ResultUtil.success(poundLog);
+    }
+
+    /**
+     * 保存过磅单信息
+     *
+     * @param poundLog
+     * @return
+     */
+    @RequestMapping(value = "/updatePoundLog", method = {RequestMethod.POST})
+    @ResponseBody
+    public Result poundLog(PoundLog poundLog) {
+        //校验表单
+        if (poundLog == null) {
+            return ResultUtil.error("过磅信息为空，请先填写报检单相关信息");
+        }
+        if (StringUtils.isEmpty(poundLog.getPoundLogNo())) {
             return ResultUtil.error("过磅单号为空");
         }
         PoundLog logInDB = poundLogService.findByPoundLogNo(poundLog.getPoundLogNo());
         if (logInDB == null) {
-            //生成退货过磅单
-            poundLog.setPoundId(sysProperties.getPoundClientId());
-            poundLog.setPoundName(sysProperties.getPoundClientName());
-            poundLog.setSecondTime(new Date());
-            poundLog.setTypes(PoundLogConstant.TYPES_OUT);
-            poundLog.setStatus(PoundLogConstant.STATUS_POUND_FIRST);
-            int result = poundLogService.save(poundLog);
-            if (result < 1) {
-                return ResultUtil.error("称重失败");
-            }
-            return ResultUtil.success("称重成功");
+            return ResultUtil.error("请先过磅或者填写报检单");
+        }
+        //如果是收货，必须填写收货单位
+        if (logInDB.getTypes() == PoundLogConstant.TYPES_IN && StringUtils.isEmpty(poundLog.getUnitName())) {
+            return ResultUtil.error("收货组织不能为空，请输入收货组织");
         }
 
-        return ResultUtil.error("找不到您要更新的过磅记录");
+        BeansUtil.copyPropertiesIgnoreNull(poundLog, logInDB);
+
+        int result = poundLogService.update(logInDB);
+        if (result < 1) {
+            return ResultUtil.error("称重失败");
+        }
+        return ResultUtil.success(logInDB);
     }
 
     /**

@@ -54,8 +54,6 @@ public class PoundLogServiceImpl implements IPoundLogService {
     @Override
     public Integer save(PoundLog poundLog) {
         poundLog.setCreateTime(new Date());
-        poundLog.setStatus(PoundLogConstant.STATUS_POUND_FIRST);
-        poundLog.setTypes(PoundLogConstant.TYPES_IN);
         return poundLogMapper.insert(poundLog);
     }
 

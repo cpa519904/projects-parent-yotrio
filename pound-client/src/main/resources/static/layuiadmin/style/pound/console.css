@@ -1,11 +1,16 @@
 /**
 控制台样式
  */
+#unFinishList {
+    max-height: 100%;
+    overflow-y: auto;
+}
+
 .wait-list-title {
     width: 90%;
     height: 42px;
     line-height: 42px;
     text-align: center;
     background-color: #20222A !important;
-    color: rgba(255, 255, 255, .8)
+    color: rgba(255, 255, 255, .8);
 }

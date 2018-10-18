@@ -33,9 +33,9 @@
                             <button class="layui-btn btn-inspection" style="margin-bottom: 0" data-type="newPoundLog">
                                 新增
                             </button>
-                            <button class="layui-btn" style="margin-bottom: 0">保存</button>
-                            <button class="layui-btn layui-btn-danger" style="margin-bottom: 0">提交</button>
-                            <button class="layui-btn layui-btn-normal" style="margin-bottom: 0">打印</button>
+                            <button lay-submit lay-filter="btn-save-submit" id="btn-save-submit" class="layui-btn" style="margin-bottom: 0" >保存</button>
+                            <button class="layui-btn layui-btn-danger layui-btn-disabled" style="margin-bottom: 0" data-type="btn-submit-server">提交</button>
+                            <button class="layui-btn layui-btn-normal layui-btn-disabled" style="margin-bottom: 0" data-type="btn-print">打印</button>
                         </div>
                     </div>
                     <div class="layui-col-md12">
@@ -200,8 +200,8 @@
                                         <!--图片一-->
                                         <div>
                                             <canvas id="canvas1" width="120px" height="80px"></canvas>
-                                            <img id="grossImgUrl" src=""
-                                            style="width: 120px;height: 80px">
+                                            <!--<img id="grossImgUrl" src=""-->
+                                            <!--style="width: 120px;height: 80px">-->
                                         </div>
                                     </div>
                                 </div>
