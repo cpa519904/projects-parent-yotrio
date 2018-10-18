@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin"
+<div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="inspectForm"
      style="padding: 20px 0 0 0;">
     <!-- 使用隐藏域用于保存编辑项的ID值，便于提交修改 -->
     <input type="hidden" id="id" name="id">
@@ -21,13 +21,13 @@
                 <label class="layui-form-label">报检单单号</label>
                 <div class="layui-input-block">
                     <input type="text" id="inspNo" name="inspNo" lay-verify="required" autocomplete="off"
-                           placeholder="" class="layui-input">
+                           placeholder="扫码获取请勿输入任何文字" class="layui-input" autofocus="autofocus">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">报检单重量</label>
                 <div class="layui-input-block">
-                    <input type="text" id="inspWeight" name="inspWeight" lay-verify="required" autocomplete="off"
+                    <input type="text" id="inspWeight" name="inspWeight" lay-verify="required|number" autocomplete="off"
                            placeholder="" class="layui-input">
                 </div>
             </div>
@@ -48,7 +48,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">退货重量</label>
                 <div class="layui-input-block">
-                    <input type="text" id="returnWeight" name="returnWeight"  autocomplete="off"
+                    <input type="text" id="returnWeight" name="returnWeight" lay-verify="number"  autocomplete="off"
                            placeholder="选填" class="layui-input">
                 </div>
             </div>

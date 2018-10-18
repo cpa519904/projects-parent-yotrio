@@ -168,16 +168,17 @@ layui.define(['table', 'form'], function (exports) {
             };
         }
         //获取二维码扫码结果
-        , getScanningCode: function (ele) {
+        , getScanningCode: function () {
 
-                var start = new Date();
-                var code = "";
-                ele.onkeypress = function (event) {
-                    console.log("二维码扫描", event);
-                };
+            var start = new Date();
+            var code = "";
+            document.onkeydown = function (event) {
+                console.log("二维码扫描", event);
+            };
 
         }
     }
+
 
     //获取过磅单号,定义全部变量
     var poundLogNoStr = methods.getPoundLogNo();
@@ -509,8 +510,8 @@ layui.define(['table', 'form'], function (exports) {
             }
         });
     })
-        //提交到服务器
-        , form.on('submit(btn-submit-server)', function (data) {
+    //提交到服务器
+    form.on('submit(btn-submit-server)', function (data) {
         // console.log("保存数据", data);
         var field = data.field;
         var fieldData = {};
@@ -657,13 +658,33 @@ layui.define(['table', 'form'], function (exports) {
                 }
                 , success: function (layero, index) {
                     var body = layui.layer.getChildFrame('body', index);
+
                     // 取到弹出层里的元素，并把编辑的内容放进去
                     body.find("#radio-1").attr("checked", "checked");
                     // 记得重新渲染表单
                     form.render();
 
                     //监听扫码事件
-                    methods.getScanningCode(body.find("#inspNo"));
+                    // methods.getScanningCode();
+                    body.find('#inspNo')[0].onkeydown = function (event) {
+
+                        // 键入Enter表明扫码枪输入完毕
+                        if (event.which == 13 && body.find('#inspNo')[0].value.length > 20) {
+                            //获取扫码枪数据
+                            var inputData = body.find('#inspNo')[0].value;
+                            //todo 可以做一下数据校验工作
+                            var dataArr = inputData.split("#");
+                            if (dataArr.length >= 4) {
+                                body.find("#inspNo")[0].value = dataArr[0];
+                                body.find("#inspWeight")[0].value = dataArr[1];
+                                body.find("#compName")[0].value = dataArr[2];
+                                body.find("#plateNo")[0].value = dataArr[3];
+                                form.render();
+                            } else {
+                                layer.alert("扫码获取失败，请手工填写", {icon: 5});
+                            }
+                        }
+                    }
                 }
             });
         }
