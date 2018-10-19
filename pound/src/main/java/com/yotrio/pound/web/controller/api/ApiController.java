@@ -6,6 +6,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.common.utils.DateUtil;
+import com.yotrio.common.utils.ImageUtil;
 import com.yotrio.common.utils.PropertiesFileUtil;
 import com.yotrio.pound.exceptions.UploadLogException;
 import com.yotrio.pound.model.Inspection;
@@ -129,21 +131,33 @@ public class ApiController extends BaseController {
                     return returnError("过磅单已生成，请勿重复提交");
                 }
 
+                //构建图片存储路径
+                StringBuilder filePath = new StringBuilder();
+                String basePath = DateUtil.getFilePathByDate(filePath + "/images/upload/");
+                filePath.append(basePath).append(poundLog.getPoundLogNo()).append("/");
+
+
                 //解析过磅图片，将base64图片字符串转成本地图片并保存图片url
                 if (StringUtils.isNotEmpty(poundLog.getGrossImgUrlBase64())) {
-                    String filePath = FILE_LOCATION + poundLog.getGrossImgUrl().substring(CLIENT_FILE_LOCATION.length());
-//                    String grossImgUrlBase64 = ImageUtil.saveBase64Img(poundLog.getGrossImgUrlBase64(),);
-//                    if (StringUtils.isNotEmpty(grossImgUrlBase64)) {
-//                        poundLog.setGrossImgUrlBase64(grossImgUrlBase64);
-//                    }
+                    //生成上传图片名
+                    String fileName = System.currentTimeMillis() + ".jpg";
+                    String imgLocalPath = ImageUtil.saveBase64Img(poundLog.getGrossImgUrlBase64(), filePath.toString(), fileName);
+                    if (StringUtils.isNotEmpty(imgLocalPath)) {
+                        //转换成http图片地址
+                        String imgUrl = LOCALHOST_URL + imgLocalPath.substring(FILE_LOCATION.length());
+                        poundLog.setGrossImgUrl(imgUrl);
+                    }
                 }
-//                if (StringUtils.isNotEmpty(poundLog.getTareImgUrl())) {
-//                    String tareImgFilePath = sysProperties.getFileLocation() + poundLog.getTareImgUrl().substring(sysProperties.getLocalhostUrl().length());
-//                    String tareImgUrlBase64 = ImageUtil.getImageBase64Str(tareImgFilePath);
-//                    if (StringUtils.isNotEmpty(tareImgUrlBase64)) {
-//                        poundLog.setTareImgUrlBase64(tareImgUrlBase64);
-//                    }
-//                }
+                if (StringUtils.isNotEmpty(poundLog.getTareImgUrlBase64())) {
+                    //生成上传图片名
+                    String fileName = System.currentTimeMillis() + ".jpg";
+                    String imgLocalPath = ImageUtil.saveBase64Img(poundLog.getGrossImgUrlBase64(), filePath.toString(), fileName);
+                    if (StringUtils.isNotEmpty(imgLocalPath)) {
+                        //转换成http图片地址
+                        String imgUrl = LOCALHOST_URL + imgLocalPath.substring(FILE_LOCATION.length());
+                        poundLog.setGrossImgUrl(imgUrl);
+                    }
+                }
 
                 //保存过磅记录
                 poundLogService.save(poundLog);

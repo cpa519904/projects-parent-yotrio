@@ -81,7 +81,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.dingtalk.open:client-sdk:1.0.0">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../libs/taobao-sdk-java-auto_1479188381469-20180918.jar!/" />
+          <root url="jar://E:/Work/Yotrio/libs/taobao-sdk-java-auto_1479188381469-20180918.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
