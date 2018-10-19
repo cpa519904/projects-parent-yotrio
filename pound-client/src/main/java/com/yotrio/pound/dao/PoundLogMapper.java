@@ -28,4 +28,5 @@ public interface PoundLogMapper {
 
     List<PoundLog> listUnFinished(Integer status);
 
+    PoundLog findLogWithInspectionsByPoundLogNo(String poundLogNo);
 }

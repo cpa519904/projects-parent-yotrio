@@ -30,4 +30,5 @@ public interface IPoundLogService {
 
     List<PoundLog> listUnFinished();
 
+    PoundLog findLogWithInspectionsByPoundLogNo(String poundLogNo);
 }

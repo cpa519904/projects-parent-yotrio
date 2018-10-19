@@ -4,7 +4,7 @@ package com.yotrio.pound.controller;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.utils.NetStateUtil;
-import com.yotrio.pound.constants.TaskConstant;
+import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.model.Task;
 import com.yotrio.pound.service.ITaskService;

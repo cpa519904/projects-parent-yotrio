@@ -2,6 +2,7 @@ package com.yotrio.pound.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class PoundLog implements Serializable {
     /**
@@ -157,6 +158,11 @@ public class PoundLog implements Serializable {
      * @mbg.generated
      */
     private Date secondTime;
+
+    /**
+     * 报检单列表
+     */
+    private List<Inspection> inspections;
 
     private static final long serialVersionUID = 1L;
 
@@ -336,6 +342,14 @@ public class PoundLog implements Serializable {
         this.secondTime = secondTime;
     }
 
+    public List<Inspection> getInspections() {
+        return inspections;
+    }
+
+    public void setInspections(List<Inspection> inspections) {
+        this.inspections = inspections;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -381,27 +395,27 @@ public class PoundLog implements Serializable {
         }
         PoundLog other = (PoundLog) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getPoundId() == null ? other.getPoundId() == null : this.getPoundId().equals(other.getPoundId()))
-            && (this.getPoundName() == null ? other.getPoundName() == null : this.getPoundName().equals(other.getPoundName()))
-            && (this.getPoundLogNo() == null ? other.getPoundLogNo() == null : this.getPoundLogNo().equals(other.getPoundLogNo()))
-            && (this.getGrossWeight() == null ? other.getGrossWeight() == null : this.getGrossWeight().equals(other.getGrossWeight()))
-            && (this.getTareWeight() == null ? other.getTareWeight() == null : this.getTareWeight().equals(other.getTareWeight()))
-            && (this.getNetWeight() == null ? other.getNetWeight() == null : this.getNetWeight().equals(other.getNetWeight()))
-            && (this.getSampleNetWeight() == null ? other.getSampleNetWeight() == null : this.getSampleNetWeight().equals(other.getSampleNetWeight()))
-            && (this.getReturnWeightTotal() == null ? other.getReturnWeightTotal() == null : this.getReturnWeightTotal().equals(other.getReturnWeightTotal()))
-            && (this.getDiffWeight() == null ? other.getDiffWeight() == null : this.getDiffWeight().equals(other.getDiffWeight()))
-            && (this.getGrossImgUrl() == null ? other.getGrossImgUrl() == null : this.getGrossImgUrl().equals(other.getGrossImgUrl()))
-            && (this.getTareImgUrl() == null ? other.getTareImgUrl() == null : this.getTareImgUrl().equals(other.getTareImgUrl()))
-            && (this.getUnitName() == null ? other.getUnitName() == null : this.getUnitName().equals(other.getUnitName()))
-            && (this.getPlateNo() == null ? other.getPlateNo() == null : this.getPlateNo().equals(other.getPlateNo()))
-            && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
-            && (this.getTypes() == null ? other.getTypes() == null : this.getTypes().equals(other.getTypes()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getReturnGoods() == null ? other.getReturnGoods() == null : this.getReturnGoods().equals(other.getReturnGoods()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
-            && (this.getFirstTime() == null ? other.getFirstTime() == null : this.getFirstTime().equals(other.getFirstTime()))
-            && (this.getSecondTime() == null ? other.getSecondTime() == null : this.getSecondTime().equals(other.getSecondTime()));
+                && (this.getPoundId() == null ? other.getPoundId() == null : this.getPoundId().equals(other.getPoundId()))
+                && (this.getPoundName() == null ? other.getPoundName() == null : this.getPoundName().equals(other.getPoundName()))
+                && (this.getPoundLogNo() == null ? other.getPoundLogNo() == null : this.getPoundLogNo().equals(other.getPoundLogNo()))
+                && (this.getGrossWeight() == null ? other.getGrossWeight() == null : this.getGrossWeight().equals(other.getGrossWeight()))
+                && (this.getTareWeight() == null ? other.getTareWeight() == null : this.getTareWeight().equals(other.getTareWeight()))
+                && (this.getNetWeight() == null ? other.getNetWeight() == null : this.getNetWeight().equals(other.getNetWeight()))
+                && (this.getSampleNetWeight() == null ? other.getSampleNetWeight() == null : this.getSampleNetWeight().equals(other.getSampleNetWeight()))
+                && (this.getReturnWeightTotal() == null ? other.getReturnWeightTotal() == null : this.getReturnWeightTotal().equals(other.getReturnWeightTotal()))
+                && (this.getDiffWeight() == null ? other.getDiffWeight() == null : this.getDiffWeight().equals(other.getDiffWeight()))
+                && (this.getGrossImgUrl() == null ? other.getGrossImgUrl() == null : this.getGrossImgUrl().equals(other.getGrossImgUrl()))
+                && (this.getTareImgUrl() == null ? other.getTareImgUrl() == null : this.getTareImgUrl().equals(other.getTareImgUrl()))
+                && (this.getUnitName() == null ? other.getUnitName() == null : this.getUnitName().equals(other.getUnitName()))
+                && (this.getPlateNo() == null ? other.getPlateNo() == null : this.getPlateNo().equals(other.getPlateNo()))
+                && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
+                && (this.getTypes() == null ? other.getTypes() == null : this.getTypes().equals(other.getTypes()))
+                && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
+                && (this.getReturnGoods() == null ? other.getReturnGoods() == null : this.getReturnGoods().equals(other.getReturnGoods()))
+                && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+                && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
+                && (this.getFirstTime() == null ? other.getFirstTime() == null : this.getFirstTime().equals(other.getFirstTime()))
+                && (this.getSecondTime() == null ? other.getSecondTime() == null : this.getSecondTime().equals(other.getSecondTime()));
     }
 
     @Override

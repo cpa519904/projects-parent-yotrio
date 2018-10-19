@@ -25,22 +25,18 @@ public class PoundLogDto extends PoundLog {
      */
     private Date myLesser_createTime;
 
-    @Override
     public Date getMyGreater_createTime() {
         return myGreater_createTime;
     }
 
-    @Override
     public void setMyGreater_createTime(Date myGreater_createTime) {
         this.myGreater_createTime = myGreater_createTime;
     }
 
-    @Override
     public Date getMyLesser_createTime() {
         return myLesser_createTime;
     }
 
-    @Override
     public void setMyLesser_createTime(Date myLesser_createTime) {
         this.myLesser_createTime = myLesser_createTime;
     }

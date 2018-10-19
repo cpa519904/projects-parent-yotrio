@@ -22,7 +22,9 @@ public interface PoundLogMapper {
 
     List<PoundLog> selectListByMap(Map<String, Object> map);
 
-    int deleteByIds(List<Integer> ids);
+    PoundLog findByPoundLogNo(String plNo);
 
-    PoundLog findByDeliveryNumb(String deliveryNumb);
+    List<PoundLog> listUnFinished(Integer status);
+
+    int deleteByIds(List<Integer> ids);
 }

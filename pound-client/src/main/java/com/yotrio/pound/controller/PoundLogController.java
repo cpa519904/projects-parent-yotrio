@@ -1,12 +1,11 @@
 package com.yotrio.pound.controller;
 
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.http.HttpUtil;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.yotrio.common.constants.*;
 import com.yotrio.common.utils.BeansUtil;
-import com.yotrio.pound.constants.*;
+import com.yotrio.common.utils.NetStateUtil;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.domain.SystemProperties;
 import com.yotrio.pound.model.Inspection;
@@ -92,46 +91,46 @@ public class PoundLogController extends BaseController {
      * @param poundLog
      * @return
      */
-    @RequestMapping(value = "/save", method = {RequestMethod.POST})
-    @ResponseBody
-    public Result save(PoundLog poundLog) {
-        //校验表单
-        String checkResult = poundLogService.checkFormSave(poundLog);
-        if (checkResult != null) {
-            return ResultUtil.error(checkResult);
-        }
-
-        //请求接口获取地磅信息 注：有网络情况下校验地磅状态，网络不通情况下暂时不做此校验
-        String response = HttpUtil.get(sysProperties.getPoundMasterBaseUrl() + ApiUrlConstant.GET_POUND_INFO + poundLog.getId());
-        if (StringUtils.isNotEmpty(response)) {
-            JSONObject object = JSON.parseObject(response);
-            if (object != null && object.getIntValue("code") == 0) {
-                JSONObject data = object.getJSONObject("data");
-                if (data != null) {
-                    //检查地磅状态
-                    Integer status = data.getIntValue("status");
-                    if (status == PoundConstant.STATUS_STOP) {
-                        return ResultUtil.error("本台机器已停机，如需开机，请联系管理员处理...");
-                    }
-                    String poundName = data.getString("poundName");
-                    poundLog.setPoundName(poundName);
-                }
-            }
-        }
-
-        //过磅记录是否已生成
-//        PoundLog logInDB = poundLogService.findByDeliveryNumb(poundLog.getDeliveryNumb());
+//    @RequestMapping(value = "/save", method = {RequestMethod.POST})
+//    @ResponseBody
+//    public Result save(PoundLog poundLog) {
+//        //校验表单
+//        String checkResult = poundLogService.checkFormSave(poundLog);
+//        if (checkResult != null) {
+//            return ResultUtil.error(checkResult);
+//        }
+//
+//        //请求接口获取地磅信息 注：有网络情况下校验地磅状态，网络不通情况下暂时不做此校验
+//        String response = HttpUtil.get(sysProperties.getPoundMasterBaseUrl() + ApiUrlConstant.GET_POUND_INFO + poundLog.getId());
+//        if (StringUtils.isNotEmpty(response)) {
+//            JSONObject object = JSON.parseObject(response);
+//            if (object != null && object.getIntValue("code") == 0) {
+//                JSONObject data = object.getJSONObject("data");
+//                if (data != null) {
+//                    //检查地磅状态
+//                    Integer status = data.getIntValue("status");
+//                    if (status == PoundConstant.STATUS_STOP) {
+//                        return ResultUtil.error("本台机器已停机，如需开机，请联系管理员处理...");
+//                    }
+//                    String poundName = data.getString("poundName");
+//                    poundLog.setPoundName(poundName);
+//                }
+//            }
+//        }
+//
+//        //过磅记录是否已生成
+//        PoundLog logInDB = poundLogService.findByPoundLogNo(poundLog.getPoundLogNo());
 //        if (logInDB != null) {
 //            return ResultUtil.error("过磅单已生成，请勿重复扫码");
 //        }
-
-        Integer result = poundLogService.save(poundLog);
-        if (result >= 1) {
-            return ResultUtil.success("本地存储成功");
-        } else {
-            return ResultUtil.error("本地存储失败");
-        }
-    }
+//
+//        Integer result = poundLogService.save(poundLog);
+//        if (result >= 1) {
+//            return ResultUtil.success("本地存储成功");
+//        } else {
+//            return ResultUtil.error("本地存储失败");
+//        }
+//    }
 
     /**
      * 更新毛重过磅记录
@@ -154,7 +153,7 @@ public class PoundLogController extends BaseController {
         }
         PoundLog logInDB = poundLogService.findByPoundLogNo(poundLog.getPoundLogNo());
         if (logInDB == null) {
-            return ResultUtil.error("找不到您要更新的过磅记录");
+            return ResultUtil.error("请先添加报检单");
         }
 
         BeansUtil.copyPropertiesIgnoreNull(poundLog, logInDB);
@@ -396,46 +395,71 @@ public class PoundLogController extends BaseController {
     /**
      * 上传本地数据到服务器
      *
+     * @param poundLogNo 过磅单单号
      * @return
      */
-    @RequestMapping(value = "/uploadLogAndInsps", method = {RequestMethod.POST})
+    @RequestMapping(value = "/uploadServer", method = {RequestMethod.POST})
     @ResponseBody
-    public Result uploadPoundLogAndInspections() {
-        PoundLog poundLogInDB = poundLogService.findById(null);
-
-        //是否成功上传服务器并执行消息推送
-        boolean success = false;
-        String msg = "上传失败";
-
-        //上传线上服务器
-        String url = sysProperties.getPoundMasterBaseUrl() + ApiUrlConstant.SAVE_POUND_LOG;
-        String response = HttpUtil.post(url, BeanUtil.beanToMap(poundLogInDB));
-        if (response != null) {
-            JSONObject json = JSONObject.parseObject(response);
-            msg = json.getString("msg");
-            if (json.getIntValue("code") == SUCCESS_CODE) {
-                //上传成功
-                success = true;
-            } else {
-                success = false;
-            }
+    public Result uploadServer(String poundLogNo) {
+        if (StringUtils.isEmpty(poundLogNo)) {
+            return ResultUtil.error("获取不到过磅单号");
+        }
+        // TODO: 2018-10-19 这里应该使用一对多关联查询，但是使用pouLogNo关联查询时映射出来有问题，貌似根据id去映射了
+        PoundLog poundLog = poundLogService.findByPoundLogNo(poundLogNo);
+        if (poundLog == null) {
+            return ResultUtil.error("找不到您要提交的过磅单");
+        }
+        if (poundLog.getStatus() < PoundLogConstant.STATUS_POUND_SECOND) {
+            return ResultUtil.error("请先完成两次称重操作再提交");
         }
 
-        //是否上传成功？失败：创建定时任务，提示失败原因；成功：提示成功
-        if (!success) {
+        String msg = "网络连接失败,联网后系统会自动为您提交";
+        //先看网络连接是否成功？失败：创建定时任务，提示失败原因
+        if (!NetStateUtil.isConnect()) {
             Task task = new Task();
             task.setStatus(TaskConstant.STATUS_INIT);
-//            task.setOtherId(String.valueOf(poundLog.getId()));
+            task.setOtherId(String.valueOf(poundLog.getPlateNo()));
             task.setWeight(TaskConstant.WEIGHT_INIT);
-            task.setTypes(TaskConstant.TYPE_UPDATE_MSG);
-//            task.setTaskName("上传过磅记录失败|pid=" + poundLog.getId());
+            task.setTypes(TaskConstant.TYPE_UPLOAD_MSG);
+            task.setTaskName("上传过磅记录失败|plNo=" + poundLog.getPoundLogNo());
             task.setDescription(msg);
             taskService.save(task);
+            //更改过磅单状态未网络断开，定时任务执行上传
+            poundLog.setStatus(PoundLogConstant.STATUS_NET_DISCONNECT);
+            poundLogService.update(poundLog);
             return ResultUtil.error(msg);
-        } else {
-            return ResultUtil.success(msg);
         }
-    }
 
+        //获取关联的报检单
+        List<Inspection> inspections = inspectionService.findListByPlNo(poundLogNo);
+
+        JSONObject data = new JSONObject();
+        data.put("poundLog", poundLog);
+        data.put("inspections", inspections);
+        Map<String, Object> map = new HashMap<>(10);
+        map.put("data", data);
+        map.put("token", "token");
+        //上传线上服务器
+        String url = sysProperties.getPoundMasterBaseUrl() + ApiUrlConstant.SAVE_POUND_LOG;
+        try {
+            String response = HttpUtil.post(url, map);
+            if (response != null) {
+                JSONObject json = JSONObject.parseObject(response);
+                msg = json.getString("msg");
+                if (json.getIntValue("code") == SUCCESS_CODE) {
+                    //上传成功更新本地过磅单状态
+                    poundLog.setStatus(PoundLogConstant.STATUS_POUND_FINISH);
+                    poundLogService.update(poundLog);
+                    return ResultUtil.success("上传成功");
+                } else {
+                    return ResultUtil.error(msg);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("上传过磅单失败={}", e);
+        }
+
+        return ResultUtil.error("上传过磅单失败!");
+    }
 
 }

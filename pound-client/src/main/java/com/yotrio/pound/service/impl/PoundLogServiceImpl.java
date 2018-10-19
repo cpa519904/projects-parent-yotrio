@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
-import com.yotrio.pound.constants.PoundLogConstant;
+import com.yotrio.common.constants.PoundLogConstant;
 import com.yotrio.pound.dao.PoundLogMapper;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.service.IPoundLogService;
@@ -140,10 +140,23 @@ public class PoundLogServiceImpl implements IPoundLogService {
         return poundLogMapper.findByPoundLogNo(plNo);
     }
 
+    /**
+     * 查出未完成的过磅单记录
+     * @return
+     */
     @Override
     public List<PoundLog> listUnFinished() {
-
         return poundLogMapper.listUnFinished(PoundLogConstant.STATUS_POUND_FINISH);
+    }
+
+    /**
+     * 根据过磅单单号查出过磅单及对应的报检单
+     * @param poundLogNo
+     * @return
+     */
+    @Override
+    public PoundLog findLogWithInspectionsByPoundLogNo(String poundLogNo) {
+        return poundLogMapper.findLogWithInspectionsByPoundLogNo(poundLogNo);
     }
 
 

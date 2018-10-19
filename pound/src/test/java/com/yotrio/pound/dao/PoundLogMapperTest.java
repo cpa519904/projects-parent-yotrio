@@ -61,11 +61,7 @@ public class PoundLogMapperTest {
             poundLog.setNetWeight(Double.valueOf(1000 + j * 100 - 1000 + j * 10));
             poundLog.setGrossImgUrl(imgUrl1);
             poundLog.setTareImgUrl(imgUrl2);
-            poundLog.setGoodsName("货物" + j);
-            poundLog.setCompName("公司" + j);
             poundLog.setUnitName("单位" + j + "部");
-            poundLog.setDeliveryNumb(RandomUtil.randomNumbers(8));
-            poundLog.setPlateNumb(String.valueOf(RandomUtil.randomNumbers(4)));
             poundLog.setStatus(1);
             poundLog.setCreateTime(new Date());
             int i = poundLogMapper.insert(poundLog);
@@ -81,7 +77,7 @@ public class PoundLogMapperTest {
         for (PoundLog poundLog : poundLogs) {
             PoundLog log = new PoundLog();
             log.setId(poundLog.getId());
-            log.setPlateNumb(RandomUtil.randomNumbers(5));
+            log.setPlateNo(RandomUtil.randomNumbers(5));
             int i = poundLogMapper.updateByPrimaryKeySelective(log);
             if (i > 0) {
                 count++;

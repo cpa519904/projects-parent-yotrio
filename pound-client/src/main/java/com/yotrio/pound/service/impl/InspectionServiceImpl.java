@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
-import com.yotrio.pound.constants.InspectionConstant;
+import com.yotrio.common.constants.InspectionConstant;
 import com.yotrio.pound.dao.InspectionMapper;
 import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.service.IInspectionService;

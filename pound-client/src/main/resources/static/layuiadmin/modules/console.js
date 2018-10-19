@@ -4,7 +4,7 @@ layui.define(['table', 'form'], function (exports) {
         , table = layui.table
         , form = layui.form;
 
-    //方法封装
+    //全局方法封装
     var methods = {
         //获取当前时间字符串
         getNowFormatDate: function () {
@@ -45,7 +45,7 @@ layui.define(['table', 'form'], function (exports) {
                 cache: false,
                 dataType: 'json',
                 success: function (result) {
-                    console.log("result:", result);
+                    // console.log("result:", result);
                     if (result.code == 0) {
                         var unfinishedLogs = result.data.unFinishedLogs;
                         if (unfinishedLogs) {
@@ -100,8 +100,18 @@ layui.define(['table', 'form'], function (exports) {
                             if (parseFloat(currPoundLog.diffWeight) > 10 || parseFloat(currPoundLog.diffWeight) < -10) {
                                 $("#diffWeight").css("color", "#FF5722");
                             }
+                            //将图片画到canvas上
                             methods.drawCanvasImage("canvas1", currPoundLog.grossImgUrl);
                             methods.drawCanvasImage("canvas2", currPoundLog.tareImgUrl);
+
+                            //过磅单状态
+                            var status = currPoundLog.status;
+                            if (status == 2) {//两个数据都有了,可以显示提交按钮了
+                                $("#btn-submit-server").removeClass("layui-btn-disabled");
+                            } else if (status > 2) {
+                                $("#btn-print").removeClass("layui-btn-disabled");
+                            }
+                            console.log("status:", status);
                         }
                     } else {
                         layer.alert("获取未处理过磅单异常：" + result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
@@ -167,18 +177,8 @@ layui.define(['table', 'form'], function (exports) {
                 context.drawImage(img, 0, 0);
             };
         }
-        //获取二维码扫码结果
-        , getScanningCode: function () {
 
-            var start = new Date();
-            var code = "";
-            document.onkeydown = function (event) {
-                console.log("二维码扫描", event);
-            };
-
-        }
     }
-
 
     //获取过磅单号,定义全部变量
     var poundLogNoStr = methods.getPoundLogNo();
@@ -303,39 +303,7 @@ layui.define(['table', 'form'], function (exports) {
     /**监听控制台表单提交**/
     //称毛重
     form.on('submit(weigh-gross-submit)', function (data) {
-        //抓取图片并上传图片,返回图片url
-        var canvas = document.getElementById("canvas1");
-        var context = canvas.getContext('2d');
-        context.drawImage(video, 0, 0, 330, 212, 0, 0, 120, 80);
-        //将Canvas的数据转换为base64位编码的PNG图像
-        var imageData = canvas.toDataURL("image/png");
-        //截取22位以后的字符串作为图像数据
-        var imgStr = imageData.substr(22);
-        //Ajax上传图片
-        $.ajax({
-            type: 'post',
-            url: '/file/uploadBase64Img',
-            data: {
-                imgStr: imgStr,
-                poundLogNo: poundLogNoStr,
-                uploadType: 1 //上传图片类型 1：称毛重图片 2：称皮重图片
-            },
-            cache: false,
-            dataType: 'json',
-            success: function (result) {
-                // console.log("uploadBase64Img", result);
-                if (result.code == 0) {
-                    //执行称重跟表单提交
-                    doFormSubmit();
-                } else {
-                    layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-                    return;
-                }
-            },
-            error: function (error) {
-                layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-            }
-        });
+        doFormSubmit();
 
         function doFormSubmit() {
             var field = data.field; //获取提交的字段
@@ -364,7 +332,43 @@ layui.define(['table', 'form'], function (exports) {
                         if (parseFloat(result.data.diffWeight) > 10 || parseFloat(result.data.diffWeight) < -10) {
                             $("#diffWeight").css("color", "#FF5722");
                         }
-                        // todo: 显示图片
+
+                        //上传图片
+                        uploadImg();
+                    } else {
+                        layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                    }
+                },
+                error: function (error) {
+                    layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                }
+            });
+        }
+
+        function uploadImg() {
+            //抓取图片并上传图片,返回图片url
+            var canvas = document.getElementById("canvas1");
+            var context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, 330, 212, 0, 0, 120, 80);
+            //将Canvas的数据转换为base64位编码的PNG图像
+            var imageData = canvas.toDataURL("image/png");
+            //截取22位以后的字符串作为图像数据
+            var imgStr = imageData.substr(22);
+            //Ajax上传图片
+            $.ajax({
+                type: 'post',
+                url: '/file/uploadBase64Img',
+                data: {
+                    imgStr: imgStr,
+                    poundLogNo: poundLogNoStr,
+                    uploadType: 1 //上传图片类型 1：称毛重图片 2：称皮重图片
+                },
+                cache: false,
+                dataType: 'json',
+                success: function (result) {
+                    // console.log("uploadBase64Img", result);
+                    if (result.code == 0) {
+                        //图片上传成功
                     } else {
                         layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
                     }
@@ -377,40 +381,7 @@ layui.define(['table', 'form'], function (exports) {
     });
     //称皮重
     form.on('submit(weigh-tare-submit)', function (data) {
-        // console.log("称毛重", data);
-        //抓取图片并上传图片,返回图片url
-        var canvas = document.getElementById("canvas2");
-        var context = canvas.getContext('2d');
-        context.drawImage(video, 0, 0, 330, 212, 0, 0, 120, 80);
-        //将Canvas的数据转换为base64位编码的PNG图像
-        var imageData = canvas.toDataURL("image/png");
-        //截取22位以后的字符串作为图像数据
-        var imgStr = imageData.substr(22);
-        //Ajax上传图片
-        $.ajax({
-            type: 'post',
-            url: '/file/uploadBase64Img',
-            data: {
-                imgStr: imgStr,
-                poundLogNo: poundLogNoStr,
-                uploadType: 2 //上传图片类型 1：称毛重图片 2：称皮重图片
-            },
-            cache: false,
-            dataType: 'json',
-            success: function (result) {
-                // console.log("uploadBase64Img", result);
-                if (result.code == 0) {
-                    //执行称重跟表单提交
-                    doFormSubmit();
-                } else {
-                    layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-                    return;
-                }
-            },
-            error: function (error) {
-                layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-            }
-        });
+        doFormSubmit();
 
         function doFormSubmit() {
             var field = data.field; //获取提交的字段
@@ -437,10 +408,13 @@ layui.define(['table', 'form'], function (exports) {
                         if (parseFloat(result.data.diffWeight) > 10 || parseFloat(result.data.diffWeight) < -10) {
                             $("#diffWeight").css("color", "#FF5722");
                         }
+
+                        //上传图片
+                        uploadImg();
                     } else {
                         //如果还未生成过磅单就称皮重，提示用户是否要执行退货或者卖废铁操作
                         if (result.msg == '找不到您要更新的过磅记录') {
-                            layer.confirm('系统认定您要执行卖废品或者退货过磅，您确定要执行该操作吗？', {icon: 3, title: '提示'}, function (index) {
+                            layer.confirm('系统认定您要执行卖废品或者出货过磅，您确定要执行该操作吗？', {icon: 3, title: '提示'}, function (index) {
                                 $.ajax({
                                     type: 'post',
                                     url: '/poundLog/saveReturnTare',
@@ -451,7 +425,8 @@ layui.define(['table', 'form'], function (exports) {
                                         if (result.code == 0) {
                                             $("#tareWeight").val(result.data.tareWeight);
                                             $("#secondTime").val(result.data.secondTime);
-                                            $("#tareImgUrl").attr("src", result.data.tareImgUrl);
+                                            //上传图片
+                                            uploadImg();
                                         } else {
                                             layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
                                         }
@@ -475,6 +450,41 @@ layui.define(['table', 'form'], function (exports) {
             });
         }
 
+        function uploadImg() {
+            // console.log("称毛重", data);
+            //抓取图片并上传图片,返回图片url
+            var canvas = document.getElementById("canvas2");
+            var context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, 330, 212, 0, 0, 120, 80);
+            //将Canvas的数据转换为base64位编码的PNG图像
+            var imageData = canvas.toDataURL("image/png");
+            //截取22位以后的字符串作为图像数据
+            var imgStr = imageData.substr(22);
+            //Ajax上传图片
+            $.ajax({
+                type: 'post',
+                url: '/file/uploadBase64Img',
+                data: {
+                    imgStr: imgStr,
+                    poundLogNo: poundLogNoStr,
+                    uploadType: 2 //上传图片类型 1：称毛重图片 2：称皮重图片
+                },
+                cache: false,
+                dataType: 'json',
+                success: function (result) {
+                    // console.log("uploadBase64Img", result);
+                    if (result.code == 0) {
+                        //图片上传成功
+
+                    } else {
+                        layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                    }
+                },
+                error: function (error) {
+                    layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                }
+            });
+        }
     })
     //保存
     form.on('submit(btn-save-submit)', function (data) {
@@ -512,29 +522,22 @@ layui.define(['table', 'form'], function (exports) {
     })
     //提交到服务器
     form.on('submit(btn-submit-server)', function (data) {
-        // console.log("保存数据", data);
         var field = data.field;
-        var fieldData = {};
-        //这里只保存备注跟收货单位两个字段，因为其他字段都已经保存过了，这里就不再保存一遍了
-        fieldData.remark = field.remark;
-        fieldData.unitName = field.unitName;
-        fieldData.poundLogNo = field.poundLogNo;
-
-        // console.log("保存数据", field);
-        //提交 Ajax 成功后，静态更新表单中的数据
         $.ajax({
             type: 'post',
-            url: '/poundLog/updatePoundLog',
-            data: fieldData,
+            url: '/poundLog/uploadServer',
+            data: {
+                poundLogNo: field.poundLogNo
+            },
             cache: false,
             dataType: 'json',
             success: function (result) {
                 console.log("result:update:", result);
                 if (result.code == 0) {
                     //数据刷新
-                    $("#unitName").val(result.data.unitName);
-                    $("#remark").val(result.data.remark);
-                    return layer.msg('保存成功');
+                    $("#btn-submit-server").addClass("layui-btn-disabled");
+                    $("#btn-print").removeClass("layui-btn-disabled");
+                    return layer.msg('提交成功');
                 } else {
                     layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
                 }
@@ -700,7 +703,6 @@ layui.define(['table', 'form'], function (exports) {
         }
 
     }
-
     //监听点击事件
     $('.layui-btn.btn-inspection').on('click', function () {
         var type = $(this).data('type');
@@ -725,11 +727,8 @@ layui.define(['table', 'form'], function (exports) {
     }
 
     var video = document.getElementById('video');
-    var canvas1 = document.getElementById('canvas1');
-    var canvas2 = document.getElementById('canvas2');
-    var context1 = canvas1.getContext('2d');
-    var context2 = canvas2.getContext('2d');
 
+    //成功回调
     function success(stream) {
         //兼容webkit核心浏览器
         var CompatibleURL = window.URL || window.webkitURL;
@@ -740,10 +739,12 @@ layui.define(['table', 'form'], function (exports) {
         video.play();
     }
 
+    //失败回调
     function error(error) {
         console.log("访问用户媒体设备失败");
     }
 
+    //访问摄像头
     if (navigator.mediaDevices.getUserMedia || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia) {
         //调用用户媒体设备, 访问摄像头
         getUserMedia({video: {width: 330, height: 212}}, success, error);

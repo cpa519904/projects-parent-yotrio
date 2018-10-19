@@ -21,9 +21,7 @@ public interface IPoundLogService {
 
     int deleteByIds(List<Integer> idList);
 
-    String checkFormSave(PoundLog poundLog);
-
-    PoundLog findByDeliveryNumb(String deliveryNumb);
+    PoundLog findByPoundLogNo(String deliveryNumb);
 
     Integer save(PoundLog poundLog);
 

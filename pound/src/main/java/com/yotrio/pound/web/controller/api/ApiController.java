@@ -1,13 +1,18 @@
 package com.yotrio.pound.web.controller.api;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
-import com.yotrio.pound.constants.PoundConstant;
+import com.yotrio.pound.exceptions.UploadLogException;
+import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundInfo;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.dto.PoundLogDto;
 import com.yotrio.pound.service.IDingTalkService;
+import com.yotrio.pound.service.IInspectionService;
 import com.yotrio.pound.service.IPoundInfoService;
 import com.yotrio.pound.service.IPoundLogService;
 import com.yotrio.pound.web.controller.BaseController;
@@ -17,6 +22,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * 外部接口控制类
@@ -34,6 +41,8 @@ public class ApiController extends BaseController {
     private IPoundLogService poundLogService;
     @Autowired
     private IPoundInfoService poundInfoService;
+    @Autowired
+    private IInspectionService inspectionService;
     @Autowired
     private IDingTalkService dingTalkService;
 
@@ -70,51 +79,65 @@ public class ApiController extends BaseController {
     /**
      * 存储过磅记录,推送钉钉消息
      *
-     * @param poundLog
+     * @param data
      * @return
      */
     @RequestMapping(value = "/poundLog/save", method = {RequestMethod.POST})
     @ResponseBody
-    public Callback savePoundLog(PoundLog poundLog, String token) {
+    public Callback savePoundLog(String data, String token) {
         Integer userId = getAppUserId(token);
-        if (userId == null) {
-            return returnError("无效的token");
+//        if (userId == null) {
+//            return returnError("无效的token");
+//        }
+        if (data == null) {
+            return returnError("数据上传失败");
         }
 
-        //校验表单
-        String checkResult = poundLogService.checkFormSave(poundLog);
-        if (checkResult != null) {
-            return returnError(checkResult);
-        }
+        PoundLog poundLog;
+        List<Inspection> inspections;
+        // TODO: 2018-10-19 这个操作应该放在事物里面，一遍可以回退
+        try {
+            JSONObject root = JSON.parseObject(data);
+            JSONObject poundLogObj = root.getJSONObject("poundLog");
+            JSONArray inspectionsArr = root.getJSONArray("inspections");
+            poundLog = JSON.parseObject(JSONObject.toJSONString(poundLogObj), PoundLog.class);
+            inspections = JSONArray.parseArray(JSONArray.toJSONString(inspectionsArr), Inspection.class);
 
-        //校验地磅状态
-        PoundInfo poundInfo = poundInfoService.findById(poundLog.getId());
-        if (poundInfo == null) {
-            return returnError("找不到对应的地磅信息");
-        }
-        if (poundInfo.getStatus() == PoundConstant.STATUS_STOP) {
-            return returnError("此地磅已被停用，请联系管理员处理...");
-        }
+            if (poundLog != null && inspections != null) {
+                //校验地磅状态
+                PoundInfo poundInfo = poundInfoService.findById(poundLog.getPoundId());
+                if (poundInfo == null) {
+                    return returnError("找不到对应的地磅信息");
+                }
+//                if (poundInfo.getStatus() == PoundConstant.STATUS_STOP) {
+//                    return returnError("此地磅已被停用，请联系管理员处理...");
+//                }
+                poundLog.setPoundName(poundInfo.getPoundName());
 
-        //过磅记录是否已生成
-        PoundLog logInDB = poundLogService.findByDeliveryNumb(poundLog.getDeliveryNumb());
-        if (logInDB != null) {
-            return returnError("过磅单已生成，请勿重复扫码");
-        }
+                //过磅记录是否已生成
+                PoundLog logInDB = poundLogService.findByPoundLogNo(poundLog.getPoundLogNo());
+                if (logInDB != null) {
+                    return returnError("过磅单已生成，请勿重复提交");
+                }
 
-        Integer result = poundLogService.save(poundLog);
-        if (result < 1) {
-            logger.info("存储失败|poundLogId:{}", poundLog.getId());
-            return returnError("存储失败|poundLogId:" + poundLog.getId());
-        }
+                //保存过磅记录
+                poundLogService.save(poundLog);
+                //批量保存报检单
+                inspectionService.saveList(inspections);
 
-        //执行钉钉消息推送
-        String u9Token = getU9Token("301", "301", "001326601", "123456");
-        boolean success = dingTalkService.sendConfirmMessage(u9Token, poundLog.getId());
-        if (success) {
-            return returnSuccess("更新成功，消息已推送，请查收！");
+                //执行钉钉消息推送
+//                String u9Token = getU9Token("301", "301", "001326601", "123456");
+//                boolean success = dingTalkService.sendConfirmMessage(u9Token, poundLog.getId());
+//                if (success) {
+//                    return returnSuccess("数据上传成功，消息已推送，请查收！");
+//                }
+//                return returnError("消息推送失败！");
+                return returnSuccess("上传成功");
+            }
+        } catch (UploadLogException e) {
+            logger.error("上传过磅信息异常:", e.getMessage());
         }
-        return returnError("消息推送失败！");
+        return returnError("数据上传失败");
     }
 
 }

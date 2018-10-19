@@ -3,7 +3,7 @@ package com.yotrio.pound.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
-import com.yotrio.pound.constants.PoundLogConstant;
+import com.yotrio.common.constants.PoundLogConstant;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.domain.SystemProperties;
 import com.yotrio.pound.model.Inspection;
