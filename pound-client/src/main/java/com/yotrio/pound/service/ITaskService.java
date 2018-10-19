@@ -25,4 +25,6 @@ public interface ITaskService {
     List<Task> findUnFinishTasksLimit(int taskAccount);
 
     int save(Task task);
+
+    Task findByOtherId(String poundLogNo);
 }

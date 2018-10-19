@@ -160,6 +160,16 @@ public class PoundLog implements Serializable {
     private Date secondTime;
 
     /**
+     * 毛重base64图片字符串
+     */
+    private String grossImgUrlBase64;
+
+    /**
+     * 皮重base64图片字符串
+     */
+    private String tareImgUrlBase64;
+
+    /**
      * 报检单列表
      */
     private List<Inspection> inspections;
@@ -348,6 +358,22 @@ public class PoundLog implements Serializable {
 
     public void setInspections(List<Inspection> inspections) {
         this.inspections = inspections;
+    }
+
+    public String getGrossImgUrlBase64() {
+        return grossImgUrlBase64;
+    }
+
+    public void setGrossImgUrlBase64(String grossImgUrlBase64) {
+        this.grossImgUrlBase64 = grossImgUrlBase64;
+    }
+
+    public String getTareImgUrlBase64() {
+        return tareImgUrlBase64;
+    }
+
+    public void setTareImgUrlBase64(String tareImgUrlBase64) {
+        this.tareImgUrlBase64 = tareImgUrlBase64;
     }
 
     @Override

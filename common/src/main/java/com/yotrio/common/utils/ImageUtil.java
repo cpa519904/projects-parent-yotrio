@@ -1,13 +1,11 @@
-package com.yotrio.pound.utils;
+package com.yotrio.common.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * 图片处理工具
@@ -21,6 +19,14 @@ import java.io.OutputStream;
 public class ImageUtil {
     private static Logger logger = LoggerFactory.getLogger(ImageUtil.class);
 
+    /**
+     * 将base64图片字符串保存到本地
+     *
+     * @param imgStr
+     * @param filePath
+     * @param fileName
+     * @return 本地图片路径
+     */
     public static String saveBase64Img(String imgStr, String filePath, String fileName) {
 
         BASE64Decoder decoder = new BASE64Decoder();
@@ -52,5 +58,34 @@ public class ImageUtil {
             logger.error("base64 解码失败：{}", e);
             return null;
         }
+    }
+
+    /**
+     * 根据图片地址转换为base64编码字符串
+     *
+     * @param imgFile 本地图片路径  E:/yotrio-pound/images/1539762376305.jpg
+     * @return
+     */
+    public static String getImageBase64Str(String imgFile) {
+        InputStream inputStream = null;
+        byte[] data = null;
+        try {
+            inputStream = new FileInputStream(imgFile);
+            data = new byte[inputStream.available()];
+            inputStream.read(data);
+            inputStream.close();
+        } catch (IOException e) {
+            logger.error("base64 加密失败：{}", e);
+            return null;
+        }
+        // 加密
+        BASE64Encoder encoder = new BASE64Encoder();
+        return encoder.encode(data);
+    }
+
+    public static void main(String[] args) {
+        String imgFile = "E:/yotrio-pound/images/1539762376305.jpg";
+        String imageBase64Str = ImageUtil.getImageBase64Str(imgFile);
+        System.out.println(imageBase64Str);
     }
 }

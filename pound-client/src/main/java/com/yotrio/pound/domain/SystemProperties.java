@@ -46,10 +46,10 @@ public class SystemProperties {
     private String serverPort;
 
     /**
-     * 服务器域名
+     * 本地请求头
      */
-    @Value("${server.domain.name}")
-    private String serverDomainName;
+    @Value("${localhost.url}")
+    private String localhostUrl;
 
     public String getPoundMasterBaseUrl() {
         return PoundMasterBaseUrl;
@@ -91,11 +91,11 @@ public class SystemProperties {
         this.serverPort = serverPort;
     }
 
-    public String getServerDomainName() {
-        return serverDomainName;
+    public String getLocalhostUrl() {
+        return localhostUrl;
     }
 
-    public void setServerDomainName(String serverDomainName) {
-        this.serverDomainName = serverDomainName;
+    public void setLocalhostUrl(String localhostUrl) {
+        this.localhostUrl = localhostUrl;
     }
 }

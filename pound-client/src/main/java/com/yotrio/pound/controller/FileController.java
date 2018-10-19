@@ -1,12 +1,12 @@
 package com.yotrio.pound.controller;
 
 import com.yotrio.common.utils.DateUtil;
+import com.yotrio.common.utils.ImageUtil;
 import com.yotrio.common.utils.StringUtil;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.domain.SystemProperties;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.service.IPoundLogService;
-import com.yotrio.pound.utils.ImageUtil;
 import com.yotrio.pound.utils.ResultUtil;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.lang.StringUtils;
@@ -90,7 +90,7 @@ public class FileController extends BaseController {
             return ResultUtil.error("文件上传失败");
         }
         //转换成http图片地址
-        String imgUrl = "http://localhost:" + systemProperties.getServerPort() + imgLocalPath.substring(systemProperties.getFileLocation().length());
+        String imgUrl = systemProperties.getLocalhostUrl() + systemProperties.getServerPort() + imgLocalPath.substring(systemProperties.getFileLocation().length());
 
         // TODO: 2018-10-17 存入数据库
         if (uploadType == null) {

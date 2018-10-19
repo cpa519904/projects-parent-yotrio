@@ -108,4 +108,14 @@ public class TaskServiceImpl implements ITaskService {
         task.setCreateTime(new Date());
         return taskMapper.insert(task);
     }
+
+    /**
+     * 更otherId获取任务
+     * @param poundLogNo
+     * @return
+     */
+    @Override
+    public Task findByOtherId(String poundLogNo) {
+        return taskMapper.findByOtherId(poundLogNo);
+    }
 }

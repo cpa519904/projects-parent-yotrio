@@ -8,8 +8,10 @@ import com.yotrio.common.utils.NetStateUtil;
 import com.yotrio.common.constants.ApiUrlConstant;
 import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.pound.domain.SystemProperties;
+import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.Task;
+import com.yotrio.pound.service.IInspectionService;
 import com.yotrio.pound.service.IPoundLogService;
 import com.yotrio.pound.service.ITaskService;
 import org.quartz.JobExecutionContext;
@@ -20,7 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TaskQuartz extends QuartzJobBean {
     private static Logger logger = LoggerFactory.getLogger(TaskQuartz.class);
@@ -40,6 +44,8 @@ public class TaskQuartz extends QuartzJobBean {
     private ITaskService taskService;
     @Autowired
     private IPoundLogService poundLogService;
+    @Autowired
+    private IInspectionService inspectionService;
 
     /**
      * 执行定时任务
@@ -61,11 +67,21 @@ public class TaskQuartz extends QuartzJobBean {
         List<Task> taskList = taskService.findUnFinishTasksLimit(TASK_ACCOUNT);
         logger.info("taskList", JSON.toJSONString(taskList));
         for (Task task : taskList) {
-            int poundId = Integer.parseInt(task.getOtherId());
-            PoundLog poundLog = poundLogService.findById(poundId);
+            String poundLogNo = task.getOtherId();
+            PoundLog poundLog = poundLogService.findByPoundLogNo(poundLogNo);
             if (poundLog == null) {
                 continue;
             }
+
+            //获取关联的报检单
+            List<Inspection> inspections = inspectionService.findListByPlNo(poundLogNo);
+
+            JSONObject data = new JSONObject();
+            data.put("poundLog", poundLog);
+            data.put("inspections", inspections);
+            Map<String, Object> map = new HashMap<>(10);
+            map.put("data", data);
+            map.put("token", "token");
 
             //过磅记录发送到服务器
             String url = sysProperties.getPoundMasterBaseUrl() + ApiUrlConstant.SAVE_POUND_LOG;

@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.common.utils.PropertiesFileUtil;
 import com.yotrio.pound.exceptions.UploadLogException;
 import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundInfo;
@@ -16,6 +17,7 @@ import com.yotrio.pound.service.IInspectionService;
 import com.yotrio.pound.service.IPoundInfoService;
 import com.yotrio.pound.service.IPoundLogService;
 import com.yotrio.pound.web.controller.BaseController;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +38,13 @@ import java.util.List;
 @Controller
 @RequestMapping("/api")
 public class ApiController extends BaseController {
+    //本机url
+    private static String LOCALHOST_URL = PropertiesFileUtil.getInstance("SystemParameter").get("localhost.url");
+    //本机文件保存路径
+    private static String FILE_LOCATION = PropertiesFileUtil.getInstance("SystemParameter").get("file.location");
+    //客户端图片保存路径
+    private static String CLIENT_FILE_LOCATION = PropertiesFileUtil.getInstance("SystemParameter").get("client.file.location");
+
 
     @Autowired
     private IPoundLogService poundLogService;
@@ -95,7 +104,7 @@ public class ApiController extends BaseController {
 
         PoundLog poundLog;
         List<Inspection> inspections;
-        // TODO: 2018-10-19 这个操作应该放在事物里面，一遍可以回退
+        // TODO: 2018-10-19 这个操作应该放在事物里面
         try {
             JSONObject root = JSON.parseObject(data);
             JSONObject poundLogObj = root.getJSONObject("poundLog");
@@ -119,6 +128,22 @@ public class ApiController extends BaseController {
                 if (logInDB != null) {
                     return returnError("过磅单已生成，请勿重复提交");
                 }
+
+                //解析过磅图片，将base64图片字符串转成本地图片并保存图片url
+                if (StringUtils.isNotEmpty(poundLog.getGrossImgUrlBase64())) {
+                    String filePath = FILE_LOCATION + poundLog.getGrossImgUrl().substring(CLIENT_FILE_LOCATION.length());
+//                    String grossImgUrlBase64 = ImageUtil.saveBase64Img(poundLog.getGrossImgUrlBase64(),);
+//                    if (StringUtils.isNotEmpty(grossImgUrlBase64)) {
+//                        poundLog.setGrossImgUrlBase64(grossImgUrlBase64);
+//                    }
+                }
+//                if (StringUtils.isNotEmpty(poundLog.getTareImgUrl())) {
+//                    String tareImgFilePath = sysProperties.getFileLocation() + poundLog.getTareImgUrl().substring(sysProperties.getLocalhostUrl().length());
+//                    String tareImgUrlBase64 = ImageUtil.getImageBase64Str(tareImgFilePath);
+//                    if (StringUtils.isNotEmpty(tareImgUrlBase64)) {
+//                        poundLog.setTareImgUrlBase64(tareImgUrlBase64);
+//                    }
+//                }
 
                 //保存过磅记录
                 poundLogService.save(poundLog);

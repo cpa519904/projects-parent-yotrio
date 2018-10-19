@@ -3,8 +3,12 @@ package com.yotrio.pound.controller;
 
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.yotrio.common.constants.*;
+import com.yotrio.common.constants.ApiUrlConstant;
+import com.yotrio.common.constants.InspectionConstant;
+import com.yotrio.common.constants.PoundLogConstant;
+import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.utils.BeansUtil;
+import com.yotrio.common.utils.ImageUtil;
 import com.yotrio.common.utils.NetStateUtil;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.domain.SystemProperties;
@@ -84,53 +88,6 @@ public class PoundLogController extends BaseController {
         map.put("poundLog", poundLog);
         return ResultUtil.success(map);
     }
-
-    /**
-     * 生成本地过磅记录
-     *
-     * @param poundLog
-     * @return
-     */
-//    @RequestMapping(value = "/save", method = {RequestMethod.POST})
-//    @ResponseBody
-//    public Result save(PoundLog poundLog) {
-//        //校验表单
-//        String checkResult = poundLogService.checkFormSave(poundLog);
-//        if (checkResult != null) {
-//            return ResultUtil.error(checkResult);
-//        }
-//
-//        //请求接口获取地磅信息 注：有网络情况下校验地磅状态，网络不通情况下暂时不做此校验
-//        String response = HttpUtil.get(sysProperties.getPoundMasterBaseUrl() + ApiUrlConstant.GET_POUND_INFO + poundLog.getId());
-//        if (StringUtils.isNotEmpty(response)) {
-//            JSONObject object = JSON.parseObject(response);
-//            if (object != null && object.getIntValue("code") == 0) {
-//                JSONObject data = object.getJSONObject("data");
-//                if (data != null) {
-//                    //检查地磅状态
-//                    Integer status = data.getIntValue("status");
-//                    if (status == PoundConstant.STATUS_STOP) {
-//                        return ResultUtil.error("本台机器已停机，如需开机，请联系管理员处理...");
-//                    }
-//                    String poundName = data.getString("poundName");
-//                    poundLog.setPoundName(poundName);
-//                }
-//            }
-//        }
-//
-//        //过磅记录是否已生成
-//        PoundLog logInDB = poundLogService.findByPoundLogNo(poundLog.getPoundLogNo());
-//        if (logInDB != null) {
-//            return ResultUtil.error("过磅单已生成，请勿重复扫码");
-//        }
-//
-//        Integer result = poundLogService.save(poundLog);
-//        if (result >= 1) {
-//            return ResultUtil.success("本地存储成功");
-//        } else {
-//            return ResultUtil.error("本地存储失败");
-//        }
-//    }
 
     /**
      * 更新毛重过磅记录
@@ -416,6 +373,10 @@ public class PoundLogController extends BaseController {
         String msg = "网络连接失败,联网后系统会自动为您提交";
         //先看网络连接是否成功？失败：创建定时任务，提示失败原因
         if (!NetStateUtil.isConnect()) {
+            Task taskInDB = taskService.findByOtherId(poundLogNo);
+            if (taskInDB != null) {
+                return ResultUtil.error("已生成任务，请勿重复提交");
+            }
             Task task = new Task();
             task.setStatus(TaskConstant.STATUS_INIT);
             task.setOtherId(String.valueOf(poundLog.getPlateNo()));
@@ -428,6 +389,22 @@ public class PoundLogController extends BaseController {
             poundLog.setStatus(PoundLogConstant.STATUS_NET_DISCONNECT);
             poundLogService.update(poundLog);
             return ResultUtil.error(msg);
+        }
+
+        //将本地图片url转base64字符串上传，上传成功后再保存线上服务器
+        if (StringUtils.isNotEmpty(poundLog.getGrossImgUrl())) {
+            String grossImgFilePath = sysProperties.getFileLocation() + poundLog.getGrossImgUrl().substring(sysProperties.getLocalhostUrl().length());
+            String grossImgUrlBase64 = ImageUtil.getImageBase64Str(grossImgFilePath);
+            if (StringUtils.isNotEmpty(grossImgUrlBase64)) {
+                poundLog.setGrossImgUrlBase64(grossImgUrlBase64);
+            }
+        }
+        if (StringUtils.isNotEmpty(poundLog.getTareImgUrl())) {
+            String tareImgFilePath = sysProperties.getFileLocation() + poundLog.getTareImgUrl().substring(sysProperties.getLocalhostUrl().length());
+            String tareImgUrlBase64 = ImageUtil.getImageBase64Str(tareImgFilePath);
+            if (StringUtils.isNotEmpty(tareImgUrlBase64)) {
+                poundLog.setTareImgUrlBase64(tareImgUrlBase64);
+            }
         }
 
         //获取关联的报检单
