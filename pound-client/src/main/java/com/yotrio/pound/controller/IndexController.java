@@ -44,5 +44,15 @@ public class IndexController extends BaseController{
         return "home/console";
     }
 
+    /**
+     * 打印过磅单页面
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = { "/printPoundLog.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String printPoundLog(Model model) {
+        return "print/print_pound_log";
+    }
+
 
 }

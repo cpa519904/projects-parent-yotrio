@@ -85,13 +85,13 @@ public class InspectionServiceImpl implements IInspectionService {
     }
 
     /**
-     * 批量插入报检单
-     * @param inspections
+     * 根据过磅单号id更新
+     * @param inspection
      * @return
      */
     @Override
-    public int saveList(List<Inspection> inspections) {
-        return inspectionMapper.saveList(inspections);
+    public int updateByPlIdSelective(Inspection inspection) {
+        return inspectionMapper.updateByPlIdSelective(inspection);
     }
 
     /**

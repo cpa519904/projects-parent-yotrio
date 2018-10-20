@@ -27,5 +27,6 @@ public interface IInspectionService {
 
     List<Inspection> findListByPlNo(String poundLogNo);
 
-    int saveList(List<Inspection> inspections);
+
+    int updateByPlIdSelective(Inspection inspection);
 }

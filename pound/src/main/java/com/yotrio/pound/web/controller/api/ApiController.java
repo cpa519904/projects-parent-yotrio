@@ -125,17 +125,10 @@ public class ApiController extends BaseController {
 //                }
                 poundLog.setPoundName(poundInfo.getPoundName());
 
-                //过磅记录是否已生成
-                PoundLog logInDB = poundLogService.findByPoundLogNo(poundLog.getPoundLogNo());
-                if (logInDB != null) {
-                    return returnError("过磅单已生成，请勿重复提交");
-                }
-
                 //构建图片存储路径
                 StringBuilder filePath = new StringBuilder();
                 String basePath = DateUtil.getFilePathByDate(filePath + "/images/upload/");
                 filePath.append(basePath).append(poundLog.getPoundLogNo()).append("/");
-
 
                 //解析过磅图片，将base64图片字符串转成本地图片并保存图片url
                 if (StringUtils.isNotEmpty(poundLog.getGrossImgUrlBase64())) {
@@ -155,14 +148,30 @@ public class ApiController extends BaseController {
                     if (StringUtils.isNotEmpty(imgLocalPath)) {
                         //转换成http图片地址
                         String imgUrl = LOCALHOST_URL + imgLocalPath.substring(FILE_LOCATION.length());
-                        poundLog.setGrossImgUrl(imgUrl);
+                        poundLog.setTareImgUrl(imgUrl);
                     }
                 }
 
-                //保存过磅记录
-                poundLogService.save(poundLog);
-                //批量保存报检单
-                inspectionService.saveList(inspections);
+                //过磅记录是否已生成
+                PoundLog logInDB = poundLogService.findByPoundLogNoAndPoundId(poundLog.getPoundLogNo(),poundLog.getPoundId());
+                if (logInDB != null) {
+                    //已生成执行更新操作
+                    poundLogService.updateByPlNoAndPoundId(logInDB);
+                    for (Inspection inspection : inspections) {
+                        inspection.setPlId(logInDB.getId());
+                        inspectionService.updateByPlIdSelective(inspection);
+                    }
+                } else {
+                    //未生成执行插入操作
+                    poundLog.setId(null);
+                    int id = poundLogService.save(poundLog);
+                    //保存报检单信息
+                    for (Inspection inspection : inspections) {
+                        inspection.setId(null);
+                        inspection.setPlId(id);
+                        inspectionService.save(inspection);
+                    }
+                }
 
                 //执行钉钉消息推送
 //                String u9Token = getU9Token("301", "301", "001326601", "123456");

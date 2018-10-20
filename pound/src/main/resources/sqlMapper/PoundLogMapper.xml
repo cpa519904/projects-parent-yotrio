@@ -36,6 +36,12 @@
     from pound_log
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="findByPoundLogNoAndPoundId" parameterType="com.yotrio.pound.model.PoundLog"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from pound_log
+    where pound_log_no = #{poundLogNo,jdbcType=VARCHAR} and pound_id = #{poundId,jdbcType=INTEGER}
+  </select>
   <select id="listUnFinished" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -52,7 +58,7 @@
     delete from pound_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yotrio.pound.model.PoundLog">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.PoundLog">
     insert into pound_log (id, pound_id, pound_name, 
       pound_log_no, gross_weight, tare_weight, 
       net_weight, sample_net_weight, return_weight_total, 
@@ -70,7 +76,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{firstTime,jdbcType=TIMESTAMP}, 
       #{secondTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.yotrio.pound.model.PoundLog">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.PoundLog">
     insert into pound_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -277,6 +283,75 @@
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPlNoAndPoundIdSelective" parameterType="com.yotrio.pound.model.PoundLog">
+    update pound_log
+    <set>
+      <if test="poundId != null">
+        pound_id = #{poundId,jdbcType=INTEGER},
+      </if>
+      <if test="poundName != null">
+        pound_name = #{poundName,jdbcType=VARCHAR},
+      </if>
+      <if test="poundLogNo != null">
+        pound_log_no = #{poundLogNo,jdbcType=VARCHAR},
+      </if>
+      <if test="grossWeight != null">
+        gross_weight = #{grossWeight,jdbcType=DOUBLE},
+      </if>
+      <if test="tareWeight != null">
+        tare_weight = #{tareWeight,jdbcType=DOUBLE},
+      </if>
+      <if test="netWeight != null">
+        net_weight = #{netWeight,jdbcType=DOUBLE},
+      </if>
+      <if test="sampleNetWeight != null">
+        sample_net_weight = #{sampleNetWeight,jdbcType=DOUBLE},
+      </if>
+      <if test="returnWeightTotal != null">
+        return_weight_total = #{returnWeightTotal,jdbcType=DOUBLE},
+      </if>
+      <if test="diffWeight != null">
+        diff_weight = #{diffWeight,jdbcType=DOUBLE},
+      </if>
+      <if test="grossImgUrl != null">
+        gross_img_url = #{grossImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="tareImgUrl != null">
+        tare_img_url = #{tareImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="unitName != null">
+        unit_name = #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="plateNo != null">
+        plate_no = #{plateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="types != null">
+        types = #{types,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="returnGoods != null">
+        return_goods = #{returnGoods,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="firstTime != null">
+        first_time = #{firstTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="secondTime != null">
+        second_time = #{secondTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where pound_id = #{poundId,jdbcType=INTEGER} and pound_log_no = #{poundLogNo,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yotrio.pound.model.PoundLog">
     update pound_log

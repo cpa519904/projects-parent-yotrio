@@ -55,21 +55,6 @@
       #{types,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-    <insert id="saveList" parameterType="java.util.List">
-    insert into inspection (id, pl_id, pl_no,
-      insp_no, plate_no, goods_kind,
-      comp_name, insp_weight, return_weight,
-      types, status, create_time,
-      update_time)
-    values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.id,jdbcType=INTEGER}, #{item.plId,jdbcType=INTEGER}, #{item.plNo,jdbcType=VARCHAR},
-            #{item.inspNo,jdbcType=VARCHAR}, #{item.plateNo,jdbcType=VARCHAR}, #{item.goodsKind,jdbcType=INTEGER},
-            #{item.compName,jdbcType=VARCHAR}, #{item.inspWeight,jdbcType=DOUBLE}, #{item.returnWeight,jdbcType=DOUBLE},
-            #{item.types,jdbcType=INTEGER}, #{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP},
-            #{item.updateTime,jdbcType=TIMESTAMP})
-        </foreach>
-  </insert>
     <insert id="insertSelective" parameterType="com.yotrio.pound.model.Inspection">
         insert into inspection
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -196,6 +181,48 @@
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPlIdSelective" parameterType="com.yotrio.pound.model.Inspection">
+        update inspection
+        <set>
+            <if test="plId != null">
+                pl_id = #{plId,jdbcType=INTEGER},
+            </if>
+            <if test="plNo != null">
+                pl_no = #{plNo,jdbcType=VARCHAR},
+            </if>
+            <if test="inspNo != null">
+                insp_no = #{inspNo,jdbcType=VARCHAR},
+            </if>
+            <if test="plateNo != null">
+                plate_no = #{plateNo,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsKind != null">
+                goods_kind = #{goodsKind,jdbcType=INTEGER},
+            </if>
+            <if test="compName != null">
+                comp_name = #{compName,jdbcType=VARCHAR},
+            </if>
+            <if test="inspWeight != null">
+                insp_weight = #{inspWeight,jdbcType=DOUBLE},
+            </if>
+            <if test="returnWeight != null">
+                return_weight = #{returnWeight,jdbcType=DOUBLE},
+            </if>
+            <if test="types != null">
+                types = #{types,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where pl_id = #{plId,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yotrio.pound.model.Inspection">
     update inspection

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <title>打印过磅单</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
+</head>
+<body>
+<div class="layui-container" id="print-content">
+    <div class="layui-row">
+        <div class="layui-col-md12 ">
+            <div class="layui-card">
+                <div class="layui-form layui-card-header">
+                    <div style="text-align: center">浙江永强过磅单</div>
+                </div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-xs3">
+                            <div class="grid-demo">单号：20180306123512</div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div class="">车牌：浙J123</div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div class="">收货单位：制造一部</div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div class="">送货单位：宁波钢铁有限公司</div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs6">
+                            <div class="layui-row">
+                                <div class="layui-col-xs6">
+                                    <div class="layui-row">
+                                        <div class="layui-col-xs3">
+                                            <div class="grid-demo">单号：20180306123512</div>
+                                        </div>
+                                        <div class="layui-col-xs9">
+                                            <div class="">车牌：浙J123</div>
+                                        </div>
+                                        <div class="layui-col-xs3">
+                                            <div class="grid-demo grid-demo-bg2">毛重：</div>
+                                        </div>
+                                        <div class="layui-col-xs9">
+                                            <div class="grid-demo grid-demo-bg3">1800</div>
+                                        </div>
+                                        <div class="layui-col-xs3">
+                                            <div class="">时间：</div>
+                                        </div>
+                                        <div class="layui-col-xs9">
+                                            <div class="">2018-10-20 16:30:15</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-xs6">
+                                    <div class=""><img src="http://localhost:8000/images/upload/2018/10/18/20181016154338/1539831400905.jpg" alt="" width="60px" height="40px">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <div class="layui-row">
+                                <div class="layui-col-xs6">
+                                    <div class="layui-row">
+                                        <div class="layui-col-xs3">
+                                            <div class="grid-demo grid-demo-bg2">皮重：</div>
+                                        </div>
+                                        <div class="layui-col-xs9">
+                                            <div class="grid-demo grid-demo-bg3">1800</div>
+                                        </div>
+                                        <div class="layui-col-xs3">
+                                            <div class="">时间：</div>
+                                        </div>
+                                        <div class="layui-col-xs9">
+                                            <div class="">2018-10-20 16:30:15</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-xs6">
+                                    <div class=""><img src="http://localhost:8000/images/upload/2018/10/18/20181016154338/1539831400905.jpg" alt="" width="60px" height="40px">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table" lay-size="sm">
+                        <thead>
+                        <tr>
+                            <th>车牌：浙J123</th>
+                            <th>单号：20180306123512</th>
+                            <th>收货单位：制造一部</th>
+                            <th>送货单位：宁波钢铁有限公司</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>许闲心</td>
+                            <td>2016-11-28</td>
+                            <td>于千万人之中遇见你所遇见的人…</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="margin: 0;padding: 0">
+                                <table class="" lay-size="sm">
+                                    <tbody>
+                                    <tr>
+                                        <td>table中的table</td>
+                                        <td>table中的table</td>
+                                        <td>table中的table</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td colspan="2">时间：2018-10-20 15:26:30</td>
+
+                        </tr>
+                        <tr>
+                            <td rowspan="2">皮重：1800</td>
+                            <td rowspan="2">时间：2018-10-20 15:26:30</td>
+                            <td rowspan="2"></td>
+                            <td rowspan="2"></td>
+                        </tr>
+                        <!--<tr>-->
+                        <!--<td>sentsin</td>-->
+                        <!--<td>2016-11-27</td>-->
+                        <!--<td> Life is either a daring adventure or nothing.</td>-->
+                        <!--</tr>-->
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+            <div class="layui-card">
+                <button class="layui-btn layuiadmin-btn-admin" id="btn-print">
+                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<script src="../../../layuiadmin/layui/layui.js"></script>
+<script src="../../layuiadmin/lib/extend/jQuery-3.3.1.min.js?t=1"></script>
+<script src="../../layuiadmin/lib/extend/jQuery.print.min.js?t=1"></script>
+<script>
+    layui.config({
+        base: '../../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'task', 'table'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , table = layui.table;
+
+        $("#btn-print").click(function () {
+
+            //弹出打印页面
+            $("#print-content").print({
+                globalStyles: true,
+                mediaPrint: false,
+                stylesheet: null,
+                noPrintSelector: ".no-print",
+                iframe: true,
+                append: null,
+                prepend: null,
+                manuallyCopyFormValues: true,
+                deferred: $.Deferred(),
+                timeout: 750,
+                title: null,
+                doctype: '<!doctype html>'
+            });
+
+        });
+    });
+</script>
+</body>
+
+</html>

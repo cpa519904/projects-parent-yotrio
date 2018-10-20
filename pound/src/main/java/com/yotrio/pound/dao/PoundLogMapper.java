@@ -27,4 +27,8 @@ public interface PoundLogMapper {
     List<PoundLog> listUnFinished(Integer status);
 
     int deleteByIds(List<Integer> ids);
+
+    int updateByPlNoAndPoundIdSelective(PoundLog poundLog);
+
+    PoundLog findByPoundLogNoAndPoundId(PoundLog poundLog);
 }

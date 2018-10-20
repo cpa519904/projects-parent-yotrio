@@ -10,6 +10,7 @@ import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.utils.BeansUtil;
 import com.yotrio.common.utils.ImageUtil;
 import com.yotrio.common.utils.NetStateUtil;
+import com.yotrio.common.utils.StringUtil;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.domain.SystemProperties;
 import com.yotrio.pound.model.Inspection;
@@ -393,14 +394,14 @@ public class PoundLogController extends BaseController {
 
         //将本地图片url转base64字符串上传，上传成功后再保存线上服务器
         if (StringUtils.isNotEmpty(poundLog.getGrossImgUrl())) {
-            String grossImgFilePath = sysProperties.getFileLocation() + poundLog.getGrossImgUrl().substring(sysProperties.getLocalhostUrl().length());
+            String grossImgFilePath = sysProperties.getFileLocation() + poundLog.getGrossImgUrl().substring((sysProperties.getLocalhostUrl() + sysProperties.getServerPort()).length());
             String grossImgUrlBase64 = ImageUtil.getImageBase64Str(grossImgFilePath);
             if (StringUtils.isNotEmpty(grossImgUrlBase64)) {
                 poundLog.setGrossImgUrlBase64(grossImgUrlBase64);
             }
         }
         if (StringUtils.isNotEmpty(poundLog.getTareImgUrl())) {
-            String tareImgFilePath = sysProperties.getFileLocation() + poundLog.getTareImgUrl().substring(sysProperties.getLocalhostUrl().length());
+            String tareImgFilePath = sysProperties.getFileLocation() + poundLog.getTareImgUrl().substring((sysProperties.getLocalhostUrl() + sysProperties.getServerPort()).length());
             String tareImgUrlBase64 = ImageUtil.getImageBase64Str(tareImgFilePath);
             if (StringUtils.isNotEmpty(tareImgUrlBase64)) {
                 poundLog.setTareImgUrlBase64(tareImgUrlBase64);
@@ -424,8 +425,8 @@ public class PoundLogController extends BaseController {
                 JSONObject json = JSONObject.parseObject(response);
                 msg = json.getString("msg");
                 if (json.getIntValue("code") == SUCCESS_CODE) {
-                    //上传成功更新本地过磅单状态
-                    poundLog.setStatus(PoundLogConstant.STATUS_POUND_FINISH);
+                    //上传成功更新本地过磅单状态为待打印
+                    poundLog.setStatus(PoundLogConstant.STATUS_WAIT_PRINT);
                     poundLogService.update(poundLog);
                     return ResultUtil.success("上传成功");
                 } else {
@@ -439,4 +440,26 @@ public class PoundLogController extends BaseController {
         return ResultUtil.error("上传过磅单失败!");
     }
 
+    /**
+     * 点击了打印按钮,更改状态
+     *
+     * @return
+     */
+    @RequestMapping(value = "/doPrint", method = {RequestMethod.GET})
+    @ResponseBody
+    public Result doPrint(String poundLogNo) {
+        if (StringUtils.isEmpty(poundLogNo)) {
+            return ResultUtil.error("找不到您要打印的过磅单单号");
+        }
+        PoundLog poundLog = poundLogService.findByPoundLogNo(poundLogNo);
+        if (poundLog == null) {
+            return ResultUtil.error("找不到您要打印的过磅单");
+        }
+        poundLog.setStatus(PoundLogConstant.STATUS_POUND_FINISH);
+//        int result = poundLogService.update(poundLog);
+//        if (result < 1) {
+//            return ResultUtil.error("更新打印状态失败");
+//        }
+        return ResultUtil.success("更新打印状态成功");
+    }
 }

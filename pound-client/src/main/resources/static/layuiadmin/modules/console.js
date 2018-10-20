@@ -108,7 +108,7 @@ layui.define(['table', 'form'], function (exports) {
                             var status = currPoundLog.status;
                             if (status == 2) {//两个数据都有了,可以显示提交按钮了
                                 $("#btn-submit-server").removeClass("layui-btn-disabled");
-                            } else if (status > 2) {
+                            } else if (status == 3 || status == 4) {
                                 $("#btn-print").removeClass("layui-btn-disabled");
                             }
                             console.log("status:", status);
@@ -522,6 +522,7 @@ layui.define(['table', 'form'], function (exports) {
     })
     //提交到服务器
     form.on('submit(btn-submit-server)', function (data) {
+        var index = layer.load(2, {time: 10*1000}); //又换了种风格，并且设定最长等待10秒
         var field = data.field;
         $.ajax({
             type: 'post',
@@ -532,6 +533,8 @@ layui.define(['table', 'form'], function (exports) {
             cache: false,
             dataType: 'json',
             success: function (result) {
+                //关闭
+                layer.close(index);
                 console.log("result:update:", result);
                 if (result.code == 0) {
                     //数据刷新
@@ -543,13 +546,52 @@ layui.define(['table', 'form'], function (exports) {
                 }
             },
             error: function (error) {
+                //关闭
+                layer.close(index);
                 layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
             }
         });
     });
     //打印
     form.on('submit(btn-print)', function (data) {
+        var filed = data.field;
         //执行打印操作
+        $.ajax({
+            type: 'get',
+            url: '/poundLog/doPrint',
+            data: {
+                poundLogNo: filed.poundLogNo
+            },
+            cache: false,
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 0) {
+                    $("#btn-print").removeClass("layui-btn-disabled");
+
+                    //弹出打印页面
+                    $("#print-content").print({
+                        globalStyles: true,
+                        mediaPrint: false,
+                        stylesheet: null,
+                        noPrintSelector: ".no-print",
+                        iframe: true,
+                        append: null,
+                        prepend: null,
+                        manuallyCopyFormValues: true,
+                        deferred: $.Deferred(),
+                        timeout: 750,
+                        title: null,
+                        doctype: '<!doctype html>'
+                    });
+                } else {
+                    layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                }
+            },
+            error: function (error) {
+                layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+            }
+        });
+
     });
 
     //事件

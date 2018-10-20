@@ -31,9 +31,16 @@ public class PoundLogConstant {
     public static final int STATUS_NET_DISCONNECT = 3;
 
     /**
+     * 等待打印
+     */
+    public static final int STATUS_WAIT_PRINT = 4;
+
+    /**
      * 完成过磅已提交成功
      */
     public static final int STATUS_POUND_FINISH = 10;
+
+
 
     /**
      * 类型：0 进货

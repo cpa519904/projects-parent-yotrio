@@ -28,4 +28,8 @@ public interface IPoundLogService {
     PoundLog findById(Integer id);
 
     Integer update(PoundLog poundLog);
+
+    int updateByPlNoAndPoundId(PoundLog poundLog);
+
+    PoundLog findByPoundLogNoAndPoundId(String poundLogNo, Integer poundId);
 }
