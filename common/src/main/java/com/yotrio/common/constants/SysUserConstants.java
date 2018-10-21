@@ -1,4 +1,4 @@
-package com.yotrio.pound.constants;
+package com.yotrio.common.constants;
 
 /**
  * 模块名称：projects-parent com.wyq.common.constants.admin

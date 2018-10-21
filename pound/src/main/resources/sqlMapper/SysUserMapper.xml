@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yotrio.pound.dao.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.yotrio.pound.model.SysUser">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="emp_id" jdbcType="INTEGER" property="empId" />
+    <result column="dind_uid" jdbcType="VARCHAR" property="dindUid" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="rank" jdbcType="INTEGER" property="rank" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, username, password, emp_id, dind_uid, group_id, nickname, rank, status, created_by, 
+    phone, create_time, update_time, last_login_time, last_login_ip, email, salt
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_user
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yotrio.pound.model.SysUser">
+    insert into sys_user (id, username, password, 
+      emp_id, dind_uid, group_id, 
+      nickname, rank, status, 
+      created_by, phone, create_time, 
+      update_time, last_login_time, last_login_ip, 
+      email, salt)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{empId,jdbcType=INTEGER}, #{dindUid,jdbcType=VARCHAR}, #{groupId,jdbcType=INTEGER}, 
+      #{nickname,jdbcType=VARCHAR}, #{rank,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{createdBy,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yotrio.pound.model.SysUser">
+    insert into sys_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="empId != null">
+        emp_id,
+      </if>
+      <if test="dindUid != null">
+        dind_uid,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="rank != null">
+        rank,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time,
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="empId != null">
+        #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="dindUid != null">
+        #{dindUid,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null">
+        #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null">
+        #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yotrio.pound.model.SysUser">
+    update sys_user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="empId != null">
+        emp_id = #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="dindUid != null">
+        dind_uid = #{dindUid,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null">
+        rank = #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yotrio.pound.model.SysUser">
+    update sys_user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      emp_id = #{empId,jdbcType=INTEGER},
+      dind_uid = #{dindUid,jdbcType=VARCHAR},
+      group_id = #{groupId,jdbcType=INTEGER},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      rank = #{rank,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectCountByMap" parameterType="map" resultType="int">
+    select count(*) from  <if test="dynamicTableName != null and dynamicTableName != ''"> ${dynamicTableName}  </if><if test="dynamicTableName == null or dynamicTableName == ''"> sys_user</if> <include refid="Base_Query_Map_Condition" /> 
+  </select>
+  <select id="selectListByMap" parameterType="map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from  <if test="dynamicTableName != null and dynamicTableName != ''"> ${dynamicTableName}  </if><if test="dynamicTableName == null or dynamicTableName == ''"> sys_user</if> <include refid="Base_Query_Map_Condition" />  order by  id desc
+  </select>
+  <sql id="Base_Query_Map_Condition">
+    <trim prefix="where" prefixOverrides="and | or">
+      <if test="id != null and id != ''">
+         AND id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="username != null and username != ''">
+         AND username = #{username,jdbcType=VARCHAR}
+      </if>
+      <if test="password != null and password != ''">
+         AND password = #{password,jdbcType=VARCHAR}
+      </if>
+      <if test="empId != null and empId != ''">
+         AND emp_id = #{empId,jdbcType=INTEGER}
+      </if>
+      <if test="dindUid != null and dindUid != ''">
+         AND dind_uid = #{dindUid,jdbcType=VARCHAR}
+      </if>
+      <if test="groupId != null and groupId != ''">
+         AND group_id = #{groupId,jdbcType=INTEGER}
+      </if>
+      <if test="nickname != null and nickname != ''">
+         AND nickname = #{nickname,jdbcType=VARCHAR}
+      </if>
+      <if test="rank != null and rank != ''">
+         AND rank = #{rank,jdbcType=INTEGER}
+      </if>
+      <if test="status != null and status != ''">
+         AND status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="createdBy != null and createdBy != ''">
+         AND created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="phone != null and phone != ''">
+         AND phone = #{phone,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null and createTime != ''">
+         AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+         AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastLoginTime != null and lastLoginTime != ''">
+         AND last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastLoginIp != null and lastLoginIp != ''">
+         AND last_login_ip = #{lastLoginIp,jdbcType=VARCHAR}
+      </if>
+      <if test="email != null and email != ''">
+         AND email = #{email,jdbcType=VARCHAR}
+      </if>
+      <if test="salt != null and salt != ''">
+         AND salt = #{salt,jdbcType=VARCHAR}
+      </if>
+      <if test="myGreater_id != null and myGreater_id != ''">
+         AND id &gt; #{myGreater_id,jdbcType=INTEGER}
+      </if>
+      <if test="myGreater_username != null and myGreater_username != ''">
+         AND username &gt; #{myGreater_username,jdbcType=VARCHAR}
+      </if>
+      <if test="myGreater_password != null and myGreater_password != ''">
+         AND password &gt; #{myGreater_password,jdbcType=VARCHAR}
+      </if>
+      <if test="myGreater_empId != null and myGreater_empId != ''">
+         AND emp_id &gt; #{myGreater_empId,jdbcType=INTEGER}
+      </if>
+      <if test="myGreater_dindUid != null and myGreater_dindUid != ''">
+         AND dind_uid &gt; #{myGreater_dindUid,jdbcType=VARCHAR}
+      </if>
+      <if test="myGreater_groupId != null and myGreater_groupId != ''">
+         AND group_id &gt; #{myGreater_groupId,jdbcType=INTEGER}
+      </if>
+      <if test="myGreater_nickname != null and myGreater_nickname != ''">
+         AND nickname &gt; #{myGreater_nickname,jdbcType=VARCHAR}
+      </if>
+      <if test="myGreater_rank != null and myGreater_rank != ''">
+         AND rank &gt; #{myGreater_rank,jdbcType=INTEGER}
+      </if>
+      <if test="myGreater_status != null and myGreater_status != ''">
+         AND status &gt; #{myGreater_status,jdbcType=INTEGER}
+      </if>
+      <if test="myGreater_createdBy != null and myGreater_createdBy != ''">
+         AND created_by &gt; #{myGreater_createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="myGreater_phone != null and myGreater_phone != ''">
+         AND phone &gt; #{myGreater_phone,jdbcType=VARCHAR}
+      </if>
+      <if test="myGreater_createTime != null and myGreater_createTime != ''">
+         AND create_time &gt; #{myGreater_createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="myGreater_updateTime != null and myGreater_updateTime != ''">
+         AND update_time &gt; #{myGreater_updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="myGreater_lastLoginTime != null and myGreater_lastLoginTime != ''">
+         AND last_login_time &gt; #{myGreater_lastLoginTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="myGreater_lastLoginIp != null and myGreater_lastLoginIp != ''">
+         AND last_login_ip &gt; #{myGreater_lastLoginIp,jdbcType=VARCHAR}
+      </if>
+      <if test="myGreater_email != null and myGreater_email != ''">
+         AND email &gt; #{myGreater_email,jdbcType=VARCHAR}
+      </if>
+      <if test="myGreater_salt != null and myGreater_salt != ''">
+         AND salt &gt; #{myGreater_salt,jdbcType=VARCHAR}
+      </if>
+      <if test="myLesser_id != null and myLesser_id != ''">
+         AND id &lt; #{myLesser_id,jdbcType=INTEGER}
+      </if>
+      <if test="myLesser_username != null and myLesser_username != ''">
+         AND username &lt; #{myLesser_username,jdbcType=VARCHAR}
+      </if>
+      <if test="myLesser_password != null and myLesser_password != ''">
+         AND password &lt; #{myLesser_password,jdbcType=VARCHAR}
+      </if>
+      <if test="myLesser_empId != null and myLesser_empId != ''">
+         AND emp_id &lt; #{myLesser_empId,jdbcType=INTEGER}
+      </if>
+      <if test="myLesser_dindUid != null and myLesser_dindUid != ''">
+         AND dind_uid &lt; #{myLesser_dindUid,jdbcType=VARCHAR}
+      </if>
+      <if test="myLesser_groupId != null and myLesser_groupId != ''">
+         AND group_id &lt; #{myLesser_groupId,jdbcType=INTEGER}
+      </if>
+      <if test="myLesser_nickname != null and myLesser_nickname != ''">
+         AND nickname &lt; #{myLesser_nickname,jdbcType=VARCHAR}
+      </if>
+      <if test="myLesser_rank != null and myLesser_rank != ''">
+         AND rank &lt; #{myLesser_rank,jdbcType=INTEGER}
+      </if>
+      <if test="myLesser_status != null and myLesser_status != ''">
+         AND status &lt; #{myLesser_status,jdbcType=INTEGER}
+      </if>
+      <if test="myLesser_createdBy != null and myLesser_createdBy != ''">
+         AND created_by &lt; #{myLesser_createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="myLesser_phone != null and myLesser_phone != ''">
+         AND phone &lt; #{myLesser_phone,jdbcType=VARCHAR}
+      </if>
+      <if test="myLesser_createTime != null and myLesser_createTime != ''">
+         AND create_time &lt; #{myLesser_createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="myLesser_updateTime != null and myLesser_updateTime != ''">
+         AND update_time &lt; #{myLesser_updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="myLesser_lastLoginTime != null and myLesser_lastLoginTime != ''">
+         AND last_login_time &lt; #{myLesser_lastLoginTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="myLesser_lastLoginIp != null and myLesser_lastLoginIp != ''">
+         AND last_login_ip &lt; #{myLesser_lastLoginIp,jdbcType=VARCHAR}
+      </if>
+      <if test="myLesser_email != null and myLesser_email != ''">
+         AND email &lt; #{myLesser_email,jdbcType=VARCHAR}
+      </if>
+      <if test="myLesser_salt != null and myLesser_salt != ''">
+         AND salt &lt; #{myLesser_salt,jdbcType=VARCHAR}
+      </if>
+      <if test="myLike_id != null and myLike_id != ''">
+         AND id like CONCAT('%', #{myLike_id,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLike_username != null and myLike_username != ''">
+         AND username like CONCAT('%', #{myLike_username,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLike_password != null and myLike_password != ''">
+         AND password like CONCAT('%', #{myLike_password,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLike_empId != null and myLike_empId != ''">
+         AND emp_id like CONCAT('%', #{myLike_empId,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLike_dindUid != null and myLike_dindUid != ''">
+         AND dind_uid like CONCAT('%', #{myLike_dindUid,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLike_groupId != null and myLike_groupId != ''">
+         AND group_id like CONCAT('%', #{myLike_groupId,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLike_nickname != null and myLike_nickname != ''">
+         AND nickname like CONCAT('%', #{myLike_nickname,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLike_rank != null and myLike_rank != ''">
+         AND rank like CONCAT('%', #{myLike_rank,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLike_status != null and myLike_status != ''">
+         AND status like CONCAT('%', #{myLike_status,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLike_createdBy != null and myLike_createdBy != ''">
+         AND created_by like CONCAT('%', #{myLike_createdBy,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLike_phone != null and myLike_phone != ''">
+         AND phone like CONCAT('%', #{myLike_phone,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLike_createTime != null and myLike_createTime != ''">
+         AND create_time like CONCAT('%', #{myLike_createTime,jdbcType=TIMESTAMP},'%' )
+      </if>
+      <if test="myLike_updateTime != null and myLike_updateTime != ''">
+         AND update_time like CONCAT('%', #{myLike_updateTime,jdbcType=TIMESTAMP},'%' )
+      </if>
+      <if test="myLike_lastLoginTime != null and myLike_lastLoginTime != ''">
+         AND last_login_time like CONCAT('%', #{myLike_lastLoginTime,jdbcType=TIMESTAMP},'%' )
+      </if>
+      <if test="myLike_lastLoginIp != null and myLike_lastLoginIp != ''">
+         AND last_login_ip like CONCAT('%', #{myLike_lastLoginIp,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLike_email != null and myLike_email != ''">
+         AND email like CONCAT('%', #{myLike_email,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLike_salt != null and myLike_salt != ''">
+         AND salt like CONCAT('%', #{myLike_salt,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLikeStart_id != null and myLikeStart_id != ''">
+         AND id like CONCAT('%', #{myLikeStart_id,jdbcType=INTEGER})
+      </if>
+      <if test="myLikeStart_username != null and myLikeStart_username != ''">
+         AND username like CONCAT('%', #{myLikeStart_username,jdbcType=VARCHAR})
+      </if>
+      <if test="myLikeStart_password != null and myLikeStart_password != ''">
+         AND password like CONCAT('%', #{myLikeStart_password,jdbcType=VARCHAR})
+      </if>
+      <if test="myLikeStart_empId != null and myLikeStart_empId != ''">
+         AND emp_id like CONCAT('%', #{myLikeStart_empId,jdbcType=INTEGER})
+      </if>
+      <if test="myLikeStart_dindUid != null and myLikeStart_dindUid != ''">
+         AND dind_uid like CONCAT('%', #{myLikeStart_dindUid,jdbcType=VARCHAR})
+      </if>
+      <if test="myLikeStart_groupId != null and myLikeStart_groupId != ''">
+         AND group_id like CONCAT('%', #{myLikeStart_groupId,jdbcType=INTEGER})
+      </if>
+      <if test="myLikeStart_nickname != null and myLikeStart_nickname != ''">
+         AND nickname like CONCAT('%', #{myLikeStart_nickname,jdbcType=VARCHAR})
+      </if>
+      <if test="myLikeStart_rank != null and myLikeStart_rank != ''">
+         AND rank like CONCAT('%', #{myLikeStart_rank,jdbcType=INTEGER})
+      </if>
+      <if test="myLikeStart_status != null and myLikeStart_status != ''">
+         AND status like CONCAT('%', #{myLikeStart_status,jdbcType=INTEGER})
+      </if>
+      <if test="myLikeStart_createdBy != null and myLikeStart_createdBy != ''">
+         AND created_by like CONCAT('%', #{myLikeStart_createdBy,jdbcType=VARCHAR})
+      </if>
+      <if test="myLikeStart_phone != null and myLikeStart_phone != ''">
+         AND phone like CONCAT('%', #{myLikeStart_phone,jdbcType=VARCHAR})
+      </if>
+      <if test="myLikeStart_createTime != null and myLikeStart_createTime != ''">
+         AND create_time like CONCAT('%', #{myLikeStart_createTime,jdbcType=TIMESTAMP})
+      </if>
+      <if test="myLikeStart_updateTime != null and myLikeStart_updateTime != ''">
+         AND update_time like CONCAT('%', #{myLikeStart_updateTime,jdbcType=TIMESTAMP})
+      </if>
+      <if test="myLikeStart_lastLoginTime != null and myLikeStart_lastLoginTime != ''">
+         AND last_login_time like CONCAT('%', #{myLikeStart_lastLoginTime,jdbcType=TIMESTAMP})
+      </if>
+      <if test="myLikeStart_lastLoginIp != null and myLikeStart_lastLoginIp != ''">
+         AND last_login_ip like CONCAT('%', #{myLikeStart_lastLoginIp,jdbcType=VARCHAR})
+      </if>
+      <if test="myLikeStart_email != null and myLikeStart_email != ''">
+         AND email like CONCAT('%', #{myLikeStart_email,jdbcType=VARCHAR})
+      </if>
+      <if test="myLikeStart_salt != null and myLikeStart_salt != ''">
+         AND salt like CONCAT('%', #{myLikeStart_salt,jdbcType=VARCHAR})
+      </if>
+      <if test="myLikeEnd_id != null and myLikeEnd_id != ''">
+         AND id like CONCAT( #{myLikeEnd_id,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLikeEnd_username != null and myLikeEnd_username != ''">
+         AND username like CONCAT( #{myLikeEnd_username,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLikeEnd_password != null and myLikeEnd_password != ''">
+         AND password like CONCAT( #{myLikeEnd_password,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLikeEnd_empId != null and myLikeEnd_empId != ''">
+         AND emp_id like CONCAT( #{myLikeEnd_empId,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLikeEnd_dindUid != null and myLikeEnd_dindUid != ''">
+         AND dind_uid like CONCAT( #{myLikeEnd_dindUid,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLikeEnd_groupId != null and myLikeEnd_groupId != ''">
+         AND group_id like CONCAT( #{myLikeEnd_groupId,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLikeEnd_nickname != null and myLikeEnd_nickname != ''">
+         AND nickname like CONCAT( #{myLikeEnd_nickname,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLikeEnd_rank != null and myLikeEnd_rank != ''">
+         AND rank like CONCAT( #{myLikeEnd_rank,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLikeEnd_status != null and myLikeEnd_status != ''">
+         AND status like CONCAT( #{myLikeEnd_status,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLikeEnd_createdBy != null and myLikeEnd_createdBy != ''">
+         AND created_by like CONCAT( #{myLikeEnd_createdBy,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLikeEnd_phone != null and myLikeEnd_phone != ''">
+         AND phone like CONCAT( #{myLikeEnd_phone,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLikeEnd_createTime != null and myLikeEnd_createTime != ''">
+         AND create_time like CONCAT( #{myLikeEnd_createTime,jdbcType=TIMESTAMP},'%' )
+      </if>
+      <if test="myLikeEnd_updateTime != null and myLikeEnd_updateTime != ''">
+         AND update_time like CONCAT( #{myLikeEnd_updateTime,jdbcType=TIMESTAMP},'%' )
+      </if>
+      <if test="myLikeEnd_lastLoginTime != null and myLikeEnd_lastLoginTime != ''">
+         AND last_login_time like CONCAT( #{myLikeEnd_lastLoginTime,jdbcType=TIMESTAMP},'%' )
+      </if>
+      <if test="myLikeEnd_lastLoginIp != null and myLikeEnd_lastLoginIp != ''">
+         AND last_login_ip like CONCAT( #{myLikeEnd_lastLoginIp,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLikeEnd_email != null and myLikeEnd_email != ''">
+         AND email like CONCAT( #{myLikeEnd_email,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLikeEnd_salt != null and myLikeEnd_salt != ''">
+         AND salt like CONCAT( #{myLikeEnd_salt,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myIn_id != null and myIn_id != ''">
+         AND id in <foreach item="item" index="index" collection="myIn_id" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_username != null and myIn_username != ''">
+         AND username in <foreach item="item" index="index" collection="myIn_username" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_password != null and myIn_password != ''">
+         AND password in <foreach item="item" index="index" collection="myIn_password" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_empId != null and myIn_empId != ''">
+         AND emp_id in <foreach item="item" index="index" collection="myIn_empId" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_dindUid != null and myIn_dindUid != ''">
+         AND dind_uid in <foreach item="item" index="index" collection="myIn_dindUid" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_groupId != null and myIn_groupId != ''">
+         AND group_id in <foreach item="item" index="index" collection="myIn_groupId" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_nickname != null and myIn_nickname != ''">
+         AND nickname in <foreach item="item" index="index" collection="myIn_nickname" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_rank != null and myIn_rank != ''">
+         AND rank in <foreach item="item" index="index" collection="myIn_rank" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_status != null and myIn_status != ''">
+         AND status in <foreach item="item" index="index" collection="myIn_status" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_createdBy != null and myIn_createdBy != ''">
+         AND created_by in <foreach item="item" index="index" collection="myIn_createdBy" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_phone != null and myIn_phone != ''">
+         AND phone in <foreach item="item" index="index" collection="myIn_phone" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_createTime != null and myIn_createTime != ''">
+         AND create_time in <foreach item="item" index="index" collection="myIn_createTime" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_updateTime != null and myIn_updateTime != ''">
+         AND update_time in <foreach item="item" index="index" collection="myIn_updateTime" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_lastLoginTime != null and myIn_lastLoginTime != ''">
+         AND last_login_time in <foreach item="item" index="index" collection="myIn_lastLoginTime" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_lastLoginIp != null and myIn_lastLoginIp != ''">
+         AND last_login_ip in <foreach item="item" index="index" collection="myIn_lastLoginIp" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_email != null and myIn_email != ''">
+         AND email in <foreach item="item" index="index" collection="myIn_email" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_salt != null and myIn_salt != ''">
+         AND salt in <foreach item="item" index="index" collection="myIn_salt" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+    </trim>
+  </sql>
+</mapper>

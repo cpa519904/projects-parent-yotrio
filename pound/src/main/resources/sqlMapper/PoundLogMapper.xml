@@ -850,6 +850,5 @@
       </if>
     </trim>
   </sql>
-  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
 
 </mapper>

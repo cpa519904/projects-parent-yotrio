@@ -98,7 +98,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
         http://lavasoft.blog.51cto.com/62575/172292/
         http://blog.csdn.net/partner4java/article/details/7015946
         -->
-        <aop:pointcut id="transactionPointcut" expression="execution(* com.wyq.admin.*.service.impl.*.*(..) )"/>
+        <aop:pointcut id="transactionPointcut" expression="execution(* com.yotrio.pound.*.service.impl.*.*(..) )"/>
         <!--<aop:pointcut id="transactionPointcut" expression="execution(* *..*Service*.*(..))"/>-->
         <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice"/>
     </aop:config>

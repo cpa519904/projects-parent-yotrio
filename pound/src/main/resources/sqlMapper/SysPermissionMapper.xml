@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yotrio.pound.dao.SysPermissionMapper">
+  <resultMap id="BaseResultMap" type="com.yotrio.pound.model.SysPermission">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="permission_name" jdbcType="VARCHAR" property="permissionName" />
+    <result column="permission" jdbcType="VARCHAR" property="permission" />
+    <result column="permission_desc" jdbcType="VARCHAR" property="permissionDesc" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="pids" jdbcType="VARCHAR" property="pids" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, permission_name, permission, permission_desc, type, url, pid, pids, status, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_permission
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findByPermissionName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_permission
+    where permission_name = #{permissionName,jdbcType=VARCHAR}
+  </select>
+  <select id="findPermissionsByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    sys_permission.permission_name
+    from sys_permission,sys_role_permission
+    where sys_role_permission.role_id = #{roleId,jdbcType=VARCHAR} and sys_role_permission.permission_id = sys_permission.id
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_permission
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByIds" parameterType="java.util.List">
+    delete from sys_permission
+    where id in
+    <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.yotrio.pound.model.SysPermission">
+    insert into sys_permission (id, permission_name, permission, 
+      permission_desc, type, url, 
+      pid, pids, status, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{permissionName,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR}, 
+      #{permissionDesc,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{pid,jdbcType=INTEGER}, #{pids,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yotrio.pound.model.SysPermission">
+    insert into sys_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="permissionName != null">
+        permission_name,
+      </if>
+      <if test="permission != null">
+        permission,
+      </if>
+      <if test="permissionDesc != null">
+        permission_desc,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="pids != null">
+        pids,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="permissionName != null">
+        #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="permission != null">
+        #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionDesc != null">
+        #{permissionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="pids != null">
+        #{pids,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yotrio.pound.model.SysPermission">
+    update sys_permission
+    <set>
+      <if test="permissionName != null">
+        permission_name = #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="permission != null">
+        permission = #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionDesc != null">
+        permission_desc = #{permissionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="pids != null">
+        pids = #{pids,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yotrio.pound.model.SysPermission">
+    update sys_permission
+    set permission_name = #{permissionName,jdbcType=VARCHAR},
+      permission = #{permission,jdbcType=VARCHAR},
+      permission_desc = #{permissionDesc,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=INTEGER},
+      pids = #{pids,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectCountByMap" parameterType="map" resultType="int">
+    select count(*) from  <if test="dynamicTableName != null and dynamicTableName != ''"> ${dynamicTableName}  </if><if test="dynamicTableName == null or dynamicTableName == ''"> sys_permission</if> <include refid="Base_Query_Map_Condition" /> 
+  </select>
+  <select id="selectListByMap" parameterType="map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from  <if test="dynamicTableName != null and dynamicTableName != ''"> ${dynamicTableName}  </if><if test="dynamicTableName == null or dynamicTableName == ''"> sys_permission</if> <include refid="Base_Query_Map_Condition" />  order by  id desc
+  </select>
+  <sql id="Base_Query_Map_Condition">
+    <trim prefix="where" prefixOverrides="and | or">
+      <if test="id != null and id != ''">
+         AND id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="permissionName != null and permissionName != ''">
+         AND permission_name = #{permissionName,jdbcType=VARCHAR}
+      </if>
+      <if test="permission != null and permission != ''">
+         AND permission = #{permission,jdbcType=VARCHAR}
+      </if>
+      <if test="permissionDesc != null and permissionDesc != ''">
+         AND permission_desc = #{permissionDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="type != null and type != ''">
+         AND type = #{type,jdbcType=VARCHAR}
+      </if>
+      <if test="url != null and url != ''">
+         AND url = #{url,jdbcType=VARCHAR}
+      </if>
+      <if test="pid != null and pid != ''">
+         AND pid = #{pid,jdbcType=INTEGER}
+      </if>
+      <if test="pids != null and pids != ''">
+         AND pids = #{pids,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null and status != ''">
+         AND status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null and createTime != ''">
+         AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+         AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="myGreater_id != null and myGreater_id != ''">
+         AND id &gt; #{myGreater_id,jdbcType=INTEGER}
+      </if>
+      <if test="myGreater_permissionName != null and myGreater_permissionName != ''">
+         AND permission_name &gt; #{myGreater_permissionName,jdbcType=VARCHAR}
+      </if>
+      <if test="myGreater_permission != null and myGreater_permission != ''">
+         AND permission &gt; #{myGreater_permission,jdbcType=VARCHAR}
+      </if>
+      <if test="myGreater_permissionDesc != null and myGreater_permissionDesc != ''">
+         AND permission_desc &gt; #{myGreater_permissionDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="myGreater_type != null and myGreater_type != ''">
+         AND type &gt; #{myGreater_type,jdbcType=VARCHAR}
+      </if>
+      <if test="myGreater_url != null and myGreater_url != ''">
+         AND url &gt; #{myGreater_url,jdbcType=VARCHAR}
+      </if>
+      <if test="myGreater_pid != null and myGreater_pid != ''">
+         AND pid &gt; #{myGreater_pid,jdbcType=INTEGER}
+      </if>
+      <if test="myGreater_pids != null and myGreater_pids != ''">
+         AND pids &gt; #{myGreater_pids,jdbcType=VARCHAR}
+      </if>
+      <if test="myGreater_status != null and myGreater_status != ''">
+         AND status &gt; #{myGreater_status,jdbcType=INTEGER}
+      </if>
+      <if test="myGreater_createTime != null and myGreater_createTime != ''">
+         AND create_time &gt; #{myGreater_createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="myGreater_updateTime != null and myGreater_updateTime != ''">
+         AND update_time &gt; #{myGreater_updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="myLesser_id != null and myLesser_id != ''">
+         AND id &lt; #{myLesser_id,jdbcType=INTEGER}
+      </if>
+      <if test="myLesser_permissionName != null and myLesser_permissionName != ''">
+         AND permission_name &lt; #{myLesser_permissionName,jdbcType=VARCHAR}
+      </if>
+      <if test="myLesser_permission != null and myLesser_permission != ''">
+         AND permission &lt; #{myLesser_permission,jdbcType=VARCHAR}
+      </if>
+      <if test="myLesser_permissionDesc != null and myLesser_permissionDesc != ''">
+         AND permission_desc &lt; #{myLesser_permissionDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="myLesser_type != null and myLesser_type != ''">
+         AND type &lt; #{myLesser_type,jdbcType=VARCHAR}
+      </if>
+      <if test="myLesser_url != null and myLesser_url != ''">
+         AND url &lt; #{myLesser_url,jdbcType=VARCHAR}
+      </if>
+      <if test="myLesser_pid != null and myLesser_pid != ''">
+         AND pid &lt; #{myLesser_pid,jdbcType=INTEGER}
+      </if>
+      <if test="myLesser_pids != null and myLesser_pids != ''">
+         AND pids &lt; #{myLesser_pids,jdbcType=VARCHAR}
+      </if>
+      <if test="myLesser_status != null and myLesser_status != ''">
+         AND status &lt; #{myLesser_status,jdbcType=INTEGER}
+      </if>
+      <if test="myLesser_createTime != null and myLesser_createTime != ''">
+         AND create_time &lt; #{myLesser_createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="myLesser_updateTime != null and myLesser_updateTime != ''">
+         AND update_time &lt; #{myLesser_updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="myLike_id != null and myLike_id != ''">
+         AND id like CONCAT('%', #{myLike_id,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLike_permissionName != null and myLike_permissionName != ''">
+         AND permission_name like CONCAT('%', #{myLike_permissionName,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLike_permission != null and myLike_permission != ''">
+         AND permission like CONCAT('%', #{myLike_permission,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLike_permissionDesc != null and myLike_permissionDesc != ''">
+         AND permission_desc like CONCAT('%', #{myLike_permissionDesc,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLike_type != null and myLike_type != ''">
+         AND type like CONCAT('%', #{myLike_type,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLike_url != null and myLike_url != ''">
+         AND url like CONCAT('%', #{myLike_url,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLike_pid != null and myLike_pid != ''">
+         AND pid like CONCAT('%', #{myLike_pid,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLike_pids != null and myLike_pids != ''">
+         AND pids like CONCAT('%', #{myLike_pids,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLike_status != null and myLike_status != ''">
+         AND status like CONCAT('%', #{myLike_status,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLike_createTime != null and myLike_createTime != ''">
+         AND create_time like CONCAT('%', #{myLike_createTime,jdbcType=TIMESTAMP},'%' )
+      </if>
+      <if test="myLike_updateTime != null and myLike_updateTime != ''">
+         AND update_time like CONCAT('%', #{myLike_updateTime,jdbcType=TIMESTAMP},'%' )
+      </if>
+      <if test="myLikeStart_id != null and myLikeStart_id != ''">
+         AND id like CONCAT('%', #{myLikeStart_id,jdbcType=INTEGER})
+      </if>
+      <if test="myLikeStart_permissionName != null and myLikeStart_permissionName != ''">
+         AND permission_name like CONCAT('%', #{myLikeStart_permissionName,jdbcType=VARCHAR})
+      </if>
+      <if test="myLikeStart_permission != null and myLikeStart_permission != ''">
+         AND permission like CONCAT('%', #{myLikeStart_permission,jdbcType=VARCHAR})
+      </if>
+      <if test="myLikeStart_permissionDesc != null and myLikeStart_permissionDesc != ''">
+         AND permission_desc like CONCAT('%', #{myLikeStart_permissionDesc,jdbcType=VARCHAR})
+      </if>
+      <if test="myLikeStart_type != null and myLikeStart_type != ''">
+         AND type like CONCAT('%', #{myLikeStart_type,jdbcType=VARCHAR})
+      </if>
+      <if test="myLikeStart_url != null and myLikeStart_url != ''">
+         AND url like CONCAT('%', #{myLikeStart_url,jdbcType=VARCHAR})
+      </if>
+      <if test="myLikeStart_pid != null and myLikeStart_pid != ''">
+         AND pid like CONCAT('%', #{myLikeStart_pid,jdbcType=INTEGER})
+      </if>
+      <if test="myLikeStart_pids != null and myLikeStart_pids != ''">
+         AND pids like CONCAT('%', #{myLikeStart_pids,jdbcType=VARCHAR})
+      </if>
+      <if test="myLikeStart_status != null and myLikeStart_status != ''">
+         AND status like CONCAT('%', #{myLikeStart_status,jdbcType=INTEGER})
+      </if>
+      <if test="myLikeStart_createTime != null and myLikeStart_createTime != ''">
+         AND create_time like CONCAT('%', #{myLikeStart_createTime,jdbcType=TIMESTAMP})
+      </if>
+      <if test="myLikeStart_updateTime != null and myLikeStart_updateTime != ''">
+         AND update_time like CONCAT('%', #{myLikeStart_updateTime,jdbcType=TIMESTAMP})
+      </if>
+      <if test="myLikeEnd_id != null and myLikeEnd_id != ''">
+         AND id like CONCAT( #{myLikeEnd_id,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLikeEnd_permissionName != null and myLikeEnd_permissionName != ''">
+         AND permission_name like CONCAT( #{myLikeEnd_permissionName,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLikeEnd_permission != null and myLikeEnd_permission != ''">
+         AND permission like CONCAT( #{myLikeEnd_permission,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLikeEnd_permissionDesc != null and myLikeEnd_permissionDesc != ''">
+         AND permission_desc like CONCAT( #{myLikeEnd_permissionDesc,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLikeEnd_type != null and myLikeEnd_type != ''">
+         AND type like CONCAT( #{myLikeEnd_type,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLikeEnd_url != null and myLikeEnd_url != ''">
+         AND url like CONCAT( #{myLikeEnd_url,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLikeEnd_pid != null and myLikeEnd_pid != ''">
+         AND pid like CONCAT( #{myLikeEnd_pid,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLikeEnd_pids != null and myLikeEnd_pids != ''">
+         AND pids like CONCAT( #{myLikeEnd_pids,jdbcType=VARCHAR},'%' )
+      </if>
+      <if test="myLikeEnd_status != null and myLikeEnd_status != ''">
+         AND status like CONCAT( #{myLikeEnd_status,jdbcType=INTEGER},'%' )
+      </if>
+      <if test="myLikeEnd_createTime != null and myLikeEnd_createTime != ''">
+         AND create_time like CONCAT( #{myLikeEnd_createTime,jdbcType=TIMESTAMP},'%' )
+      </if>
+      <if test="myLikeEnd_updateTime != null and myLikeEnd_updateTime != ''">
+         AND update_time like CONCAT( #{myLikeEnd_updateTime,jdbcType=TIMESTAMP},'%' )
+      </if>
+      <if test="myIn_id != null and myIn_id != ''">
+         AND id in <foreach item="item" index="index" collection="myIn_id" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_permissionName != null and myIn_permissionName != ''">
+         AND permission_name in <foreach item="item" index="index" collection="myIn_permissionName" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_permission != null and myIn_permission != ''">
+         AND permission in <foreach item="item" index="index" collection="myIn_permission" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_permissionDesc != null and myIn_permissionDesc != ''">
+         AND permission_desc in <foreach item="item" index="index" collection="myIn_permissionDesc" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_type != null and myIn_type != ''">
+         AND type in <foreach item="item" index="index" collection="myIn_type" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_url != null and myIn_url != ''">
+         AND url in <foreach item="item" index="index" collection="myIn_url" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_pid != null and myIn_pid != ''">
+         AND pid in <foreach item="item" index="index" collection="myIn_pid" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_pids != null and myIn_pids != ''">
+         AND pids in <foreach item="item" index="index" collection="myIn_pids" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_status != null and myIn_status != ''">
+         AND status in <foreach item="item" index="index" collection="myIn_status" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_createTime != null and myIn_createTime != ''">
+         AND create_time in <foreach item="item" index="index" collection="myIn_createTime" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_updateTime != null and myIn_updateTime != ''">
+         AND update_time in <foreach item="item" index="index" collection="myIn_updateTime" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+    </trim>
+  </sql>
+</mapper>
