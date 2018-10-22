@@ -55,13 +55,13 @@ layui.define(['table', 'form'], function (exports) {
                                 var item = unfinishedLogs[i];
                                 if (item.plateNo) {
                                     if (item.poundLogNo == poundLogNo) {
-                                        htmlStr += '<li class="layui-nav-item unfinished layui-this" plNo="' + item.poundLogNo + '"><a >' + item.plateNo + '</a></li>';
+                                        htmlStr += '<li class="layui-nav-item unfinished layui-this-li" plNo="' + item.poundLogNo + '"><a >' + item.plateNo + '</a></li>';
                                     } else {
                                         htmlStr += '<li class="layui-nav-item unfinished" plNo="' + item.poundLogNo + '"><a >' + item.plateNo + '</a></li>';
                                     }
                                 } else {
                                     if (item.poundLogNo == poundLogNo) {
-                                        htmlStr += '<li class="layui-nav-item unfinished layui-this" plNo="' + item.poundLogNo + '"><a >' + item.poundLogNo + '</a></li>';
+                                        htmlStr += '<li class="layui-nav-item unfinished layui-this-li" plNo="' + item.poundLogNo + '"><a >' + item.poundLogNo + '</a></li>';
                                     } else {
                                         htmlStr += '<li class="layui-nav-item unfinished" plNo="' + item.poundLogNo + '"><a >' + item.poundLogNo + '</a></li>';
                                     }
@@ -200,7 +200,7 @@ layui.define(['table', 'form'], function (exports) {
             , {field: 'plNo', title: '报检单单号', minWidth: 120}
             , {field: 'plateNo', title: '车牌号', minWidth: 80}
             , {field: 'goodsKindName', title: '货品', minWidth: 60, templet: '#goodsKindTpl'}
-            , {field: 'inspWeight', title: '报价单重量', minWidth: 80, sort: true, totalRow: true}
+            , {field: 'inspWeight', title: '报检单重量', minWidth: 80, sort: true, totalRow: true}
             , {field: 'returnWeight', title: '随车退重量', minWidth: 80, sort: true, totalRow: true}
             , {field: 'compName', title: '供应商名称', minWidth: 80}
             , {field: 'types', title: '样品', minWidth: 60, templet: '#typesTpl'}
@@ -522,76 +522,79 @@ layui.define(['table', 'form'], function (exports) {
     })
     //提交到服务器
     form.on('submit(btn-submit-server)', function (data) {
-        var index = layer.load(2, {time: 10*1000}); //又换了种风格，并且设定最长等待10秒
-        var field = data.field;
-        $.ajax({
-            type: 'post',
-            url: '/poundLog/uploadServer',
-            data: {
-                poundLogNo: field.poundLogNo
-            },
-            cache: false,
-            dataType: 'json',
-            success: function (result) {
-                //关闭
-                layer.close(index);
-                console.log("result:update:", result);
-                if (result.code == 0) {
-                    //数据刷新
-                    $("#btn-submit-server").addClass("layui-btn-disabled");
-                    $("#btn-print").removeClass("layui-btn-disabled");
-                    return layer.msg('提交成功');
-                } else {
-                    layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+        if (!$("#btn-submit-server").hasClass("layui-btn-disabled")) {
+            var index = layer.load(4, {time: 10*1000}); //又换了种风格，并且设定最长等待10秒
+            var field = data.field;
+            $.ajax({
+                type: 'post',
+                url: '/poundLog/uploadServer',
+                data: {
+                    poundLogNo: field.poundLogNo
+                },
+                cache: false,
+                dataType: 'json',
+                success: function (result) {
+                    //关闭
+                    layer.close(index);
+                    console.log("result:update:", result);
+                    if (result.code == 0) {
+                        //数据刷新
+                        $("#btn-submit-server").addClass("layui-btn-disabled");
+                        $("#btn-print").removeClass("layui-btn-disabled");
+                        return layer.msg('提交成功');
+                    } else {
+                        layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                    }
+                },
+                error: function (error) {
+                    //关闭
+                    layer.close(index);
+                    layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
                 }
-            },
-            error: function (error) {
-                //关闭
-                layer.close(index);
-                layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-            }
-        });
+            });
+        }
     });
     //打印
     form.on('submit(btn-print)', function (data) {
-        var filed = data.field;
-        //执行打印操作
-        $.ajax({
-            type: 'get',
-            url: '/poundLog/doPrint',
-            data: {
-                poundLogNo: filed.poundLogNo
-            },
-            cache: false,
-            dataType: 'json',
-            success: function (result) {
-                if (result.code == 0) {
-                    $("#btn-print").removeClass("layui-btn-disabled");
+        if (!$("#btn-print").hasClass("layui-btn-disabled")) {
+            var filed = data.field;
+            //执行打印操作
+            $.ajax({
+                type: 'get',
+                url: '/poundLog/doPrint',
+                data: {
+                    poundLogNo: filed.poundLogNo
+                },
+                cache: false,
+                dataType: 'json',
+                success: function (result) {
+                    if (result.code == 0) {
+                        $("#btn-print").removeClass("layui-btn-disabled");
 
-                    //弹出打印页面
-                    $("#print-content").print({
-                        globalStyles: true,
-                        mediaPrint: false,
-                        stylesheet: null,
-                        noPrintSelector: ".no-print",
-                        iframe: true,
-                        append: null,
-                        prepend: null,
-                        manuallyCopyFormValues: true,
-                        deferred: $.Deferred(),
-                        timeout: 750,
-                        title: null,
-                        doctype: '<!doctype html>'
-                    });
-                } else {
-                    layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                        //弹出打印页面
+                        $("#print-content").print({
+                            globalStyles: true,
+                            mediaPrint: false,
+                            stylesheet: null,
+                            noPrintSelector: ".no-print",
+                            iframe: true,
+                            append: null,
+                            prepend: null,
+                            manuallyCopyFormValues: true,
+                            deferred: $.Deferred(),
+                            timeout: 750,
+                            title: null,
+                            doctype: '<!doctype html>'
+                        });
+                    } else {
+                        layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                    }
+                },
+                error: function (error) {
+                    layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
                 }
-            },
-            error: function (error) {
-                layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-            }
-        });
-
+            });
+        }
     });
 
     //事件

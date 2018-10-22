@@ -128,10 +128,12 @@
                 /login = authc
                 /logout = logout
                 /authenticated = authc
-                /statics/**=anon
-                /layuiadmin/**=anon
+                /statics/** = anon
+                /api/** = anon
+                /getVerifyCode = anon
+                /layuiadmin/** = anon
                 /register* = anon
-                /favicon.ico=anon
+                /favicon.ico = anon
                 /** = user,sysUser
             </value>
         </property>
