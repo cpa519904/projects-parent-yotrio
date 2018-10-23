@@ -1,16 +1,22 @@
 package com.yotrio.pound.web.controller;
 
 
+import cn.hutool.captcha.CaptchaUtil;
+import cn.hutool.captcha.ICaptcha;
 import com.yotrio.common.enums.LoginErrorCode;
 import com.yotrio.pound.service.ISysUserService;
+import com.yotrio.pound.utils.RedisUtil;
 import org.apache.shiro.authc.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * 用户控制接口
@@ -24,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/")
 public class LoginController extends BaseController {
+
+    private static final String KEY_VERIFY_CODE = "verify_code_";
 
     @Autowired
     private ISysUserService sysUserService;
@@ -79,5 +87,31 @@ public class LoginController extends BaseController {
 
         return "user/register";
     }
+
+    /**
+     * 获取图片验证码
+     * @param request
+     * @param response
+     */
+    @RequestMapping(value = "/getVerifyCode", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public void getVerifyCode(HttpServletRequest request, HttpServletResponse response) {
+        String sessionId = request.getSession().getId();
+
+        //定义图形验证码的长、宽、验证码字符数、干扰线宽度
+        ICaptcha captcha = CaptchaUtil.createCircleCaptcha(200, 100, 4, 20);
+        try {
+            //写出到浏览器,Servlet输出
+            captcha.write(response.getOutputStream());
+            //获取验证码并存储到redis 5分钟
+            String code = captcha.getCode();
+            RedisUtil.set(KEY_VERIFY_CODE + sessionId, code, 5 * 60);
+        } catch (IOException e) {
+            logger.error("验证码生成失败：{}", e.getMessage());
+        }
+    }
+
+
+
 
 }

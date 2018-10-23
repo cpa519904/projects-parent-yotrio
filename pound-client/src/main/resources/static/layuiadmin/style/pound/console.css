@@ -11,6 +11,26 @@
     height: 42px;
     line-height: 42px;
     text-align: center;
-    background-color: #20222A !important;
+    background-color: #009688 !important;
+    /*background-color: #009688 !important;*/
     color: rgba(255, 255, 255, .8);
 }
+
+.layui-nav {
+    color: #666 !important;
+    background-color: #fff !important;
+}
+
+.layui-nav-item.unfinished a {
+    color: #666 ;
+}
+
+.layui-nav-item.unfinished a:hover {
+    color: #fff !important;
+}
+
+.layui-this-li a{
+    color: #fff !important;
+    background-color: #4E5465;
+}
+
