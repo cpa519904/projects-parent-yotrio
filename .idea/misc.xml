@@ -39,14 +39,13 @@
     </properties>
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="web" url="file://$PROJECT_DIR$/pound" />
+    <file type="web" url="file://$PROJECT_DIR$/pound-master" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/pound-client/pom.xml" />
-        <option value="$PROJECT_DIR$/pound-master/pom.xml" />
       </list>
     </option>
   </component>

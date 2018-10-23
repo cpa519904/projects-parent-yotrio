@@ -9,8 +9,8 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>common</module>
-        <module>pound</module>
+        <module>pound-common</module>
+        <module>pound-master</module>
     </modules>
 
     <build>

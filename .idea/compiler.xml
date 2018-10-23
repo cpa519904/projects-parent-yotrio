@@ -7,8 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="common" />
-        <module name="pound" />
         <module name="pound-client" />
+        <module name="pound-common" />
         <module name="pound-master" />
       </profile>
     </annotationProcessing>
@@ -16,6 +16,7 @@
       <module name="common" target="1.8" />
       <module name="pound" target="1.8" />
       <module name="pound-client" target="1.8" />
+      <module name="pound-common" target="1.8" />
       <module name="pound-master" target="1.8" />
       <module name="projects-parent" target="1.8" />
     </bytecodeTargetLevel>
