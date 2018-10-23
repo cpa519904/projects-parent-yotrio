@@ -1,7 +1,7 @@
 package com.yotrio.pound.exceptions;
 
 
-import com.yotrio.pound.enums.ResultEnum;
+import com.yotrio.common.enums.ResultEnum;
 
 /**
  * 用户异常类

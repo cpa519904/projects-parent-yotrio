@@ -8,9 +8,14 @@
 
 .wait-list-title {
     width: 90%;
-    height: 42px;
-    line-height: 42px;
+    height: 38px;
+    line-height: 38px;
     text-align: center;
+    white-space: nowrap;
+    font-size: 14px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
     background-color: #009688 !important;
     /*background-color: #009688 !important;*/
     color: rgba(255, 255, 255, .8);

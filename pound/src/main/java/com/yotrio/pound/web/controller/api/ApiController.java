@@ -62,11 +62,13 @@ public class ApiController extends BaseController {
      *
      * @param dataTablePage 分页条件
      * @param poundLogDto   过磅记录查询条件
+     * @param token   认证秘钥
      * @return
      */
     @RequestMapping(value = "/poundLog/list", method = {RequestMethod.GET})
     @ResponseBody
-    public Callback list(DataTablePage dataTablePage, PoundLogDto poundLogDto) {
+    public Callback list(DataTablePage dataTablePage, PoundLogDto poundLogDto,String token) {
+        // TODO: 2018-10-23 接口都要做token校验
         PageInfo pageInfo = poundLogService.findAllPaging(dataTablePage, poundLogDto);
         return returnSuccess(pageInfo.getTotal(), pageInfo.getList());
     }
@@ -125,9 +127,22 @@ public class ApiController extends BaseController {
 //                }
                 poundLog.setPoundName(poundInfo.getPoundName());
 
+                //过磅单总数
+                double inspWeightTotal = 0.0d;
+                for (Inspection inspection : inspections) {
+                    inspWeightTotal += inspection.getInspWeight();
+                    if (StringUtils.isEmpty(poundLog.getCompName())) {
+                        poundLog.setCompName(inspection.getCompName());
+                    }
+                    if (poundLog.getGoodsKind() == null) {
+                        poundLog.setGoodsKind(inspection.getGoodsKind());
+                    }
+                }
+                poundLog.setInspWeightTotal(inspWeightTotal);
+
                 //构建图片存储路径
                 StringBuilder filePath = new StringBuilder();
-                String basePath = DateUtil.getFilePathByDate(filePath + "/images/upload/");
+                String basePath = DateUtil.getFilePathByDate(FILE_LOCATION + "/images/upload/");
                 filePath.append(basePath).append(poundLog.getPoundLogNo()).append("/");
 
                 //解析过磅图片，将base64图片字符串转成本地图片并保存图片url
@@ -156,7 +171,7 @@ public class ApiController extends BaseController {
                 PoundLog logInDB = poundLogService.findByPoundLogNoAndPoundId(poundLog.getPoundLogNo(),poundLog.getPoundId());
                 if (logInDB != null) {
                     //已生成执行更新操作
-                    poundLogService.updateByPlNoAndPoundId(logInDB);
+                    poundLogService.updateByPlNoAndPoundId(poundLog);
                     for (Inspection inspection : inspections) {
                         inspection.setPlId(logInDB.getId());
                         inspectionService.updateByPlIdSelective(inspection);

@@ -16,7 +16,7 @@
         <div class="layui-col-md12 ">
             <div class="layui-card">
                 <div class="layui-form layui-card-header">
-                    <div style="text-align: center">浙江永强过磅单</div>
+                    <div style="text-align: center;font-size: 18px;"><span>浙江永强过磅单</span> </div>
                 </div>
                 <div class="layui-card-body">
                     <div class="layui-row">
@@ -25,29 +25,27 @@
                                 <div class="layui-col-xs6">
                                     <div class="layui-row">
                                         <div class="layui-col-xs12">
-                                            <div class="grid-demo grid-demo-bg2">单号：20180306123512</div>
+                                            <div >单号：<span id="print-poundLogNo"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div class="grid-demo grid-demo-bg2">车牌：浙J123</div>
+                                            <div>车牌：<span id="print-plateNo"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div class="grid-demo grid-demo-bg2">毛重：1800</div>
+                                            <div >毛重：<span id="print-gross-weight"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div class="grid-demo grid-demo-bg2">皮重：800</div>
+                                            <div >皮重：<span id="print-tare-weight"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div class="grid-demo grid-demo-bg2">净重：1000</div>
+                                            <div >净重：<span id="print-net-weight"></span></div>
                                         </div>
-
-
+                                        <div class="layui-col-xs12">
+                                            <div >磅差：<span id="print-diff-weight"></span></div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="layui-col-xs6">
-                                    <div class=""><img
-                                            src="http://localhost:8000/images/upload/2018/10/18/20181016154338/1539831400905.jpg"
-                                            alt="" width="180px" height="120">
-                                    </div>
+                                    <div class=""><img id="print-gross-img" src="" width="180px" height="120"></div>
                                 </div>
                             </div>
                         </div>
@@ -56,34 +54,31 @@
                                 <div class="layui-col-xs6">
                                     <div class="layui-row">
                                         <div class="layui-col-xs12">
-                                            <div class="grid-demo grid-demo-bg2">收货单位：制造一部</div>
+                                            <div >收货单位：<span id="print-unit-name"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div class="grid-demo grid-demo-bg2">送货单位：宁波钢铁有限公司</div>
+                                            <div >送货单位：<span id="print-comp-name"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div class="grid-demo grid-demo-bg2">称毛时间：2018-10-20 16:30:15</div>
+                                            <div >称毛时间：<span id="print-gross-time"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div class="grid-demo grid-demo-bg2">称皮时间：2018-10-20 16:50:15</div>
+                                            <div >称皮时间：<span id="print-tare-time"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div class="grid-demo grid-demo-bg2">打印时间：2018-10-20 16:50:15</div>
+                                            <div >打印时间：<span id="print-time"></span></div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-col-xs6">
-                                    <div class=""><img
-                                            src="http://localhost:8000/images/upload/2018/10/18/20181016154338/1539831400905.jpg"
-                                            alt="" width="180px" height="120">
-                                    </div>
+                                    <div class=""><img id="print-tare-img" src="" width="180px" height="120"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="layui-col-xs12">
                             <div class="layui-row">
                                 <div class="layui-col-xs12">
-                                    <div class="grid-demo grid-demo-bg2">备注：建档立卡解放啦会计分录圣诞节</div>
+                                    <div >备注：<span id="print-remark"></span></div>
                                 </div>
                             </div>
                         </div>

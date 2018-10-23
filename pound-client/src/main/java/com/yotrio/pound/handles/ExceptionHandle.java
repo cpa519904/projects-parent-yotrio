@@ -1,8 +1,8 @@
 package com.yotrio.pound.handles;
 
 
+import com.yotrio.common.enums.ResultEnum;
 import com.yotrio.pound.domain.Result;
-import com.yotrio.pound.enums.ResultEnum;
 import com.yotrio.pound.exceptions.TaskException;
 import com.yotrio.pound.exceptions.UserException;
 import com.yotrio.pound.utils.ResultUtil;

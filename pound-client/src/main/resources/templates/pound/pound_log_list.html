@@ -1,6 +1,6 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 
-<html>
 <head>
     <meta charset="utf-8">
     <title>地磅系统-磅房</title>
@@ -13,7 +13,9 @@
 </head>
 <body>
 
-<input type="hidden" name="poundId" value="${poundId}">
+<input id="poundId" type="hidden" name="poundId" th:value="${poundId}">
+<input id="token" type="hidden" name="token" th:value="${token}">
+
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
@@ -57,7 +59,8 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">开始时间</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="myGreater_createTime" class="layui-input" id="laydate-type-datetime-start"
+                        <input type="text" name="myGreater_createTime" class="layui-input"
+                               id="laydate-type-datetime-start"
                                placeholder="yyyy-MM-dd HH:mm:ss">
                     </div>
                 </div>
@@ -117,63 +120,7 @@
             , table = layui.table
             , laydate = layui.laydate;
 
-        //监听搜索
-        form.on('submit(LAY-pound-log-search)', function (data) {
-            var field = data.field;
 
-            //执行重载
-            table.reload('LAY-pound-log-manage', {
-                where: field
-            });
-        });
-
-        //事件
-        var active = {
-            batchdel: function () {
-                var checkStatus = table.checkStatus('LAY-user-back-manage')
-                    , checkData = checkStatus.data; //得到选中的数据
-
-                if (checkData.length === 0) {
-                    return layer.msg('请选择数据');
-                }
-
-                layer.prompt({
-                    formType: 1
-                    , title: '敏感操作，请验证口令'
-                }, function (value, index) {
-                    layer.close(index);
-
-                    layer.confirm('确定删除吗？', function (index) {
-
-                        //执行 Ajax 后重载
-                        /*
-                         admin.req({
-                         url: 'xxx'
-                         //,……
-                         });
-                         */
-                        table.reload('LAY-user-back-manage');
-                        layer.msg('已删除');
-                    });
-                });
-            }
-        }
-
-        $('.layui-btn.layuiadmin-btn-admin').on('click', function () {
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
-        });
-
-        //开始时间
-        laydate.render({
-            elem: '#laydate-type-datetime-start'
-            , type: 'datetime'
-        });
-        //结束时间
-        laydate.render({
-            elem: '#laydate-type-datetime-end'
-            , type: 'datetime'
-        });
 
     });
 </script>

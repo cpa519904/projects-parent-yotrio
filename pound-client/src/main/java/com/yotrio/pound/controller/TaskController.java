@@ -54,6 +54,7 @@ public class TaskController extends BaseController {
     @RequestMapping(value = "/list", method = {RequestMethod.GET})
     @ResponseBody
     public Result list(DataTablePage dataTablePage, Task task) {
+        task.setStatus(TaskConstant.STATUS_INIT);
         PageInfo pageInfo = taskService.findAllPaging(dataTablePage, task);
         return ResultUtil.success(pageInfo.getTotal(), pageInfo.getList());
     }

@@ -4,10 +4,14 @@ import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.common.enums.GoodsKindEnum;
+import com.yotrio.pound.dao.InspectionMapper;
 import com.yotrio.pound.dao.PoundLogMapper;
+import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.dto.PoundLogDto;
 import com.yotrio.pound.service.IPoundLogService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +32,8 @@ public class PoundLogServiceImpl implements IPoundLogService {
 
     @Autowired
     private PoundLogMapper poundLogMapper;
+    @Autowired
+    private InspectionMapper inspectionMapper;
 
     /**
      * 分页获取过磅数据
@@ -40,6 +46,18 @@ public class PoundLogServiceImpl implements IPoundLogService {
     public PageInfo findAllPaging(DataTablePage dataTablePage, PoundLogDto poundLogDto) {
         PageHelper.startPage(dataTablePage.getPage(), dataTablePage.getLimit());
         List<PoundLog> poundLogs = poundLogMapper.selectListByMap(BeanUtil.beanToMap(poundLogDto));
+        for (PoundLog poundLog : poundLogs) {
+            List<Inspection> inspections = inspectionMapper.findListByPlNo(poundLog.getPoundLogNo());
+            for (Inspection inspection : inspections) {
+                poundLog.setCompName(inspection.getCompName());
+                int goodsKind = inspection.getGoodsKind();
+                String goodKindName = GoodsKindEnum.getKindName(goodsKind);
+                poundLog.setGoodsName(goodKindName);
+                if (StringUtils.isNotEmpty(poundLog.getCompName()) && StringUtils.isNotEmpty(poundLog.getGoodsName())) {
+                    break;
+                }
+            }
+        }
         PageInfo pageInfo = new PageInfo(poundLogs);
         return pageInfo;
     }

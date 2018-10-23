@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
     <link rel="stylesheet" href="../../layuiadmin/style/pound/console.css" media="all">
@@ -56,7 +57,7 @@
                                     </div>
                                 </div>
                                 <div class="layui-inline">
-                                    <label class="layui-form-label">收货组织</label>
+                                    <label class="layui-form-label">组织</label>
                                     <div class="layui-input-block">
                                         <input id="unitName" type="text" name="unitName"
                                                autocomplete="off"
@@ -69,10 +70,10 @@
                                 <button class="layui-btn btn-inspection layui-btn-sm layui-btn-danger"
                                         data-type="batchdel">删除
                                 </button>
-
                             </div>
                             <div class="layui-card-body" style="padding: 0">
-                                <table id="LAY-inspection-manage" lay-filter="LAY-inspection-manage" class="layui-hide" lay-size="sm">
+                                <table id="LAY-inspection-manage" lay-filter="LAY-inspection-manage" class="layui-hide"
+                                       lay-size="sm">
                                 </table>
                                 <script type="text/html" id="typesTpl">
                                     {{#  if(d.types == 1){ }}
@@ -281,11 +282,144 @@
     </div>
 
 </div>
+<div class="layui-container" style="display: none" id="print-content">
+    <div class="layui-row">
+        <div class="layui-col-md12 ">
+            <div class="layui-card">
+                <div class="layui-form layui-card-header">
+                    <div style="text-align: center;font-size: 18px;"><span>浙江永强过磅单</span> </div>
+                </div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-xs6">
+                            <div class="layui-row">
+                                <div class="layui-col-xs6">
+                                    <div class="layui-row">
+                                        <div class="layui-col-xs12">
+                                            <div >单号：<span id="print-poundLogNo"></span></div>
+                                        </div>
+                                        <div class="layui-col-xs12">
+                                            <div>车牌：<span id="print-plateNo"></span></div>
+                                        </div>
+                                        <div class="layui-col-xs12">
+                                            <div >毛重：<span id="print-gross-weight"></span></div>
+                                        </div>
+                                        <div class="layui-col-xs12">
+                                            <div >皮重：<span id="print-tare-weight"></span></div>
+                                        </div>
+                                        <div class="layui-col-xs12">
+                                            <div >净重：<span id="print-net-weight"></span></div>
+                                        </div>
+                                        <div class="layui-col-xs12">
+                                            <div >磅差：<span id="print-diff-weight"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-xs6">
+                                    <div class=""><img id="print-gross-img" src="" width="180px" height="120"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <div class="layui-row">
+                                <div class="layui-col-xs6">
+                                    <div class="layui-row">
+                                        <div class="layui-col-xs12">
+                                            <div >收货单位：<span id="print-unit-name"></span></div>
+                                        </div>
+                                        <div class="layui-col-xs12">
+                                            <div >送货单位：<span id="print-comp-name"></span></div>
+                                        </div>
+                                        <div class="layui-col-xs12">
+                                            <div >称毛时间：<span id="print-gross-time"></span></div>
+                                        </div>
+                                        <div class="layui-col-xs12">
+                                            <div >称皮时间：<span id="print-tare-time"></span></div>
+                                        </div>
+                                        <div class="layui-col-xs12">
+                                            <div >打印时间：<span id="print-time"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-xs6">
+                                    <div class=""><img id="print-tare-img" src="" width="180px" height="120"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs12">
+                            <div class="layui-row">
+                                <div class="layui-col-xs12">
+                                    <div >备注：<span id="print-remark"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs12">
+                            <div class="layui-card-body" style="padding-left: 0">
+                                <table id="LAY-inspection-print-manage" class="layui-table">
+                                    <tr>
+                                        <th>报检单</th>
+                                        <th>单号</th>
+                                        <th>重量</th>
+                                        <th>退货重量</th>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>20180306123512</td>
+                                        <td>100</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>20180306123512</td>
+                                        <td>500</td>
+                                        <td>20</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>20180306123512</td>
+                                        <td>400</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>合计</td>
+                                        <td></td>
+                                        <td>1100</td>
+                                        <td>20</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs12">
+                            <div class="layui-card-body" style="padding-left: 0">
+                                <div class="layui-row">
+                                    <div class="layui-col-xs4">
+                                        <div class="grid-demo">司磅员：<input type="text" style="border:none;border-bottom: 1px solid #e6e6e6;width: 150px;outline: medium"></div>
+                                    </div>
+                                    <div class="layui-col-xs4">
+                                        <div class="grid-demo">监磅员：<input type="text" style="border:none;border-bottom: 1px solid #e6e6e6;width: 150px;outline: medium"></div>
+                                    </div>
+                                    <div class="layui-col-xs4">
+                                        <div class="grid-demo">送货人：<input type="text" style="border:none;border-bottom: 1px solid #e6e6e6;width: 150px;outline: medium"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+        </div>
+    </div>
+</div>
 
 <script src="../../layuiadmin/layui/layui.js?t=1"></script>
 <script src="../../layuiadmin/lib/extend/jQuery-3.3.1.min.js?t=1"></script>
 <script src="../../layuiadmin/lib/extend/jQuery.print.min.js?t=1"></script>
+<script src="../../layuiadmin/lib/extend/moment.min.js?t=1"></script>
 <script>
     layui.config({
         base: '../../layuiadmin/' //静态资源所在路径

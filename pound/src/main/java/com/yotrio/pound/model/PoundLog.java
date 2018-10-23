@@ -34,6 +34,16 @@ public class PoundLog implements Serializable {
     private String poundLogNo;
 
     /**
+     * 商品类型
+     */
+    private Integer goodsKind;
+
+    /**
+     * 供应商名称
+     */
+    private String compName;
+
+    /**
      * 毛重
      *
      * @mbg.generated
@@ -74,6 +84,11 @@ public class PoundLog implements Serializable {
      * @mbg.generated
      */
     private Double diffWeight;
+
+    /**
+     * 过磅单总重
+     */
+    private Double inspWeightTotal;
 
     /**
      * 总重图片
@@ -169,7 +184,17 @@ public class PoundLog implements Serializable {
      */
     private String tareImgUrlBase64;
 
+    /**
+     * 货品名称
+     */
+    private String goodsName;
+
+    /**
+     * 报检单列表
+     */
     private List<Inspection> inspections;
+
+
 
     private static final long serialVersionUID = 1L;
 
@@ -373,6 +398,38 @@ public class PoundLog implements Serializable {
         this.tareImgUrlBase64 = tareImgUrlBase64;
     }
 
+    public String getCompName() {
+        return compName;
+    }
+
+    public void setCompName(String compName) {
+        this.compName = compName;
+    }
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
+
+    public Integer getGoodsKind() {
+        return goodsKind;
+    }
+
+    public void setGoodsKind(Integer goodsKind) {
+        this.goodsKind = goodsKind;
+    }
+
+    public Double getInspWeightTotal() {
+        return inspWeightTotal;
+    }
+
+    public void setInspWeightTotal(Double inspWeightTotal) {
+        this.inspWeightTotal = inspWeightTotal;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -383,12 +440,15 @@ public class PoundLog implements Serializable {
         sb.append(", poundId=").append(poundId);
         sb.append(", poundName=").append(poundName);
         sb.append(", poundLogNo=").append(poundLogNo);
+        sb.append(", goodsKind=").append(goodsKind);
+        sb.append(", compName=").append(compName);
         sb.append(", grossWeight=").append(grossWeight);
         sb.append(", tareWeight=").append(tareWeight);
         sb.append(", netWeight=").append(netWeight);
         sb.append(", sampleNetWeight=").append(sampleNetWeight);
         sb.append(", returnWeightTotal=").append(returnWeightTotal);
         sb.append(", diffWeight=").append(diffWeight);
+        sb.append(", inspWeightTotal=").append(inspWeightTotal);
         sb.append(", grossImgUrl=").append(grossImgUrl);
         sb.append(", tareImgUrl=").append(tareImgUrl);
         sb.append(", unitName=").append(unitName);
@@ -421,12 +481,15 @@ public class PoundLog implements Serializable {
             && (this.getPoundId() == null ? other.getPoundId() == null : this.getPoundId().equals(other.getPoundId()))
             && (this.getPoundName() == null ? other.getPoundName() == null : this.getPoundName().equals(other.getPoundName()))
             && (this.getPoundLogNo() == null ? other.getPoundLogNo() == null : this.getPoundLogNo().equals(other.getPoundLogNo()))
+            && (this.getGoodsKind() == null ? other.getGoodsKind() == null : this.getGoodsKind().equals(other.getGoodsKind()))
+            && (this.getCompName() == null ? other.getCompName() == null : this.getCompName().equals(other.getCompName()))
             && (this.getGrossWeight() == null ? other.getGrossWeight() == null : this.getGrossWeight().equals(other.getGrossWeight()))
             && (this.getTareWeight() == null ? other.getTareWeight() == null : this.getTareWeight().equals(other.getTareWeight()))
             && (this.getNetWeight() == null ? other.getNetWeight() == null : this.getNetWeight().equals(other.getNetWeight()))
             && (this.getSampleNetWeight() == null ? other.getSampleNetWeight() == null : this.getSampleNetWeight().equals(other.getSampleNetWeight()))
             && (this.getReturnWeightTotal() == null ? other.getReturnWeightTotal() == null : this.getReturnWeightTotal().equals(other.getReturnWeightTotal()))
             && (this.getDiffWeight() == null ? other.getDiffWeight() == null : this.getDiffWeight().equals(other.getDiffWeight()))
+            && (this.getInspWeightTotal() == null ? other.getInspWeightTotal() == null : this.getInspWeightTotal().equals(other.getInspWeightTotal()))
             && (this.getGrossImgUrl() == null ? other.getGrossImgUrl() == null : this.getGrossImgUrl().equals(other.getGrossImgUrl()))
             && (this.getTareImgUrl() == null ? other.getTareImgUrl() == null : this.getTareImgUrl().equals(other.getTareImgUrl()))
             && (this.getUnitName() == null ? other.getUnitName() == null : this.getUnitName().equals(other.getUnitName()))
@@ -449,12 +512,15 @@ public class PoundLog implements Serializable {
         result = prime * result + ((getPoundId() == null) ? 0 : getPoundId().hashCode());
         result = prime * result + ((getPoundName() == null) ? 0 : getPoundName().hashCode());
         result = prime * result + ((getPoundLogNo() == null) ? 0 : getPoundLogNo().hashCode());
+        result = prime * result + ((getGoodsKind() == null) ? 0 : getGoodsKind().hashCode());
+        result = prime * result + ((getCompName() == null) ? 0 : getCompName().hashCode());
         result = prime * result + ((getGrossWeight() == null) ? 0 : getGrossWeight().hashCode());
         result = prime * result + ((getTareWeight() == null) ? 0 : getTareWeight().hashCode());
         result = prime * result + ((getNetWeight() == null) ? 0 : getNetWeight().hashCode());
         result = prime * result + ((getSampleNetWeight() == null) ? 0 : getSampleNetWeight().hashCode());
         result = prime * result + ((getReturnWeightTotal() == null) ? 0 : getReturnWeightTotal().hashCode());
         result = prime * result + ((getDiffWeight() == null) ? 0 : getDiffWeight().hashCode());
+        result = prime * result + ((getInspWeightTotal() == null) ? 0 : getInspWeightTotal().hashCode());
         result = prime * result + ((getGrossImgUrl() == null) ? 0 : getGrossImgUrl().hashCode());
         result = prime * result + ((getTareImgUrl() == null) ? 0 : getTareImgUrl().hashCode());
         result = prime * result + ((getUnitName() == null) ? 0 : getUnitName().hashCode());

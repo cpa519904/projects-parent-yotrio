@@ -96,6 +96,7 @@ layui.define(['table', 'form'], function (exports) {
                             $("#tareImgUrl").attr("src", currPoundLog.tareImgUrl);
                             $("#diffWeight").val(currPoundLog.diffWeight);
                             $("#netWeight").val(currPoundLog.netWeight);
+                            $("#unitName").val(currPoundLog.unitName);
                             // console.log("currPoundLog.diff:", currPoundLog.diffWeight);
                             if (parseFloat(currPoundLog.diffWeight) > 10 || parseFloat(currPoundLog.diffWeight) < -10) {
                                 $("#diffWeight").css("color", "#FF5722");
@@ -111,7 +112,8 @@ layui.define(['table', 'form'], function (exports) {
                             } else if (status == 3 || status == 4) {
                                 $("#btn-print").removeClass("layui-btn-disabled");
                             }
-                            console.log("status:", status);
+
+                            // console.log("status:", status);
                         }
                     } else {
                         layer.alert("获取未处理过磅单异常：" + result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
@@ -335,6 +337,14 @@ layui.define(['table', 'form'], function (exports) {
 
                         //上传图片
                         uploadImg();
+
+                        //过磅单状态
+                        var status = result.data.status;
+                        if (status == 2) {//两个数据都有了,可以显示提交按钮了
+                            $("#btn-submit-server").removeClass("layui-btn-disabled");
+                        } else if (status == 3 || status == 4) {
+                            $("#btn-print").removeClass("layui-btn-disabled");
+                        }
                     } else {
                         layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
                     }
@@ -411,6 +421,14 @@ layui.define(['table', 'form'], function (exports) {
 
                         //上传图片
                         uploadImg();
+
+                        //过磅单状态
+                        var status = result.data.status;
+                        if (status == 2) {//两个数据都有了,可以显示提交按钮了
+                            $("#btn-submit-server").removeClass("layui-btn-disabled");
+                        } else if (status == 3 || status == 4) {
+                            $("#btn-print").removeClass("layui-btn-disabled");
+                        }
                     } else {
                         //如果还未生成过磅单就称皮重，提示用户是否要执行退货或者卖废铁操作
                         if (result.msg == '找不到您要更新的过磅记录') {
@@ -523,24 +541,29 @@ layui.define(['table', 'form'], function (exports) {
     //提交到服务器
     form.on('submit(btn-submit-server)', function (data) {
         if (!$("#btn-submit-server").hasClass("layui-btn-disabled")) {
-            var index = layer.load(4, {time: 10*1000}); //又换了种风格，并且设定最长等待10秒
             var field = data.field;
+            if (!field.unitName) {
+                $("#unitName").focus();
+                return layer.msg('请先填写组织');
+            }
+            var index = layer.load(4, {time: 10 * 1000}); //又换了种风格，并且设定最长等待10秒
             $.ajax({
                 type: 'post',
                 url: '/poundLog/uploadServer',
                 data: {
-                    poundLogNo: field.poundLogNo
+                    poundLogNo: field.poundLogNo,
+                    unitName: field.unitName
                 },
                 cache: false,
                 dataType: 'json',
                 success: function (result) {
                     //关闭
                     layer.close(index);
-                    console.log("result:update:", result);
                     if (result.code == 0) {
                         //数据刷新
                         $("#btn-submit-server").addClass("layui-btn-disabled");
                         $("#btn-print").removeClass("layui-btn-disabled");
+                        $("#unitName").val(result.data.unitName);
                         return layer.msg('提交成功');
                     } else {
                         layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
@@ -556,45 +579,66 @@ layui.define(['table', 'form'], function (exports) {
     });
     //打印
     form.on('submit(btn-print)', function (data) {
-        if (!$("#btn-print").hasClass("layui-btn-disabled")) {
-            var filed = data.field;
-            //执行打印操作
-            $.ajax({
-                type: 'get',
-                url: '/poundLog/doPrint',
-                data: {
-                    poundLogNo: filed.poundLogNo
-                },
-                cache: false,
-                dataType: 'json',
-                success: function (result) {
-                    if (result.code == 0) {
-                        $("#btn-print").removeClass("layui-btn-disabled");
+        // if (!$("#btn-print").hasClass("layui-btn-disabled")) {
+        var filed = data.field;
+        //执行打印操作
+        $.ajax({
+            type: 'get',
+            url: '/poundLog/doPrint',
+            data: {
+                poundLogNo: filed.poundLogNo
+            },
+            cache: false,
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 0) {
+                    $("#btn-print").removeClass("layui-btn-disabled");
 
-                        //弹出打印页面
-                        $("#print-content").print({
-                            globalStyles: true,
-                            mediaPrint: false,
-                            stylesheet: null,
-                            noPrintSelector: ".no-print",
-                            iframe: true,
-                            append: null,
-                            prepend: null,
-                            manuallyCopyFormValues: true,
-                            deferred: $.Deferred(),
-                            timeout: 750,
-                            title: null,
-                            doctype: '<!doctype html>'
-                        });
-                    } else {
-                        layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-                    }
-                },
-                error: function (error) {
-                    layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                    //更新未完成列表
+                    methods.listUnFinishedAndPoundLog(poundLogNoStr);
+
+                    var poundLog = result.data;
+                    $("#print-content").show();
+                    //给表单赋值
+                    $('#print-poundLogNo').text(poundLog.poundLogNo);
+                    $('#print-plateNo').text(poundLog.plateNo);
+                    $('#print-gross-weight').text(poundLog.grossWeight);
+                    $('#print-tare-weight').text(poundLog.tareWeight);
+                    $('#print-net-weight').text(poundLog.netWeight);
+                    $('#print-diff-weight').text(poundLog.diffWeight);
+                    $('#print-remark').text(poundLog.remark);
+                    $('#print-unit-name').text(poundLog.unitName);
+                    $('#print-gross-img').attr("src", poundLog.grossImgUrl);
+                    $('#print-tare-img').attr("src", poundLog.tareImgUrl);
+                    $('#print-gross-time').text(poundLog.firstTime);
+                    $('#print-tare-time').text(poundLog.secondTime);
+                    $('#print-time').text(methods.getNowFormatDate());
+
+                    //弹出打印页面
+                    $("#print-content").print({
+                        globalStyles: true,
+                        mediaPrint: false,
+                        stylesheet: null,
+                        noPrintSelector: ".no-print",
+                        iframe: true,
+                        append: null,
+                        prepend: null,
+                        manuallyCopyFormValues: true,
+                        deferred: $.Deferred(),
+                        timeout: 750,
+                        title: null,
+                        doctype: '<!doctype html>'
+                    });
+                    $("#print-content").hide();
+                } else {
+                    layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
                 }
-            });
-        }
+            },
+            error: function (error) {
+                layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+            }
+        });
+        // }
     });
 
     //事件

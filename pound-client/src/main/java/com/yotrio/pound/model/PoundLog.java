@@ -174,6 +174,21 @@ public class PoundLog implements Serializable {
      */
     private List<Inspection> inspections;
 
+    /**
+     * 货品类型
+     */
+    private Integer goodsKind;
+
+    /**
+     * 供应商名称
+     */
+    private String compName;
+
+    /**
+     * 报检单总重
+     */
+    private Double inspWeightTotal;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -374,6 +389,30 @@ public class PoundLog implements Serializable {
 
     public void setTareImgUrlBase64(String tareImgUrlBase64) {
         this.tareImgUrlBase64 = tareImgUrlBase64;
+    }
+
+    public Integer getGoodsKind() {
+        return goodsKind;
+    }
+
+    public void setGoodsKind(Integer goodsKind) {
+        this.goodsKind = goodsKind;
+    }
+
+    public String getCompName() {
+        return compName;
+    }
+
+    public void setCompName(String compName) {
+        this.compName = compName;
+    }
+
+    public Double getInspWeightTotal() {
+        return inspWeightTotal;
+    }
+
+    public void setInspWeightTotal(Double inspWeightTotal) {
+        this.inspWeightTotal = inspWeightTotal;
     }
 
     @Override

@@ -65,6 +65,7 @@ public class PoundLogController extends BaseController {
     public String list(Model model) {
         Integer poundId = sysProperties.getPoundClientId();
         model.addAttribute("poundId", poundId);
+        model.addAttribute("token", "123456");
         return "pound/pound_log_list";
     }
 
@@ -112,6 +113,9 @@ public class PoundLogController extends BaseController {
         PoundLog logInDB = poundLogService.findByPoundLogNo(poundLog.getPoundLogNo());
         if (logInDB == null) {
             return ResultUtil.error("请先添加报检单");
+        }
+        if (logInDB.getStatus() == PoundLogConstant.STATUS_POUND_FINISH) {
+            return ResultUtil.error("记录已提交，不能再修改");
         }
 
         BeansUtil.copyPropertiesIgnoreNull(poundLog, logInDB);
@@ -205,6 +209,9 @@ public class PoundLogController extends BaseController {
         PoundLog logInDB = poundLogService.findByPoundLogNo(poundLog.getPoundLogNo());
         if (logInDB == null) {
             return ResultUtil.error("找不到您要更新的过磅记录");
+        }
+        if (logInDB.getStatus() == PoundLogConstant.STATUS_POUND_FINISH) {
+            return ResultUtil.error("记录已提交，不能再修改");
         }
 
         BeansUtil.copyPropertiesIgnoreNull(poundLog, logInDB);
@@ -354,13 +361,17 @@ public class PoundLogController extends BaseController {
      * 上传本地数据到服务器
      *
      * @param poundLogNo 过磅单单号
+     * @param unitName   组织
      * @return
      */
     @RequestMapping(value = "/uploadServer", method = {RequestMethod.POST})
     @ResponseBody
-    public Result uploadServer(String poundLogNo) {
+    public Result uploadServer(String poundLogNo, String unitName) {
         if (StringUtils.isEmpty(poundLogNo)) {
             return ResultUtil.error("获取不到过磅单号");
+        }
+        if (StringUtils.isEmpty(unitName)) {
+            return ResultUtil.error("请先填写组织");
         }
         // TODO: 2018-10-19 这里应该使用一对多关联查询，但是使用pouLogNo关联查询时映射出来有问题，貌似根据id去映射了
         PoundLog poundLog = poundLogService.findByPoundLogNo(poundLogNo);
@@ -370,6 +381,7 @@ public class PoundLogController extends BaseController {
         if (poundLog.getStatus() < PoundLogConstant.STATUS_POUND_SECOND) {
             return ResultUtil.error("请先完成两次称重操作再提交");
         }
+        poundLog.setUnitName(unitName);
 
         String msg = "网络连接失败,联网后系统会自动为您提交";
         //先看网络连接是否成功？失败：创建定时任务，提示失败原因
@@ -428,7 +440,7 @@ public class PoundLogController extends BaseController {
                     //上传成功更新本地过磅单状态为待打印
                     poundLog.setStatus(PoundLogConstant.STATUS_WAIT_PRINT);
                     poundLogService.update(poundLog);
-                    return ResultUtil.success("上传成功");
+                    return ResultUtil.success(poundLog);
                 } else {
                     return ResultUtil.error(msg);
                 }
@@ -456,10 +468,10 @@ public class PoundLogController extends BaseController {
             return ResultUtil.error("找不到您要打印的过磅单");
         }
         poundLog.setStatus(PoundLogConstant.STATUS_POUND_FINISH);
-//        int result = poundLogService.update(poundLog);
-//        if (result < 1) {
-//            return ResultUtil.error("更新打印状态失败");
-//        }
-        return ResultUtil.success("更新打印状态成功");
+        int result = poundLogService.update(poundLog);
+        if (result < 1) {
+            return ResultUtil.error("更新打印状态失败");
+        }
+        return ResultUtil.success(poundLog);
     }
 }
