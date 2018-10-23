@@ -1,19 +1,32 @@
 package com.yotrio.pound.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yotrio.common.constants.ApiUrlConstant;
+import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.pound.dao.InspectionMapper;
 import com.yotrio.pound.dao.PoundLogMapper;
 import com.yotrio.pound.dao.TaskMapper;
+import com.yotrio.pound.domain.SystemProperties;
+import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.Task;
 import com.yotrio.pound.service.ITaskService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.yotrio.common.utils.DingTalkUtil.SUCCESS_CODE;
 
 /**
  * 地磅接口服务层
@@ -27,10 +40,16 @@ import java.util.List;
 @Service("taskService")
 public class TaskServiceImpl implements ITaskService {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private TaskMapper taskMapper;
     @Autowired
     private PoundLogMapper poundLogMapper;
+    @Autowired
+    private InspectionMapper inspectionMapper;
+    @Autowired
+    private SystemProperties systemProperties;
 
     /**
      * 分页获取任务数据
@@ -79,17 +98,46 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public String executeTask(Task task) {
         //获取过磅记录
-        PoundLog poundLog = poundLogMapper.selectByPrimaryKey(Integer.valueOf(task.getOtherId()));
+        String poundLogNo = task.getOtherId();
+        PoundLog poundLog = poundLogMapper.findByPoundLogNo(poundLogNo);
         if (poundLog == null) {
             return "找不到您要执行的任务信息";
         }
 
+        //获取关联的报检单
+        List<Inspection> inspections = inspectionMapper.findListByPlNo(poundLogNo);
 
-        return null;
+        JSONObject data = new JSONObject();
+        data.put("poundLog", poundLog);
+        data.put("inspections", inspections);
+        Map<String, Object> map = new HashMap<>(10);
+        map.put("data", data);
+        map.put("token", "token");
+
+        //过磅记录发送到服务器
+        String url = systemProperties.getPoundMasterBaseUrl() + ApiUrlConstant.SAVE_POUND_LOG;
+        String response = HttpUtil.post(url, BeanUtil.beanToMap(poundLog));
+        if (response != null) {
+            JSONObject json = JSONObject.parseObject(response);
+            String msg = json.getString("msg");
+            if (json.getIntValue("code") == SUCCESS_CODE) {
+                //上传成功
+                task.setStatus(TaskConstant.STATUS_FINISHED);
+                task.setUpdateTime(new Date());
+                task.setDescription(msg);
+                taskMapper.updateByPrimaryKey(task);
+                return null;
+            } else {
+                logger.info("taskId:" + task.getId() + "|任务执行失败:" + msg + "|" + new Date());
+                return msg;
+            }
+        }
+        return "任务执行失败";
     }
 
     /**
      * 限量查找未完成任务
+     *
      * @param taskAccount
      * @return
      */
@@ -100,6 +148,7 @@ public class TaskServiceImpl implements ITaskService {
 
     /**
      * 创建任务
+     *
      * @param task
      * @return
      */
@@ -111,6 +160,7 @@ public class TaskServiceImpl implements ITaskService {
 
     /**
      * 更otherId获取任务
+     *
      * @param poundLogNo
      * @return
      */
