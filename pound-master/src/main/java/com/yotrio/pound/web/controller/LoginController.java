@@ -3,6 +3,7 @@ package com.yotrio.pound.web.controller;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.ICaptcha;
+import com.yotrio.common.constants.SysConstants;
 import com.yotrio.common.enums.LoginErrorCode;
 import com.yotrio.pound.service.ISysUserService;
 import com.yotrio.pound.utils.RedisUtil;
@@ -31,7 +32,6 @@ import java.io.IOException;
 @RequestMapping("/")
 public class LoginController extends BaseController {
 
-    private static final String KEY_VERIFY_CODE = "verify_code_";
 
     @Autowired
     private ISysUserService sysUserService;
@@ -63,7 +63,7 @@ public class LoginController extends BaseController {
             } else if (AuthenticationException.class.getName().equals(exceptionClassName)) {
                 error = LoginErrorCode.LOGIN_USER_PASSWORD_ERROR.getDescription();
             } else if (LoginErrorCode.class.getName().equals(exceptionClassName)) {
-                error = LoginErrorCode.TOTP_UNBINDING.getDescription();
+                error = LoginErrorCode.CODE_VERIFY_ERROR.getDescription();
             } else if (ExcessiveAttemptsException.class.getName().equals(exceptionClassName)) {
                 error = LoginErrorCode.LOGIN_RETRY_LIMIT.getDescription();
             } else if (exceptionClassName != null) {
@@ -90,6 +90,7 @@ public class LoginController extends BaseController {
 
     /**
      * 获取图片验证码
+     *
      * @param request
      * @param response
      */
@@ -105,13 +106,11 @@ public class LoginController extends BaseController {
             captcha.write(response.getOutputStream());
             //获取验证码并存储到redis 5分钟
             String code = captcha.getCode();
-            RedisUtil.set(KEY_VERIFY_CODE + sessionId, code, 5 * 60);
+            RedisUtil.set(SysConstants.KEY_VERIFY_CODE + sessionId, code, 5 * 60);
         } catch (IOException e) {
             logger.error("验证码生成失败：{}", e.getMessage());
         }
     }
-
-
 
 
 }

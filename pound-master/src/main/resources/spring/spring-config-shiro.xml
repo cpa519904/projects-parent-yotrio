@@ -100,7 +100,7 @@
     </bean>
 
     <!-- 基于Form表单的身份验证过滤器 -->
-    <bean id="formAuthenticationFilter" class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">
+    <bean id="custonFormAuthenticationFilter" class="com.yotrio.pound.web.shiro.filter.CustomFormAuthenticationFilter">
         <property name="usernameParam" value="username"/>
         <property name="passwordParam" value="password"/>
         <property name="rememberMeParam" value="rememberMe"/>
@@ -111,6 +111,15 @@
         <property name="successUrl" value="/index.htm"/>
     </bean>
 
+    <!-- 验证码过滤器 -->
+    <bean id="vercodeValidateFilter" class="com.yotrio.pound.web.shiro.filter.VercodeValidateFilter">
+        <property name="vercodeParam" value="vercode"/>
+        <property name="vercodeEbabled" value="true"/>
+        <property name="loginUrl" value="/login"/>
+        <!-- (默认 shiroLoginFailure) -->
+        <property name="failureKeyAttribute" value="shiroLoginFailure"/>
+    </bean>
+
     <bean id="sysUserFilter" class="com.yotrio.pound.web.shiro.filter.SysUserFilter"/>
 
     <!-- Shiro的Web过滤器 -->
@@ -119,13 +128,14 @@
         <property name="loginUrl" value="/login"/>
         <property name="filters">
             <util:map>
-                <entry key="authc" value-ref="formAuthenticationFilter"/>
+                <entry key="authc" value-ref="custonFormAuthenticationFilter"/>
                 <entry key="sysUser" value-ref="sysUserFilter"/>
+                <entry key="ercodeValidate" value-ref="vercodeValidateFilter"/>
             </util:map>
         </property>
         <property name="filterChainDefinitions">
             <value>
-                /login = authc
+                /login = ercodeValidate,authc
                 /logout = logout
                 /authenticated = authc
                 /statics/** = anon

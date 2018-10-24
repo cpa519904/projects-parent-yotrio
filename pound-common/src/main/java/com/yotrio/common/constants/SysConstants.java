@@ -12,4 +12,7 @@ package com.yotrio.common.constants;
 public class SysConstants {
     //系统当前用户
     public static final String CURRENT_USER = "user";
+
+    //验证码的key
+    public static final String KEY_VERIFY_CODE = "verify_code_";
 }

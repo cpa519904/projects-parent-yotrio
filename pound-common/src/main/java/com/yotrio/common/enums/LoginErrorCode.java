@@ -13,8 +13,7 @@ public enum LoginErrorCode {
     LOGIN_USER_UNENABLE("该用户未启用"),
     LOGIN_USER_PASSWORD_ERROR("用户名/密码错误"),
     LOGIN_RETRY_LIMIT("密码尝试次数过多，锁定5分钟，请稍后尝试"),
-    TOTP_UNBINDING("动态验证设备未绑定，请绑定动态验证码"),
-    TOTP_CODE_VERIFY_ERROR("动态验证码无效");
+    CODE_VERIFY_ERROR("验证码无效");
 
     private String description;
 

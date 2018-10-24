@@ -63,6 +63,7 @@ public class BaseController {
     private static final String URL_GET_TOKEN = PropertiesFileUtil.getInstance("SystemParameter").get("url.getToken");
 
 
+
     /**
      * 成功
      *
