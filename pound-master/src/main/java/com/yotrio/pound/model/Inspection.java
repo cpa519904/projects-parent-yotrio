@@ -68,6 +68,13 @@ public class Inspection implements Serializable {
     private Double returnWeight;
 
     /**
+     * 称重之后计算出来的重量
+     *
+     * @mbg.generated
+     */
+    private Double inspNetWeight;
+
+    /**
      * 类型：是否样品
      *
      * @mbg.generated
@@ -183,6 +190,14 @@ public class Inspection implements Serializable {
         this.returnWeight = returnWeight;
     }
 
+    public Double getInspNetWeight() {
+        return inspNetWeight;
+    }
+
+    public void setInspNetWeight(Double inspNetWeight) {
+        this.inspNetWeight = inspNetWeight;
+    }
+
     public Integer getTypes() {
         return types;
     }
@@ -254,6 +269,7 @@ public class Inspection implements Serializable {
         sb.append(", compName=").append(compName);
         sb.append(", inspWeight=").append(inspWeight);
         sb.append(", returnWeight=").append(returnWeight);
+        sb.append(", inspNetWeight=").append(inspNetWeight);
         sb.append(", types=").append(types);
         sb.append(", status=").append(status);
         sb.append(", createTime=").append(createTime);
@@ -283,6 +299,7 @@ public class Inspection implements Serializable {
             && (this.getCompName() == null ? other.getCompName() == null : this.getCompName().equals(other.getCompName()))
             && (this.getInspWeight() == null ? other.getInspWeight() == null : this.getInspWeight().equals(other.getInspWeight()))
             && (this.getReturnWeight() == null ? other.getReturnWeight() == null : this.getReturnWeight().equals(other.getReturnWeight()))
+            && (this.getInspNetWeight() == null ? other.getInspNetWeight() == null : this.getInspNetWeight().equals(other.getInspNetWeight()))
             && (this.getTypes() == null ? other.getTypes() == null : this.getTypes().equals(other.getTypes()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
@@ -302,6 +319,7 @@ public class Inspection implements Serializable {
         result = prime * result + ((getCompName() == null) ? 0 : getCompName().hashCode());
         result = prime * result + ((getInspWeight() == null) ? 0 : getInspWeight().hashCode());
         result = prime * result + ((getReturnWeight() == null) ? 0 : getReturnWeight().hashCode());
+        result = prime * result + ((getInspNetWeight() == null) ? 0 : getInspNetWeight().hashCode());
         result = prime * result + ((getTypes() == null) ? 0 : getTypes().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.constants.PoundLogConstant;
+import com.yotrio.pound.dao.InspectionMapper;
 import com.yotrio.pound.dao.PoundLogMapper;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.service.IPoundLogService;
@@ -29,6 +30,8 @@ public class PoundLogServiceImpl implements IPoundLogService {
 
     @Autowired
     private PoundLogMapper poundLogMapper;
+    @Autowired
+    private InspectionMapper inspectionMapper;
 
     /**
      * 分页获取过磅数据
@@ -132,6 +135,7 @@ public class PoundLogServiceImpl implements IPoundLogService {
 
     /**
      * 更具过磅单单号获取过磅记录
+     *
      * @param plNo
      * @return
      */
@@ -142,6 +146,7 @@ public class PoundLogServiceImpl implements IPoundLogService {
 
     /**
      * 查出未完成的过磅单记录
+     *
      * @return
      */
     @Override
@@ -151,12 +156,24 @@ public class PoundLogServiceImpl implements IPoundLogService {
 
     /**
      * 根据过磅单单号查出过磅单及对应的报检单
+     *
      * @param poundLogNo
      * @return
      */
     @Override
     public PoundLog findLogWithInspectionsByPoundLogNo(String poundLogNo) {
         return poundLogMapper.findLogWithInspectionsByPoundLogNo(poundLogNo);
+    }
+
+    /**
+     * 删除过磅单以及相应的报检单
+     *
+     * @param poundLogNo
+     */
+    @Override
+    public void destroyPoundLogAndInspections(String poundLogNo) {
+        poundLogMapper.deleteByPoundLogNo(poundLogNo);
+        inspectionMapper.deleteByPlNo(poundLogNo);
     }
 
 

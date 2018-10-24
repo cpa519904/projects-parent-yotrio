@@ -492,7 +492,7 @@
             <if test="remark != null and remark != ''">
                 AND remark = #{remark,jdbcType=VARCHAR}
             </if>
-            <if test="types != null and types != ''">
+            <if test="types != null and types != '' or types == 0 ">
                 AND types = #{types,jdbcType=INTEGER}
             </if>
             <if test="status != null and status != ''">

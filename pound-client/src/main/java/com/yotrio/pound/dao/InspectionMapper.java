@@ -27,4 +27,8 @@ public interface InspectionMapper {
     int deleteByIds(List<Integer> idList);
 
     List<Inspection> findListByPlNo(String poundLogNo);
+
+    Inspection findByInspNo(String inspNo);
+
+    int deleteByPlNo(String poundLogNo);
 }

@@ -40,6 +40,9 @@
                             <button lay-submit lay-filter="btn-submit-server" id="btn-submit-server"
                                     class="layui-btn layui-btn-danger layui-btn-disabled" style="margin-bottom: 0">提交
                             </button>
+                            <button id="btn-destroy" lay-submit lay-filter="btn-desproy"
+                                    class="layui-btn  layui-btn-danger layui-btn-disabled" style="margin-bottom: 0">废弃
+                            </button>
                             <button id="btn-print" lay-submit lay-filter="btn-print"
                                     class="layui-btn layui-btn-normal layui-btn-disabled" style="margin-bottom: 0">打印
                             </button>
@@ -274,11 +277,7 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
-
-
     </div>
 
 </div>
@@ -287,7 +286,7 @@
         <div class="layui-col-md12 ">
             <div class="layui-card">
                 <div class="layui-form layui-card-header">
-                    <div style="text-align: center;font-size: 18px;"><span>浙江永强过磅单</span> </div>
+                    <div style="text-align: center;font-size: 18px;"><span>浙江永强过磅单</span></div>
                 </div>
                 <div class="layui-card-body">
                     <div class="layui-row">
@@ -296,23 +295,23 @@
                                 <div class="layui-col-xs6">
                                     <div class="layui-row">
                                         <div class="layui-col-xs12">
-                                            <div >单号：<span id="print-poundLogNo"></span></div>
+                                            <div>单号：<span id="print-poundLogNo"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
                                             <div>车牌：<span id="print-plateNo"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div >毛重：<span id="print-gross-weight"></span></div>
+                                            <div>毛重：<span id="print-gross-weight"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div >皮重：<span id="print-tare-weight"></span></div>
+                                            <div>皮重：<span id="print-tare-weight"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div >净重：<span id="print-net-weight"></span></div>
+                                            <div>净重：<span id="print-net-weight"></span></div>
                                         </div>
-                                        <div class="layui-col-xs12">
-                                            <div >磅差：<span id="print-diff-weight"></span></div>
-                                        </div>
+                                        <!--<div class="layui-col-xs12">-->
+                                            <!--<div>磅差：<span id="print-diff-weight"></span></div>-->
+                                        <!--</div>-->
                                     </div>
                                 </div>
                                 <div class="layui-col-xs6">
@@ -325,19 +324,19 @@
                                 <div class="layui-col-xs6">
                                     <div class="layui-row">
                                         <div class="layui-col-xs12">
-                                            <div >收货单位：<span id="print-unit-name"></span></div>
+                                            <div>收货单位：<span id="print-unit-name"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div >送货单位：<span id="print-comp-name"></span></div>
+                                            <div>送货单位：<span id="print-comp-name"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div >称毛时间：<span id="print-gross-time"></span></div>
+                                            <div>称毛时间：<span id="print-gross-time"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div >称皮时间：<span id="print-tare-time"></span></div>
+                                            <div>称皮时间：<span id="print-tare-time"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div >打印时间：<span id="print-time"></span></div>
+                                            <div>打印时间：<span id="print-time"></span></div>
                                         </div>
                                     </div>
                                 </div>
@@ -349,61 +348,50 @@
                         <div class="layui-col-xs12">
                             <div class="layui-row">
                                 <div class="layui-col-xs12">
-                                    <div >备注：<span id="print-remark"></span></div>
+                                    <div>备注：<span id="print-remark"></span></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="layui-row">
-                        <div class="layui-col-xs12">
-                            <div class="layui-card-body" style="padding-left: 0">
-                                <table id="LAY-inspection-print-manage" class="layui-table">
-                                    <tr>
-                                        <th>报检单</th>
-                                        <th>单号</th>
-                                        <th>重量</th>
-                                        <th>退货重量</th>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>20180306123512</td>
-                                        <td>100</td>
-                                        <td>0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>20180306123512</td>
-                                        <td>500</td>
-                                        <td>20</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>20180306123512</td>
-                                        <td>400</td>
-                                        <td>0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>合计</td>
-                                        <td></td>
-                                        <td>1100</td>
-                                        <td>20</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="layui-row" id="print-table-inspections">
+                        <!--<div class="layui-col-xs12">-->
+                            <!--<div class="layui-card-body" style="padding-left: 0">-->
+                                <!--<table id="LAY-inspection-print-manage" class="layui-table">-->
+                                    <!--<tr>-->
+                                        <!--<th>报检单</th>-->
+                                        <!--<th>单号</th>-->
+                                        <!--<th>重量</th>-->
+                                        <!--<th>退货重量</th>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                        <!--<td>1</td>-->
+                                        <!--<td>20180306123512</td>-->
+                                        <!--<td>100</td>-->
+                                        <!--<td>0</td>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                <!--</table>-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                     <div class="layui-row">
                         <div class="layui-col-xs12">
                             <div class="layui-card-body" style="padding-left: 0">
                                 <div class="layui-row">
                                     <div class="layui-col-xs4">
-                                        <div class="grid-demo">司磅员：<input type="text" style="border:none;border-bottom: 1px solid #e6e6e6;width: 150px;outline: medium"></div>
+                                        <div class="grid-demo">司磅员：<input type="text"
+                                                                          style="border:none;border-bottom: 1px solid #e6e6e6;width: 150px;outline: medium">
+                                        </div>
                                     </div>
                                     <div class="layui-col-xs4">
-                                        <div class="grid-demo">监磅员：<input type="text" style="border:none;border-bottom: 1px solid #e6e6e6;width: 150px;outline: medium"></div>
+                                        <div class="grid-demo">监磅员：<input type="text"
+                                                                          style="border:none;border-bottom: 1px solid #e6e6e6;width: 150px;outline: medium">
+                                        </div>
                                     </div>
                                     <div class="layui-col-xs4">
-                                        <div class="grid-demo">送货人：<input type="text" style="border:none;border-bottom: 1px solid #e6e6e6;width: 150px;outline: medium"></div>
+                                        <div class="grid-demo">送货人：<input type="text"
+                                                                          style="border:none;border-bottom: 1px solid #e6e6e6;width: 150px;outline: medium">
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -47,7 +47,6 @@ public class ApiController extends BaseController {
     //客户端图片保存路径
     private static String CLIENT_FILE_LOCATION = PropertiesFileUtil.getInstance("SystemParameter").get("client.file.location");
 
-
     @Autowired
     private IPoundLogService poundLogService;
     @Autowired

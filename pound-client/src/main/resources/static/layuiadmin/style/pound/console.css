@@ -2,8 +2,10 @@
 控制台样式
  */
 #unFinishList {
+    min-height: 570px;
     max-height: 100%;
     overflow-y: auto;
+    background-color: #fff;
 }
 
 .wait-list-title {
@@ -27,14 +29,14 @@
 }
 
 .layui-nav-item.unfinished a {
-    color: #666 ;
+    color: #666;
 }
 
 .layui-nav-item.unfinished a:hover {
     color: #fff !important;
 }
 
-.layui-this-li a{
+.layui-this-li a {
     color: #fff !important;
     background-color: #4E5465;
 }

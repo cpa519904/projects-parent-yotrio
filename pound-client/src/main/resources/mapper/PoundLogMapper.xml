@@ -98,6 +98,10 @@
     delete from pound_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
+    <delete id="deleteByPoundLogNo" parameterType="java.lang.String">
+    delete from pound_log
+    where pound_log_no = #{poundLogNo,jdbcType=VARCHAR}
+  </delete>
     <insert id="insert" parameterType="com.yotrio.pound.model.PoundLog">
     insert into pound_log (id, pound_id, pound_name, 
       pound_log_no, gross_weight, tare_weight, 

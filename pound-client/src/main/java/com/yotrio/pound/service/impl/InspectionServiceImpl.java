@@ -7,6 +7,7 @@ import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.constants.InspectionConstant;
 import com.yotrio.pound.dao.InspectionMapper;
 import com.yotrio.pound.model.Inspection;
+import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.service.IInspectionService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,7 @@ public class InspectionServiceImpl implements IInspectionService {
 
     /**
      * 根据id删除
+     *
      * @param idList
      * @return
      */
@@ -76,12 +78,66 @@ public class InspectionServiceImpl implements IInspectionService {
 
     /**
      * 根据过磅单号获取过磅单列表
+     *
      * @param poundLogNo
      * @return
      */
     @Override
     public List<Inspection> findListByPlNo(String poundLogNo) {
         return inspectionMapper.findListByPlNo(poundLogNo);
+    }
+
+    /**
+     * 根据报检单单号查询报检单
+     *
+     * @param inspNo
+     * @return
+     */
+    @Override
+    public Inspection findByInspNo(String inspNo) {
+        return inspectionMapper.findByInspNo(inspNo);
+    }
+
+    /**
+     * 计算每张报检单的称重重量，按报检单上重量比例分配
+     *
+     * @param inspections
+     * @param poundLog
+     */
+    @Override
+    public void countInspNetWeight(List<Inspection> inspections, PoundLog poundLog) {
+        //报检单总重量
+        double totalInspWeight = poundLog.getInspWeightTotal();
+        //样品重量+非样品重量
+        double totalNetWeight = poundLog.getNetWeight() + poundLog.getSampleNetWeight();
+        //报检单称重后，我们给的总净重
+        double totalInspNetWeight = 0.0d;
+        //实际总重按小的来，如果自己称重大，按报检单总重
+        if (totalNetWeight >= totalInspWeight) {
+            totalInspNetWeight = totalInspWeight;
+            for (Inspection inspection : inspections) {
+                inspection.setInspNetWeight(inspection.getInspWeight());
+                inspectionMapper.updateByPrimaryKeySelective(inspection);
+            }
+        } else {//如果自己称重小于报检单总重，则按自己的来
+            totalInspNetWeight = totalNetWeight;
+            double totalCountWeight = 0.0d;
+            for (int i = 0; i < inspections.size(); i++) {
+                Inspection inspection = inspections.get(i);
+                double inspNetWeight = 0.0d;
+                if (i < inspections.size() - 1) {
+                    //前面按比例计算
+                    inspNetWeight = Math.round(inspection.getInspWeight() / totalInspWeight * totalInspNetWeight);
+                    totalCountWeight += inspNetWeight;
+                } else {
+                    //最后一个的时候用减（总数 - 前面报价单重量之和），确保总的重量不变
+                    inspNetWeight = totalInspNetWeight - totalCountWeight;
+                }
+
+                inspection.setInspNetWeight(inspNetWeight);
+                inspectionMapper.updateByPrimaryKeySelective(inspection);
+            }
+        }
     }
 
     /**

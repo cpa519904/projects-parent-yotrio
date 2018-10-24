@@ -74,6 +74,15 @@ public class InspectionController extends BaseController {
             return ResultUtil.error("车牌号码不能为空");
         }
 
+        //校验报检单
+        String checkResult = inspectionService.checkFormSave(inspection);
+        if (StringUtils.isNotEmpty(checkResult)) {
+            return ResultUtil.error(checkResult);
+        }
+
+        //报检单录入之后不能再次保存
+        Inspection inspectionInDB = inspectionService.findByInspNo(inspection.getInspNo());
+
         //查询是否已生成过磅记录，未生成的先生成过磅记录
         PoundLog logInDB = poundLogService.findByPoundLogNo(inspection.getPlNo());
         if (logInDB == null) {
@@ -93,12 +102,6 @@ public class InspectionController extends BaseController {
             if (result < 1) {
                 return ResultUtil.error("过磅记录生成失败");
             }
-        }
-
-        //校验报检单
-        String checkResult = inspectionService.checkFormSave(inspection);
-        if (StringUtils.isNotEmpty(checkResult)) {
-            return ResultUtil.error(checkResult);
         }
 
         int saveResult = inspectionService.save(inspection);

@@ -11,13 +11,14 @@
         <result column="comp_name" jdbcType="VARCHAR" property="compName"/>
         <result column="insp_weight" jdbcType="DOUBLE" property="inspWeight"/>
         <result column="return_weight" jdbcType="DOUBLE" property="returnWeight"/>
+        <result column="insp_net_weight" jdbcType="DOUBLE" property="inspNetWeight"/>
         <result column="types" jdbcType="INTEGER" property="types"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, pl_id, pl_no, insp_no, plate_no, goods_kind, comp_name, insp_weight, return_weight, 
+    id, pl_id, pl_no, insp_no, plate_no, goods_kind, comp_name, insp_weight, return_weight, insp_net_weight
     types, status, create_time, update_time
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -46,12 +47,12 @@
     <insert id="insert" parameterType="com.yotrio.pound.model.Inspection">
     insert into inspection (id, pl_id, pl_no, 
       insp_no, plate_no, goods_kind, 
-      comp_name, insp_weight, return_weight, 
+      comp_name, insp_weight, return_weight, insp_net_weight
       types, status, create_time, 
       update_time)
     values (#{id,jdbcType=INTEGER}, #{plId,jdbcType=INTEGER}, #{plNo,jdbcType=VARCHAR}, 
       #{inspNo,jdbcType=VARCHAR}, #{plateNo,jdbcType=VARCHAR}, #{goodsKind,jdbcType=INTEGER}, 
-      #{compName,jdbcType=VARCHAR}, #{inspWeight,jdbcType=DOUBLE}, #{returnWeight,jdbcType=DOUBLE}, 
+      #{compName,jdbcType=VARCHAR}, #{inspWeight,jdbcType=DOUBLE}, #{returnWeight,jdbcType=DOUBLE}, #{inspNetWeight,jdbcType=DOUBLE},
       #{types,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -84,6 +85,9 @@
             </if>
             <if test="returnWeight != null">
                 return_weight,
+            </if>
+            <if test="inspNetWeight != null">
+                insp_net_weight,
             </if>
             <if test="types != null">
                 types,
@@ -126,6 +130,9 @@
             <if test="returnWeight != null">
                 #{returnWeight,jdbcType=DOUBLE},
             </if>
+            <if test="inspNetWeight != null">
+                #{inspNetWeight,jdbcType=DOUBLE},
+            </if>
             <if test="types != null">
                 #{types,jdbcType=INTEGER},
             </if>
@@ -166,6 +173,9 @@
             </if>
             <if test="returnWeight != null">
                 return_weight = #{returnWeight,jdbcType=DOUBLE},
+            </if>
+            <if test="inspNetWeight != null">
+                insp_net_weight = #{inspNetWeight,jdbcType=DOUBLE},
             </if>
             <if test="types != null">
                 types = #{types,jdbcType=INTEGER},
@@ -209,6 +219,9 @@
             <if test="returnWeight != null">
                 return_weight = #{returnWeight,jdbcType=DOUBLE},
             </if>
+            <if test="inspNetWeight != null">
+                insp_net_weight = #{inspNetWeight,jdbcType=DOUBLE},
+            </if>
             <if test="types != null">
                 types = #{types,jdbcType=INTEGER},
             </if>
@@ -234,6 +247,7 @@
       comp_name = #{compName,jdbcType=VARCHAR},
       insp_weight = #{inspWeight,jdbcType=DOUBLE},
       return_weight = #{returnWeight,jdbcType=DOUBLE},
+      insp_net_weight = #{inspNetWeight,jdbcType=DOUBLE},
       types = #{types,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -284,6 +298,9 @@
             <if test="returnWeight != null and returnWeight != ''">
                 AND return_weight = #{returnWeight,jdbcType=DOUBLE}
             </if>
+            <if test="inspNetWeight != null and inspNetWeight != ''">
+                AND insp_net_weight = #{inspNetWeight,jdbcType=DOUBLE}
+            </if>
             <if test="types != null and types != ''">
                 AND types = #{types,jdbcType=INTEGER}
             </if>
@@ -322,6 +339,9 @@
             </if>
             <if test="myGreater_returnWeight != null and myGreater_returnWeight != ''">
                 AND return_weight &gt; #{myGreater_returnWeight,jdbcType=DOUBLE}
+            </if>
+            <if test="myGreater_inspNetWeight != null and myGreater_inspNetWeight != ''">
+                AND insp_net_weight &gt; #{myGreater_inspNetWeight,jdbcType=DOUBLE}
             </if>
             <if test="myGreater_types != null and myGreater_types != ''">
                 AND types &gt; #{myGreater_types,jdbcType=INTEGER}
@@ -362,6 +382,9 @@
             <if test="myLesser_returnWeight != null and myLesser_returnWeight != ''">
                 AND return_weight &lt; #{myLesser_returnWeight,jdbcType=DOUBLE}
             </if>
+            <if test="myLesser_inspNetWeight != null and myLesser_inspNetWeight != ''">
+                AND insp_net_weight &lt; #{myLesser_inspNetWeight,jdbcType=DOUBLE}
+            </if>
             <if test="myLesser_types != null and myLesser_types != ''">
                 AND types &lt; #{myLesser_types,jdbcType=INTEGER}
             </if>
@@ -397,6 +420,9 @@
             </if>
             <if test="myLike_inspWeight != null and myLike_inspWeight != ''">
                 AND insp_weight like CONCAT('%', #{myLike_inspWeight,jdbcType=DOUBLE},'%' )
+            </if>
+            <if test="myLike_inspNetWeight != null and myLike_inspNetWeight != ''">
+                AND insp_net_weight like CONCAT('%', #{myLike_inspNetWeight,jdbcType=DOUBLE},'%' )
             </if>
             <if test="myLike_returnWeight != null and myLike_returnWeight != ''">
                 AND return_weight like CONCAT('%', #{myLike_returnWeight,jdbcType=DOUBLE},'%' )
@@ -440,6 +466,9 @@
             <if test="myLikeStart_returnWeight != null and myLikeStart_returnWeight != ''">
                 AND return_weight like CONCAT('%', #{myLikeStart_returnWeight,jdbcType=DOUBLE})
             </if>
+            <if test="myLikeStart_inspNetWeight != null and myLikeStart_inspNetWeight != ''">
+                AND insp_net_weight like CONCAT('%', #{myLikeStart_inspNetWeight,jdbcType=DOUBLE})
+            </if>
             <if test="myLikeStart_types != null and myLikeStart_types != ''">
                 AND types like CONCAT('%', #{myLikeStart_types,jdbcType=INTEGER})
             </if>
@@ -478,6 +507,9 @@
             </if>
             <if test="myLikeEnd_returnWeight != null and myLikeEnd_returnWeight != ''">
                 AND return_weight like CONCAT( #{myLikeEnd_returnWeight,jdbcType=DOUBLE},'%' )
+            </if>
+            <if test="myLikeEnd_inspNetWeight != null and myLikeEnd_inspNetWeight != ''">
+                AND insp_net_weight like CONCAT( #{myLikeEnd_inspNetWeight,jdbcType=DOUBLE},'%' )
             </if>
             <if test="myLikeEnd_types != null and myLikeEnd_types != ''">
                 AND types like CONCAT( #{myLikeEnd_types,jdbcType=INTEGER},'%' )
@@ -536,6 +568,12 @@
             <if test="myIn_returnWeight != null and myIn_returnWeight != ''">
                 AND return_weight in
                 <foreach item="item" index="index" collection="myIn_returnWeight" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_inspNetWeight != null and myIn_inspNetWeight != ''">
+                AND insp_net_weight in
+                <foreach item="item" index="index" collection="myIn_inspNetWeight" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>

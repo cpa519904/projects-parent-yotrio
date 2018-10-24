@@ -189,6 +189,31 @@ public class PoundLog implements Serializable {
      */
     private Double inspWeightTotal;
 
+    /**
+     * 查询时间大于（创建时间）
+     */
+    private Date myGreater_createTime;
+
+    /**
+     * 查询时间小于（创建时间）
+     */
+    private Date myLesser_createTime;
+
+    /**
+     * 模糊搜索组织
+     */
+    private String myLike_unitName;
+
+    /**
+     * 模糊搜索供应商名称
+     */
+    private String myLike_compName;
+
+    /**
+     * 模糊搜索车牌号码
+     */
+    private String myLike_plateNo;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {

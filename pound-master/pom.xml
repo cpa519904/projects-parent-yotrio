@@ -68,7 +68,7 @@
 
         <hibernate.validator.version>5.2.2.Final</hibernate.validator.version>
 
-        <yotrio.lib.dir>/Users/wangyiqiang/Work/Yotrio/libs</yotrio.lib.dir>
+        <yotrio.lib.dir>E:/Work/Yotrio/libs</yotrio.lib.dir>
 
     </properties>
 
@@ -350,6 +350,12 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
             <scope>compile</scope>
         </dependency>
 

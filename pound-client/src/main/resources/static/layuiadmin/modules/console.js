@@ -107,11 +107,7 @@ layui.define(['table', 'form'], function (exports) {
 
                             //过磅单状态
                             var status = currPoundLog.status;
-                            if (status == 2) {//两个数据都有了,可以显示提交按钮了
-                                $("#btn-submit-server").removeClass("layui-btn-disabled");
-                            } else if (status == 3 || status == 4) {
-                                $("#btn-print").removeClass("layui-btn-disabled");
-                            }
+                            methods.reloadButtonStatus(status);
 
                             // console.log("status:", status);
                         }
@@ -179,7 +175,20 @@ layui.define(['table', 'form'], function (exports) {
                 context.drawImage(img, 0, 0);
             };
         }
-
+        //重新加载按钮状态
+        , reloadButtonStatus(status) {
+            if (status == 2) {//两个数据都有了,可以显示提交按钮了
+                $("#btn-submit-server").removeClass("layui-btn-disabled");
+            } else if (status == 3 || status == 4) {
+                $("#btn-print").removeClass("layui-btn-disabled");
+            }
+            if (status > 2) {
+                //隐藏废弃按钮
+                $("#btn-destroy").addClass("layui-btn-disabled");
+            } else {
+                $("#btn-destroy").removeClass("layui-btn-disabled");
+            }
+        }
     }
 
     //获取过磅单号,定义全部变量
@@ -523,7 +532,7 @@ layui.define(['table', 'form'], function (exports) {
             cache: false,
             dataType: 'json',
             success: function (result) {
-                console.log("result:update:", result);
+                // console.log("result:update:", result);
                 if (result.code == 0) {
                     //数据刷新
                     $("#unitName").val(result.data.unitName);
@@ -564,6 +573,9 @@ layui.define(['table', 'form'], function (exports) {
                         $("#btn-submit-server").addClass("layui-btn-disabled");
                         $("#btn-print").removeClass("layui-btn-disabled");
                         $("#unitName").val(result.data.unitName);
+                        if (result.data.status) {
+                            methods.reloadButtonStatus(result.data.status);
+                        }
                         return layer.msg('提交成功');
                     } else {
                         layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
@@ -579,67 +591,140 @@ layui.define(['table', 'form'], function (exports) {
     });
     //打印
     form.on('submit(btn-print)', function (data) {
-        // if (!$("#btn-print").hasClass("layui-btn-disabled")) {
-        var filed = data.field;
-        //执行打印操作
-        $.ajax({
-            type: 'get',
-            url: '/poundLog/doPrint',
-            data: {
-                poundLogNo: filed.poundLogNo
-            },
-            cache: false,
-            dataType: 'json',
-            success: function (result) {
-                if (result.code == 0) {
-                    $("#btn-print").removeClass("layui-btn-disabled");
+        if (!$("#btn-print").hasClass("layui-btn-disabled")) {
+            var filed = data.field;
+            //执行打印操作
+            $.ajax({
+                type: 'get',
+                url: '/poundLog/doPrint',
+                data: {
+                    poundLogNo: filed.poundLogNo
+                },
+                cache: false,
+                dataType: 'json',
+                success: function (result) {
+                    if (result.code == 0) {
+                        $("#btn-print").removeClass("layui-btn-disabled");
+                        if (result.data.status) {
+                            methods.reloadButtonStatus(result.data.status);
+                        }
 
-                    //更新未完成列表
-                    methods.listUnFinishedAndPoundLog(poundLogNoStr);
+                        //更新未完成列表
+                        methods.listUnFinishedAndPoundLog(poundLogNoStr);
 
-                    var poundLog = result.data;
-                    $("#print-content").show();
-                    //给表单赋值
-                    $('#print-poundLogNo').text(poundLog.poundLogNo);
-                    $('#print-plateNo').text(poundLog.plateNo);
-                    $('#print-gross-weight').text(poundLog.grossWeight);
-                    $('#print-tare-weight').text(poundLog.tareWeight);
-                    $('#print-net-weight').text(poundLog.netWeight);
-                    $('#print-diff-weight').text(poundLog.diffWeight);
-                    $('#print-remark').text(poundLog.remark);
-                    $('#print-unit-name').text(poundLog.unitName);
-                    $('#print-gross-img').attr("src", poundLog.grossImgUrl);
-                    $('#print-tare-img').attr("src", poundLog.tareImgUrl);
-                    $('#print-gross-time').text(poundLog.firstTime);
-                    $('#print-tare-time').text(poundLog.secondTime);
-                    $('#print-time').text(methods.getNowFormatDate());
+                        var poundLog = result.data;
+                        var inspections = poundLog.inspections;
+                        // console.log("poundLog:", poundLog, "inspections:", inspections);
 
-                    //弹出打印页面
-                    $("#print-content").print({
-                        globalStyles: true,
-                        mediaPrint: false,
-                        stylesheet: null,
-                        noPrintSelector: ".no-print",
-                        iframe: true,
-                        append: null,
-                        prepend: null,
-                        manuallyCopyFormValues: true,
-                        deferred: $.Deferred(),
-                        timeout: 750,
-                        title: null,
-                        doctype: '<!doctype html>'
-                    });
-                    $("#print-content").hide();
-                } else {
-                    layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                        $("#print-content").show();
+                        //给表单赋值
+                        $('#print-poundLogNo').text(poundLog.poundLogNo);
+                        $('#print-plateNo').text(poundLog.plateNo);
+                        $('#print-gross-weight').text(poundLog.grossWeight);
+                        $('#print-tare-weight').text(poundLog.tareWeight);
+                        $('#print-net-weight').text(poundLog.netWeight);
+                        // $('#print-diff-weight').text(poundLog.diffWeight);
+                        $('#print-remark').text(poundLog.remark);
+                        $('#print-unit-name').text(poundLog.unitName);
+                        $('#print-gross-img').attr("src", poundLog.grossImgUrl);
+                        $('#print-tare-img').attr("src", poundLog.tareImgUrl);
+                        $('#print-gross-time').text(poundLog.firstTime);
+                        $('#print-tare-time').text(poundLog.secondTime);
+                        $('#print-time').text(moment().format('YYYY-MM-DD hh:mm:ss'));
+
+                        //拼接报价单table html
+                        if (inspections.length > 0) {
+                            var htmlStr = '<div class="layui-col-xs12">' +
+                                '<div class="layui-card-body" style="padding-left: 0">' +
+                                '<table id="LAY-inspection-print-manage" class="layui-table">' +
+                                '<tr>' +
+                                '<th>报检单</th>' +
+                                '<th>单号</th>' +
+                                '<th>重量</th>' +
+                                '<th>退货重量</th>' +
+                                // '<th>净重</th>' +
+                                '</tr>';
+
+                            layui.each(inspections, function (index, item) {
+                                var trHtml = '';
+                                trHtml += ' <tr>' +
+                                    '<td>' + (index + 1) + '</td>' +
+                                    '<td>' + item.inspNo + '</td>' +
+                                    '<td>' + item.inspWeight + '</td>' +
+                                    // '<td>' + item.netWeight + '</td>'
+                                    '<td>' + item.returnWeight + '</td>'
+                                htmlStr += trHtml;
+                            });
+
+                            htmlStr += '</table>' +
+                                '</div>' +
+                                '</div>'
+
+                            $("#print-table-inspections").html(htmlStr);
+                        }
+
+
+                        //弹出打印页面
+                        $("#print-content").print({
+                            globalStyles: true,
+                            mediaPrint: false,
+                            stylesheet: null,
+                            noPrintSelector: ".no-print",
+                            iframe: true,
+                            append: null,
+                            prepend: null,
+                            manuallyCopyFormValues: true,
+                            deferred: $.Deferred(),
+                            timeout: 750,
+                            title: null,
+                            doctype: '<!doctype html>'
+                        });
+                        $("#print-content").hide();
+                    } else {
+                        layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                    }
+                },
+                error: function (error) {
+                    layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
                 }
-            },
-            error: function (error) {
-                layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-            }
-        });
-        // }
+            });
+        }
     });
+    //废弃过磅单
+    form.on('submit(btn-destroy)', function (data) {
+        if (!$("#btn-destroy").hasClass("layui-btn-disabled")) {
+            var field = data.field;
+            $.ajax({
+                type: 'get',
+                url: '/poundLog/destroy',
+                data: {
+                    poundLogNo: field.poundLogNo,
+                },
+                cache: false,
+                dataType: 'json',
+                success: function (result) {
+                    if (result.code == 0) {
+                        //【删除】：修改poundLog表plNo字段
+                        layui.data('pound_log', {
+                            key: 'plNo'
+                            , remove: true
+                        });
+                        layer.msg('删除成功');
+                        //刷新页面
+                        window.location.reload();
+                    } else {
+                        layer.alert("删除失败", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                    }
+                },
+                error: function (error) {
+                    //关闭
+                    layer.close(index);
+                    layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                }
+            });
+        }
+    });
+
 
     //事件
     var active = {

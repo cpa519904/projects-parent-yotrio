@@ -19,27 +19,27 @@
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">ID</label>
+                    <label class="layui-form-label">地磅ID</label>
                     <div class="layui-input-block">
-                        <input type="text" name="id" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="poundId" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">车牌号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="plateNumb" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="myLike_plateNo" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">供应商</label>
                     <div class="layui-input-block">
-                        <input type="text" name="compName" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="myLike_compName" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">收货单位</label>
+                    <label class="layui-form-label">组织</label>
                     <div class="layui-input-block">
-                        <input type="text" name="unitName" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="myLike_unitName" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -47,12 +47,23 @@
                     <div class="layui-input-block">
                         <select id="goodsKind" name="goodsKind">
                             <option value=""></option>
-                            <option value="1">铝</option>
-                            <option value="2">铁</option>
+                            <option value="1">铁</option>
+                            <option value="2">铝</option>
                             <option value="3">藤条</option>
                         </select>
                     </div>
                 </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">进出货类型</label>
+                    <div class="layui-input-block">
+                        <select id="types" name="types">
+                            <option value=""></option>
+                            <option value="0">进货</option>
+                            <option value="1">出货</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="layui-inline">
                     <label class="layui-form-label">开始时间</label>
                     <div class="layui-input-inline">

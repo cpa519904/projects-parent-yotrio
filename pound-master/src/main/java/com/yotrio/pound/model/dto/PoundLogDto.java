@@ -25,6 +25,21 @@ public class PoundLogDto extends PoundLog {
      */
     private Date myLesser_createTime;
 
+    /**
+     * 模糊搜索组织
+     */
+    private String myLike_unitName;
+
+    /**
+     * 模糊搜索供应商名称
+     */
+    private String myLike_compName;
+
+    /**
+     * 模糊搜索车牌号码
+     */
+    private String myLike_plateNo;
+
     public Date getMyGreater_createTime() {
         return myGreater_createTime;
     }
@@ -39,5 +54,29 @@ public class PoundLogDto extends PoundLog {
 
     public void setMyLesser_createTime(Date myLesser_createTime) {
         this.myLesser_createTime = myLesser_createTime;
+    }
+
+    public String getMyLike_unitName() {
+        return myLike_unitName;
+    }
+
+    public void setMyLike_unitName(String myLike_unitName) {
+        this.myLike_unitName = myLike_unitName;
+    }
+
+    public String getMyLike_compName() {
+        return myLike_compName;
+    }
+
+    public void setMyLike_compName(String myLike_compName) {
+        this.myLike_compName = myLike_compName;
+    }
+
+    public String getMyLike_plateNo() {
+        return myLike_plateNo;
+    }
+
+    public void setMyLike_plateNo(String myLike_plateNo) {
+        this.myLike_plateNo = myLike_plateNo;
     }
 }

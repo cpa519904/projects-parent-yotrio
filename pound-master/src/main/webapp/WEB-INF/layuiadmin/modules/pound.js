@@ -131,9 +131,10 @@ layui.define(['table', 'form'], function (exports) {
             , {field: 'id', title: 'ID', sort: true, totalRowText: '合计'}
             , {field: 'poundName', title: '所属地磅', minWidth: 120}
             // , {field: 'types', title: '类别', minWidth: 60,templet:'#logTypes'}
-            , {field: 'compName', title: '供应商', minWidth: 80}
-            , {field: 'unitName', title: '收货单位', minWidth: 100}
+            , {field: 'poundLogNo', title: '过磅单单号', minWidth: 120}
             , {field: 'goodsName', title: '货品', minWidth: 80}
+            , {field: 'unitName', title: '组织', minWidth: 100}
+            , {field: 'compName', title: '供应商', minWidth: 80}
             , {field: 'plateNo', title: '车牌号', minWidth: 80}
             , {field: 'grossWeight', title: '总重', minWidth: 80, sort: true, totalRow: true}
             , {field: 'tareWeight', title: '皮重', minWidth: 80, sort: true, totalRow: true}

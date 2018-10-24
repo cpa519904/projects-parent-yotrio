@@ -10,7 +10,6 @@ import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.utils.BeansUtil;
 import com.yotrio.common.utils.ImageUtil;
 import com.yotrio.common.utils.NetStateUtil;
-import com.yotrio.common.utils.StringUtil;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.domain.SystemProperties;
 import com.yotrio.pound.model.Inspection;
@@ -383,6 +382,11 @@ public class PoundLogController extends BaseController {
         }
         poundLog.setUnitName(unitName);
 
+        //获取关联的报检单
+        List<Inspection> inspections = inspectionService.findListByPlNo(poundLogNo);
+        //计算报每张检单称重结果，按报检单上重量 的比例分配
+        inspectionService.countInspNetWeight(inspections, poundLog);
+
         String msg = "网络连接失败,联网后系统会自动为您提交";
         //先看网络连接是否成功？失败：创建定时任务，提示失败原因
         if (!NetStateUtil.isConnect()) {
@@ -420,9 +424,6 @@ public class PoundLogController extends BaseController {
             }
         }
 
-        //获取关联的报检单
-        List<Inspection> inspections = inspectionService.findListByPlNo(poundLogNo);
-
         JSONObject data = new JSONObject();
         data.put("poundLog", poundLog);
         data.put("inspections", inspections);
@@ -440,6 +441,7 @@ public class PoundLogController extends BaseController {
                     //上传成功更新本地过磅单状态为待打印
                     poundLog.setStatus(PoundLogConstant.STATUS_WAIT_PRINT);
                     poundLogService.update(poundLog);
+
                     return ResultUtil.success(poundLog);
                 } else {
                     return ResultUtil.error(msg);
@@ -472,6 +474,25 @@ public class PoundLogController extends BaseController {
         if (result < 1) {
             return ResultUtil.error("更新打印状态失败");
         }
+        //返回过磅单和报检单给打印模板用
+        List<Inspection> inspections = inspectionService.findListByPlNo(poundLogNo);
+        poundLog.setInspections(inspections);
         return ResultUtil.success(poundLog);
+    }
+
+    /**
+     * 删除过磅单及相应的报检单
+     *
+     * @param poundLogNo
+     * @return
+     */
+    @RequestMapping(value = "/destroy", method = {RequestMethod.GET})
+    @ResponseBody
+    public Result destroy(String poundLogNo) {
+        if (StringUtils.isEmpty(poundLogNo)) {
+            return ResultUtil.error("找不到您要打印的过磅单单号");
+        }
+        poundLogService.destroyPoundLogAndInspections(poundLogNo);
+        return ResultUtil.success("删除成功");
     }
 }
