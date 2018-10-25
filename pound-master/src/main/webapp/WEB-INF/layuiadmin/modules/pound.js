@@ -11,10 +11,12 @@ layui.define(['table', 'form'], function (exports) {
             {type: 'checkbox', fixed: 'left'}
             , {field: 'id', width: 50, title: 'ID', sort: true}
             , {field: 'poundName', title: '磅名'}
-            , {field: 'model', title: '型号'}
+            , {field: 'adminEmpId', title: '工号'}
+            , {field: 'adminName', title: '管理员'}
+            , {field: 'adminMobile', title: '手机号'}
             // , {field: 'unitId', title: '单位id'}
             , {field: 'createTime', title: '创建时间', sort: true}
-            , {field: 'status', title: '状态', templet: '#buttonTpl', align: 'center'}
+            // , {field: 'status', title: '状态', templet: '#buttonTpl', align: 'center'}
             // , {field: 'remark', title: '备注'}
             , {title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-pound-info'}
         ]]
@@ -106,13 +108,16 @@ layui.define(['table', 'form'], function (exports) {
                     // 取到弹出层里的元素，并把编辑的内容放进去
                     body.find("#id").val(obj.data.id);  //将选中的数据的id传到编辑页面的隐藏域，便于根据ID修改数据
                     body.find("#poundName").val(obj.data.poundName);
-                    body.find("#model").val(obj.data.model);
-                    body.find("#unitId").val(obj.data.unitId);
-                    if (obj.data.status == 1) {
-                        body.find("#radio-1").attr("checked", "checked");
-                    } else if (obj.data.status == 0) {
-                        body.find("#radio-2").attr("checked", "checked");
-                    }
+                    body.find("#adminEmpId").val(obj.data.adminEmpId);
+                    body.find("#adminName").val(obj.data.adminName);
+                    body.find("#adminMobile").val(obj.data.adminMobile);
+                    // body.find("#model").val(obj.data.model);
+                    // body.find("#unitId").val(obj.data.unitId);
+                    // if (obj.data.status == 1) {
+                    //     body.find("#radio-1").attr("checked", "checked");
+                    // } else if (obj.data.status == 0) {
+                    //     body.find("#radio-2").attr("checked", "checked");
+                    // }
                     // 记得重新渲染表单
                     form.render();
                 }

@@ -359,7 +359,6 @@ layui.define(['table', 'form'], function (exports) {
                 })
             }
         }
-
     });
 
     /**监听控制台表单提交**/

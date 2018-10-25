@@ -1,6 +1,7 @@
 package com.yotrio.pound.web.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.yotrio.common.constants.PoundConstant;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.pound.model.PoundInfo;
@@ -70,7 +71,7 @@ public class PoundInfoController extends BaseController {
     }
 
     /**
-     * 跟新地磅信息
+     * 更新地磅信息
      *
      * @param poundInfo 地磅信息
      * @return
@@ -87,6 +88,33 @@ public class PoundInfoController extends BaseController {
             return returnSuccess("更新成功");
         } else {
             return returnError("更新失败");
+        }
+    }
+
+    /**
+     * 添加地磅信息
+     *
+     * @param poundInfo 地磅信息
+     * @return
+     */
+    @RequestMapping(value = "/save", method = {RequestMethod.POST})
+    @ResponseBody
+    public Callback save(PoundInfo poundInfo) {
+        if (poundInfo == null) {
+            return returnError("请输入您要保存的内容");
+        }
+        //表单校验
+        String checkResult = poundInfoService.checkForm(poundInfo);
+        if (checkResult != null) {
+            return returnError(checkResult);
+        }
+
+        poundInfo.setStatus(PoundConstant.STATUS_RUNNING);
+        int result = poundInfoService.save(poundInfo);
+        if (result >= 1) {
+            return returnSuccess("保存成功");
+        } else {
+            return returnError("保存失败");
         }
     }
 

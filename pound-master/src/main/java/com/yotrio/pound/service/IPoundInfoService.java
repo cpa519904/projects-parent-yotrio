@@ -23,4 +23,8 @@ public interface IPoundInfoService {
     int deleteById(Integer id);
 
     int deleteByIds(List<Integer> idList);
+
+    int save(PoundInfo poundInfo);
+
+    String checkForm(PoundInfo poundInfo);
 }

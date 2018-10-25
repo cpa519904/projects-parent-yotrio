@@ -106,7 +106,6 @@
 
                     layer.confirm('确定删除吗？', function (index) {
 
-                        //执行 Ajax 后重载
                         //提交 Ajax 成功后，静态更新表格中的数据
                         $.ajax({
                             type: 'get',
@@ -153,13 +152,13 @@
                             //提交 Ajax 成功后，静态更新表格中的数据
                             $.ajax({
                                 type: 'post',
-                                url: '/poundInfo/update',
+                                url: '/poundInfo/save',
                                 data: field,
                                 cache: false,
                                 dataType: 'json',
                                 success: function (result) {
                                     if (result.code == 0) {
-                                        table.reload('LAY-pound-info-submit'); //数据刷新
+                                        table.reload('LAY-pound-info-manage'); //数据刷新
                                         layer.close(index); //关闭弹层
                                     } else {
                                         layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。

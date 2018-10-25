@@ -7,9 +7,11 @@ import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.pound.dao.PoundInfoMapper;
 import com.yotrio.pound.model.PoundInfo;
 import com.yotrio.pound.service.IPoundInfoService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -82,7 +84,42 @@ public class PoundInfoServiceImpl implements IPoundInfoService {
      * @return
      */
     @Override
-    public int deleteByIds(List<Integer> idList) {
-        return poundInfoMapper.deleteByIds(idList);
+    public int deleteByIds(List<Integer> ids) {
+        return poundInfoMapper.deleteByIds(ids);
+    }
+
+    /**
+     * 添加地磅
+     *
+     * @param poundInfo
+     * @return
+     */
+    @Override
+    public int save(PoundInfo poundInfo) {
+        poundInfo.setCreateTime(new Date());
+        return poundInfoMapper.insert(poundInfo);
+    }
+
+    /**
+     * 地磅表单校验
+     * @param poundInfo
+     * @return
+     */
+    @Override
+    public String checkForm(PoundInfo poundInfo) {
+        if (StringUtils.isEmpty(poundInfo.getPoundName())) {
+            return "地磅名称不能为空";
+        }
+        if (poundInfo.getAdminEmpId() == null) {
+            return "管理员工号不能为空";
+        }
+        if (StringUtils.isEmpty(poundInfo.getAdminName())) {
+            return "管理员名称不能为空";
+        }
+        if (StringUtils.isEmpty(poundInfo.getAdminMobile())) {
+            return "管理员手机号码不能为空";
+        }
+
+        return null;
     }
 }
