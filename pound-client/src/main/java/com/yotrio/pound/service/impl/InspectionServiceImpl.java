@@ -3,9 +3,10 @@ package com.yotrio.pound.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.constants.InspectionConstant;
+import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.pound.dao.InspectionMapper;
+import com.yotrio.pound.dao.PoundLogMapper;
 import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.service.IInspectionService;
@@ -30,6 +31,8 @@ public class InspectionServiceImpl implements IInspectionService {
 
     @Autowired
     private InspectionMapper inspectionMapper;
+    @Autowired
+    private PoundLogMapper poundLogMapper;
 
     /**
      * 新增报检单
@@ -107,7 +110,14 @@ public class InspectionServiceImpl implements IInspectionService {
     @Override
     public void countInspNetWeight(List<Inspection> inspections, PoundLog poundLog) {
         //报检单总重量
-        double totalInspWeight = poundLog.getInspWeightTotal();
+        double totalInspWeight = 0.0d;
+        for (Inspection inspection : inspections) {
+            totalInspWeight += inspection.getInspWeight();
+        }
+        poundLog.setInspWeightTotal(totalInspWeight);
+        poundLog.setUpdateTime(new Date());
+        poundLogMapper.updateByPrimaryKeySelective(poundLog);
+
         //样品重量+非样品重量
         double totalNetWeight = poundLog.getNetWeight() + poundLog.getSampleNetWeight();
         //报检单称重后，我们给的总净重

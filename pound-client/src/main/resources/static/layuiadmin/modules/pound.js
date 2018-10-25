@@ -1,7 +1,8 @@
 layui.define(['table', 'form'], function (exports) {
     var $ = layui.$
         , table = layui.table
-        , form = layui.form;
+        , form = layui.form
+    ;
 
     //过磅记录管理
     table.render({
@@ -9,9 +10,7 @@ layui.define(['table', 'form'], function (exports) {
         , url: 'http://localhost:8008/api/poundLog/list'
         // , toolbar: '#table-pound-log-toolbar'
         , totalRow: true
-        , where: {
-
-        } //如果无需传递额外参数，可不加该参数
+        , where: {} //如果无需传递额外参数，可不加该参数
         , cols: [[
             {type: 'checkbox', fixed: 'left'}
             , {field: 'id', title: 'ID', sort: true, totalRowText: '合计'}
@@ -42,7 +41,6 @@ layui.define(['table', 'form'], function (exports) {
     });
 
 
-
     //监听搜索
     form.on('submit(LAY-pound-log-search)', function (data) {
         var field = data.field;
@@ -54,15 +52,6 @@ layui.define(['table', 'form'], function (exports) {
         });
     });
 
-    //开始时间
-    laydate.render({
-        elem: '#laydate-type-datetime-start'
-        , type: 'datetime'
-    });
-    //结束时间
-    laydate.render({
-        elem: '#laydate-type-datetime-end'
-        , type: 'datetime'
-    });
+
     exports('pound', {})
 });

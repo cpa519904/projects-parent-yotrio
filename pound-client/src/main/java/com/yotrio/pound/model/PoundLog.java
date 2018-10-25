@@ -69,6 +69,11 @@ public class PoundLog implements Serializable {
     private Double returnWeightTotal;
 
     /**
+     * 报检单总重
+     */
+    private Double inspWeightTotal;
+
+    /**
      * 磅差
      *
      * @mbg.generated
@@ -184,10 +189,7 @@ public class PoundLog implements Serializable {
      */
     private String compName;
 
-    /**
-     * 报检单总重
-     */
-    private Double inspWeightTotal;
+
 
     /**
      * 查询时间大于（创建时间）
@@ -455,6 +457,7 @@ public class PoundLog implements Serializable {
         sb.append(", netWeight=").append(netWeight);
         sb.append(", sampleNetWeight=").append(sampleNetWeight);
         sb.append(", returnWeightTotal=").append(returnWeightTotal);
+        sb.append(", inspWeightTotal=").append(inspWeightTotal);
         sb.append(", diffWeight=").append(diffWeight);
         sb.append(", grossImgUrl=").append(grossImgUrl);
         sb.append(", tareImgUrl=").append(tareImgUrl);
@@ -493,6 +496,7 @@ public class PoundLog implements Serializable {
                 && (this.getNetWeight() == null ? other.getNetWeight() == null : this.getNetWeight().equals(other.getNetWeight()))
                 && (this.getSampleNetWeight() == null ? other.getSampleNetWeight() == null : this.getSampleNetWeight().equals(other.getSampleNetWeight()))
                 && (this.getReturnWeightTotal() == null ? other.getReturnWeightTotal() == null : this.getReturnWeightTotal().equals(other.getReturnWeightTotal()))
+                && (this.getInspWeightTotal() == null ? other.getInspWeightTotal() == null : this.getInspWeightTotal().equals(other.getInspWeightTotal()))
                 && (this.getDiffWeight() == null ? other.getDiffWeight() == null : this.getDiffWeight().equals(other.getDiffWeight()))
                 && (this.getGrossImgUrl() == null ? other.getGrossImgUrl() == null : this.getGrossImgUrl().equals(other.getGrossImgUrl()))
                 && (this.getTareImgUrl() == null ? other.getTareImgUrl() == null : this.getTareImgUrl().equals(other.getTareImgUrl()))
@@ -521,6 +525,7 @@ public class PoundLog implements Serializable {
         result = prime * result + ((getNetWeight() == null) ? 0 : getNetWeight().hashCode());
         result = prime * result + ((getSampleNetWeight() == null) ? 0 : getSampleNetWeight().hashCode());
         result = prime * result + ((getReturnWeightTotal() == null) ? 0 : getReturnWeightTotal().hashCode());
+        result = prime * result + ((getInspWeightTotal() == null) ? 0 : getInspWeightTotal().hashCode());
         result = prime * result + ((getDiffWeight() == null) ? 0 : getDiffWeight().hashCode());
         result = prime * result + ((getGrossImgUrl() == null) ? 0 : getGrossImgUrl().hashCode());
         result = prime * result + ((getTareImgUrl() == null) ? 0 : getTareImgUrl().hashCode());

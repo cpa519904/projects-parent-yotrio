@@ -21,9 +21,13 @@
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">供应商</label>
+                    <label class="layui-form-label">进出货类型</label>
                     <div class="layui-input-block">
-                        <input type="text" name="myLike_compName" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <select id="types" name="types">
+                            <option value=""></option>
+                            <option value="0">进货</option>
+                            <option value="1">出货</option>
+                        </select>
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -38,25 +42,21 @@
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">进出货类型</label>
+                    <label class="layui-form-label">供应商</label>
                     <div class="layui-input-block">
-                        <select id="types" name="types">
-                            <option value=""></option>
-                            <option value="0">进货</option>
-                            <option value="1">出货</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">车牌号</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="myLike_plateNo" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="myLike_compName" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">组织</label>
                     <div class="layui-input-block">
                         <input type="text" name="myLike_unitName" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">车牌号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="myLike_plateNo" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -123,7 +123,16 @@
             , table = layui.table
             , laydate = layui.laydate;
 
-
+        //开始时间
+        laydate.render({
+            elem: '#laydate-type-datetime-start'
+            , type: 'datetime'
+        });
+        //结束时间
+        laydate.render({
+            elem: '#laydate-type-datetime-end'
+            , type: 'datetime'
+        });
 
     });
 </script>

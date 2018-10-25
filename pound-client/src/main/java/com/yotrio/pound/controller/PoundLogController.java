@@ -113,7 +113,7 @@ public class PoundLogController extends BaseController {
         if (logInDB == null) {
             return ResultUtil.error("请先添加报检单");
         }
-        if (logInDB.getStatus() == PoundLogConstant.STATUS_POUND_FINISH) {
+        if (logInDB.getStatus() > PoundLogConstant.STATUS_POUND_SECOND) {
             return ResultUtil.error("记录已提交，不能再修改");
         }
 
@@ -209,7 +209,7 @@ public class PoundLogController extends BaseController {
         if (logInDB == null) {
             return ResultUtil.error("找不到您要更新的过磅记录");
         }
-        if (logInDB.getStatus() == PoundLogConstant.STATUS_POUND_FINISH) {
+        if (logInDB.getStatus() > PoundLogConstant.STATUS_POUND_SECOND) {
             return ResultUtil.error("记录已提交，不能再修改");
         }
 
@@ -346,6 +346,9 @@ public class PoundLogController extends BaseController {
         if (logInDB.getTypes() == PoundLogConstant.TYPES_IN && StringUtils.isEmpty(poundLog.getUnitName())) {
             return ResultUtil.error("收货组织不能为空，请输入收货组织");
         }
+        if (logInDB.getStatus() > PoundLogConstant.STATUS_POUND_SECOND) {
+            return ResultUtil.error("记录已提交，不能再修改");
+        }
 
         BeansUtil.copyPropertiesIgnoreNull(poundLog, logInDB);
 
@@ -384,8 +387,10 @@ public class PoundLogController extends BaseController {
 
         //获取关联的报检单
         List<Inspection> inspections = inspectionService.findListByPlNo(poundLogNo);
-        //计算报每张检单称重结果，按报检单上重量 的比例分配
-        inspectionService.countInspNetWeight(inspections, poundLog);
+        //进货要计算报每张检单称重结果，按报检单上重量 的比例分配
+        if (poundLog.getTypes() == PoundLogConstant.TYPES_IN && inspections.size() > 0) {
+            inspectionService.countInspNetWeight(inspections, poundLog);
+        }
 
         String msg = "网络连接失败,联网后系统会自动为您提交";
         //先看网络连接是否成功？失败：创建定时任务，提示失败原因
@@ -494,5 +499,24 @@ public class PoundLogController extends BaseController {
         }
         poundLogService.destroyPoundLogAndInspections(poundLogNo);
         return ResultUtil.success("删除成功");
+    }
+
+    /**
+     * 获取过磅信息
+     *
+     * @param poundLogNo
+     * @return
+     */
+    @RequestMapping(value = "/getLogInfo", method = {RequestMethod.GET})
+    @ResponseBody
+    public Result getLogInfo(String poundLogNo) {
+        if (StringUtils.isEmpty(poundLogNo)) {
+            return ResultUtil.error("找不到过磅单单号");
+        }
+        PoundLog poundLogInDB = poundLogService.findByPoundLogNo(poundLogNo);
+        if (poundLogInDB == null) {
+            return ResultUtil.error("找不到过磅单");
+        }
+        return ResultUtil.success(poundLogInDB);
     }
 }

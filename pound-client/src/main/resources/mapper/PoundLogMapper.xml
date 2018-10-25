@@ -11,6 +11,7 @@
         <result column="net_weight" jdbcType="DOUBLE" property="netWeight"/>
         <result column="sample_net_weight" jdbcType="DOUBLE" property="sampleNetWeight"/>
         <result column="return_weight_total" jdbcType="DOUBLE" property="returnWeightTotal"/>
+        <result column="insp_weight_total" jdbcType="DOUBLE" property="inspWeightTotal"/>
         <result column="diff_weight" jdbcType="DOUBLE" property="diffWeight"/>
         <result column="gross_img_url" jdbcType="VARCHAR" property="grossImgUrl"/>
         <result column="tare_img_url" jdbcType="VARCHAR" property="tareImgUrl"/>
@@ -35,6 +36,7 @@
         <result column="net_weight" jdbcType="DOUBLE" property="netWeight"/>
         <result column="sample_net_weight" jdbcType="DOUBLE" property="sampleNetWeight"/>
         <result column="return_weight_total" jdbcType="DOUBLE" property="returnWeightTotal"/>
+        <result column="insp_weight_total" jdbcType="DOUBLE" property="inspWeightTotal"/>
         <result column="diff_weight" jdbcType="DOUBLE" property="diffWeight"/>
         <result column="gross_img_url" jdbcType="VARCHAR" property="grossImgUrl"/>
         <result column="tare_img_url" jdbcType="VARCHAR" property="tareImgUrl"/>
@@ -67,7 +69,7 @@
 
     <sql id="Base_Column_List">
     id, pound_id, pound_name, pound_log_no, gross_weight, tare_weight, net_weight, sample_net_weight, 
-    return_weight_total, diff_weight, gross_img_url, tare_img_url, unit_name, plate_no, 
+    return_weight_total, insp_weight_total, diff_weight, gross_img_url, tare_img_url, unit_name, plate_no,
     remark, types, status, return_goods, create_time, update_time, first_time, second_time
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer"  resultMap="BaseResultMap">
@@ -105,7 +107,7 @@
     <insert id="insert" parameterType="com.yotrio.pound.model.PoundLog">
     insert into pound_log (id, pound_id, pound_name, 
       pound_log_no, gross_weight, tare_weight, 
-      net_weight, sample_net_weight, return_weight_total, 
+      net_weight, sample_net_weight, return_weight_total, insp_weight_total
       diff_weight, gross_img_url, tare_img_url, 
       unit_name, plate_no, remark, 
       types, status, return_goods, 
@@ -113,7 +115,7 @@
       second_time)
     values (#{id,jdbcType=INTEGER}, #{poundId,jdbcType=INTEGER}, #{poundName,jdbcType=VARCHAR}, 
       #{poundLogNo,jdbcType=VARCHAR}, #{grossWeight,jdbcType=DOUBLE}, #{tareWeight,jdbcType=DOUBLE}, 
-      #{netWeight,jdbcType=DOUBLE}, #{sampleNetWeight,jdbcType=DOUBLE}, #{returnWeightTotal,jdbcType=DOUBLE}, 
+      #{netWeight,jdbcType=DOUBLE}, #{sampleNetWeight,jdbcType=DOUBLE}, #{returnWeightTotal,jdbcType=DOUBLE}, #{inspWeightTotal,jdbcType=DOUBLE},
       #{diffWeight,jdbcType=DOUBLE}, #{grossImgUrl,jdbcType=VARCHAR}, #{tareImgUrl,jdbcType=VARCHAR}, 
       #{unitName,jdbcType=VARCHAR}, #{plateNo,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{types,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{returnGoods,jdbcType=INTEGER}, 
@@ -149,6 +151,9 @@
             </if>
             <if test="returnWeightTotal != null">
                 return_weight_total,
+            </if>
+            <if test="inspWeightTotal != null">
+                insp_weight_total,
             </if>
             <if test="diffWeight != null">
                 diff_weight,
@@ -218,6 +223,9 @@
             <if test="returnWeightTotal != null">
                 #{returnWeightTotal,jdbcType=DOUBLE},
             </if>
+            <if test="inspWeightTotal != null">
+                #{inspWeightTotal,jdbcType=DOUBLE},
+            </if>
             <if test="diffWeight != null">
                 #{diffWeight,jdbcType=DOUBLE},
             </if>
@@ -286,6 +294,9 @@
             <if test="returnWeightTotal != null">
                 return_weight_total = #{returnWeightTotal,jdbcType=DOUBLE},
             </if>
+            <if test="inspWeightTotal != null">
+                insp_weight_total = #{inspWeightTotal,jdbcType=DOUBLE},
+            </if>
             <if test="diffWeight != null">
                 diff_weight = #{diffWeight,jdbcType=DOUBLE},
             </if>
@@ -338,6 +349,7 @@
       net_weight = #{netWeight,jdbcType=DOUBLE},
       sample_net_weight = #{sampleNetWeight,jdbcType=DOUBLE},
       return_weight_total = #{returnWeightTotal,jdbcType=DOUBLE},
+      insp_weight_total = #{inspWeightTotal,jdbcType=DOUBLE},
       diff_weight = #{diffWeight,jdbcType=DOUBLE},
       gross_img_url = #{grossImgUrl,jdbcType=VARCHAR},
       tare_img_url = #{tareImgUrl,jdbcType=VARCHAR},
@@ -396,6 +408,9 @@
             </if>
             <if test="returnWeightTotal != null and returnWeightTotal != ''">
                 AND return_weight_total = #{returnWeightTotal,jdbcType=DOUBLE}
+            </if>
+            <if test="inspWeightTotal != null and inspWeightTotal != ''">
+                AND insp_weight_total = #{inspWeightTotal,jdbcType=DOUBLE}
             </if>
             <if test="diffWeight != null and diffWeight != ''">
                 AND diff_weight = #{diffWeight,jdbcType=DOUBLE}
@@ -463,6 +478,9 @@
             <if test="myGreater_returnWeightTotal != null and myGreater_returnWeightTotal != ''">
                 AND return_weight_total &gt; #{myGreater_returnWeightTotal,jdbcType=DOUBLE}
             </if>
+            <if test="myGreater_inspWeightTotal != null and myGreater_inspWeightTotal != ''">
+                AND insp_weight_total &gt; #{myGreater_inspWeightTotal,jdbcType=DOUBLE}
+            </if>
             <if test="myGreater_diffWeight != null and myGreater_diffWeight != ''">
                 AND diff_weight &gt; #{myGreater_diffWeight,jdbcType=DOUBLE}
             </if>
@@ -528,6 +546,9 @@
             </if>
             <if test="myLesser_returnWeightTotal != null and myLesser_returnWeightTotal != ''">
                 AND return_weight_total &lt; #{myLesser_returnWeightTotal,jdbcType=DOUBLE}
+            </if>
+            <if test="myLesser_inspWeightTotal != null and myLesser_inspWeightTotal != ''">
+                AND insp_weight_total &lt; #{myLesser_inspWeightTotal,jdbcType=DOUBLE}
             </if>
             <if test="myLesser_diffWeight != null and myLesser_diffWeight != ''">
                 AND diff_weight &lt; #{myLesser_diffWeight,jdbcType=DOUBLE}
@@ -595,6 +616,9 @@
             <if test="myLike_returnWeightTotal != null and myLike_returnWeightTotal != ''">
                 AND return_weight_total like CONCAT('%', #{myLike_returnWeightTotal,jdbcType=DOUBLE},'%' )
             </if>
+            <if test="myLike_inspWeightTotal != null and myLike_inspWeightTotal != ''">
+                AND insp_weight_total like CONCAT('%', #{myLike_inspWeightTotal,jdbcType=DOUBLE},'%' )
+            </if>
             <if test="myLike_diffWeight != null and myLike_diffWeight != ''">
                 AND diff_weight like CONCAT('%', #{myLike_diffWeight,jdbcType=DOUBLE},'%' )
             </if>
@@ -661,6 +685,9 @@
             <if test="myLikeStart_returnWeightTotal != null and myLikeStart_returnWeightTotal != ''">
                 AND return_weight_total like CONCAT('%', #{myLikeStart_returnWeightTotal,jdbcType=DOUBLE})
             </if>
+            <if test="myLikeStart_inspWeightTotal != null and myLikeStart_inspWeightTotal != ''">
+                AND insp_weight_total like CONCAT('%', #{myLikeStart_inspWeightTotal,jdbcType=DOUBLE})
+            </if>
             <if test="myLikeStart_diffWeight != null and myLikeStart_diffWeight != ''">
                 AND diff_weight like CONCAT('%', #{myLikeStart_diffWeight,jdbcType=DOUBLE})
             </if>
@@ -726,6 +753,9 @@
             </if>
             <if test="myLikeEnd_returnWeightTotal != null and myLikeEnd_returnWeightTotal != ''">
                 AND return_weight_total like CONCAT( #{myLikeEnd_returnWeightTotal,jdbcType=DOUBLE},'%' )
+            </if>
+            <if test="myLikeEnd_inspWeightTotal != null and myLikeEnd_inspWeightTotal != ''">
+                AND insp_weight_total like CONCAT( #{myLikeEnd_inspWeightTotal,jdbcType=DOUBLE},'%' )
             </if>
             <if test="myLikeEnd_diffWeight != null and myLikeEnd_diffWeight != ''">
                 AND diff_weight like CONCAT( #{myLikeEnd_diffWeight,jdbcType=DOUBLE},'%' )
@@ -815,6 +845,12 @@
             <if test="myIn_returnWeightTotal != null and myIn_returnWeightTotal != ''">
                 AND return_weight_total in
                 <foreach close=")" collection="myIn_returnWeightTotal" index="index" item="item" open="(" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_inspWeightTotal != null and myIn_inspWeightTotal != ''">
+                AND insp_weight_total in
+                <foreach close=")" collection="myIn_inspWeightTotal" index="index" item="item" open="(" separator=",">
                     #{item}
                 </foreach>
             </if>

@@ -2,8 +2,8 @@ package com.yotrio.pound.controller;
 
 
 import com.github.pagehelper.PageInfo;
-import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.constants.PoundLogConstant;
+import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.domain.SystemProperties;
 import com.yotrio.pound.model.Inspection;
@@ -80,8 +80,11 @@ public class InspectionController extends BaseController {
             return ResultUtil.error(checkResult);
         }
 
-        //报检单录入之后不能再次保存
+        //一张报检单只能使用一次
         Inspection inspectionInDB = inspectionService.findByInspNo(inspection.getInspNo());
+        if (inspectionInDB != null) {
+            return ResultUtil.error("该过磅单已录入系统，请换张过磅单");
+        }
 
         //查询是否已生成过磅记录，未生成的先生成过磅记录
         PoundLog logInDB = poundLogService.findByPoundLogNo(inspection.getPlNo());
@@ -104,6 +107,11 @@ public class InspectionController extends BaseController {
             }
         }
 
+        //过磅单状态控制，提交之后不能再修改
+        if (logInDB.getStatus() > PoundLogConstant.STATUS_POUND_SECOND) {
+            return ResultUtil.error("过磅单已提交，不能再修改");
+        }
+
         int saveResult = inspectionService.save(inspection);
         if (saveResult >= 1) {
             return ResultUtil.success("添加成功");
@@ -122,10 +130,14 @@ public class InspectionController extends BaseController {
             return ResultUtil.error("过磅单单号不能为空");
         }
 
-        //查询是否已生成过磅记录，未生成的先生成过磅记录
+        //查询是否已生成过磅记录
         PoundLog logInDB = poundLogService.findByPoundLogNo(inspection.getPlNo());
         if (logInDB == null) {
             return ResultUtil.error("找不到相应的过磅记录，无法修改报检单");
+        }
+        //过磅单状态控制，提交之后不能再修改
+        if (logInDB.getStatus() > PoundLogConstant.STATUS_POUND_SECOND) {
+            return ResultUtil.error("过磅单已提交，不能再修改");
         }
 
         int result = inspectionService.update(inspection);
@@ -140,11 +152,21 @@ public class InspectionController extends BaseController {
      * 根据ids删除过磅信息
      *
      * @param ids [1,2,3]
+     * @param poundLogNo 过磅单单号
      * @return
      */
     @RequestMapping(value = "/deleteByIds", method = {RequestMethod.GET})
     @ResponseBody
-    public Result deleteByIds(String ids) {
+    public Result deleteByIds(String ids, String poundLogNo) {
+        PoundLog poundLogInDB = poundLogService.findByPoundLogNo(poundLogNo);
+        if (poundLogInDB == null) {
+            return ResultUtil.error("找不到相应的过磅记录");
+        }
+        //过磅单状态控制，提交之后不能再修改
+        if (poundLogInDB.getStatus() > PoundLogConstant.STATUS_POUND_SECOND) {
+            return ResultUtil.error("过磅单已提交，不能再修改");
+        }
+
         if (ids == null || ids.split(",").length == 0) {
             return ResultUtil.error("请选择您要删除的数据");
         }

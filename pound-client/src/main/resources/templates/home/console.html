@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>控制台</title>
@@ -34,13 +34,13 @@
                             <button class="layui-btn btn-inspection" style="margin-bottom: 0" data-type="newPoundLog">
                                 新增
                             </button>
-                            <button lay-submit lay-filter="btn-save-submit" id="btn-save-submit" class="layui-btn"
+                            <button lay-submit lay-filter="btn-save-submit " id="btn-save-submit" class="layui-btn layui-btn-disabled"
                                     style="margin-bottom: 0">保存
                             </button>
                             <button lay-submit lay-filter="btn-submit-server" id="btn-submit-server"
                                     class="layui-btn layui-btn-danger layui-btn-disabled" style="margin-bottom: 0">提交
                             </button>
-                            <button id="btn-destroy" lay-submit lay-filter="btn-desproy"
+                            <button id="btn-destroy" lay-submit lay-filter="btn-destroy"
                                     class="layui-btn  layui-btn-danger layui-btn-disabled" style="margin-bottom: 0">废弃
                             </button>
                             <button id="btn-print" lay-submit lay-filter="btn-print"
@@ -67,10 +67,10 @@
                                                placeholder="请输入" class="layui-input">
                                     </div>
                                 </div>
-                                <button class="layui-btn btn-inspection layui-btn-sm" data-type="add"
+                                <button id="btn-add-inspection" class="layui-btn btn-inspection layui-btn-sm" data-type="add"
                                         style="margin-left: 50px;">添加
                                 </button>
-                                <button class="layui-btn btn-inspection layui-btn-sm layui-btn-danger"
+                                <button id="btn-delete-inspections" class="layui-btn btn-inspection layui-btn-sm layui-btn-danger"
                                         data-type="batchdel">删除
                                 </button>
                             </div>
@@ -95,7 +95,7 @@
                                     {{#  } }}
                                 </script>
                                 <script type="text/html" id="table-inspection">
-                                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i
+                                    <a  class="layui-btn layui-btn-normal layui-btn-xs btn-edit-inspection" lay-event="edit"><i
                                             class="layui-icon layui-icon-edit"></i>编辑</a>
                                     <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>-->
                                 </script>
@@ -179,7 +179,7 @@
                             <div class="layui-col-md6">
                                 <div class="layui-card">
                                     <div class="layui-card-header">
-                                        <button lay-submit lay-filter="weigh-gross-submit" id="weigh-gross-submit"
+                                        <button  lay-submit lay-filter="weigh-gross-submit" id="weigh-gross-submit"
                                                 class="layui-btn layui-btn-sm">称毛重
                                         </button>
                                     </div>

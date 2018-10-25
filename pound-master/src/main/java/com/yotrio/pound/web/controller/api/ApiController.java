@@ -61,12 +61,12 @@ public class ApiController extends BaseController {
      *
      * @param dataTablePage 分页条件
      * @param poundLogDto   过磅记录查询条件
-     * @param token   认证秘钥
+     * @param token         认证秘钥
      * @return
      */
     @RequestMapping(value = "/poundLog/list", method = {RequestMethod.GET})
     @ResponseBody
-    public Callback list(DataTablePage dataTablePage, PoundLogDto poundLogDto,String token) {
+    public Callback list(DataTablePage dataTablePage, PoundLogDto poundLogDto, String token) {
         // TODO: 2018-10-23 接口都要做token校验
         PageInfo pageInfo = poundLogService.findAllPaging(dataTablePage, poundLogDto);
         return returnSuccess(pageInfo.getTotal(), pageInfo.getList());
@@ -137,7 +137,9 @@ public class ApiController extends BaseController {
                         poundLog.setGoodsKind(inspection.getGoodsKind());
                     }
                 }
-                poundLog.setInspWeightTotal(inspWeightTotal);
+                if (poundLog.getInspWeightTotal() == null) {
+                    poundLog.setInspWeightTotal(inspWeightTotal);
+                }
 
                 //构建图片存储路径
                 StringBuilder filePath = new StringBuilder();
@@ -167,16 +169,16 @@ public class ApiController extends BaseController {
                 }
 
                 //过磅记录是否已生成
-                PoundLog logInDB = poundLogService.findByPoundLogNoAndPoundId(poundLog.getPoundLogNo(),poundLog.getPoundId());
+                PoundLog logInDB = poundLogService.findByPoundLogNoAndPoundId(poundLog.getPoundLogNo(), poundLog.getPoundId());
                 if (logInDB != null) {
-                    //已生成执行更新操作
+                    //已生成,执行更新操作
                     poundLogService.updateByPlNoAndPoundId(poundLog);
                     for (Inspection inspection : inspections) {
                         inspection.setPlId(logInDB.getId());
                         inspectionService.updateByPlIdSelective(inspection);
                     }
                 } else {
-                    //未生成执行插入操作
+                    //未生成,执行插入操作
                     poundLog.setId(null);
                     int id = poundLogService.save(poundLog);
                     //保存报检单信息
