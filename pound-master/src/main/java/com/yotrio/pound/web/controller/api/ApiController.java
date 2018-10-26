@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
+import com.yotrio.common.constants.PoundConstant;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.utils.DateUtil;
@@ -134,9 +135,9 @@ public class ApiController extends BaseController {
                 if (poundInfo == null) {
                     return returnError("找不到对应的地磅信息");
                 }
-//                if (poundInfo.getStatus() == PoundConstant.STATUS_STOP) {
-//                    return returnError("此地磅已被停用，请联系管理员处理...");
-//                }
+                if (poundInfo.getStatus() == PoundConstant.STATUS_STOP) {
+                    return returnError("此地磅已被停用，请联系管理员处理...");
+                }
                 poundLog.setPoundName(poundInfo.getPoundName());
 
                 //过磅单总数

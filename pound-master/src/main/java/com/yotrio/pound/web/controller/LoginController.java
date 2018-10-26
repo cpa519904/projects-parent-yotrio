@@ -94,7 +94,7 @@ public class LoginController extends BaseController {
      * @param request
      * @param response
      */
-    @RequestMapping(value = "/getVerifyCode", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/getVerifyCode", method = {RequestMethod.GET})
     @ResponseBody
     public void getVerifyCode(HttpServletRequest request, HttpServletResponse response) {
         String sessionId = request.getSession().getId();

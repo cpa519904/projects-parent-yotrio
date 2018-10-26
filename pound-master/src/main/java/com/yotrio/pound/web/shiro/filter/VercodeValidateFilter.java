@@ -54,8 +54,9 @@ public class VercodeValidateFilter extends AccessControlFilter {
         servletRequest.setAttribute("vercodeEbabled", vercodeEbabled);
 
         HttpServletRequest httpServletRequest = WebUtils.toHttp(servletRequest);
+        String method = httpServletRequest.getMethod();
         //2、判断验证码是否禁用 或不是表单提交（允许访问）
-        if (vercodeEbabled == false || !"post".equalsIgnoreCase(httpServletRequest.getMethod())) {
+        if (vercodeEbabled == false || !"post".equalsIgnoreCase(method)) {
             return true;
         }
         //3、此时是表单提交，验证验证码是否正确
