@@ -8,7 +8,7 @@ public enum GoodsKindEnum {
     KIND_2(2,"铁材 "),
     KIND_3(3,"气泡纸"),
     KIND_4(4,"塑料"),
-    KIND_5(5,"铁材"),
+    KIND_5(5,"塑粉"),
     KIND_6(6,"藤条"),
     KIND_7(7,"化学品"),
     KIND_8(8,"塑粉"),
@@ -46,7 +46,6 @@ public enum GoodsKindEnum {
     KIND_40(40,"石灰"),
     KIND_41(41,"氩气"),
     KIND_42(42,"合金钢丸"),
-    KIND_43(43,"塑粉"),
     ;
 
     GoodsKindEnum(Integer code, String kindName) {
@@ -54,9 +53,9 @@ public enum GoodsKindEnum {
         this.kindName = kindName;
     }
 
-    private Integer code;
+    public Integer code;
 
-    private String kindName;
+    public String kindName;
 
     public static String getKindName(Integer code) {
         for (GoodsKindEnum kindEnum : GoodsKindEnum.values()) {

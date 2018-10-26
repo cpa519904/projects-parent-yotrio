@@ -7,6 +7,7 @@ import com.yotrio.common.constants.ApiUrlConstant;
 import com.yotrio.common.constants.InspectionConstant;
 import com.yotrio.common.constants.PoundLogConstant;
 import com.yotrio.common.constants.TaskConstant;
+import com.yotrio.common.enums.GoodsKindEnum;
 import com.yotrio.common.utils.BeansUtil;
 import com.yotrio.common.utils.ImageUtil;
 import com.yotrio.common.utils.NetStateUtil;
@@ -65,6 +66,8 @@ public class PoundLogController extends BaseController {
         Integer poundId = sysProperties.getPoundClientId();
         model.addAttribute("poundId", poundId);
         model.addAttribute("token", "123456");
+        model.addAttribute("goodsKinds", GoodsKindEnum.values());
+        model.addAttribute("poundMasterBaseUrl", sysProperties.getPoundMasterBaseUrl());
         return "pound/pound_log_list";
     }
 

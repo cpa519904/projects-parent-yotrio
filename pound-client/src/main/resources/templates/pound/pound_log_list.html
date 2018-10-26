@@ -15,6 +15,7 @@
 
 <input id="poundId" type="hidden" name="poundId" th:value="${poundId}">
 <input id="token" type="hidden" name="token" th:value="${token}">
+<input id="poundMasterBaseUrl" type="hidden" name="poundMasterBaseUrl" th:value="${poundMasterBaseUrl}">
 
 <div class="layui-fluid">
     <div class="layui-card">
@@ -33,11 +34,12 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">货品类型</label>
                     <div class="layui-input-block">
-                        <select id="goodsKind" name="goodsKind">
-                            <option value=""></option>
-                            <option value="1">铁</option>
-                            <option value="2">铝</option>
-                            <option value="3">藤条</option>
+                        <select id="goodsKind" name="goodsKind"  lay-search="">
+                            <option value="">直接选择或搜索选择</option>
+                            <option th:each="goodsKind,goodsKindState : ${goodsKinds}" th:value="${goodsKind.code}" th:text="${goodsKind.kindName}"></option>
+                            <!--<option value="1">铝</option>-->
+                            <!--<option value="2">铁</option>-->
+                            <!--<option value="3">藤条</option>-->
                         </select>
                     </div>
                 </div>

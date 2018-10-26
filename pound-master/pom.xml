@@ -70,7 +70,7 @@
 
         <hibernate.validator.version>5.2.2.Final</hibernate.validator.version>
 
-        <yotrio.lib.dir>/Users/wangyiqiang/Work/Yotrio/libs</yotrio.lib.dir>
+        <yotrio.lib.dir>E:/Work/Yotrio/libs</yotrio.lib.dir>
 
     </properties>
 

@@ -7,7 +7,7 @@ layui.define(['table', 'form'], function (exports) {
     //过磅记录管理
     table.render({
         elem: '#LAY-pound-log-manage'
-        , url: 'http://localhost:8008/api/poundLog/list'
+        , url: $('#poundMasterBaseUrl').val() + '/api/poundLog/list'
         // , toolbar: '#table-pound-log-toolbar'
         , totalRow: true
         , where: {} //如果无需传递额外参数，可不加该参数

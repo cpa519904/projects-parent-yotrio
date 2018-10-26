@@ -3,6 +3,7 @@ package com.yotrio.pound.web.controller;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.common.enums.GoodsKindEnum;
 import com.yotrio.pound.model.dto.PoundLogDto;
 import com.yotrio.pound.service.IPoundInfoService;
 import com.yotrio.pound.service.IPoundLogService;
@@ -41,6 +42,7 @@ public class PoundLogController extends BaseController {
      */
     @RequestMapping(value = {"/list.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String list(Model model) {
+        model.addAttribute("goodsKinds", GoodsKindEnum.values());
         return "pound/pound_log_list";
     }
 
