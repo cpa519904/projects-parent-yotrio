@@ -60,6 +60,19 @@ public class PoundLogController extends BaseController {
     @Autowired
     private IHttpService httpService;
 
+
+    /**
+     * 退货情况下，填写货品信息弹出的页面
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = {"/outPoundLogForm.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String outPoundLogForm(Model model) {
+        model.addAttribute("goodsKinds", GoodsKindEnum.values());
+        return "home/out_pound_log_form";
+    }
+
     /**
      * 过磅记录列表页面
      *
@@ -84,6 +97,10 @@ public class PoundLogController extends BaseController {
         model.addAttribute("poundMasterBaseUrl", sysProperties.getPoundMasterBaseUrl());
         return "pound/pound_log_list";
     }
+
+    /**
+     *
+     */
 
     /**
      * 获取未处理过磅记录列表以及当前过磅单信息

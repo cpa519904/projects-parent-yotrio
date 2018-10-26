@@ -6,6 +6,7 @@
         <result column="pound_id" jdbcType="INTEGER" property="poundId"/>
         <result column="pound_name" jdbcType="VARCHAR" property="poundName"/>
         <result column="pound_log_no" jdbcType="VARCHAR" property="poundLogNo"/>
+        <result column="goods_kind" jdbcType="INTEGER" property="goodsKind"/>
         <result column="gross_weight" jdbcType="DOUBLE" property="grossWeight"/>
         <result column="tare_weight" jdbcType="DOUBLE" property="tareWeight"/>
         <result column="net_weight" jdbcType="DOUBLE" property="netWeight"/>
@@ -31,6 +32,7 @@
         <result column="pound_id" jdbcType="INTEGER" property="poundId"/>
         <result column="pound_name" jdbcType="VARCHAR" property="poundName"/>
         <result column="pound_log_no" jdbcType="VARCHAR" property="poundLogNo"/>
+        <result column="goods_kind" jdbcType="INTEGER" property="goodsKind"/>
         <result column="gross_weight" jdbcType="DOUBLE" property="grossWeight"/>
         <result column="tare_weight" jdbcType="DOUBLE" property="tareWeight"/>
         <result column="net_weight" jdbcType="DOUBLE" property="netWeight"/>
@@ -68,7 +70,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, pound_id, pound_name, pound_log_no, gross_weight, tare_weight, net_weight, sample_net_weight, 
+    id, pound_id, pound_name, pound_log_no, goods_kind, gross_weight, tare_weight, net_weight, sample_net_weight,
     return_weight_total, insp_weight_total, diff_weight, gross_img_url, tare_img_url, unit_name, plate_no,
     remark, types, status, return_goods, create_time, update_time, first_time, second_time
   </sql>
@@ -106,15 +108,15 @@
   </delete>
     <insert id="insert" parameterType="com.yotrio.pound.model.PoundLog">
     insert into pound_log (id, pound_id, pound_name, 
-      pound_log_no, gross_weight, tare_weight, 
-      net_weight, sample_net_weight, return_weight_total, insp_weight_total
+      pound_log_no, goods_kind, gross_weight, tare_weight,
+      net_weight, sample_net_weight, return_weight_total, insp_weight_total,
       diff_weight, gross_img_url, tare_img_url, 
       unit_name, plate_no, remark, 
       types, status, return_goods, 
       create_time, update_time, first_time, 
       second_time)
     values (#{id,jdbcType=INTEGER}, #{poundId,jdbcType=INTEGER}, #{poundName,jdbcType=VARCHAR}, 
-      #{poundLogNo,jdbcType=VARCHAR}, #{grossWeight,jdbcType=DOUBLE}, #{tareWeight,jdbcType=DOUBLE}, 
+      #{poundLogNo,jdbcType=VARCHAR}, #{goodsKind,jdbcType=INTEGER}, #{grossWeight,jdbcType=DOUBLE}, #{tareWeight,jdbcType=DOUBLE},
       #{netWeight,jdbcType=DOUBLE}, #{sampleNetWeight,jdbcType=DOUBLE}, #{returnWeightTotal,jdbcType=DOUBLE}, #{inspWeightTotal,jdbcType=DOUBLE},
       #{diffWeight,jdbcType=DOUBLE}, #{grossImgUrl,jdbcType=VARCHAR}, #{tareImgUrl,jdbcType=VARCHAR}, 
       #{unitName,jdbcType=VARCHAR}, #{plateNo,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
@@ -136,6 +138,9 @@
             </if>
             <if test="poundLogNo != null">
                 pound_log_no,
+            </if>
+            <if test="goodsKind != null">
+                goods_kind,
             </if>
             <if test="grossWeight != null">
                 gross_weight,
@@ -208,6 +213,9 @@
             <if test="poundLogNo != null">
                 #{poundLogNo,jdbcType=VARCHAR},
             </if>
+            <if test="goodsKind != null">
+                #{goodsKind,jdbcType=INTEGER},
+            </if>
             <if test="grossWeight != null">
                 #{grossWeight,jdbcType=DOUBLE},
             </if>
@@ -279,6 +287,9 @@
             <if test="poundLogNo != null">
                 pound_log_no = #{poundLogNo,jdbcType=VARCHAR},
             </if>
+            <if test="goodsKind != null">
+                goods_kind = #{goodsKind,jdbcType=INTEGER},
+            </if>
             <if test="grossWeight != null">
                 gross_weight = #{grossWeight,jdbcType=DOUBLE},
             </if>
@@ -344,6 +355,7 @@
     set pound_id = #{poundId,jdbcType=INTEGER},
       pound_name = #{poundName,jdbcType=VARCHAR},
       pound_log_no = #{poundLogNo,jdbcType=VARCHAR},
+      goods_kind = #{goodsKind,jdbcType=INTEGER},
       gross_weight = #{grossWeight,jdbcType=DOUBLE},
       tare_weight = #{tareWeight,jdbcType=DOUBLE},
       net_weight = #{netWeight,jdbcType=DOUBLE},
@@ -393,6 +405,9 @@
             </if>
             <if test="poundLogNo != null and poundLogNo != ''">
                 AND pound_log_no = #{poundLogNo,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsKind != null and goodsKind != ''">
+                AND goods_kind = #{goodsKind,jdbcType=INTEGER}
             </if>
             <if test="grossWeight != null and grossWeight != ''">
                 AND gross_weight = #{grossWeight,jdbcType=DOUBLE}
@@ -463,6 +478,9 @@
             <if test="myGreater_poundLogNo != null and myGreater_poundLogNo != ''">
                 AND pound_log_no &gt; #{myGreater_poundLogNo,jdbcType=VARCHAR}
             </if>
+            <if test="myGreater_goodsKind != null and myGreater_goodsKind != ''">
+                AND goods_kind &gt; #{myGreater_goodsKind,jdbcType=INTEGER}
+            </if>
             <if test="myGreater_grossWeight != null and myGreater_grossWeight != ''">
                 AND gross_weight &gt; #{myGreater_grossWeight,jdbcType=DOUBLE}
             </if>
@@ -531,6 +549,9 @@
             </if>
             <if test="myLesser_poundLogNo != null and myLesser_poundLogNo != ''">
                 AND pound_log_no &lt; #{myLesser_poundLogNo,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_goodsKind != null and myLesser_goodsKind != ''">
+                AND goods_kind &lt; #{myLesser_goodsKind,jdbcType=INTEGER}
             </if>
             <if test="myLesser_grossWeight != null and myLesser_grossWeight != ''">
                 AND gross_weight &lt; #{myLesser_grossWeight,jdbcType=DOUBLE}
@@ -601,6 +622,9 @@
             <if test="myLike_poundLogNo != null and myLike_poundLogNo != ''">
                 AND pound_log_no like CONCAT('%', #{myLike_poundLogNo,jdbcType=VARCHAR},'%' )
             </if>
+            <if test="myLike_goodsKind != null and myLike_goodsKind != ''">
+                AND goods_kind like CONCAT('%', #{myLike_goodsKind,jdbcType=INTEGER},'%' )
+            </if>
             <if test="myLike_grossWeight != null and myLike_grossWeight != ''">
                 AND gross_weight like CONCAT('%', #{myLike_grossWeight,jdbcType=DOUBLE},'%' )
             </if>
@@ -670,6 +694,9 @@
             <if test="myLikeStart_poundLogNo != null and myLikeStart_poundLogNo != ''">
                 AND pound_log_no like CONCAT('%', #{myLikeStart_poundLogNo,jdbcType=VARCHAR})
             </if>
+            <if test="myLikeStart_goodsKind != null and myLikeStart_goodsKind != ''">
+                AND goods_kind like CONCAT('%', #{myLikeStart_goodsKind,jdbcType=INTEGER})
+            </if>
             <if test="myLikeStart_grossWeight != null and myLikeStart_grossWeight != ''">
                 AND gross_weight like CONCAT('%', #{myLikeStart_grossWeight,jdbcType=DOUBLE})
             </if>
@@ -738,6 +765,9 @@
             </if>
             <if test="myLikeEnd_poundLogNo != null and myLikeEnd_poundLogNo != ''">
                 AND pound_log_no like CONCAT( #{myLikeEnd_poundLogNo,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_goodsKind != null and myLikeEnd_goodsKind != ''">
+                AND goods_kind like CONCAT( #{myLikeEnd_goodsKind,jdbcType=INTEGER},'%' )
             </if>
             <if test="myLikeEnd_grossWeight != null and myLikeEnd_grossWeight != ''">
                 AND gross_weight like CONCAT( #{myLikeEnd_grossWeight,jdbcType=DOUBLE},'%' )
@@ -816,6 +846,11 @@
                 AND pound_log_no in
                 <foreach close=")" collection="myIn_poundLogNo" index="index" item="item" open="(" separator=",">
                     #{item}
+                </foreach>
+            </if>
+            <if test="myIn_goodsKind != null and myIn_goodsKind != ''">
+                AND goods_kind in
+                <foreach close=")" collection="myIn_goodsKind" index="index" item="item" open="(" separator=",">#{item}
                 </foreach>
             </if>
             <if test="myIn_grossWeight != null and myIn_grossWeight != ''">

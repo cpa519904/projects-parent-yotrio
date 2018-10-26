@@ -457,6 +457,7 @@ layui.define(['table', 'form'], function (exports) {
 
             function doFormSubmit() {
                 var field = data.field; //获取提交的字段
+                var fieldRoot = data.field; //根字段，给退货是弹出窗口用
                 //获取地磅数据
                 field.tareWeight = field.currentWeight;
                 //更新磅单数据
@@ -469,7 +470,7 @@ layui.define(['table', 'form'], function (exports) {
                     cache: false,
                     dataType: 'json',
                     success: function (result) {
-                        console.log("result:update:", result);
+                        // console.log("result:update:", result);
                         if (result.code == 0) {
                             //数据刷新
                             $("#tareWeight").val(result.data.tareWeight);
@@ -494,32 +495,70 @@ layui.define(['table', 'form'], function (exports) {
                         } else {
                             //如果还未生成过磅单就称皮重，提示用户是否要执行退货或者卖废铁操作
                             if (result.msg == '找不到您要更新的过磅记录') {
-                                layer.confirm('系统认定您要执行卖废品或者出货过磅，您确定要执行该操作吗？', {
+                                layer.confirm('您是否要执行卖废品、出货过磅？', {
                                     icon: 3,
                                     title: '提示'
                                 }, function (index) {
-                                    $.ajax({
-                                        type: 'post',
-                                        url: '/poundLog/saveReturnTare',
-                                        data: field,
-                                        cache: false,
-                                        dataType: 'json',
-                                        success: function (result) {
-                                            if (result.code == 0) {
-                                                $("#tareWeight").val(result.data.tareWeight);
-                                                $("#secondTime").val(result.data.secondTime);
-                                                //上传图片
-                                                uploadImg();
-                                            } else {
-                                                layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-                                            }
-                                        },
-                                        error: function (error) {
-                                            layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-                                        }
-                                    });
-
                                     layer.close(index);
+
+                                    layer.open({
+                                        type: 2
+                                        , title: '请填写出货相关信息'
+                                        , content: '/poundLog/outPoundLogForm.htm'
+                                        , maxmin: true
+                                        , area: ['500px', '450px']
+                                        , btn: ['确定', '取消']
+                                        , yes: function (index, layero) {
+                                            var iframeWindow = window['layui-layer-iframe' + index]
+                                                , submitID = 'LAY-pound-log-out-submit'
+                                                , checkboxID = 'LAY-types-checkbox'
+                                                , submit = layero.find('iframe').contents().find('#' + submitID);
+
+                                            //获取过磅单号
+                                            var poundLogNo = methods.getPoundLogNo();
+
+                                            //监听提交
+                                            iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                                                var field = data.field; //获取提交的字段
+                                                fieldRoot.goodsKind = field.goodsKind;
+                                                fieldRoot.plateNo = field.plateNo;
+
+                                                //提交 Ajax 成功后，静态更新表格中的数据
+                                                $.ajax({
+                                                    type: 'post',
+                                                    url: '/poundLog/saveReturnTare',
+                                                    data: fieldRoot,
+                                                    cache: false,
+                                                    dataType: 'json',
+                                                    success: function (result) {
+                                                        if (result.code == 0) {
+                                                            $("#tareWeight").val(result.data.tareWeight);
+                                                            $("#secondTime").val(result.data.secondTime);
+                                                            //上传图片
+                                                            uploadImg();
+                                                        } else {
+                                                            layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                                                        }
+                                                    },
+                                                    error: function (error) {
+                                                        layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                                                    }
+                                                });
+                                                layer.close(index);
+                                            });
+
+                                            submit.trigger('click');
+                                        }
+                                        , success: function (layero, index) {
+
+                                            // 记得重新渲染表单
+                                            form.render();
+                                        }
+                                    })
+
+
+
+
                                 });
 
                             } else {

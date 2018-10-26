@@ -34,6 +34,11 @@ public class PoundLog implements Serializable {
     private String poundLogNo;
 
     /**
+     * 货品类型
+     */
+    private Integer goodsKind;
+
+    /**
      * 毛重
      *
      * @mbg.generated
@@ -178,11 +183,6 @@ public class PoundLog implements Serializable {
      * 报检单列表
      */
     private List<Inspection> inspections;
-
-    /**
-     * 货品类型
-     */
-    private Integer goodsKind;
 
     /**
      * 供应商名称
@@ -442,6 +442,46 @@ public class PoundLog implements Serializable {
         this.inspWeightTotal = inspWeightTotal;
     }
 
+    public Date getMyGreater_createTime() {
+        return myGreater_createTime;
+    }
+
+    public void setMyGreater_createTime(Date myGreater_createTime) {
+        this.myGreater_createTime = myGreater_createTime;
+    }
+
+    public Date getMyLesser_createTime() {
+        return myLesser_createTime;
+    }
+
+    public void setMyLesser_createTime(Date myLesser_createTime) {
+        this.myLesser_createTime = myLesser_createTime;
+    }
+
+    public String getMyLike_unitName() {
+        return myLike_unitName;
+    }
+
+    public void setMyLike_unitName(String myLike_unitName) {
+        this.myLike_unitName = myLike_unitName;
+    }
+
+    public String getMyLike_compName() {
+        return myLike_compName;
+    }
+
+    public void setMyLike_compName(String myLike_compName) {
+        this.myLike_compName = myLike_compName;
+    }
+
+    public String getMyLike_plateNo() {
+        return myLike_plateNo;
+    }
+
+    public void setMyLike_plateNo(String myLike_plateNo) {
+        this.myLike_plateNo = myLike_plateNo;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -452,6 +492,7 @@ public class PoundLog implements Serializable {
         sb.append(", poundId=").append(poundId);
         sb.append(", poundName=").append(poundName);
         sb.append(", poundLogNo=").append(poundLogNo);
+        sb.append(", goodsKind=").append(goodsKind);
         sb.append(", grossWeight=").append(grossWeight);
         sb.append(", tareWeight=").append(tareWeight);
         sb.append(", netWeight=").append(netWeight);
@@ -491,6 +532,7 @@ public class PoundLog implements Serializable {
                 && (this.getPoundId() == null ? other.getPoundId() == null : this.getPoundId().equals(other.getPoundId()))
                 && (this.getPoundName() == null ? other.getPoundName() == null : this.getPoundName().equals(other.getPoundName()))
                 && (this.getPoundLogNo() == null ? other.getPoundLogNo() == null : this.getPoundLogNo().equals(other.getPoundLogNo()))
+                && (this.getGoodsKind() == null ? other.getGoodsKind() == null : this.getGoodsKind().equals(other.getGoodsKind()))
                 && (this.getGrossWeight() == null ? other.getGrossWeight() == null : this.getGrossWeight().equals(other.getGrossWeight()))
                 && (this.getTareWeight() == null ? other.getTareWeight() == null : this.getTareWeight().equals(other.getTareWeight()))
                 && (this.getNetWeight() == null ? other.getNetWeight() == null : this.getNetWeight().equals(other.getNetWeight()))
@@ -520,6 +562,7 @@ public class PoundLog implements Serializable {
         result = prime * result + ((getPoundId() == null) ? 0 : getPoundId().hashCode());
         result = prime * result + ((getPoundName() == null) ? 0 : getPoundName().hashCode());
         result = prime * result + ((getPoundLogNo() == null) ? 0 : getPoundLogNo().hashCode());
+        result = prime * result + ((getGoodsKind() == null) ? 0 : getGoodsKind().hashCode());
         result = prime * result + ((getGrossWeight() == null) ? 0 : getGrossWeight().hashCode());
         result = prime * result + ((getTareWeight() == null) ? 0 : getTareWeight().hashCode());
         result = prime * result + ((getNetWeight() == null) ? 0 : getNetWeight().hashCode());
