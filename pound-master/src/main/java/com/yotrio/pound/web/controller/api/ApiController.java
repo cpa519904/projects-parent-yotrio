@@ -67,7 +67,20 @@ public class ApiController extends BaseController {
     @RequestMapping(value = "/poundLog/list", method = {RequestMethod.GET})
     @ResponseBody
     public Callback list(DataTablePage dataTablePage, PoundLogDto poundLogDto, String token) {
-        // TODO: 2018-10-23 接口都要做token校验
+        if (poundLogDto == null || poundLogDto.getPoundId() == null) {
+            return returnError("地磅参数异常");
+        }
+        if (StringUtils.isEmpty(token)) {
+            return returnError("token丢失");
+        }
+        PoundInfo poundInfo = poundInfoService.findById(poundLogDto.getPoundId());
+        if (poundInfo == null) {
+            return returnError("获取地磅信息失败");
+        }
+        Integer userId = getAppUserId(token);
+        if (!poundInfo.getAdminEmpId().equals(userId)) {
+            return returnError("token校验失败");
+        }
         PageInfo pageInfo = poundLogService.findAllPaging(dataTablePage, poundLogDto);
         return returnSuccess(pageInfo.getTotal(), pageInfo.getList());
     }

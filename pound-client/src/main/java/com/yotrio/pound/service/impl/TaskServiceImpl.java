@@ -16,6 +16,7 @@ import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.Task;
 import com.yotrio.pound.service.ITaskService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,21 +117,25 @@ public class TaskServiceImpl implements ITaskService {
 
         //过磅记录发送到服务器
         String url = systemProperties.getPoundMasterBaseUrl() + ApiUrlConstant.SAVE_POUND_LOG;
-        String response = HttpUtil.post(url, BeanUtil.beanToMap(poundLog));
-        if (response != null) {
-            JSONObject json = JSONObject.parseObject(response);
-            String msg = json.getString("msg");
-            if (json.getIntValue("code") == SUCCESS_CODE) {
-                //上传成功
-                task.setStatus(TaskConstant.STATUS_FINISHED);
-                task.setUpdateTime(new Date());
-                task.setDescription(msg);
-                taskMapper.updateByPrimaryKey(task);
-                return null;
-            } else {
-                logger.info("taskId:" + task.getId() + "|任务执行失败:" + msg + "|" + new Date());
-                return msg;
+        try {
+            String response = HttpUtil.post(url, BeanUtil.beanToMap(poundLog));
+            if (StringUtils.isNotEmpty(response)) {
+                JSONObject json = JSONObject.parseObject(response);
+                String msg = json.getString("msg");
+                if (json.getIntValue("code") == SUCCESS_CODE) {
+                    //上传成功
+                    task.setStatus(TaskConstant.STATUS_FINISHED);
+                    task.setUpdateTime(new Date());
+                    task.setDescription(msg);
+                    taskMapper.updateByPrimaryKey(task);
+                    return null;
+                } else {
+                    logger.info("taskId:" + task.getId() + "|任务执行失败:" + msg + "|" + new Date());
+                    return msg;
+                }
             }
+        } catch (Exception e) {
+            logger.error("任务执行失败={}", e);
         }
         return "任务执行失败";
     }

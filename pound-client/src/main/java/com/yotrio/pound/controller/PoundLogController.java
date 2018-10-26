@@ -8,14 +8,17 @@ import com.yotrio.common.constants.InspectionConstant;
 import com.yotrio.common.constants.PoundLogConstant;
 import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.enums.GoodsKindEnum;
+import com.yotrio.common.helpers.UserAuthTokenHelper;
 import com.yotrio.common.utils.BeansUtil;
 import com.yotrio.common.utils.ImageUtil;
 import com.yotrio.common.utils.NetStateUtil;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.domain.SystemProperties;
 import com.yotrio.pound.model.Inspection;
+import com.yotrio.pound.model.PoundInfo;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.Task;
+import com.yotrio.pound.service.IHttpService;
 import com.yotrio.pound.service.IInspectionService;
 import com.yotrio.pound.service.IPoundLogService;
 import com.yotrio.pound.service.ITaskService;
@@ -54,6 +57,8 @@ public class PoundLogController extends BaseController {
     private ITaskService taskService;
     @Autowired
     private IInspectionService inspectionService;
+    @Autowired
+    private IHttpService httpService;
 
     /**
      * 过磅记录列表页面
@@ -63,9 +68,18 @@ public class PoundLogController extends BaseController {
      */
     @RequestMapping(value = {"/list.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String list(Model model) {
+        String token = "";
         Integer poundId = sysProperties.getPoundClientId();
+        if (poundId != null) {
+            PoundInfo poundInfo = httpService.getPoundInfo(poundId);
+            if (poundInfo != null) {
+                //获取工号
+                Integer adminEmpId = poundInfo.getAdminEmpId();
+                token = UserAuthTokenHelper.getUserAuthToken(adminEmpId, null);
+            }
+        }
         model.addAttribute("poundId", poundId);
-        model.addAttribute("token", "123456");
+        model.addAttribute("token", token);
         model.addAttribute("goodsKinds", GoodsKindEnum.values());
         model.addAttribute("poundMasterBaseUrl", sysProperties.getPoundMasterBaseUrl());
         return "pound/pound_log_list";
@@ -442,7 +456,7 @@ public class PoundLogController extends BaseController {
         String url = sysProperties.getPoundMasterBaseUrl() + ApiUrlConstant.SAVE_POUND_LOG;
         try {
             String response = HttpUtil.post(url, map);
-            if (response != null) {
+            if (StringUtils.isNotEmpty(response)) {
                 JSONObject json = JSONObject.parseObject(response);
                 msg = json.getString("msg");
                 if (json.getIntValue("code") == SUCCESS_CODE) {

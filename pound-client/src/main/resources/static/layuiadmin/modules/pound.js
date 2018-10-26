@@ -10,7 +10,10 @@ layui.define(['table', 'form'], function (exports) {
         , url: $('#poundMasterBaseUrl').val() + '/api/poundLog/list'
         // , toolbar: '#table-pound-log-toolbar'
         , totalRow: true
-        , where: {} //如果无需传递额外参数，可不加该参数
+        , where: {
+            "poundId": $("#poundId").val(),
+            "token": $("#token").val()
+        } //如果无需传递额外参数，可不加该参数
         , cols: [[
             {type: 'checkbox', fixed: 'left'}
             , {field: 'id', title: 'ID', sort: true, totalRowText: '合计'}

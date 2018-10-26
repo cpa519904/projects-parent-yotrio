@@ -138,7 +138,7 @@ public class BaseController {
     }
 
     /**
-     * 获得用户token.
+     * 获得用户Id.
      *
      * @return
      */
