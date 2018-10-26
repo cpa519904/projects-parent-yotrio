@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>登入 - layuiAdmin</title>
@@ -10,9 +10,11 @@
     <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
     <link rel="stylesheet" href="../../layuiadmin/style/login.css" media="all">
+    <link rel="shortcut icon" href="../../layuiadmin/favicon.ico" type="image/x-icon"/>
+
 </head>
 <body>
-
+<input type="hidden" id="error" th:value="${error}">
 <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
 
     <div class="layadmin-user-login-main">
@@ -20,7 +22,7 @@
             <h2>浙江永强集团</h2>
             <p>地磅管理系统</p>
         </div>
-        <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
+        <form action="/login" method="post" class="layadmin-user-login-box layadmin-user-login-body layui-form">
             <div class="layui-form-item">
                 <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-username"></label>
                 <input type="text" name="username" id="LAY-user-login-username" lay-verify="required" placeholder="用户名" class="layui-input">
@@ -48,9 +50,9 @@
                 <a href="forget.html" class="layadmin-user-jump-change layadmin-link" style="margin-top: 7px;">忘记密码？</a>
             </div>
             <div class="layui-form-item">
-                <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">登 入</button>
+                <button class="layui-btn layui-btn-fluid">登 入</button>
             </div>
-        </div>
+        </form>
     </div>
 
 </div>
@@ -72,35 +74,36 @@
 
         form.render();
 
-        //提交
-        form.on('submit(LAY-user-login-submit)', function (obj) {
-            var field = obj.field;
-            user.form.verify.username(field.username, '');
-            user.form.verify.password(field.password, '');
+        var error = $("#error").val();
+        if (error) {
+            layer.msg(error, {
+                offset: '15px'
+                , icon: 2
+                , time: 1000
+            })
+        }
 
-            //请求登入接口
-            admin.req({
-                url: '/login' //实际使用请改成服务端真实接口
-                , data: obj.field
-                , done: function (res) {
-                    //请求成功后，写入 access_token
-                    layui.data(setter.tableName, {
-                        key: setter.request.tokenName
-                        , value: res.data.access_token
-                    });
-
-                    //登入成功的提示与跳转
-                    layer.msg('登入成功', {
-                        offset: '15px'
-                        , icon: 1
-                        , time: 1000
-                    }, function () {
-                        location.href = '../'; //后台主页
-                    });
-                }
-            });
-
-        });
+        //请求登入接口
+//            admin.req({
+//                url: '/login' //实际使用请改成服务端真实接口
+//                , data: obj.field
+//                , done: function (res) {
+//                    //请求成功后，写入 access_token
+//                    layui.data(setter.tableName, {
+//                        key: setter.request.tokenName
+//                        , value: res.data.access_token
+//                    });
+//
+//                    //登入成功的提示与跳转
+//                    layer.msg('登入成功', {
+//                        offset: '15px'
+//                        , icon: 1
+//                        , time: 1000
+//                    }, function () {
+//                        location.href = '../'; //后台主页
+//                    });
+//                }
+//            });
 
 
         //实际使用时记得删除该代码
