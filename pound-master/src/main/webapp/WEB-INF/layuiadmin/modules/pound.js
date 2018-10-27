@@ -199,34 +199,33 @@ layui.define(['table', 'form'], function (exports) {
             });
         } else if (obj.event === 'edit') {
 
-            // layer.open({
-            //     type: 2
-            //     , title: '编辑过磅记录'
-            //     , content: '/poundLog/form.htm'
-            //     , maxmin: true
-            //     , area: ['500px', '450px']
-            //     , btn: ['确定', '取消']
-            //     , yes: function (index, layero) {
-            //         var iframeWindow = window['layui-layer-iframe' + index]
-            //             , submitID = 'LAY-pound-log-submit'
-            //             , submit = layero.find('iframe').contents().find('#' + submitID);
-            //
-            //         //监听提交
-            //         iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
-            //             var field = data.field; //获取提交的字段
-            //
-            //             //提交 Ajax 成功后，静态更新表格中的数据
-            //             //$.ajax({});
-            //             table.reload('LAY-pound-log-submit'); //数据刷新
-            //             layer.close(index); //关闭弹层
-            //         });
-            //
-            //         submit.trigger('click');
-            //     }
-            //     , success: function (layero, index) {
-            //
-            //     }
-            // });
+            layer.open({
+                type: 2
+                , title: '编辑过磅记录'
+                , content: '/poundLog/detail.htm'
+                , maxmin: true
+                , btn: ['确定', '取消']
+                , yes: function (index, layero) {
+                    var iframeWindow = window['layui-layer-iframe' + index]
+                        , submitID = 'LAY-pound-log-submit'
+                        , submit = layero.find('iframe').contents().find('#' + submitID);
+
+                    //监听提交
+                    // iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                    //     var field = data.field; //获取提交的字段
+                    //
+                    //     //提交 Ajax 成功后，静态更新表格中的数据
+                    //     //$.ajax({});
+                    //     table.reload('LAY-pound-log-submit'); //数据刷新
+                    //     layer.close(index); //关闭弹层
+                    // });
+                    //
+                    // submit.trigger('click');
+                }
+                , success: function (layero, index) {
+
+                }
+            });
         }
     });
 

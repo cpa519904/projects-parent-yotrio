@@ -46,6 +46,16 @@ public class PoundLogController extends BaseController {
         return "pound/pound_log_list";
     }
 
+
+    /**
+     * 过磅记录详情页面
+     */
+    @RequestMapping(value = {"/detail.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String detail(Model model) {
+        model.addAttribute("goodsKinds", GoodsKindEnum.values());
+        return "pound/pound_log_detail";
+    }
+
     /**
      * 分页获取过磅记录列表
      * @param dataTablePage 分页条件
@@ -58,6 +68,7 @@ public class PoundLogController extends BaseController {
         PageInfo pageInfo = poundLogService.findAllPaging(dataTablePage, poundLogDto);
         return returnSuccess(pageInfo.getTotal(), pageInfo.getList());
     }
+
 
     /**
      * 过磅记录报表展示

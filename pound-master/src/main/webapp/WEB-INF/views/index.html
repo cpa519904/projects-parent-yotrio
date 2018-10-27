@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>地磅系统</title>
@@ -64,13 +64,13 @@
                 </li>
                 <li class="layui-nav-item" lay-unselect>
                     <a href="javascript:;">
-                        <cite>王小强</cite>
+                        <cite><span th:text="${username}"></span></cite>
                     </a>
                     <dl class="layui-nav-child">
                         <dd><a lay-href="/sysUser/info.htm">基本资料</a></dd>
                         <dd><a lay-href="/sysUser/password.htm">修改密码</a></dd>
                         <hr>
-                        <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
+                        <dd style="text-align: center;"><a href="/logout">退出</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item layui-hide-xs" lay-unselect>

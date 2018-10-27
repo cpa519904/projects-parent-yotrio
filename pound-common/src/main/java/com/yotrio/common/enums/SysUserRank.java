@@ -10,7 +10,7 @@ package com.yotrio.common.enums;
  **/
 public enum SysUserRank {
     SYS_USER_RANK_0(0, ""),
-    SYS_USER_RANK_1(1, "王者管理员"),
+    SYS_USER_RANK_1(1, "超级管理员"),
     SYS_USER_RANK_2(2, "钻石管理员"),
     SYS_USER_RANK_3(3, "铂金管理员"),
     SYS_USER_RANK_4(4, "黄金管理员"),

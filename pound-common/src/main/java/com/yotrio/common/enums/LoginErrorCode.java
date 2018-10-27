@@ -13,7 +13,7 @@ public enum LoginErrorCode {
     LOGIN_USER_UNENABLE("该用户未启用"),
     LOGIN_USER_PASSWORD_ERROR("用户名/密码错误"),
     LOGIN_RETRY_LIMIT("密码尝试次数过多，锁定5分钟，请稍后尝试"),
-    CODE_VERIFY_ERROR("验证码无效");
+    CODE_VERIFY_ERROR("验证码无效,请重新输入");
 
     private String description;
 
