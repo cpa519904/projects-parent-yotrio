@@ -61,6 +61,13 @@
     delete from pound_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
+    <delete id="deleteByIds" parameterType="java.lang.Integer">
+        delete from pound_log
+        where id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.PoundLog">
     insert into pound_log (id, pound_id, pound_name, 
       pound_log_no,goods_kind, comp_name, gross_weight, tare_weight,

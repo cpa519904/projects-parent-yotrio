@@ -7,6 +7,7 @@ import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.pound.dao.PoundInfoMapper;
 import com.yotrio.pound.model.PoundInfo;
 import com.yotrio.pound.service.IPoundInfoService;
+import com.yotrio.pound.utils.RedisUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,14 @@ public class PoundInfoServiceImpl implements IPoundInfoService {
      */
     @Override
     public PoundInfo findById(Integer id) {
-        return poundInfoMapper.selectByPrimaryKey(id);
+        String key = "PoundInfo:id:";
+        PoundInfo poundInfo = RedisUtil.getObj(key + id, PoundInfo.class);
+        if (poundInfo == null) {
+            poundInfo = poundInfoMapper.selectByPrimaryKey(id);
+            RedisUtil.setObj(key + id, poundInfo);
+        }
+
+        return poundInfo;
     }
 
     /**
@@ -102,6 +110,7 @@ public class PoundInfoServiceImpl implements IPoundInfoService {
 
     /**
      * 地磅表单校验
+     *
      * @param poundInfo
      * @return
      */

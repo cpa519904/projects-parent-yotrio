@@ -3,6 +3,7 @@ package com.yotrio.pound.service.impl;
 import com.yotrio.common.constants.SysUserConstants;
 import com.yotrio.common.enums.SysUserRank;
 import com.yotrio.pound.model.SysUser;
+import com.yotrio.pound.service.IHttpService;
 import com.yotrio.pound.service.ISysUserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +31,8 @@ import java.util.Date;
 public class SysUserServiceImplTest {
     @Autowired
     private ISysUserService sysUserService;
+    @Autowired
+    private IHttpService httpService;
 
     @Test
     public void createSysUser() throws Exception {
@@ -45,6 +48,11 @@ public class SysUserServiceImplTest {
         sysUser.setPassword("123456");
         sysUser.setRank(SysUserRank.SYS_USER_RANK_2.getRank());
         sysUserService.createSysUser(sysUser);
+    }
+
+    @Test
+    public void httpTest() throws Exception {
+        String u9Token = httpService.getU9Token();
     }
 
 }

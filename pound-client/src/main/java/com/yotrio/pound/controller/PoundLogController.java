@@ -468,7 +468,8 @@ public class PoundLogController extends BaseController {
         data.put("inspections", inspections);
         Map<String, Object> map = new HashMap<>(10);
         map.put("data", data);
-        map.put("token", "token");
+        String token = UserAuthTokenHelper.getUserAuthToken(Integer.valueOf(sysProperties.getPoundClientEmpId()), null);
+        map.put("token", token);
         //上传线上服务器
         String url = sysProperties.getPoundMasterBaseUrl() + ApiUrlConstant.SAVE_POUND_LOG;
         try {

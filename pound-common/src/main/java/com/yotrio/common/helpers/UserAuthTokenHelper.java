@@ -37,6 +37,19 @@ public class UserAuthTokenHelper {
         }
     }
 
+    /**
+     * 获得用户Id.
+     *
+     * @return
+     */
+    public static Integer getAppUserId(String userToken) {
+        JSONObject json = UserAuthTokenHelper.verifyUserAuthToken(userToken, null);
+        if (json != null) {
+            return json.getInteger("userId");
+        }
+        return null;
+    }
+
     public static JSONObject loginByUserAuthToken(String userToken, String parm) {
         try {
             String de = AuthTokenEncryptUtils.getDesString(userToken);

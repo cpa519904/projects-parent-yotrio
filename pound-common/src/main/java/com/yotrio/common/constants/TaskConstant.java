@@ -31,6 +31,11 @@ public class TaskConstant {
     public static final int TYPE_UPDATE_MSG = 2;
 
     /**
+     * 推送钉钉确认消息
+     */
+    public static final int TYPE_SEND_DING_TALK_CONFIRM_MSG = 3;
+
+    /**
      * 上传过磅单
      */
     public static final int TYPE_UPLOAD_MSG = 3;
@@ -39,7 +44,6 @@ public class TaskConstant {
      * 默认权重值
      */
     public static final int WEIGHT_INIT = 0;
-
 
 
 }

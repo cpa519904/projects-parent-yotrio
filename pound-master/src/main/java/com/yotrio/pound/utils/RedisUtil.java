@@ -1,6 +1,7 @@
 package com.yotrio.pound.utils;
 
 
+import com.alibaba.fastjson.JSON;
 import com.yotrio.common.utils.AESUtil;
 import com.yotrio.common.utils.PropertiesFileUtil;
 import org.apache.commons.lang.StringUtils;
@@ -176,6 +177,76 @@ public class RedisUtil {
         } catch (Exception e) {
             logger.error("Set key error : " + e);
         }
+    }
+
+    /**
+     * 向缓存中设置对象
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public static void setObj(String key, Object value) {
+        Jedis jedis = null;
+        try {
+            String objectJson = JSON.toJSONString(value);
+            jedis = jedisPool.getResource();
+            jedis.set(key, objectJson);
+            jedis.close();
+        } catch (Exception e) {
+            logger.error("setObj key error : " + e);
+        }
+    }
+
+    /**
+     * 删除缓存中得对象，根据key
+     *
+     * @param key
+     * @return
+     */
+    public static void delObj(String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            jedis.del(key);
+            jedis.close();
+        } catch (Exception e) {
+            logger.error("delObj key error : " + e);
+        }
+    }
+
+    /**
+     * 根据key 获取内容
+     *
+     * @param key
+     * @return
+     */
+    public static Object getObj(String key) {
+        Jedis jedis = getJedis();
+        if (jedis == null) {
+            return null;
+        }
+        Object value = jedis.get(key);
+        jedis.close();
+        return value;
+    }
+
+
+    /**
+     * 根据key 获取对象
+     *
+     * @param key
+     * @return
+     */
+    public static <T> T getObj(String key, Class<T> clazz) {
+        Jedis jedis = getJedis();
+        if (jedis == null) {
+            return null;
+        }
+        jedis = jedisPool.getResource();
+        String value = jedis.get(key);
+        jedis.close();
+        return JSON.parseObject(value, clazz);
     }
 
     /**

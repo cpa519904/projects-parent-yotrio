@@ -30,39 +30,33 @@ layui.define(['table', 'form'], function (exports) {
     table.on('tool(LAY-pound-info-manage)', function (obj) {
         var data = obj.data;
         if (obj.event === 'del') {
-            layer.prompt({
-                formType: 1
-                , title: '敏感操作，请验证口令'
-            }, function (value, index) {
-                //验证口令是否正确
-                layer.close(index);
-                layer.confirm('确定删除此地磅？', function (index) {
-                    // console.log(obj);
-                    //提交 Ajax 成功后，静态更新表格中的数据
-                    $.ajax({
-                        type: 'get',
-                        url: '/poundInfo/delete',
-                        data: {
-                            id: data.id
-                        },
-                        cache: false,
-                        dataType: 'json',
-                        success: function (result) {
-                            if (result.code == 0) {
-                                obj.del();
-                                layer.close(index);
-                                layer.msg('已删除');
-                            } else {
-                                layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-                            }
-                        },
-                        error: function (error) {
-                            layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+            layer.confirm('确定删除此地磅？', function (index) {
+                // console.log(obj);
+                //提交 Ajax 成功后，静态更新表格中的数据
+                $.ajax({
+                    type: 'get',
+                    url: '/poundInfo/delete',
+                    data: {
+                        id: data.id
+                    },
+                    cache: false,
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result.code == 0) {
+                            obj.del();
+                            layer.close(index);
+                            layer.msg('已删除');
+                        } else {
+                            layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
                         }
-                    });
-
+                    },
+                    error: function (error) {
+                        layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                    }
                 });
+
             });
+
         } else if (obj.event === 'edit') {
             layer.open({
                 type: 2
@@ -166,50 +160,44 @@ layui.define(['table', 'form'], function (exports) {
     table.on('tool(LAY-pound-log-manage)', function (obj) {
         var data = obj.data;
         if (obj.event === 'del') {
-            layer.prompt({
-                formType: 1
-                , title: '敏感操作，请验证口令'
-            }, function (value, index) {
-                layer.close(index);
-
-                layer.confirm('真的删除行么', function (index) {
-                    //提交 Ajax 成功后，静态更新表格中的数据
-                    $.ajax({
-                        type: 'get',
-                        url: '/poundLog/delete',
-                        data: {
-                            id: data.id
-                        },
-                        cache: false,
-                        dataType: 'json',
-                        success: function (result) {
-                            if (result.code == 0) {
-                                obj.del();
-                                layer.close(index);
-                                layer.msg('已删除');
-                            } else {
-                                layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-                            }
-                        },
-                        error: function (error) {
-                            layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+            layer.confirm('真的删除行么', function (index) {
+                //提交 Ajax 成功后，静态更新表格中的数据
+                $.ajax({
+                    type: 'get',
+                    url: '/poundLog/delete',
+                    data: {
+                        id: data.id
+                    },
+                    cache: false,
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result.code == 0) {
+                            obj.del();
+                            layer.close(index);
+                            layer.msg('已删除');
+                        } else {
+                            layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
                         }
-                    });
+                    },
+                    error: function (error) {
+                        layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                    }
                 });
             });
-        } else if (obj.event === 'edit') {
-
-            layer.open({
+        } else if (obj.event === 'detail') {
+            var index = layer.open({
                 type: 2
-                , title: '编辑过磅记录'
+                , title: '查看过磅记录'
                 , content: '/poundLog/detail.htm'
                 , maxmin: true
-                , btn: ['确定', '取消']
+                , area: ['500px', '450px']
+                , btn:'关闭'
                 , yes: function (index, layero) {
                     var iframeWindow = window['layui-layer-iframe' + index]
                         , submitID = 'LAY-pound-log-submit'
                         , submit = layero.find('iframe').contents().find('#' + submitID);
 
+                    layer.closeAll();
                     //监听提交
                     // iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
                     //     var field = data.field; //获取提交的字段
@@ -226,6 +214,8 @@ layui.define(['table', 'form'], function (exports) {
 
                 }
             });
+
+            layer.full(index);
         }
     });
 

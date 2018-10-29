@@ -92,11 +92,8 @@
             <table id="LAY-pound-log-manage" lay-filter="LAY-pound-log-manage" class="layui-hide"></table>
             <script type="text/html" id="table-pound-log-toolbar">
                 <div class="layui-btn-container">
-                    <button class="layui-btn layui-btn-danger" data-type="batchdel">删除</button>
+                    <button class="layui-btn layuiadmin-btn-admin layui-btn-danger" data-type="batchdel">删除</button>
                     <!--<button class="layui-btn layuiadmin-btn-admin" data-type="add">添加</button>-->
-                    <!--<button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>-->
-                    <!--<button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>-->
-                    <!--<button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>-->
                 </div>
             </script>
             <script type="text/html" id="imgTpl1">
@@ -169,38 +166,31 @@
                     return layer.msg('请选择数据');
                 }
 
-                layer.prompt({
-                    formType: 1
-                    , title: '敏感操作，请验证口令'
-                }, function (value, index) {
-                    layer.close(index);
+                layer.confirm('确定删除吗？', function (index) {
 
-                    layer.confirm('确定删除吗？', function (index) {
-
-                        //执行 Ajax 后重载
-                        //提交 Ajax 成功后，静态更新表格中的数据
-                        $.ajax({
-                            type: 'get',
-                            url: '/poundLog/deleteByIds',
-                            data: {
-                                ids: ids.toString()
-                            },
-                            cache: false,
-                            dataType: 'json',
-                            success: function (result) {
-                                if (result.code == 0) {
-                                    table.reload('LAY-pound-log-manage');
-                                    layer.msg('已删除');
-                                } else {
-                                    layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-                                }
-                            },
-                            error: function (error) {
-                                layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                    //提交 Ajax 成功后，静态更新表格中的数据
+                    $.ajax({
+                        type: 'get',
+                        url: '/poundLog/deleteByIds',
+                        data: {
+                            ids: ids.toString()
+                        },
+                        cache: false,
+                        dataType: 'json',
+                        success: function (result) {
+                            if (result.code == 0) {
+                                table.reload('LAY-pound-log-manage');
+                                layer.msg('已删除');
+                            } else {
+                                layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
                             }
-                        });
+                        },
+                        error: function (error) {
+                            layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                        }
                     });
                 });
+
             }
         }
 

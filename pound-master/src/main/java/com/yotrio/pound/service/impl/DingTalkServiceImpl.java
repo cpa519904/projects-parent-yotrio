@@ -1,15 +1,18 @@
 package com.yotrio.pound.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
+import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.yotrio.common.constants.ApiUrlConstant;
 import com.yotrio.common.utils.DingTalkUtil;
 import com.yotrio.common.utils.PropertiesFileUtil;
 import com.yotrio.pound.service.IDingTalkService;
+import com.yotrio.pound.utils.RedisUtil;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * 钉钉服务层接口类
@@ -22,35 +25,44 @@ import java.util.List;
 
 @Service("dingTaskService")
 public class DingTalkServiceImpl implements IDingTalkService {
-
-    private static final int SUCCESS_CODE = 0;
-
-    private static final String SINGLE_URL_CONFIRM_ORDER = PropertiesFileUtil.getInstance("SystemParameter").get("url.touch.confirm.order");
-
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
-     * 发送钉钉工作消息 类型：action_card
+     * 成功返回码
+     */
+    private static final int SUCCESS_CODE = 0;
+    /**
+     * 成功返回码
+     */
+    private static final String SUCCESS_RESULT = "1";
+    /**
+     * 成功返回码
+     */
+    private static final String RESULT_KEY = "result";
+    /**
+     * 确认供货单页面url
+     */
+    private static final String SINGLE_URL_CONFIRM_ORDER = PropertiesFileUtil.getInstance("SystemParameter").get("url.touch.confirm.order");
+
+    /**
+     * 获取钉钉access_token
+     */
+    private static final String GET_DING_TALK_ACCESS_TOKEN_URL = PropertiesFileUtil.getInstance("SystemParameter").get("url.ding.talk") + ApiUrlConstant.GET_DING_TALK_ACCESS_TOKEN;
+
+    private static final String GET_DING_TALK_USER_ID_URL = PropertiesFileUtil.getInstance("SystemParameter").get("url.ding.talk") + ApiUrlConstant.GET_DING_TALK_USERID;
+
+    /**
+     * 通过发送钉钉工作消息 类型：action_card
      *
      * @param token
      * @param poundLogId
      * @return
      */
     @Override
-    public boolean sendConfirmMessage(String token, Integer poundLogId) {
+    public boolean sendConfirmMessage(String token, Integer poundLogId, String userIds) {
         //获取accessToken
-        String accessToken = DingTalkUtil.getAccessToken();
-        // TODO: 2018-10-10 获取用户ids,这里需要修改
-        JSONObject json = DingTalkUtil.getAuthScopes(accessToken);
-        JSONObject authOrgScopes = json.getJSONObject("auth_org_scopes");
-        JSONArray authed_user = authOrgScopes.getJSONArray("authed_user");
-        List<String> userIds = new ArrayList<>();
-        for (int i = 0; i < authed_user.size(); i++) {
-            String userId = String.valueOf(authed_user.get(i));
-            if (StringUtils.isNotEmpty(userId)) {
-                userIds.add(userId);
-            }
-        }
-        String userIdList = StringUtils.join(userIds, ",");
+        String accessToken = getAccessToken();
+
         //编辑消息内容
         JSONObject msg = new JSONObject();
         msg.put("msg_type", "action_card");
@@ -66,7 +78,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
         msg.put("action_card", actionCard);
 
         //发送消息
-        JSONObject jsonObject = DingTalkUtil.sendWorkMessage(userIdList, null, false, msg);
+        JSONObject jsonObject = DingTalkUtil.sendWorkMessage(userIds, null, false, msg);
         if (jsonObject != null) {
             int code = jsonObject.getIntValue("code");
             if (code == SUCCESS_CODE) {
@@ -74,5 +86,103 @@ public class DingTalkServiceImpl implements IDingTalkService {
             }
         }
         return false;
+    }
+
+    /**
+     * 获取钉钉的accessToken
+     *
+     * @return
+     */
+    @Override
+    public String getAccessToken() {
+        String key = "DingTalkAccessToken";
+        String accessToken = RedisUtil.get(key);
+        try {
+            if (StringUtils.isEmpty(accessToken)) {
+                String response = HttpUtil.get(GET_DING_TALK_ACCESS_TOKEN_URL);
+                if (StringUtils.isNotEmpty(response)) {
+                    JSONObject json = JSONObject.parseObject(response);
+                    if (json.getString(RESULT_KEY) == SUCCESS_RESULT) {
+                        JSONObject data = json.getJSONObject("response");
+                        accessToken = data.getString("access_token");
+                        if (StringUtils.isNotEmpty(accessToken)) {
+                            RedisUtil.set(key, accessToken);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("获取U9token失败={}", e);
+        }
+
+        return accessToken;
+    }
+
+    /**
+     * 根据员工工号获取钉钉userId
+     *
+     * @return
+     */
+    @Override
+    public String getDingTalkUserIdByEmpId(Integer empId) {
+        String key = "DingTalkUserId:EmpId:" + empId;
+        String userId = RedisUtil.get(key);
+        try {
+            if (StringUtils.isEmpty(userId)) {
+                HashMap<String, Object> paramMap = new HashMap<>(5);
+                paramMap.put("type", "jobNumber");
+                paramMap.put("user", empId);
+
+                String response = HttpUtil.get(GET_DING_TALK_USER_ID_URL);
+                if (StringUtils.isNotEmpty(response)) {
+                    JSONObject json = JSONObject.parseObject(response);
+                    if (json.getString(RESULT_KEY) == SUCCESS_RESULT) {
+                        JSONObject data = json.getJSONObject("response");
+                        userId = data.getString("userId");
+                        if (StringUtils.isNotEmpty(userId)) {
+                            RedisUtil.set(key, userId);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("获取用户ID失败={}", e);
+        }
+
+        return userId;
+    }
+
+    /**
+     * 根据员工手机号码获取钉钉userId
+     *
+     * @return
+     */
+    @Override
+    public String getDingTalkUserIdByMobile(String mobile) {
+        String key = "DingTalkUserId:mobile:" + mobile;
+        String userId = RedisUtil.get(key);
+        try {
+            if (StringUtils.isEmpty(userId)) {
+                HashMap<String, Object> paramMap = new HashMap<>(5);
+                paramMap.put("type", "mobile");
+                paramMap.put("user", mobile);
+
+                String response = HttpUtil.get(GET_DING_TALK_USER_ID_URL);
+                if (StringUtils.isNotEmpty(response)) {
+                    JSONObject json = JSONObject.parseObject(response);
+                    if (json.getString(RESULT_KEY) == SUCCESS_RESULT) {
+                        JSONObject data = json.getJSONObject("response");
+                        userId = data.getString("userId");
+                        if (StringUtils.isNotEmpty(userId)) {
+                            RedisUtil.set(key, userId);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("获取用户ID失败={}", e);
+        }
+
+        return userId;
     }
 }

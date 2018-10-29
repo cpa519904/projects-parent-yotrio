@@ -100,7 +100,7 @@ public class LoginController extends BaseController {
         String sessionId = request.getSession().getId();
 
         //定义图形验证码的长、宽、验证码字符数、干扰线宽度
-        ICaptcha captcha = CaptchaUtil.createCircleCaptcha(200, 100, 4, 20);
+        ICaptcha captcha = CaptchaUtil.createCircleCaptcha(130, 38, 4, 5);
         try {
             //写出到浏览器,Servlet输出
             captcha.write(response.getOutputStream());

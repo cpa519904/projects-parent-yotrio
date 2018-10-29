@@ -36,7 +36,7 @@
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from inspection
     where id = #{id,jdbcType=INTEGER}
-  </delete>
+    </delete>
     <delete id="deleteByIds" parameterType="java.lang.Integer">
         delete from inspection
         where id in

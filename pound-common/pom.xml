@@ -248,7 +248,7 @@
         <redis.client.version>2.9.0</redis.client.version>
         <spring.data.redis.version>1.7.5.RELEASE</spring.data.redis.version>
 
-        <yotrio.lib.dir>/Users/wangyiqiang/Work/Yotrio/libs</yotrio.lib.dir>
+        <yotrio.lib.dir>E:/Work/Yotrio/libs</yotrio.lib.dir>
     </properties>
 
     <build>

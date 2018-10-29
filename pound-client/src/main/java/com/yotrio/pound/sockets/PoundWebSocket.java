@@ -44,10 +44,11 @@ public class PoundWebSocket {
     private static SerialPort serialPort = null;
 
     //监听串口
+//    private static final String PORT_NAME = "COM1";
     private static final String PORT_NAME = "COM5";
 
     //监听串口波特率
-    private static final int BAUDRATE = 9600;
+    private static final int BAUDRATE = 1200;
 
     /**
      * 处理连接建立
@@ -59,7 +60,7 @@ public class PoundWebSocket {
         this.session = session;
         webSocketMap.put(session.getId(), this);
         addCount();
-        logger.info("新的连接加入：{}", session.getId());
+//        logger.info("新的连接加入：{}", session.getId());
 
         try {
             //创建串口 COM5位串口名称 9600波特率
@@ -72,10 +73,26 @@ public class PoundWebSocket {
                     public void serialEvent(SerialPortEvent serialPortEvent) {
                         if (serialPortEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
                             try {
+                                StringBuffer sb = new StringBuffer();
                                 byte[] bytes = SerialPortUtil.readFromPort(serialPort);
-//                                System.out.println("收到的数据：" + new String(bytes, "GB2312"));
 
+//                                for (int i = 0; i < bytes.length; i++) {
+//                                    sb.append((char) Integer.parseInt(String.valueOf(bytes[i])));
+//                                }
+//                                String[] strs = sb.toString().trim().split("\\+");
+//                                int weight = 0;
+//                                for (int j = 0; j < strs.length; j++) {
+//                                    if (strs[j].trim().length() >= 9) {
+//                                        weight = Integer.parseInt(strs[j].trim().substring(0, 6));
+//                                        break;
+//                                    }
+//                                }
+//                                String weightStr = sb.toString();
+//                                sendMessage(String.valueOf(weight));
+
+                                System.out.println("收到的数据：" + new String(bytes, "GB2312"));
                                 sendMessage(String.valueOf(Integer.valueOf(new String(bytes, "GB2312")) - RandomUtil.randomInt(1000,10000)));
+
                             } catch (ReadDataFromSerialPortFailure readDataFromSerialPortFailure) {
                                 logger.error(readDataFromSerialPortFailure.toString());
                             } catch (SerialPortInputStreamCloseFailure serialPortInputStreamCloseFailure) {

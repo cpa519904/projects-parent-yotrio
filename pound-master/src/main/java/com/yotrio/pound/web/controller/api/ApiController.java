@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.constants.PoundConstant;
+import com.yotrio.common.constants.PoundLogConstant;
+import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.utils.DateUtil;
@@ -14,11 +16,9 @@ import com.yotrio.pound.exceptions.UploadLogException;
 import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundInfo;
 import com.yotrio.pound.model.PoundLog;
+import com.yotrio.pound.model.Task;
 import com.yotrio.pound.model.dto.PoundLogDto;
-import com.yotrio.pound.service.IDingTalkService;
-import com.yotrio.pound.service.IInspectionService;
-import com.yotrio.pound.service.IPoundInfoService;
-import com.yotrio.pound.service.IPoundLogService;
+import com.yotrio.pound.service.*;
 import com.yotrio.pound.web.controller.BaseController;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,6 +58,10 @@ public class ApiController extends BaseController {
     private IInspectionService inspectionService;
     @Autowired
     private IDingTalkService dingTalkService;
+    @Autowired
+    private IHttpService httpService;
+    @Autowired
+    private ITaskService taskService;
 
     /**
      * 分页获取过磅记录列表
@@ -112,9 +118,9 @@ public class ApiController extends BaseController {
     @ResponseBody
     public Callback savePoundLog(String data, String token) {
         Integer userId = getAppUserId(token);
-//        if (userId == null) {
-//            return returnError("无效的token");
-//        }
+        if (userId == null) {
+            return returnError("无效的token");
+        }
         if (data == null) {
             return returnError("数据上传失败");
         }
@@ -135,23 +141,26 @@ public class ApiController extends BaseController {
                 if (poundInfo == null) {
                     return returnError("找不到对应的地磅信息");
                 }
+                if (!poundInfo.getAdminEmpId().equals(userId)) {
+                    return returnError("token验证失败");
+                }
                 if (poundInfo.getStatus() == PoundConstant.STATUS_STOP) {
                     return returnError("此地磅已被停用，请联系管理员处理...");
                 }
                 poundLog.setPoundName(poundInfo.getPoundName());
 
-                //过磅单总数
-                double inspWeightTotal = 0.0d;
-                for (Inspection inspection : inspections) {
-                    inspWeightTotal += inspection.getInspWeight();
-                    if (StringUtils.isEmpty(poundLog.getCompName())) {
-                        poundLog.setCompName(inspection.getCompName());
-                    }
-                    if (poundLog.getGoodsKind() == null) {
-                        poundLog.setGoodsKind(inspection.getGoodsKind());
-                    }
-                }
                 if (poundLog.getInspWeightTotal() == null) {
+                    //过磅单总数
+                    double inspWeightTotal = 0.0d;
+                    for (Inspection inspection : inspections) {
+                        inspWeightTotal += inspection.getInspWeight();
+                        if (StringUtils.isEmpty(poundLog.getCompName())) {
+                            poundLog.setCompName(inspection.getCompName());
+                        }
+                        if (poundLog.getGoodsKind() == null) {
+                            poundLog.setGoodsKind(inspection.getGoodsKind());
+                        }
+                    }
                     poundLog.setInspWeightTotal(inspWeightTotal);
                 }
 
@@ -203,19 +212,56 @@ public class ApiController extends BaseController {
                     }
                 }
 
-                //执行钉钉消息推送
-//                String u9Token = getU9Token("301", "301", "001326601", "123456");
-//                boolean success = dingTalkService.sendConfirmMessage(u9Token, poundLog.getId());
-//                if (success) {
-//                    return returnSuccess("数据上传成功，消息已推送，请查收！");
-//                }
-//                return returnError("消息推送失败！");
+                //进货有报检单的情况下，发送钉钉消息并更新进货单
+                if (poundLog.getStatus() == PoundLogConstant.TYPES_IN && inspections.size() > 0) {
+                    //是否发送成功
+                    boolean sendResult = false;
+                    //查询发货单关联U9收货单信息，1.没生成发货单，创建定时任务，定时执行；2.生成发货单，直接钉钉推送消息
+                    for (Inspection inspection : inspections) {
+                        JSONObject u9ReceiveInfo = httpService.getU9ReceiveInfo(inspection.getInspNo());
+                        if (u9ReceiveInfo != null) {
+                            List<String> userIds = new ArrayList<>(20);
+                            //通过员工工号获取钉钉用户id
+                            String dingUserId = dingTalkService.getDingTalkUserIdByEmpId(poundInfo.getAdminEmpId());
+                            userIds.add(dingUserId);
+                            String userIdList = StringUtils.join(userIds, ",");
+                            sendResult = dingTalkService.sendConfirmMessage(token, poundLog.getId(), userIdList);
+                            //成功发送一次就够了
+                            if (sendResult) {
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!sendResult) {
+                        //发送失败，创建任务，定时去执行发送
+                        Task task = new Task();
+                        task.setStatus(TaskConstant.STATUS_INIT);
+                        task.setCreateTime(new Date());
+                        task.setOtherId(poundLog.getId().toString());
+                        task.setTaskName("发送钉钉确认消息");
+                        task.setTypes(TaskConstant.TYPE_SEND_DING_TALK_CONFIRM_MSG);
+                        task.setWeight(TaskConstant.WEIGHT_INIT);
+                        StringBuffer sb = new StringBuffer();
+                        sb.append("过磅记录ID：").append(poundLog.getId()).append("|地磅ID：").append(poundInfo.getId()).append("|管理员工号：").append(poundInfo.getAdminEmpId());
+                        task.setDescription(sb.toString());
+                        taskService.save(task);
+                    }
+                }
+
                 return returnSuccess("上传成功");
             }
         } catch (UploadLogException e) {
             logger.error("上传过磅信息异常:", e.getMessage());
         }
         return returnError("数据上传失败");
+    }
+
+    @RequestMapping(value = "/update/receiveInfo", method = {RequestMethod.GET})
+    @ResponseBody
+    public Callback updateReceiveInfo(String token, Integer poundLogId) {
+
+        return returnSuccess("操作成功");
     }
 
 }
