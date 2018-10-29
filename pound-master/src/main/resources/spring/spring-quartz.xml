@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <!-- 要调用的工作类 -->
+    <bean id="quartzJob" class="com.yotrio.pound.task.job.QuartzJob"></bean>
+
+    <!-- 定义调用对象和调用对象的方法 -->
+    <bean id="jobTaskForSendMsg" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="quartzJob"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>workForSendMsg</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="doTimeForSendMsg" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="jobTaskForSendMsg"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <!--这里设置每5分钟执行一次-->
+            <value>0 0/5 * * * ?</value>
+        </property>
+    </bean>
+
+    <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序 -->
+    <bean id="startQuertz" lazy-init="false" autowire="no"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="doTimeForSendMsg"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>

@@ -90,7 +90,7 @@ public class PoundWebSocket {
 //                                String weightStr = sb.toString();
 //                                sendMessage(String.valueOf(weight));
 
-                                System.out.println("收到的数据：" + new String(bytes, "GB2312"));
+//                                System.out.println("收到的数据：" + new String(bytes, "GB2312"));
                                 sendMessage(String.valueOf(Integer.valueOf(new String(bytes, "GB2312")) - RandomUtil.randomInt(1000,10000)));
 
                             } catch (ReadDataFromSerialPortFailure readDataFromSerialPortFailure) {
