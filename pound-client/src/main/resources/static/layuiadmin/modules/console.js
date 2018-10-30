@@ -218,7 +218,6 @@ layui.define(['table', 'form'], function (exports) {
 
     //获取过磅单号,定义全部变量
     var poundLogNoStr = methods.getPoundLogNo();
-    var status = 0;
 
     //获取未处理榜单及当前过磅记录信息
     methods.listUnFinishedAndPoundLog(poundLogNoStr);
@@ -236,7 +235,7 @@ layui.define(['table', 'form'], function (exports) {
             {type: 'checkbox', fixed: 'left', totalRowText: '合计'}
             , {field: 'plNo', title: '报检单单号', minWidth: 120}
             , {field: 'plateNo', title: '车牌号', minWidth: 80}
-            , {field: 'goodsKindName', title: '货品', minWidth: 60, templet: '#goodsKindTpl'}
+            , {field: 'goodsKindName', title: '货品', minWidth: 60}
             , {field: 'inspWeight', title: '报检单重量', minWidth: 80, sort: true, totalRow: true}
             , {field: 'returnWeight', title: '随车退重量', minWidth: 80, sort: true, totalRow: true}
             , {field: 'compName', title: '供应商名称', minWidth: 80}

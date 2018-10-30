@@ -10,7 +10,7 @@ import java.util.Map;
 public interface PoundLogMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(PoundLog record);
+    Integer insert(PoundLog record);
 
     int insertSelective(PoundLog record);
 

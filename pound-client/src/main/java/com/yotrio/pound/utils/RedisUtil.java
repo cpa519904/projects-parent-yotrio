@@ -187,10 +187,9 @@ public class RedisUtil {
      * @return
      */
     public static void setObj(String key, Object value) {
-        Jedis jedis = null;
         try {
             String objectJson = JSON.toJSONString(value);
-            jedis = jedisPool.getResource();
+            Jedis jedis = getJedis();
             jedis.set(key, objectJson);
             jedis.close();
         } catch (Exception e) {
@@ -205,9 +204,8 @@ public class RedisUtil {
      * @return
      */
     public static void delObj(String key) {
-        Jedis jedis = null;
         try {
-            jedis = jedisPool.getResource();
+            Jedis jedis = getJedis();
             jedis.del(key);
             jedis.close();
         } catch (Exception e) {
@@ -243,7 +241,6 @@ public class RedisUtil {
         if (jedis == null) {
             return null;
         }
-        jedis = jedisPool.getResource();
         String value = jedis.get(key);
         jedis.close();
         return JSON.parseObject(value, clazz);

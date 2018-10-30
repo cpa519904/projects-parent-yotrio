@@ -55,6 +55,33 @@ layui.define(['table', 'form'], function (exports) {
         });
     });
 
+    //监听工具条
+    table.on('tool(LAY-pound-log-manage)', function (obj) {
+        var data = obj.data;
+        if (obj.event === 'detail') {
+            var index = layer.open({
+                type: 2
+                , title: '查看过磅记录'
+                , content: '/poundLog/detail.htm?id=' + data.id
+                , maxmin: true
+                , area: ['500px', '450px']
+                , btn: '关闭'
+                , yes: function (index, layero) {
+                    var iframeWindow = window['layui-layer-iframe' + index]
+                        , submitID = 'LAY-pound-log-submit'
+                        , submit = layero.find('iframe').contents().find('#' + submitID);
+
+                    layer.closeAll();
+                }
+                , success: function (layero, index) {
+
+                }
+            });
+
+            layer.full(index);
+        }
+    });
+
 
     exports('pound', {})
 });

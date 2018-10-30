@@ -188,7 +188,7 @@ layui.define(['table', 'form'], function (exports) {
             var index = layer.open({
                 type: 2
                 , title: '查看过磅记录'
-                , content: '/poundLog/detail.htm?id=' + data.id
+                , content: '/poundLog/detail.htm?poundLogNo=' + data.poundLogNo
                 , maxmin: true
                 , area: ['500px', '450px']
                 , btn: '关闭'

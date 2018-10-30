@@ -85,7 +85,7 @@
       #{types,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{returnGoods,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{firstTime,jdbcType=TIMESTAMP}, 
       #{secondTime,jdbcType=TIMESTAMP})
-  </insert>
+    </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
             parameterType="com.yotrio.pound.model.PoundLog">
         insert into pound_log

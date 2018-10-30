@@ -48,7 +48,8 @@ public class PoundWebSocket {
     private static final String PORT_NAME = "COM5";
 
     //监听串口波特率
-    private static final int BAUDRATE = 1200;
+//    private static final int BAUDRATE = 1200;
+    private static final int BAUDRATE = 9600;
 
     /**
      * 处理连接建立
@@ -76,19 +77,21 @@ public class PoundWebSocket {
                                 StringBuffer sb = new StringBuffer();
                                 byte[] bytes = SerialPortUtil.readFromPort(serialPort);
 
+                                //将ASCII码转成字符串
 //                                for (int i = 0; i < bytes.length; i++) {
 //                                    sb.append((char) Integer.parseInt(String.valueOf(bytes[i])));
 //                                }
+//                                //解析字符串
 //                                String[] strs = sb.toString().trim().split("\\+");
 //                                int weight = 0;
 //                                for (int j = 0; j < strs.length; j++) {
-//                                    if (strs[j].trim().length() >= 9) {
+//                                    if (strs[j].trim().length() >= 6) {
 //                                        weight = Integer.parseInt(strs[j].trim().substring(0, 6));
+//                                        //发送数据
+//                                        sendMessage(String.valueOf(weight));
 //                                        break;
 //                                    }
 //                                }
-//                                String weightStr = sb.toString();
-//                                sendMessage(String.valueOf(weight));
 
 //                                System.out.println("收到的数据：" + new String(bytes, "GB2312"));
                                 sendMessage(String.valueOf(Integer.valueOf(new String(bytes, "GB2312")) - RandomUtil.randomInt(1000,10000)));

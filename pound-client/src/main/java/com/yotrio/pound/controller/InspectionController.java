@@ -93,6 +93,7 @@ public class InspectionController extends BaseController {
             PoundLog poundLog = new PoundLog();
             poundLog.setPoundId(sysProperties.getPoundClientId());
             poundLog.setPoundName(sysProperties.getPoundClientName());
+            poundLog.setGoodsKind(inspection.getGoodsKind());
             poundLog.setPoundLogNo(inspection.getPlNo());
             poundLog.setPlateNo(inspection.getPlateNo());
             poundLog.setCreateTime(new Date());
@@ -102,6 +103,7 @@ public class InspectionController extends BaseController {
             if (StringUtils.isNotEmpty(inspection.getUnit_name())) {
                 poundLog.setUnitName(inspection.getUnit_name());
             }
+            logInDB = poundLog;
             int result = poundLogService.save(poundLog);
             if (result < 1) {
                 return ResultUtil.error("过磅记录生成失败");

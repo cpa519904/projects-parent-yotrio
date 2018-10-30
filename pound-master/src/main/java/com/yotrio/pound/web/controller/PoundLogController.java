@@ -53,8 +53,8 @@ public class PoundLogController extends BaseController {
      * 过磅记录详情页面
      */
     @RequestMapping(value = {"/detail.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String detail(Model model, Integer id) {
-        PoundLog poundLog = poundLogService.findById(id);
+    public String detail(Model model, String poundLogNo) {
+        PoundLog poundLog = poundLogService.findByPoundLogNo(poundLogNo);
         if (poundLog != null) {
             if (poundLog.getGoodsKind() != null) {
                 poundLog.setGoodsName(GoodsKindEnum.getKindName(poundLog.getGoodsKind()));

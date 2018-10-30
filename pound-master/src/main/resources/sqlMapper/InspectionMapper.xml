@@ -53,7 +53,7 @@
     <insert id="insert" parameterType="com.yotrio.pound.model.Inspection">
     insert into inspection (id, pl_id, pl_no, 
       insp_no, plate_no, goods_kind, 
-      comp_name, insp_weight, return_weight, insp_net_weight
+      comp_name, insp_weight, return_weight, insp_net_weight,
       types, status, create_time, 
       update_time)
     values (#{id,jdbcType=INTEGER}, #{plId,jdbcType=INTEGER}, #{plNo,jdbcType=VARCHAR}, 

@@ -22,7 +22,9 @@ layui.define(['table', 'form'], function (exports) {
         ]]
         , page: true
         , limit: 10
-        , text: '对不起，加载出现异常！'
+        , text: {
+            none: '暂无相关数据'
+        }
     });
 
     //监听工具条
@@ -42,7 +44,6 @@ layui.define(['table', 'form'], function (exports) {
             });
         }
     });
-
 
     exports('task', {})
 });

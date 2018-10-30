@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.constants.InspectionConstant;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.common.enums.GoodsKindEnum;
 import com.yotrio.pound.dao.InspectionMapper;
 import com.yotrio.pound.dao.PoundLogMapper;
 import com.yotrio.pound.model.Inspection;
@@ -121,10 +122,9 @@ public class InspectionServiceImpl implements IInspectionService {
         //样品重量+非样品重量
         double totalNetWeight = poundLog.getNetWeight() + poundLog.getSampleNetWeight();
         //报检单称重后，我们给的总净重
-        double totalInspNetWeight = 0.0d;
+        double totalInspNetWeight ;
         //实际总重按小的来，如果自己称重大，按报检单总重
         if (totalNetWeight >= totalInspWeight) {
-            totalInspNetWeight = totalInspWeight;
             for (Inspection inspection : inspections) {
                 inspection.setInspNetWeight(inspection.getInspWeight());
                 inspectionMapper.updateByPrimaryKeySelective(inspection);
@@ -186,6 +186,9 @@ public class InspectionServiceImpl implements IInspectionService {
     public PageInfo findAllPaging(DataTablePage dataTablePage, Inspection inspection) {
         PageHelper.startPage(dataTablePage.getPage(), dataTablePage.getLimit());
         List<Inspection> inspectionList = inspectionMapper.selectListByMap(BeanUtil.beanToMap(inspection));
+        for (Inspection item : inspectionList) {
+            item.setGoodsKindName(GoodsKindEnum.getKindName(item.getGoodsKind()));
+        }
         PageInfo pageInfo = new PageInfo(inspectionList);
         return pageInfo;
     }

@@ -11,41 +11,11 @@
 </head>
 <body>
 
-<input type="hidden" id="poundLogNo" th:value="${poundLog.poundLogNo}">
+<input type="hidden" id="poundLogId" th:value="${id}">
 <div class="layui-fluid">
     <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin"
          style="padding: 20px 0 0 0;">
         <form class="layui-form layui-form-pane">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">所属磅房</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="poundName" autocomplete="off" readonly="readonly" class="layui-input"
-                               th:value="${poundInfo.poundName}">
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">地磅管理员</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="adminName" autocomplete="off" readonly="readonly" class="layui-input"
-                               th:value="${poundInfo.adminName}">
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">工号</label>
-                    <div class="layui-input-inline">
-                        <input type="number" name="adminEmpId" autocomplete="off" readonly="readonly"
-                               class="layui-input" th:value="${poundInfo.adminEmpId}">
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">手机号</label>
-                    <div class="layui-input-inline">
-                        <input type="number" name="adminMobile" autocomplete="off" class="layui-input"
-                               th:value="${poundInfo.adminMobile}">
-                    </div>
-                </div>
-            </div>
             <div class="layui-form-item">
                 <div class="layui-inline">
                     <label class="layui-form-label">过磅单单号</label>

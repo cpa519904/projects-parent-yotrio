@@ -211,7 +211,7 @@ public class ApiController extends BaseController {
                     //保存报检单信息
                     for (Inspection inspection : inspections) {
                         inspection.setId(null);
-                        inspection.setPlId(id);
+                        inspection.setPlNo(poundLog.getPoundLogNo());
                         inspectionService.save(inspection);
                     }
                 }

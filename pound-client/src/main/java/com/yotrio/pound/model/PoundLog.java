@@ -189,7 +189,10 @@ public class PoundLog implements Serializable {
      */
     private String compName;
 
-
+    /**
+     * 货品名称
+     */
+    private String goodsName;
 
     /**
      * 查询时间大于（创建时间）
@@ -480,6 +483,14 @@ public class PoundLog implements Serializable {
 
     public void setMyLike_plateNo(String myLike_plateNo) {
         this.myLike_plateNo = myLike_plateNo;
+    }
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
     }
 
     @Override
