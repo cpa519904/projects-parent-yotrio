@@ -190,7 +190,7 @@ public class BaseController {
                 }
             }
         } catch (IOException e) {
-            logger.error("Get token fail...{}", e.getMessage());
+            logger.error("Get u9Token fail...{}", e.getMessage());
         }
 
         return u9Token;

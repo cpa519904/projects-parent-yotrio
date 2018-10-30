@@ -1,31 +1,29 @@
 package com.yotrio.pound.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yotrio.common.constants.PoundLogConstant;
 import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.common.helpers.UserAuthTokenHelper;
 import com.yotrio.pound.dao.InspectionMapper;
-import com.yotrio.pound.dao.PoundLogMapper;
 import com.yotrio.pound.dao.TaskMapper;
 import com.yotrio.pound.model.Inspection;
+import com.yotrio.pound.model.PoundInfo;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.Task;
-import com.yotrio.pound.service.ITaskService;
+import com.yotrio.pound.service.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static com.yotrio.common.utils.DingTalkUtil.SUCCESS_CODE;
 
 /**
  * 地磅接口服务层
@@ -44,9 +42,15 @@ public class TaskServiceImpl implements ITaskService {
     @Autowired
     private TaskMapper taskMapper;
     @Autowired
-    private PoundLogMapper poundLogMapper;
+    private IPoundLogService poundLogService;
     @Autowired
     private InspectionMapper inspectionMapper;
+    @Autowired
+    private IHttpService httpService;
+    @Autowired
+    private IDingTalkService dingTalkService;
+    @Autowired
+    private IPoundInfoService poundInfoService;
 
 
     /**
@@ -96,44 +100,48 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public String executeTask(Task task) {
         //获取过磅记录
-        String poundLogNo = task.getOtherId();
-        PoundLog poundLog = poundLogMapper.findByPoundLogNo(poundLogNo);
+        Integer poundLogId = Integer.valueOf(task.getOtherId());
+        PoundLog poundLog = poundLogService.findById(poundLogId);
         if (poundLog == null) {
             return "找不到您要执行的任务信息";
         }
+        PoundInfo poundInfo = poundInfoService.findById(poundLog.getPoundId());
+        if (poundInfo == null) {
+            return "找不到对应的地磅信息";
+        }
 
         //获取关联的报检单
-        List<Inspection> inspections = inspectionMapper.findListByPlNo(poundLogNo);
+        List<Inspection> inspections = inspectionMapper.findListByPlId(poundLogId);
 
-        JSONObject data = new JSONObject();
-        data.put("poundLog", poundLog);
-        data.put("inspections", inspections);
-        Map<String, Object> map = new HashMap<>(10);
-        map.put("data", data);
-        map.put("token", "token");
-
-        //过磅记录发送到服务器
-        String url = "";
-        try {
-            String response = HttpUtil.post(url, BeanUtil.beanToMap(poundLog));
-            if (StringUtils.isNotEmpty(response)) {
-                JSONObject json = JSONObject.parseObject(response);
-                String msg = json.getString("msg");
-                if (json.getIntValue("code") == SUCCESS_CODE) {
-                    //上传成功
-                    task.setStatus(TaskConstant.STATUS_FINISHED);
-                    task.setUpdateTime(new Date());
-                    task.setDescription(msg);
-                    taskMapper.updateByPrimaryKey(task);
-                    return null;
+        if (poundLog.getStatus() == PoundLogConstant.TYPES_IN && inspections != null && inspections.size() > 0) {
+            String token = UserAuthTokenHelper.getUserAuthToken(poundInfo.getAdminEmpId(), null);
+            boolean sendResult = false;
+            for (Inspection inspection : inspections) {
+                //查询发货单关联U9收货单信息，1.没生成发货单，创建定时任务，定时执行；2.生成发货单，直接钉钉推送消息
+                JSONObject u9ReceiveInfo = httpService.getU9ReceiveInfo(inspection.getInspNo());
+                if (u9ReceiveInfo != null) {
+                    List<String> userIds = new ArrayList<>(20);
+                    //通过员工工号获取钉钉用户id
+                    String dingUserId = dingTalkService.getDingTalkUserIdByEmpId(poundInfo.getAdminEmpId());
+                    userIds.add(dingUserId);
+                    String userIdList = StringUtils.join(userIds, ",");
+                    //发送钉钉消息
+                    sendResult = dingTalkService.sendConfirmMessage(token, poundLog.getId(), userIdList);
+                    //成功发送一次就够了
+                    if (sendResult) {
+                        //更新任务状态
+                        task.setStatus(TaskConstant.STATUS_FINISHED);
+                        task.setUpdateTime(new Date());
+                        taskMapper.updateByPrimaryKeySelective(task);
+                        return null;
+                    }
                 } else {
-                    logger.info("taskId:" + task.getId() + "|任务执行失败:" + msg + "|" + new Date());
-                    return msg;
+                    //有一种收货单未生成，就先退出发送消息
+                    break;
                 }
             }
-        } catch (Exception e) {
-            logger.error("任务执行失败={}", e);
         }
+
         return "任务执行失败";
     }
 

@@ -1,5 +1,7 @@
 package com.yotrio.pound.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -151,6 +153,7 @@ public class PoundLog implements Serializable {
      *
      * @mbg.generated
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**
@@ -158,6 +161,8 @@ public class PoundLog implements Serializable {
      *
      * @mbg.generated
      */
+
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     /**
@@ -165,6 +170,7 @@ public class PoundLog implements Serializable {
      *
      * @mbg.generated
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date firstTime;
 
     /**
@@ -172,6 +178,7 @@ public class PoundLog implements Serializable {
      *
      * @mbg.generated
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date secondTime;
 
     /**

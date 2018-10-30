@@ -11,6 +11,7 @@ import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.dto.PoundLogDto;
 import com.yotrio.pound.service.IPoundLogService;
+import com.yotrio.pound.utils.RedisUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -114,7 +115,15 @@ public class PoundLogServiceImpl implements IPoundLogService {
      */
     @Override
     public PoundLog findById(Integer id) {
-        return poundLogMapper.selectByPrimaryKey(id);
+        String key = "PoundLog:id:" + id;
+        PoundLog poundLog = RedisUtil.getObj(key, PoundLog.class);
+        if (poundLog == null) {
+            poundLog = poundLogMapper.selectByPrimaryKey(id);
+            if (poundLog != null) {
+                RedisUtil.setObj(key,poundLog);
+            }
+        }
+        return poundLog;
     }
 
     /**
@@ -142,6 +151,7 @@ public class PoundLogServiceImpl implements IPoundLogService {
 
     /**
      * 根据poundID跟poundLogNo查找过磅记录
+     *
      * @param poundLogNo
      * @param poundId
      * @return

@@ -188,27 +188,16 @@ layui.define(['table', 'form'], function (exports) {
             var index = layer.open({
                 type: 2
                 , title: '查看过磅记录'
-                , content: '/poundLog/detail.htm'
+                , content: '/poundLog/detail.htm?id=' + data.id
                 , maxmin: true
                 , area: ['500px', '450px']
-                , btn:'关闭'
+                , btn: '关闭'
                 , yes: function (index, layero) {
                     var iframeWindow = window['layui-layer-iframe' + index]
                         , submitID = 'LAY-pound-log-submit'
                         , submit = layero.find('iframe').contents().find('#' + submitID);
 
                     layer.closeAll();
-                    //监听提交
-                    // iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
-                    //     var field = data.field; //获取提交的字段
-                    //
-                    //     //提交 Ajax 成功后，静态更新表格中的数据
-                    //     //$.ajax({});
-                    //     table.reload('LAY-pound-log-submit'); //数据刷新
-                    //     layer.close(index); //关闭弹层
-                    // });
-                    //
-                    // submit.trigger('click');
                 }
                 , success: function (layero, index) {
 
@@ -216,6 +205,34 @@ layui.define(['table', 'form'], function (exports) {
             });
 
             layer.full(index);
+        }
+    });
+
+    //inspection列表
+    var data = {};
+    data.plId = $("#poundLogId").val();
+    table.render({
+        elem: '#LAY-inspection-manage'
+        , url: '/inspection/list'
+        , where: data //如果无需传递额外参数，可不加该参数
+        , totalRow: true
+        , cols: [[
+            {type: 'checkbox', fixed: 'left', totalRowText: '合计'}
+            , {field: 'plNo', title: '报检单单号', minWidth: 120}
+            , {field: 'goodsKindName', title: '货品', minWidth: 60, templet: '#goodsKindTpl'}
+            , {field: 'inspWeight', title: '报检单重量', minWidth: 80, sort: true, totalRow: true}
+            , {field: 'returnWeight', title: '随车退重量', minWidth: 80, sort: true, totalRow: true}
+            , {field: 'inspNetWeight', title: '净重', minWidth: 80, sort: true, totalRow: true}
+            , {field: 'types', title: '样品', minWidth: 60, templet: '#typesTpl'}
+            // , {title: '操作', width: 80, align: 'center', fixed: 'right', toolbar: '#table-inspection'}
+            // , {field: 'status', title: '状态'}
+            // , {field: 'updateTime', title: '更新时间', sort: true}
+        ]]
+        , limit: 10
+        , text: {
+            none: '暂无数据'
+        }, done: function (result) {
+
         }
     });
 

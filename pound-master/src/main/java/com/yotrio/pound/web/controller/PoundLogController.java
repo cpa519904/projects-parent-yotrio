@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.enums.GoodsKindEnum;
+import com.yotrio.pound.model.PoundInfo;
+import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.dto.PoundLogDto;
 import com.yotrio.pound.service.IPoundInfoService;
 import com.yotrio.pound.service.IPoundLogService;
@@ -51,20 +53,32 @@ public class PoundLogController extends BaseController {
      * 过磅记录详情页面
      */
     @RequestMapping(value = {"/detail.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String detail(Model model) {
-        model.addAttribute("goodsKinds", GoodsKindEnum.values());
+    public String detail(Model model, Integer id) {
+        PoundLog poundLog = poundLogService.findById(id);
+        if (poundLog != null) {
+            if (poundLog.getGoodsKind() != null) {
+                poundLog.setGoodsName(GoodsKindEnum.getKindName(poundLog.getGoodsKind()));
+            }
+
+            PoundInfo poundInfo = poundInfoService.findById(poundLog.getPoundId());
+            if (poundInfo != null) {
+                model.addAttribute("poundInfo", poundInfo);
+            }
+        }
+        model.addAttribute("poundLog", poundLog);
         return "pound/pound_log_detail";
     }
 
     /**
      * 分页获取过磅记录列表
+     *
      * @param dataTablePage 分页条件
-     * @param poundLogDto 过磅记录查询条件
+     * @param poundLogDto   过磅记录查询条件
      * @return
      */
     @RequestMapping(value = "/list", method = {RequestMethod.GET})
     @ResponseBody
-    public Callback list(DataTablePage dataTablePage, PoundLogDto poundLogDto ) {
+    public Callback list(DataTablePage dataTablePage, PoundLogDto poundLogDto) {
         PageInfo pageInfo = poundLogService.findAllPaging(dataTablePage, poundLogDto);
         return returnSuccess(pageInfo.getTotal(), pageInfo.getList());
     }

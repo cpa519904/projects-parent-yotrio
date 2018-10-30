@@ -29,4 +29,6 @@ public interface IInspectionService {
 
 
     int updateByPlIdSelective(Inspection inspection);
+
+    List<Inspection> findListByPlId(Integer id);
 }

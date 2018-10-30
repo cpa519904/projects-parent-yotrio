@@ -33,6 +33,12 @@
         from inspection
         where pl_no = #{plNo,jdbcType=VARCHAR}
     </select>
+    <select id="findListByPlId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from inspection
+        where pl_id = #{plId,jdbcType=INTEGER}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from inspection
     where id = #{id,jdbcType=INTEGER}

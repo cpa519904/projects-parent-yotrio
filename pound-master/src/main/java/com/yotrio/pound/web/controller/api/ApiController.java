@@ -9,6 +9,7 @@ import com.yotrio.common.constants.PoundLogConstant;
 import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.common.helpers.UserAuthTokenHelper;
 import com.yotrio.common.utils.DateUtil;
 import com.yotrio.common.utils.ImageUtil;
 import com.yotrio.common.utils.PropertiesFileUtil;
@@ -29,8 +30,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 外部接口控制类
@@ -43,12 +45,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/api")
 public class ApiController extends BaseController {
-    //本机url
+    /**
+     * 本机url
+     */
     private static String LOCALHOST_URL = PropertiesFileUtil.getInstance("SystemParameter").get("localhost.url");
-    //本机文件保存路径
+    /**
+     * 本机文件保存路径
+     */
     private static String FILE_LOCATION = PropertiesFileUtil.getInstance("SystemParameter").get("file.location");
-    //客户端图片保存路径
-    private static String CLIENT_FILE_LOCATION = PropertiesFileUtil.getInstance("SystemParameter").get("client.file.location");
 
     @Autowired
     private IPoundLogService poundLogService;
@@ -213,7 +217,7 @@ public class ApiController extends BaseController {
                 }
 
                 //进货有报检单的情况下，发送钉钉消息并更新进货单
-                if (poundLog.getStatus() == PoundLogConstant.TYPES_IN && inspections.size() > 0) {
+                if (poundLog.getStatus() == PoundLogConstant.TYPES_IN && inspections != null && inspections.size() > 0) {
                     //是否发送成功
                     boolean sendResult = false;
                     //查询发货单关联U9收货单信息，1.没生成发货单，创建定时任务，定时执行；2.生成发货单，直接钉钉推送消息
@@ -230,6 +234,9 @@ public class ApiController extends BaseController {
                             if (sendResult) {
                                 break;
                             }
+                        } else {
+                            //有一种收货单未生成，就先退出发送消息
+                            break;
                         }
                     }
 
@@ -237,7 +244,6 @@ public class ApiController extends BaseController {
                         //发送失败，创建任务，定时去执行发送
                         Task task = new Task();
                         task.setStatus(TaskConstant.STATUS_INIT);
-                        task.setCreateTime(new Date());
                         task.setOtherId(poundLog.getId().toString());
                         task.setTaskName("发送钉钉确认消息");
                         task.setTypes(TaskConstant.TYPE_SEND_DING_TALK_CONFIRM_MSG);
@@ -260,7 +266,29 @@ public class ApiController extends BaseController {
     @RequestMapping(value = "/update/receiveInfo", method = {RequestMethod.GET})
     @ResponseBody
     public Callback updateReceiveInfo(String token, Integer poundLogId) {
-
+        Integer userId = UserAuthTokenHelper.getAppUserId(token);
+        if (userId == null) {
+            return returnError("token验证失败");
+        }
+        if (poundLogId == null) {
+            return returnError("过磅单号为空");
+        }
+        PoundLog poundLog = poundLogService.findById(poundLogId);
+        if (poundLog == null) {
+            return returnError("获取过磅单失败");
+        }
+        List<Inspection> inspections = inspectionService.findListByPlId(poundLog.getId());
+        if (inspections == null || inspections.size() <= 0) {
+            return returnError("获取报价单失败");
+        }
+        for (Inspection inspection : inspections) {
+            Map<String, Object> paramsMap = new HashMap<>(10);
+            paramsMap.put("poundLogNo", poundLog.getPoundLogNo());
+            paramsMap.put("inspNetWeight", inspection.getInspNetWeight());
+            paramsMap.put("inspNo", inspection.getInspNo());
+            paramsMap.put("remark", poundLog.getRemark());
+            httpService.writeWeightToU9ReceiveInfo(paramsMap);
+        }
         return returnSuccess("操作成功");
     }
 

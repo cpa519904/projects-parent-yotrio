@@ -243,7 +243,6 @@ public class RedisUtil {
         if (jedis == null) {
             return null;
         }
-        jedis = jedisPool.getResource();
         String value = jedis.get(key);
         jedis.close();
         return JSON.parseObject(value, clazz);

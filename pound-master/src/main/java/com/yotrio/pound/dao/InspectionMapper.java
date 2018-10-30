@@ -28,4 +28,6 @@ public interface InspectionMapper {
 
 
     int updateByPlIdSelective(Inspection inspection);
+
+    List<Inspection> findListByPlId(Integer poundLogId);
 }

@@ -66,6 +66,7 @@ public class InspectionServiceImpl implements IInspectionService {
 
     /**
      * 根据id删除
+     *
      * @param idList
      * @return
      */
@@ -76,6 +77,7 @@ public class InspectionServiceImpl implements IInspectionService {
 
     /**
      * 根据过磅单号获取过磅单列表
+     *
      * @param poundLogNo
      * @return
      */
@@ -86,12 +88,23 @@ public class InspectionServiceImpl implements IInspectionService {
 
     /**
      * 根据过磅单号id更新
+     *
      * @param inspection
      * @return
      */
     @Override
     public int updateByPlIdSelective(Inspection inspection) {
         return inspectionMapper.updateByPlIdSelective(inspection);
+    }
+
+    /**
+     * 根据过磅单id获取报检列表
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Inspection> findListByPlId(Integer id) {
+        return inspectionMapper.findListByPlId(id);
     }
 
     /**
