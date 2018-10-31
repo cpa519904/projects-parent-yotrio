@@ -190,7 +190,7 @@ public class PoundLogController extends BaseController {
             return ResultUtil.success(logInDB);
         } else {
             //进货
-            //计算净重 = 总皮重 - 随车退 - 样品
+            //计算净重 =毛重 - 皮重  - 样品
             double netWeight = 0.0d;
             double totalReturnWeight = 0.0d;
             double totalSampleWeight = 0.0d;
@@ -213,7 +213,7 @@ public class PoundLogController extends BaseController {
             //计算磅差和净重,有了皮重之后才可以计算
             if (logInDB.getTareWeight() != null && logInDB.getTareWeight() > 0) {
                 logInDB.setDiffWeight(logInDB.getGrossWeight() - tareWeight - totalInspWeight);
-                netWeight = logInDB.getGrossWeight() - tareWeight - totalSampleWeight - totalReturnWeight;
+                netWeight = logInDB.getGrossWeight() - tareWeight - totalSampleWeight;
                 logInDB.setNetWeight(netWeight);
             }
             if (logInDB.getGrossWeight() != null && logInDB.getGrossWeight() < tareWeight) {
@@ -283,7 +283,7 @@ public class PoundLogController extends BaseController {
             }
             return ResultUtil.success(logInDB);
         } else {
-            //计算净重 = 总毛重 - 随车退 - 样品 - 皮重
+            //计算净重 = 毛重 - 样品 - 皮重
             double netWeight = 0.0d;
             double totalReturnWeight = 0.0d;
             double totalSampleWeight = 0.0d;
@@ -310,7 +310,7 @@ public class PoundLogController extends BaseController {
             if (logInDB.getGrossWeight() != null && logInDB.getGrossWeight() > 0) {
                 logInDB.setDiffWeight(logInDB.getGrossWeight() - tareWeight - totalInspWeight);
                 //计算净重
-                netWeight = logInDB.getGrossWeight() - totalSampleWeight - totalReturnWeight - tareWeight;
+                netWeight = logInDB.getGrossWeight() - totalSampleWeight - tareWeight;
                 logInDB.setNetWeight(netWeight);
             }
 
@@ -444,6 +444,7 @@ public class PoundLogController extends BaseController {
 
         String msg = "网络连接失败,联网后系统会自动为您提交";
         //先看网络连接是否成功？失败：创建定时任务，提示失败原因
+        // TODO: 2018-10-31 这里判断网络是否连接太耗时，应该调整一下
         if (!NetStateUtil.isConnect()) {
             Task taskInDB = taskService.findByOtherId(poundLogNo);
             if (taskInDB != null) {
@@ -451,16 +452,16 @@ public class PoundLogController extends BaseController {
             }
             Task task = new Task();
             task.setStatus(TaskConstant.STATUS_INIT);
-            task.setOtherId(String.valueOf(poundLog.getPlateNo()));
+            task.setOtherId(String.valueOf(poundLog.getPoundLogNo()));
             task.setWeight(TaskConstant.WEIGHT_INIT);
             task.setTypes(TaskConstant.TYPE_UPLOAD_MSG);
             task.setTaskName("上传过磅记录失败|plNo=" + poundLog.getPoundLogNo());
             task.setDescription(msg);
             taskService.save(task);
-            //更改过磅单状态未网络断开，定时任务执行上传
+            //更改过磅单状态网络断开，定时任务执行上传
             poundLog.setStatus(PoundLogConstant.STATUS_NET_DISCONNECT);
             poundLogService.update(poundLog);
-            return ResultUtil.error(msg);
+            return ResultUtil.error(msg, poundLog);
         }
 
         //将本地图片url转base64字符串上传，上传成功后再保存线上服务器

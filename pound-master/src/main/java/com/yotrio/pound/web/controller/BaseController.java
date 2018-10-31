@@ -1,17 +1,11 @@
 package com.yotrio.pound.web.controller;
 
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.helpers.UserAuthTokenHelper;
 import com.yotrio.common.utils.PropertiesFileUtil;
 import com.yotrio.pound.enums.CallbackEnum;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -21,7 +15,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -148,52 +141,6 @@ public class BaseController {
             return json.getInteger("userId");
         }
         return null;
-    }
-
-    /**
-     * 获取u9的u9Token
-     * @param orgCode 组织code
-     * @param orgId   组织id
-     * @param loginUserCode  登录用户code
-     * @param passward 用户密码
-     * @return
-     */
-    protected String getU9Token(String orgCode, String orgId, String loginUserCode, String passward) {
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-
-        HttpPost httpPost = new HttpPost(URL_GET_TOKEN);
-        // 设置请求的header
-        httpPost.addHeader("Content-Type", "application/json;charset=utf-8");
-        // 设置请求的参数
-        JSONObject jsonParam = new JSONObject();
-        jsonParam.put("OrgCode", orgCode);
-        jsonParam.put("OrgID", orgId);
-        jsonParam.put("loginUserCode", loginUserCode);
-        jsonParam.put("password", passward);
-        StringEntity entity = new StringEntity(jsonParam.toString(), "utf-8");
-        entity.setContentEncoding("UTF-8");
-        entity.setContentType("application/json");
-        httpPost.setEntity(entity);
-
-        HttpResponse response = null;
-        String u9Token = null;
-        try {
-            // 执行请求
-            response = httpClient.execute(httpPost);
-
-            String json2 = EntityUtils.toString(response.getEntity(), "utf-8");
-            JSONObject jsonObject = JSON.parseObject(json2);
-            if (jsonObject != null) {
-                JSONObject result = jsonObject.getJSONObject("DoResponse");
-                if (result != null) {
-                    u9Token = result.getString("DoResult");
-                }
-            }
-        } catch (IOException e) {
-            logger.error("Get u9Token fail...{}", e.getMessage());
-        }
-
-        return u9Token;
     }
 
 

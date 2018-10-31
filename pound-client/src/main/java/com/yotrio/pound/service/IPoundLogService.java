@@ -33,4 +33,6 @@ public interface IPoundLogService {
     PoundLog findLogWithInspectionsByPoundLogNo(String poundLogNo);
 
     void destroyPoundLogAndInspections(String poundLogNo);
+
+    String updateWeight(PoundLog logInDB);
 }

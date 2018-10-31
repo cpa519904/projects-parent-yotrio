@@ -3,10 +3,12 @@ package com.yotrio.pound.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yotrio.common.constants.InspectionConstant;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.constants.PoundLogConstant;
 import com.yotrio.pound.dao.InspectionMapper;
 import com.yotrio.pound.dao.PoundLogMapper;
+import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.service.IPoundLogService;
 import org.apache.commons.lang.StringUtils;
@@ -174,6 +176,41 @@ public class PoundLogServiceImpl implements IPoundLogService {
     public void destroyPoundLogAndInspections(String poundLogNo) {
         poundLogMapper.deleteByPoundLogNo(poundLogNo);
         inspectionMapper.deleteByPlNo(poundLogNo);
+    }
+
+    /**
+     * 操作报检单后，更新过磅单数据
+     * @param logInDB
+     * @return
+     */
+    @Override
+    public String updateWeight(PoundLog logInDB) {
+        try {
+            double totalReturnWeight = 0.0d;
+            double totalSampleWeight = 0.0d;
+            double totalInspWeight = 0.0d;
+            double diffWeight = logInDB.getDiffWeight() != null ? logInDB.getDiffWeight() : 0.0d;
+            List<Inspection> inspections = inspectionMapper.findListByPlNo(logInDB.getPoundLogNo());
+            for (Inspection item : inspections) {
+                totalInspWeight += item.getInspWeight();
+                totalReturnWeight += item.getReturnWeight();
+                if (item.getTypes() == InspectionConstant.TYPE_SAMPLE) {
+                    totalSampleWeight += item.getInspWeight();
+                }
+            }
+            logInDB.setInspWeightTotal(totalInspWeight);
+            logInDB.setReturnWeightTotal(totalReturnWeight);
+            logInDB.setSampleNetWeight(totalSampleWeight);
+            if (logInDB.getGrossWeight() != null && logInDB.getTareWeight()!=null) {
+                diffWeight = logInDB.getGrossWeight()-logInDB.getTareWeight() - totalInspWeight;
+                logInDB.setDiffWeight(diffWeight);
+            }
+            logInDB.setUpdateTime(new Date());
+            poundLogMapper.updateByPrimaryKeySelective(logInDB);
+            return null;
+        } catch (Exception e) {
+            return "更新过磅单数据异常";
+        }
     }
 
 

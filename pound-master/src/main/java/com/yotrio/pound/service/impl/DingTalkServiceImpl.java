@@ -106,7 +106,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
                         JSONObject data = json.getJSONObject("response");
                         accessToken = data.getString("access_token");
                         if (StringUtils.isNotEmpty(accessToken)) {
-                            RedisUtil.set(key, accessToken);
+                            RedisUtil.set(key, accessToken, 60 * 60);
                         }
                     }
                 }
@@ -140,7 +140,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
                         JSONObject data = json.getJSONObject("response");
                         userId = data.getString("userId");
                         if (StringUtils.isNotEmpty(userId)) {
-                            RedisUtil.set(key, userId);
+                            RedisUtil.set(key, userId, 60 * 60);
                         }
                     }
                 }
@@ -174,7 +174,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
                         JSONObject data = json.getJSONObject("response");
                         userId = data.getString("userId");
                         if (StringUtils.isNotEmpty(userId)) {
-                            RedisUtil.set(key, userId);
+                            RedisUtil.set(key, userId, 60 * 60);
                         }
                     }
                 }

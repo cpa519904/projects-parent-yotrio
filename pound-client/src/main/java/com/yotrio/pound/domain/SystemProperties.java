@@ -28,10 +28,10 @@ public class SystemProperties {
     private Integer poundClientId;
 
     /**
-     * 地磅名称
+     * 地磅管理员工号
      */
     @Value("${pound.client.empId}")
-    private String poundClientEmpId;
+    private Integer poundClientEmpId;
 
     /**
      * 地磅名称
@@ -105,11 +105,11 @@ public class SystemProperties {
         this.localhostUrl = localhostUrl;
     }
 
-    public String getPoundClientEmpId() {
+    public Integer getPoundClientEmpId() {
         return poundClientEmpId;
     }
 
-    public void setPoundClientEmpId(String poundClientEmpId) {
+    public void setPoundClientEmpId(Integer poundClientEmpId) {
         this.poundClientEmpId = poundClientEmpId;
     }
 }

@@ -120,7 +120,7 @@ public class PoundLogServiceImpl implements IPoundLogService {
         if (poundLog == null) {
             poundLog = poundLogMapper.selectByPrimaryKey(id);
             if (poundLog != null) {
-                RedisUtil.setObj(key,poundLog);
+                RedisUtil.setObj(key, poundLog, 10 * 60);
             }
         }
         return poundLog;

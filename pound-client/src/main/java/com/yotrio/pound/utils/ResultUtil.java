@@ -95,5 +95,20 @@ public class ResultUtil {
         return result;
     }
 
+    /**
+     * 失败
+     *
+     * @param msg 错误信息
+     * @param data 返回对象
+     * @return
+     */
+    public static Result error(String msg,Object data) {
+        Result result = new Result();
+        result.setCode(CODE_ERROR);
+        result.setMsg(msg);
+        result.setData(data);
+        return result;
+    }
+
 
 }

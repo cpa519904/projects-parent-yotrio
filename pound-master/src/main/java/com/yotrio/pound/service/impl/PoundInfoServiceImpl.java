@@ -57,7 +57,7 @@ public class PoundInfoServiceImpl implements IPoundInfoService {
         PoundInfo poundInfo = RedisUtil.getObj(key + id, PoundInfo.class);
         if (poundInfo == null) {
             poundInfo = poundInfoMapper.selectByPrimaryKey(id);
-            RedisUtil.setObj(key + id, poundInfo);
+            RedisUtil.setObj(key + id, poundInfo, 10 * 60);
         }
 
         return poundInfo;

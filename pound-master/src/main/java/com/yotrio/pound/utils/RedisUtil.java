@@ -187,16 +187,35 @@ public class RedisUtil {
      * @return
      */
     public static void setObj(String key, Object value) {
-        Jedis jedis = null;
         try {
             String objectJson = JSON.toJSONString(value);
-            jedis = jedisPool.getResource();
+            Jedis jedis = getJedis();
             jedis.set(key, objectJson);
             jedis.close();
         } catch (Exception e) {
             logger.error("setObj key error : " + e);
         }
     }
+
+    /**
+     * 向缓存中设置定时对象
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public static void setObj(String key, Object value,Integer seconds) {
+        try {
+            String objectJson = JSON.toJSONString(value);
+            Jedis jedis = getJedis();
+            jedis.set(key, objectJson);
+            jedis.expire(key, seconds);
+            jedis.close();
+        } catch (Exception e) {
+            logger.error("setObj key error : " + e);
+        }
+    }
+
 
     /**
      * 删除缓存中得对象，根据key

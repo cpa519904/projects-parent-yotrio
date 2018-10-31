@@ -44,10 +44,10 @@
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from task
     where id = #{id,jdbcType=INTEGER}
-  </delete>
+   </delete>
     <insert id="insert" parameterType="com.yotrio.pound.model.Task">
     insert into task (id, task_name, description, 
-      other_id, datas, weight, types
+      other_id, datas, weight, types,
       status, create_time, update_time, execute_time
       )
     values (#{id,jdbcType=INTEGER}, #{taskName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 

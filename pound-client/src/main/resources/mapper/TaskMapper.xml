@@ -47,7 +47,7 @@
   </delete>
     <insert id="insert" parameterType="com.yotrio.pound.model.Task">
     insert into task (id, task_name, description, 
-      other_id, datas, weight, types
+      other_id, datas, weight, types,
       status, create_time, update_time, execute_time
       )
     values (#{id,jdbcType=INTEGER}, #{taskName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 

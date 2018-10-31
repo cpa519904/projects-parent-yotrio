@@ -117,7 +117,9 @@ public class InspectionController extends BaseController {
 
         int saveResult = inspectionService.save(inspection);
         if (saveResult >= 1) {
-            return ResultUtil.success("添加成功");
+            //添加成功更新过磅记录中数据 报检单总数、退回总数、样品总数
+            poundLogService.updateWeight(logInDB);
+            return ResultUtil.success(logInDB);
         } else {
             return ResultUtil.error("添加失败");
         }
@@ -145,7 +147,9 @@ public class InspectionController extends BaseController {
 
         int result = inspectionService.update(inspection);
         if (result >= 1) {
-            return ResultUtil.success("修改成功");
+            //重新计算过磅记录中的重量信息
+            poundLogService.updateWeight(logInDB);
+            return ResultUtil.success(logInDB);
         } else {
             return ResultUtil.error("修改失败");
         }
@@ -154,19 +158,19 @@ public class InspectionController extends BaseController {
     /**
      * 根据ids删除过磅信息
      *
-     * @param ids [1,2,3]
+     * @param ids        [1,2,3]
      * @param poundLogNo 过磅单单号
      * @return
      */
     @RequestMapping(value = "/deleteByIds", method = {RequestMethod.GET})
     @ResponseBody
     public Result deleteByIds(String ids, String poundLogNo) {
-        PoundLog poundLogInDB = poundLogService.findByPoundLogNo(poundLogNo);
-        if (poundLogInDB == null) {
+        PoundLog logInDB = poundLogService.findByPoundLogNo(poundLogNo);
+        if (logInDB == null) {
             return ResultUtil.error("找不到相应的过磅记录");
         }
         //过磅单状态控制，提交之后不能再修改
-        if (poundLogInDB.getStatus() > PoundLogConstant.STATUS_POUND_SECOND) {
+        if (logInDB.getStatus() > PoundLogConstant.STATUS_POUND_SECOND) {
             return ResultUtil.error("过磅单已提交，不能再修改");
         }
 
@@ -181,7 +185,8 @@ public class InspectionController extends BaseController {
         }
         int result = inspectionService.deleteByIds(idList);
         if (result >= 1) {
-            return ResultUtil.success("删除成功");
+            poundLogService.updateWeight(logInDB);
+            return ResultUtil.success(logInDB);
         } else {
             return ResultUtil.error("删除失败");
         }

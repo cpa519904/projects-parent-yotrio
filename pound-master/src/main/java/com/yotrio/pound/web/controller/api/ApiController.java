@@ -202,15 +202,17 @@ public class ApiController extends BaseController {
                     poundLogService.updateByPlNoAndPoundId(poundLog);
                     for (Inspection inspection : inspections) {
                         inspection.setPlId(logInDB.getId());
+                        inspection.setPlNo(logInDB.getPoundLogNo());
                         inspectionService.updateByPlIdSelective(inspection);
                     }
                 } else {
                     //未生成,执行插入操作
                     poundLog.setId(null);
-                    int id = poundLogService.save(poundLog);
+                    poundLogService.save(poundLog);
                     //保存报检单信息
                     for (Inspection inspection : inspections) {
                         inspection.setId(null);
+                        inspection.setPlId(poundLog.getId());
                         inspection.setPlNo(poundLog.getPoundLogNo());
                         inspectionService.save(inspection);
                     }

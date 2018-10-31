@@ -43,13 +43,16 @@ public class PoundWebSocket {
     //创建监听串口
     private static SerialPort serialPort = null;
 
+    //创建监听器
+    private static SerialPortEventListener serialPortEventListener = null;
+
     //监听串口
 //    private static final String PORT_NAME = "COM1";
     private static final String PORT_NAME = "COM5";
 
     //监听串口波特率
 //    private static final int BAUDRATE = 1200;
-    private static final int BAUDRATE = 9600;
+    private static final int BAUDRATE = 2400;
 
     /**
      * 处理连接建立
@@ -74,8 +77,9 @@ public class PoundWebSocket {
                     public void serialEvent(SerialPortEvent serialPortEvent) {
                         if (serialPortEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
                             try {
-                                StringBuffer sb = new StringBuffer();
+                                //读取串口数据
                                 byte[] bytes = SerialPortUtil.readFromPort(serialPort);
+                                StringBuffer sb = new StringBuffer();
 
                                 //将ASCII码转成字符串
 //                                for (int i = 0; i < bytes.length; i++) {

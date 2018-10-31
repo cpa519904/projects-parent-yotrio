@@ -124,7 +124,7 @@ public class HttpServiceImpl implements IHttpService {
                     }
                 }
 
-                RedisUtil.set(key,u9Token);
+                RedisUtil.set(key, u9Token, 60 * 60);
                 return u9Token;
             } catch (Exception e) {
                 logger.error("获取U9token失败={}", e);
@@ -135,11 +135,12 @@ public class HttpServiceImpl implements IHttpService {
 
     /**
      * 写入过磅信息到U9收货单
+     *
      * @param map
      * @return
      */
     @Override
-    public String writeWeightToU9ReceiveInfo(Map<String,Object> map) {
+    public String writeWeightToU9ReceiveInfo(Map<String, Object> map) {
         try {
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpPost httpPost = new HttpPost(GET_U9_TOKEN_URL);

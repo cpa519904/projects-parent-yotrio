@@ -90,17 +90,14 @@ layui.define(['table', 'form'], function (exports) {
                         if (currPoundLog) {
                             //对表单进行初始赋值,两个时间由有台生成，前台不提交所以没有name属性，需要手动赋值
                             form.val("pound-log-fom", currPoundLog);
+
                             $("#firstTime").val(currPoundLog.firstTime);
                             $("#secondTime").val(currPoundLog.secondTime);
                             $("#grossImgUrl").attr("src", currPoundLog.grossImgUrl);
                             $("#tareImgUrl").attr("src", currPoundLog.tareImgUrl);
-                            $("#diffWeight").val(currPoundLog.diffWeight);
-                            $("#netWeight").val(currPoundLog.netWeight);
                             $("#unitName").val(currPoundLog.unitName);
                             // console.log("currPoundLog.diff:", currPoundLog.diffWeight);
-                            if (parseFloat(currPoundLog.diffWeight) > 10 || parseFloat(currPoundLog.diffWeight) < -10) {
-                                $("#diffWeight").css("color", "#FF5722");
-                            }
+                            methods.reloadWeight(currPoundLog);
                             //将图片画到canvas上
                             methods.drawCanvasImage("canvas1", currPoundLog.grossImgUrl);
                             methods.drawCanvasImage("canvas2", currPoundLog.tareImgUrl);
@@ -111,7 +108,7 @@ layui.define(['table', 'form'], function (exports) {
 
                             methods.reloadButtonStatus(status);
 
-                            // console.log("status:", status);
+                            console.log("status:", status);
                         }
                     } else {
                         layer.alert("获取未处理过磅单异常：" + result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
@@ -123,26 +120,14 @@ layui.define(['table', 'form'], function (exports) {
             });
         },
         //刷新重量参数表单值
-        reloadWeight: function (result) {
-            // console.log("result:", result);
-
-            //随车退货总重量
-            var totalReturnWeight = 0;
-            //样品净重
-            var sampleNetWeight = 0;
-            if (result.code == 0) {
-                var data = result.data;
-                for (var i = 0; i < data.length; i++) {
-                    totalReturnWeight += data[i].returnWeight;
-                    if (data[i].types == 1) {
-                        sampleNetWeight += data[i].inspWeight;
-                    }
-                }
+        reloadWeight: function (poundLog) {
+            $("#sampleNetWeight").val(poundLog.sampleNetWeight);
+            $("#returnWeightTotal").val(poundLog.returnWeightTotal);
+            $("#diffWeight").val(poundLog.diffWeight);
+            $("#netWeight").val(poundLog.netWeight);
+            if (parseFloat(poundLog.diffWeight) > 10 || parseFloat(poundLog.diffWeight) < -10) {
+                $("#diffWeight").css("color", "#FF5722");
             }
-
-            // console.log("sampleNetWeight", sampleNetWeight);
-            $("#sampleNetWeight").val(sampleNetWeight);
-            $("#returnWeightTotal").val(totalReturnWeight);
         }
         //获取过磅单号
         , getPoundLogNo: function () {
@@ -199,6 +184,8 @@ layui.define(['table', 'form'], function (exports) {
                 $("#weigh-gross-submit").addClass("layui-btn-disabled");
                 //称皮重
                 $("#weigh-tare-submit").addClass("layui-btn-disabled");
+                //提交按钮
+                $("#btn-submit-server").addClass("layui-btn-disabled");
             } else {
                 $("#btn-destroy").removeClass("layui-btn-disabled");
                 $("#btn-save-submit").removeClass("layui-btn-disabled");
@@ -248,8 +235,7 @@ layui.define(['table', 'form'], function (exports) {
         , text: {
             none: '请点击 “添加” 按钮添加报检单'
         }, done: function (result) {
-            console.log("result----", result)
-            methods.reloadWeight(result);
+            // console.log("result----", result);
             //这里是分模块加载，外部不能控制编辑按钮的状态，只能再查一次
             $.ajax({
                 type: 'get',
@@ -317,10 +303,12 @@ layui.define(['table', 'form'], function (exports) {
                                 dataType: 'json',
                                 success: function (result) {
                                     if (result.code == 0) {
+                                        var poundLog = result.data;
+                                        //更新重量表单
+                                        methods.reloadWeight(poundLog);
                                         //数据刷新
                                         table.reload('LAY-inspection-manage', {
                                             done: function (result) {
-                                                methods.reloadWeight(result);
                                             }
                                         });
 
@@ -399,11 +387,12 @@ layui.define(['table', 'form'], function (exports) {
 
                             //过磅单状态
                             var status = result.data.status;
-                            if (status == 2) {//两个数据都有了,可以显示提交按钮了
-                                $("#btn-submit-server").removeClass("layui-btn-disabled");
-                            } else if (status == 3 || status == 4) {
-                                $("#btn-print").removeClass("layui-btn-disabled");
-                            }
+                            methods.reloadButtonStatus(status);
+                            // if (status == 2) {//两个数据都有了,可以显示提交按钮了
+                            //     $("#btn-submit-server").removeClass("layui-btn-disabled");
+                            // } else if (status == 3 || status == 4) {
+                            //     $("#btn-print").removeClass("layui-btn-disabled");
+                            // }
                         } else {
                             layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
                         }
@@ -486,11 +475,12 @@ layui.define(['table', 'form'], function (exports) {
 
                             //过磅单状态
                             var status = result.data.status;
-                            if (status == 2) {//两个数据都有了,可以显示提交按钮了
-                                $("#btn-submit-server").removeClass("layui-btn-disabled");
-                            } else if (status == 3 || status == 4) {
-                                $("#btn-print").removeClass("layui-btn-disabled");
-                            }
+                            // if (status == 2) {//两个数据都有了,可以显示提交按钮了
+                            //     $("#btn-submit-server").removeClass("layui-btn-disabled");
+                            // } else if (status == 3 || status == 4) {
+                            //     $("#btn-print").removeClass("layui-btn-disabled");
+                            // }
+                            methods.reloadButtonStatus(status);
                         } else {
                             //如果还未生成过磅单就称皮重，提示用户是否要执行退货或者卖废铁操作
                             if (result.msg == '找不到您要更新的过磅记录') {
@@ -554,10 +544,6 @@ layui.define(['table', 'form'], function (exports) {
                                             form.render();
                                         }
                                     })
-
-
-
-
                                 });
 
                             } else {
@@ -670,12 +656,12 @@ layui.define(['table', 'form'], function (exports) {
                         $("#btn-submit-server").addClass("layui-btn-disabled");
                         $("#btn-print").removeClass("layui-btn-disabled");
                         $("#unitName").val(result.data.unitName);
-                        if (result.data.status) {
-                            methods.reloadButtonStatus(result.data.status);
-                        }
-                        return layer.msg('提交成功');
+                         layer.msg('提交成功');
                     } else {
                         layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                    }
+                    if (result.data.status) {
+                        methods.reloadButtonStatus(result.data.status);
                     }
                 },
                 error: function (error) {
@@ -856,11 +842,13 @@ layui.define(['table', 'form'], function (exports) {
                         cache: false,
                         dataType: 'json',
                         success: function (result) {
+
                             if (result.code == 0) {
+                                var poundLog = result.data;
+                                methods.reloadWeight(poundLog);
                                 //数据刷新
                                 table.reload('LAY-inspection-manage', {
                                     done: function (result) {
-                                        methods.reloadWeight(result);
                                     }
                                 });
                                 layer.msg('已删除');
@@ -918,10 +906,12 @@ layui.define(['table', 'form'], function (exports) {
                                 dataType: 'json',
                                 success: function (result) {
                                     if (result.code == 0) {
+                                        var poundLog = result.data;
+                                        methods.reloadWeight(poundLog);
                                         //数据刷新
                                         table.reload('LAY-inspection-manage', {
                                             done: function (result) {
-                                                methods.reloadWeight(result);
+
                                             }
                                         });
                                         layer.close(index); //关闭弹层

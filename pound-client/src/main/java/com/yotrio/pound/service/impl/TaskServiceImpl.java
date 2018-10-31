@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.yotrio.common.constants.ApiUrlConstant;
 import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.common.helpers.UserAuthTokenHelper;
 import com.yotrio.pound.dao.InspectionMapper;
 import com.yotrio.pound.dao.PoundLogMapper;
 import com.yotrio.pound.dao.TaskMapper;
@@ -40,7 +41,6 @@ import static com.yotrio.common.utils.DingTalkUtil.SUCCESS_CODE;
 
 @Service("taskService")
 public class TaskServiceImpl implements ITaskService {
-
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -113,12 +113,12 @@ public class TaskServiceImpl implements ITaskService {
         data.put("inspections", inspections);
         Map<String, Object> map = new HashMap<>(10);
         map.put("data", data);
-        map.put("token", "token");
+        map.put("token", UserAuthTokenHelper.getUserAuthToken(systemProperties.getPoundClientEmpId(), null));
 
         //过磅记录发送到服务器
         String url = systemProperties.getPoundMasterBaseUrl() + ApiUrlConstant.SAVE_POUND_LOG;
         try {
-            String response = HttpUtil.post(url, BeanUtil.beanToMap(poundLog));
+            String response = HttpUtil.post(url, map);
             if (StringUtils.isNotEmpty(response)) {
                 JSONObject json = JSONObject.parseObject(response);
                 String msg = json.getString("msg");
