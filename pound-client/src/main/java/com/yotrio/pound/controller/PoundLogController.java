@@ -2,6 +2,7 @@ package com.yotrio.pound.controller;
 
 
 import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.yotrio.common.constants.ApiUrlConstant;
 import com.yotrio.common.constants.InspectionConstant;
@@ -113,10 +114,6 @@ public class PoundLogController extends BaseController {
         model.addAttribute("poundMasterBaseUrl", sysProperties.getPoundMasterBaseUrl());
         return "pound/pound_log_list";
     }
-
-    /**
-     *
-     */
 
     /**
      * 获取未处理过磅记录列表以及当前过磅单信息
@@ -435,13 +432,6 @@ public class PoundLogController extends BaseController {
         }
         poundLog.setUnitName(unitName);
 
-        //获取关联的报检单
-        List<Inspection> inspections = inspectionService.findListByPlNo(poundLogNo);
-        //进货要计算报每张检单称重结果，按报检单上重量 的比例分配
-        if (poundLog.getTypes() == PoundLogConstant.TYPES_IN && inspections.size() > 0) {
-            inspectionService.countInspNetWeight(inspections, poundLog);
-        }
-
         String msg = "网络连接失败,联网后系统会自动为您提交";
         //先看网络连接是否成功？失败：创建定时任务，提示失败原因
         // TODO: 2018-10-31 这里判断网络是否连接太耗时，应该调整一下
@@ -464,6 +454,13 @@ public class PoundLogController extends BaseController {
             return ResultUtil.error(msg, poundLog);
         }
 
+        //获取关联的报检单
+        List<Inspection> inspections = inspectionService.findListByPlNo(poundLogNo);
+        //进货要计算报每张检单称重结果，按报检单上重量 的比例分配
+        if (poundLog.getTypes() == PoundLogConstant.TYPES_IN && inspections.size() > 0) {
+            inspectionService.countInspNetWeight(inspections, poundLog);
+        }
+
         //将本地图片url转base64字符串上传，上传成功后再保存线上服务器
         if (StringUtils.isNotEmpty(poundLog.getGrossImgUrl())) {
             String grossImgFilePath = sysProperties.getFileLocation() + poundLog.getGrossImgUrl().substring((sysProperties.getLocalhostUrl() + sysProperties.getServerPort()).length());
@@ -484,9 +481,10 @@ public class PoundLogController extends BaseController {
         data.put("poundLog", poundLog);
         data.put("inspections", inspections);
         Map<String, Object> map = new HashMap<>(10);
-        map.put("data", data);
+        map.put("data", data.toJSONString());
         String token = UserAuthTokenHelper.getUserAuthToken(Integer.valueOf(sysProperties.getPoundClientEmpId()), null);
         map.put("token", token);
+        map.put("poundLog", JSONObject.toJSON(poundLog));
         //上传线上服务器
         String url = sysProperties.getPoundMasterBaseUrl() + ApiUrlConstant.SAVE_POUND_LOG;
         try {

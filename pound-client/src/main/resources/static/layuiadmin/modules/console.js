@@ -656,12 +656,12 @@ layui.define(['table', 'form'], function (exports) {
                         $("#btn-submit-server").addClass("layui-btn-disabled");
                         $("#btn-print").removeClass("layui-btn-disabled");
                         $("#unitName").val(result.data.unitName);
-                         layer.msg('提交成功');
+                        if (result.data.status) {
+                            methods.reloadButtonStatus(result.data.status);
+                        }
+                        layer.msg('提交成功');
                     } else {
                         layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-                    }
-                    if (result.data.status) {
-                        methods.reloadButtonStatus(result.data.status);
                     }
                 },
                 error: function (error) {

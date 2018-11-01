@@ -79,9 +79,9 @@ public class PoundWebSocket {
                             try {
                                 //读取串口数据
                                 byte[] bytes = SerialPortUtil.readFromPort(serialPort);
-                                StringBuffer sb = new StringBuffer();
-
-                                //将ASCII码转成字符串
+//                                StringBuffer sb = new StringBuffer();
+//
+//                                //将ASCII码转成字符串
 //                                for (int i = 0; i < bytes.length; i++) {
 //                                    sb.append((char) Integer.parseInt(String.valueOf(bytes[i])));
 //                                }

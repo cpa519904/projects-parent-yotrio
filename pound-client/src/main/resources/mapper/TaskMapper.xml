@@ -39,7 +39,7 @@
         select
         <include refid="Base_Column_List"/>
         from task
-        where status = 0 limit #{account,jdbcType=INTEGER}
+        where status = 0 order by id desc limit #{account,jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from task
