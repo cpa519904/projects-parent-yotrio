@@ -18,7 +18,7 @@ public class ApiUrlConstant {
     /**
      * 上传过磅信息
      */
-    public static final String SAVE_POUND_LOG = "/api/poundLog/save/";
+    public static final String SAVE_POUND_LOG = "/api/poundLog/save";
 
     /**
      * 获取U9token5

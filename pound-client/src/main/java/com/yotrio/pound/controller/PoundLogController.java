@@ -210,7 +210,7 @@ public class PoundLogController extends BaseController {
             //计算磅差和净重,有了皮重之后才可以计算
             if (logInDB.getTareWeight() != null && logInDB.getTareWeight() > 0) {
                 logInDB.setDiffWeight(logInDB.getGrossWeight() - tareWeight - totalInspWeight);
-                netWeight = logInDB.getGrossWeight() - tareWeight - totalSampleWeight;
+                netWeight = logInDB.getGrossWeight() - tareWeight;
                 logInDB.setNetWeight(netWeight);
             }
             if (logInDB.getGrossWeight() != null && logInDB.getGrossWeight() < tareWeight) {
@@ -307,7 +307,7 @@ public class PoundLogController extends BaseController {
             if (logInDB.getGrossWeight() != null && logInDB.getGrossWeight() > 0) {
                 logInDB.setDiffWeight(logInDB.getGrossWeight() - tareWeight - totalInspWeight);
                 //计算净重
-                netWeight = logInDB.getGrossWeight() - totalSampleWeight - tareWeight;
+                netWeight = logInDB.getGrossWeight()  - tareWeight;
                 logInDB.setNetWeight(netWeight);
             }
 

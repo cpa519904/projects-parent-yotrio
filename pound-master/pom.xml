@@ -13,7 +13,7 @@
     <artifactId>pound-master</artifactId>
     <packaging>war</packaging>
 
-    <name>pound Maven Webapp</name>
+    <name>pound-master Maven Webapp</name>
 
     <properties>
 
@@ -267,9 +267,9 @@
 
         <!--sqlserver-->
         <!--<dependency>-->
-            <!--<groupId>com.microsoft.sqlserver</groupId>-->
-            <!--<artifactId>sqljdbc4</artifactId>-->
-            <!--<version>4.0</version>-->
+        <!--<groupId>com.microsoft.sqlserver</groupId>-->
+        <!--<artifactId>sqljdbc4</artifactId>-->
+        <!--<version>4.0</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>commons-dbcp</groupId>
@@ -328,6 +328,13 @@
             <version>${jstl.api.version}</version>
         </dependency>
 
+        <!--Quarts-->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>${quartz.version}</version>
+        </dependency>
+
         <!--thymeleaf-->
         <!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf-spring4 -->
         <dependency>
@@ -379,7 +386,7 @@
     </dependencies>
 
     <build>
-        <finalName>pound</finalName>
+        <finalName>pound-master</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

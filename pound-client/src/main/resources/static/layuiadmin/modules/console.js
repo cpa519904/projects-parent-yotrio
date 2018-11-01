@@ -45,7 +45,7 @@ layui.define(['table', 'form'], function (exports) {
                 cache: false,
                 dataType: 'json',
                 success: function (result) {
-                    console.log("result:", result);
+                    // console.log("result:", result);
                     if (result.code == 0) {
                         var unfinishedLogs = result.data.unFinishedLogs;
                         if (unfinishedLogs) {
@@ -105,10 +105,7 @@ layui.define(['table', 'form'], function (exports) {
                             //过磅单状态
                             var status = currPoundLog.status;
                             console.log("status:", status);
-
                             methods.reloadButtonStatus(status);
-
-                            console.log("status:", status);
                         }
                     } else {
                         layer.alert("获取未处理过磅单异常：" + result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
@@ -251,7 +248,7 @@ layui.define(['table', 'form'], function (exports) {
                         if (result.data.status > 2) {
                             //编辑报检单
                             $(".btn-edit-inspection").addClass("layui-btn-disabled");
-                        }else{
+                        } else {
                             $(".btn-edit-inspection").removeClass("layui-btn-disabled");
                         }
                     }
@@ -810,7 +807,6 @@ layui.define(['table', 'form'], function (exports) {
         }
     });
 
-
     //事件
     var active = {
         batchdel: function () {
@@ -940,16 +936,16 @@ layui.define(['table', 'form'], function (exports) {
                         body.find('#inspNo')[0].onkeydown = function (event) {
 
                             // 键入Enter表明扫码枪输入完毕
-                            if (event.which == 13 && body.find('#inspNo')[0].value.length > 20) {
+                            if (event.which == 13 && body.find('#inspNo')[0].value.length > 25) {
                                 //获取扫码枪数据
                                 var inputData = body.find('#inspNo')[0].value;
                                 //todo 可以做一下数据校验工作
                                 var dataArr = inputData.split("#");
                                 if (dataArr.length >= 4) {
                                     body.find("#inspNo")[0].value = dataArr[0];
-                                    body.find("#inspWeight")[0].value = dataArr[1];
+                                    body.find("#inspWeight")[0].value = dataArr[3];
                                     body.find("#compName")[0].value = dataArr[2];
-                                    body.find("#plateNo")[0].value = dataArr[3];
+                                    body.find("#plateNo")[0].value = dataArr[1];
                                     form.render();
                                 } else {
                                     layer.alert("扫码获取失败，请手工填写", {icon: 5});
@@ -1023,21 +1019,27 @@ layui.define(['table', 'form'], function (exports) {
 
     //websocket实现
     var websocket;
+    var socketUrl = "ws://127.0.0.1:8000/websocket";
+    var count = 0;
     if ('WebSocket' in window) {
         console.log("此浏览器支持websocket");
-        websocket = new WebSocket("ws://127.0.0.1:8000/websocket");
+        websocket = new WebSocket(socketUrl);
     } else if ('MozWebSocket' in window) {
         alert("此浏览器只支持MozWebSocket");
     } else {
         alert("此浏览器只支持SockJS");
     }
     websocket.onopen = function (evnt) {
-        $("#tou").html("链接服务器成功!")
+        // $("#tou").html("链接服务器成功!");
         console.log("链接服务器成功");
     };
     websocket.onmessage = function (evnt) {
         // console.log("event", evnt);
         $("#currentWeight").val(evnt.data);
+        if (!$("#currentWeight").val()) {
+            console.log("重新初始化websocket");
+            websocket = new WebSocket(socketUrl);
+        }
     };
     websocket.onerror = function (evnt) {
 
@@ -1059,6 +1061,14 @@ layui.define(['table', 'form'], function (exports) {
         }
     }
 
-    exports('console', {})
+    //监听是否有地磅数据传送过来，没有的话重新初始化websocket
+    setTimeout(function () {
+        if (!$("#currentWeight").val()) {
+            console.log("重新初始化websocket");
+            websocket = new WebSocket(socketUrl);
+        }
+    }, 1000);
+
+    exports('console', {});
 })
 ;

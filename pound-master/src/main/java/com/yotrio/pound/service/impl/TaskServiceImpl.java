@@ -113,7 +113,7 @@ public class TaskServiceImpl implements ITaskService {
         //获取关联的报检单
         List<Inspection> inspections = inspectionMapper.findListByPlId(poundLogId);
 
-        if (poundLog.getStatus() == PoundLogConstant.TYPES_IN && inspections != null && inspections.size() > 0) {
+        if (poundLog.getTypes() == PoundLogConstant.TYPES_IN && inspections != null && inspections.size() > 0) {
             String token = UserAuthTokenHelper.getUserAuthToken(poundInfo.getAdminEmpId(), null);
             boolean sendResult = false;
             for (Inspection inspection : inspections) {

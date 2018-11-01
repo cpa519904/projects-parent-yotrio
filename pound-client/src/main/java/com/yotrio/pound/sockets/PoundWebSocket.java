@@ -51,8 +51,8 @@ public class PoundWebSocket {
     private static final String PORT_NAME = "COM5";
 
     //监听串口波特率
-//    private static final int BAUDRATE = 1200;
-    private static final int BAUDRATE = 2400;
+    private static final int BAUDRATE = 1200;
+//    private static final int BAUDRATE = 2400;
 
     /**
      * 处理连接建立

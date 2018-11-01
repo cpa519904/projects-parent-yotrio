@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -115,24 +116,26 @@ public class ApiController extends BaseController {
     /**
      * 存储过磅记录,推送钉钉消息
      *
-     * @param data
      * @return
      */
     @RequestMapping(value = "/poundLog/save", method = {RequestMethod.POST})
     @ResponseBody
-    public Callback savePoundLog(String data, String token) {
-        Integer userId = getAppUserId(token);
-        if (userId == null) {
-            return returnError("无效的token");
-        }
-        if (data == null) {
-            return returnError("数据上传失败");
-        }
+    public Callback savePoundLog(String token,String data) {
 
         PoundLog poundLog;
         List<Inspection> inspections;
         // TODO: 2018-10-19 这个操作应该放在事物里面
         try {
+            //字符串格式转换，防止中文乱码，这里很奇怪，用httpUtil上传整合shiro后就会出现中文乱码问题,暂未有更好解决办法
+            data = new String(data.getBytes("iso-8859-1"), "utf-8");
+            token = new String(token.getBytes("iso-8859-1"), "utf-8");
+            Integer userId = getAppUserId(token);
+            if (userId == null) {
+                return returnError("无效的token");
+            }
+            if (data == null) {
+                return returnError("数据上传失败");
+            }
             JSONObject root = JSON.parseObject(data);
             JSONObject poundLogObj = root.getJSONObject("poundLog");
             JSONArray inspectionsArr = root.getJSONArray("inspections");
@@ -219,7 +222,7 @@ public class ApiController extends BaseController {
                 }
 
                 //进货有报检单的情况下，发送钉钉消息并更新进货单
-                if (poundLog.getStatus() == PoundLogConstant.TYPES_IN && inspections != null && inspections.size() > 0) {
+                if (poundLog.getTypes() == PoundLogConstant.TYPES_IN && inspections != null && inspections.size() > 0) {
                     //是否发送成功
                     boolean sendResult = false;
                     //查询发货单关联U9收货单信息，1.没生成发货单，创建定时任务，定时执行；2.生成发货单，直接钉钉推送消息
@@ -260,6 +263,8 @@ public class ApiController extends BaseController {
                 return returnSuccess("上传成功");
             }
         } catch (UploadLogException e) {
+            logger.error("上传过磅信息异常:", e.getMessage());
+        } catch (UnsupportedEncodingException e) {
             logger.error("上传过磅信息异常:", e.getMessage());
         }
         return returnError("数据上传失败");
