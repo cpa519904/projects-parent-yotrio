@@ -61,6 +61,7 @@
         <jstl.api.version>1.2.1</jstl.api.version>
         <!--thymeleaf-->
         <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
+        <thymeleaf.extras.shiro.version>2.0.0</thymeleaf.extras.shiro.version>
         <!-- shiro -->
         <shiro.core.version>1.2.2</shiro.core.version>
         <shiro.web.version>1.2.2</shiro.web.version>
@@ -70,7 +71,7 @@
 
         <hibernate.validator.version>5.2.2.Final</hibernate.validator.version>
 
-        <yotrio.lib.dir>E:/Work/Yotrio/libs</yotrio.lib.dir>
+        <yotrio.lib.dir>/Users/wangyiqiang/Work/Yotrio/libs</yotrio.lib.dir>
 
     </properties>
 
@@ -348,7 +349,11 @@
             <artifactId>thymeleaf</artifactId>
             <version>${thymeleaf.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.github.theborakompanioni</groupId>
+            <artifactId>thymeleaf-extras-shiro</artifactId>
+            <version>${thymeleaf.extras.shiro.version}</version>
+        </dependency>
 
         <!--图片处理-->
         <!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
