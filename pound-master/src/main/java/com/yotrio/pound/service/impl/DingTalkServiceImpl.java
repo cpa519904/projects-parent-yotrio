@@ -74,7 +74,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
         builder.append("> A man who stands for nothing will fall for anything. \n");
         actionCard.put("markdown", builder.toString());
         actionCard.put("single_title", "查看详情");
-        actionCard.put("single_url", SINGLE_URL_CONFIRM_ORDER + "?token=" + token + "&poundLogId=" + poundLogId);
+        actionCard.put("single_url", SINGLE_URL_CONFIRM_ORDER + "?token=" + token + "&plId=" + poundLogId);
         msg.put("action_card", actionCard);
 
         //发送消息

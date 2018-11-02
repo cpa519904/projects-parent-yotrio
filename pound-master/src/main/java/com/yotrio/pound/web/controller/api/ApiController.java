@@ -9,6 +9,7 @@ import com.yotrio.common.constants.PoundLogConstant;
 import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.common.enums.GoodsKindEnum;
 import com.yotrio.common.helpers.UserAuthTokenHelper;
 import com.yotrio.common.utils.DateUtil;
 import com.yotrio.common.utils.ImageUtil;
@@ -120,7 +121,7 @@ public class ApiController extends BaseController {
      */
     @RequestMapping(value = "/poundLog/save", method = {RequestMethod.POST})
     @ResponseBody
-    public Callback savePoundLog(String token,String data) {
+    public Callback savePoundLog(String token, String data) {
 
         PoundLog poundLog;
         List<Inspection> inspections;
@@ -173,7 +174,7 @@ public class ApiController extends BaseController {
 
                 //构建图片存储路径
                 StringBuilder filePath = new StringBuilder();
-                String basePath = DateUtil.getFilePathByDate(FILE_LOCATION + "/images/upload/");
+                String basePath = DateUtil.getFilePathByDate(FILE_LOCATION + "/statics/images/upload/");
                 filePath.append(basePath).append(poundLog.getPoundLogNo()).append("/");
 
                 //解析过磅图片，将base64图片字符串转成本地图片并保存图片url
@@ -207,6 +208,10 @@ public class ApiController extends BaseController {
                         inspection.setPlId(logInDB.getId());
                         inspection.setPlNo(logInDB.getPoundLogNo());
                         inspectionService.updateByPlIdSelective(inspection);
+                        if (StringUtils.isEmpty(poundLog.getCompName())) {
+                            poundLog.setCompName(inspection.getCompName());
+                            poundLogService.update(poundLog);
+                        }
                     }
                 } else {
                     //未生成,执行插入操作
@@ -218,6 +223,10 @@ public class ApiController extends BaseController {
                         inspection.setPlId(poundLog.getId());
                         inspection.setPlNo(poundLog.getPoundLogNo());
                         inspectionService.save(inspection);
+                        if (StringUtils.isEmpty(poundLog.getCompName())) {
+                            poundLog.setCompName(inspection.getCompName());
+                            poundLogService.update(poundLog);
+                        }
                     }
                 }
 
@@ -270,33 +279,72 @@ public class ApiController extends BaseController {
         return returnError("数据上传失败");
     }
 
+    /**
+     * 更新u9收货单
+     *
+     * @param token 校验token
+     * @param plId  过磅记录id
+     * @return
+     */
     @RequestMapping(value = "/update/receiveInfo", method = {RequestMethod.GET})
     @ResponseBody
-    public Callback updateReceiveInfo(String token, Integer poundLogId) {
+    public Callback updateReceiveInfo(String token, Integer plId) {
         Integer userId = UserAuthTokenHelper.getAppUserId(token);
         if (userId == null) {
             return returnError("token验证失败");
         }
-        if (poundLogId == null) {
+        if (plId == null) {
             return returnError("过磅单号为空");
         }
-        PoundLog poundLog = poundLogService.findById(poundLogId);
+        PoundLog poundLog = poundLogService.findById(plId);
         if (poundLog == null) {
             return returnError("获取过磅单失败");
         }
         List<Inspection> inspections = inspectionService.findListByPlId(poundLog.getId());
         if (inspections == null || inspections.size() <= 0) {
-            return returnError("获取报价单失败");
+            return returnError("获取报检单失败");
         }
-        for (Inspection inspection : inspections) {
-            Map<String, Object> paramsMap = new HashMap<>(10);
-            paramsMap.put("poundLogNo", poundLog.getPoundLogNo());
-            paramsMap.put("inspNetWeight", inspection.getInspNetWeight());
-            paramsMap.put("inspNo", inspection.getInspNo());
-            paramsMap.put("remark", poundLog.getRemark());
-            httpService.writeWeightToU9ReceiveInfo(paramsMap);
-        }
+
+        //封装信息
+        Map<String, Object> paramsMap = new HashMap<>(10);
+//        paramsMap.put("poundLogNo", poundLog.getPoundLogNo());
+//        paramsMap.put("inspNetWeight", inspection.getInspNetWeight());
+//        paramsMap.put("inspNo", inspection.getInspNo());
+//        paramsMap.put("remark", poundLog.getRemark());
+        httpService.writeWeightToU9ReceiveInfo(paramsMap);
         return returnSuccess("操作成功");
     }
+
+    /**
+     * 获取确认页面信息
+     *
+     * @param token 校验token
+     * @param plId  过磅记录id
+     * @return
+     */
+    @RequestMapping(value = "/getConfirmMessage", method = {RequestMethod.GET})
+    @ResponseBody
+    public Callback getConfirmMessage(String token, Integer plId) {
+        logger.error("进入控制类");
+        Integer userId = UserAuthTokenHelper.getAppUserId(token);
+        if (userId == null) {
+            return returnError("token验证失败");
+        }
+        if (plId == null) {
+            return returnError("过磅单号为空");
+        }
+        PoundLog poundLog = poundLogService.findById(plId);
+        if (poundLog == null) {
+            return returnError("获取过磅单失败");
+        }
+        if (poundLog.getGoodsKind() != null) {
+            poundLog.setGoodsName(GoodsKindEnum.getKindName(poundLog.getGoodsKind()));
+        }
+        List<Inspection> inspections = inspectionService.findListByPlId(poundLog.getId());
+        poundLog.setInspections(inspections);
+
+        return returnSuccess(poundLog);
+    }
+
 
 }

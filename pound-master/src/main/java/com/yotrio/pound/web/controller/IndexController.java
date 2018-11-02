@@ -1,5 +1,6 @@
 package com.yotrio.pound.web.controller;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,30 +24,9 @@ public class IndexController extends BaseController {
      */
     @RequestMapping(value = {"/", "/index.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String index(Model model) {
-//        String username = (String) SecurityUtils.getSubject().getPrincipal();
-//        model.addAttribute("username", username);
+        String username = (String) SecurityUtils.getSubject().getPrincipal();
+        model.addAttribute("username", username);
         return "index";
     }
 
-    /**
-     * 控制台
-     * @param model
-     * @return
-     */
-//    @RequestMapping(value = { "/console.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
-//    public String console(Model model) {
-//
-//        return "home/console";
-//    }
-
-    /**
-     * totalRow
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = {"/totalRow.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String totalRow(Model model) {
-
-        return "component/table/totalRow";
-    }
 }

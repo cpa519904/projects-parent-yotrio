@@ -1022,7 +1022,7 @@ layui.define(['table', 'form'], function (exports) {
     var socketUrl = "ws://127.0.0.1:8000/websocket";
     var count = 0;
     if ('WebSocket' in window) {
-        console.log("此浏览器支持websocket");
+        // console.log("此浏览器支持websocket");
         websocket = new WebSocket(socketUrl);
     } else if ('MozWebSocket' in window) {
         alert("此浏览器只支持MozWebSocket");
