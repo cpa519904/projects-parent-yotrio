@@ -152,8 +152,7 @@ public class HttpServiceImpl implements IHttpService {
             jsonParam.put(LOGIN_USER_CODE_KEY, LOGIN_USER_CODE_VALUE);
             jsonParam.put("Token", getU9Token());
             jsonParam.put("BillNo", map.get("poundLogNo"));
-            jsonParam.put("WeightValue", map.get("inspNetWeight"));
-            jsonParam.put("DeliveryNo", map.get("inspNo"));
+            jsonParam.put("inspectJsonArr", map.get("inspectJsonArr"));
             jsonParam.put("Remark", map.get("remark"));
 
             //解决中文乱码问题
@@ -171,12 +170,15 @@ public class HttpServiceImpl implements IHttpService {
                 JSONObject result = jsonObject.getJSONObject("DoResponse");
                 if (result != null) {
                     // TODO: 2018-10-29 具体实现等待潘经理
+                    return null;
                 }
             }
 
         } catch (Exception e) {
-            logger.error("写入过磅信息到U9收货单={}", e);
+            logger.error("写入过磅信息到U9收货单失败={}", e);
+            return e.getMessage();
         }
-        return null;
+        return "写入过磅信息到U9收货单失败";
     }
+
 }

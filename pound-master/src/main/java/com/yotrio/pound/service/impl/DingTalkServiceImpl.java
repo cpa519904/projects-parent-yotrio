@@ -49,6 +49,9 @@ public class DingTalkServiceImpl implements IDingTalkService {
      */
     private static final String GET_DING_TALK_ACCESS_TOKEN_URL = PropertiesFileUtil.getInstance("SystemParameter").get("url.ding.talk") + ApiUrlConstant.GET_DING_TALK_ACCESS_TOKEN;
 
+    /**
+     * 获取丁丁用户id
+     */
     private static final String GET_DING_TALK_USER_ID_URL = PropertiesFileUtil.getInstance("SystemParameter").get("url.ding.talk") + ApiUrlConstant.GET_DING_TALK_USERID;
 
     /**
@@ -60,8 +63,6 @@ public class DingTalkServiceImpl implements IDingTalkService {
      */
     @Override
     public boolean sendConfirmMessage(String token, Integer poundLogId, String userIds) {
-        //获取accessToken
-        String accessToken = getAccessToken();
 
         //编辑消息内容
         JSONObject msg = new JSONObject();

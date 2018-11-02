@@ -225,14 +225,20 @@ public class ApiController extends BaseController {
             return returnError("获取报检单失败");
         }
 
+        JSONArray inspectionArr = new JSONArray();
+        for (Inspection inspection : inspections) {
+            JSONObject obj = new JSONObject();
+            obj.put("DeliveryNo", inspection.getInspNo());
+            obj.put("WeightValue", inspection.getInspNetWeight());
+            inspectionArr.add(obj);
+        }
         //封装信息
         Map<String, Object> paramsMap = new HashMap<>(10);
-//        paramsMap.put("poundLogNo", poundLog.getPoundLogNo());
-//        paramsMap.put("inspNetWeight", inspection.getInspNetWeight());
-//        paramsMap.put("inspNo", inspection.getInspNo());
-//        paramsMap.put("remark", poundLog.getRemark());
+        paramsMap.put("poundLogNo", poundLog.getPoundLogNo());
+        paramsMap.put("inspectJsonArr", inspectionArr.toJSONString());
+        paramsMap.put("remark", poundLog.getRemark());
         httpService.writeWeightToU9ReceiveInfo(paramsMap);
-        return returnSuccess("操作成功");
+        return returnSuccess("操作成功!");
     }
 
     /**
