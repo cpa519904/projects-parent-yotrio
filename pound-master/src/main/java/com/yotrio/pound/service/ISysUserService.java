@@ -34,4 +34,6 @@ public interface ISysUserService {
     Set<String> findRolesByEmpId(Integer empId);
 
     Set<String> findPermissionsByUserId(Integer userId);
+
+    void saveUserTest(SysUser sysUser);
 }

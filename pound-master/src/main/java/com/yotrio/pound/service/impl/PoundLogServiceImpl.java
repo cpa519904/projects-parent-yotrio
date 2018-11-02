@@ -5,6 +5,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.enums.GoodsKindEnum;
+import com.yotrio.common.utils.DateUtil;
+import com.yotrio.common.utils.ImageUtil;
+import com.yotrio.common.utils.PropertiesFileUtil;
 import com.yotrio.pound.dao.InspectionMapper;
 import com.yotrio.pound.dao.PoundLogMapper;
 import com.yotrio.pound.model.Inspection;
@@ -30,6 +33,15 @@ import java.util.List;
 
 @Service("poundLogService")
 public class PoundLogServiceImpl implements IPoundLogService {
+
+    /**
+     * 本机url
+     */
+    private static String LOCALHOST_URL = PropertiesFileUtil.getInstance("SystemParameter").get("localhost.url");
+    /**
+     * 本机文件保存路径
+     */
+    private static String FILE_LOCATION = PropertiesFileUtil.getInstance("SystemParameter").get("file.location");
 
     @Autowired
     private PoundLogMapper poundLogMapper;
@@ -162,5 +174,90 @@ public class PoundLogServiceImpl implements IPoundLogService {
         poundLog.setPoundLogNo(poundLogNo);
         poundLog.setPoundId(poundId);
         return poundLogMapper.findByPoundLogNoAndPoundId(poundLog);
+    }
+
+    /**
+     * 保存过磅记录以及报检单信息
+     * @param poundLog 过磅记录
+     * @param inspections 报检单
+     */
+    @Override
+    public void savePoundLogAndInspections(PoundLog poundLog, List<Inspection> inspections) {
+        if (poundLog.getInspWeightTotal() == null) {
+            //过磅单总数
+            double inspWeightTotal = 0.0d;
+            for (Inspection inspection : inspections) {
+                inspWeightTotal += inspection.getInspWeight();
+                if (StringUtils.isEmpty(poundLog.getCompName())) {
+                    poundLog.setCompName(inspection.getCompName());
+                }
+                if (poundLog.getGoodsKind() == null) {
+                    poundLog.setGoodsKind(inspection.getGoodsKind());
+                }
+            }
+            poundLog.setInspWeightTotal(inspWeightTotal);
+        }
+
+        //构建图片存储路径
+        StringBuilder filePath = new StringBuilder();
+        String basePath = DateUtil.getFilePathByDate(FILE_LOCATION + "/statics/images/upload/");
+        filePath.append(basePath).append(poundLog.getPoundLogNo()).append("/");
+
+        //解析过磅图片，将base64图片字符串转成本地图片并保存图片url
+        if (StringUtils.isNotEmpty(poundLog.getGrossImgUrlBase64())) {
+            //生成上传图片名
+            String fileName = System.currentTimeMillis() + ".jpg";
+            String imgLocalPath = ImageUtil.saveBase64Img(poundLog.getGrossImgUrlBase64(), filePath.toString(), fileName);
+            if (StringUtils.isNotEmpty(imgLocalPath)) {
+                //转换成http图片地址
+                String imgUrl = LOCALHOST_URL + imgLocalPath.substring(FILE_LOCATION.length());
+                poundLog.setGrossImgUrl(imgUrl);
+            }
+        }
+        if (StringUtils.isNotEmpty(poundLog.getTareImgUrlBase64())) {
+            //生成上传图片名
+            String fileName = System.currentTimeMillis() + ".jpg";
+            String imgLocalPath = ImageUtil.saveBase64Img(poundLog.getGrossImgUrlBase64(), filePath.toString(), fileName);
+            if (StringUtils.isNotEmpty(imgLocalPath)) {
+                //转换成http图片地址
+                String imgUrl = LOCALHOST_URL + imgLocalPath.substring(FILE_LOCATION.length());
+                poundLog.setTareImgUrl(imgUrl);
+            }
+        }
+
+        //过磅记录是否已生成
+        PoundLog poundLogQuery = new PoundLog();
+        poundLogQuery.setPoundLogNo(poundLog.getPoundLogNo());
+        poundLogQuery.setPoundId(poundLog.getPoundId());
+        PoundLog logInDB = poundLogMapper.findByPoundLogNoAndPoundId(poundLogQuery);
+        if (logInDB != null) {
+            //已生成,执行更新操作
+            poundLogMapper.updateByPlNoAndPoundIdSelective(poundLog);
+            for (Inspection inspection : inspections) {
+                inspection.setPlId(logInDB.getId());
+                inspection.setPlNo(logInDB.getPoundLogNo());
+                inspectionMapper.updateByPlIdSelective(inspection);
+                if (StringUtils.isEmpty(poundLog.getCompName())) {
+                    poundLog.setCompName(inspection.getCompName());
+                    poundLog.setUpdateTime(new Date());
+                    poundLogMapper.updateByPrimaryKey(poundLog);
+                }
+            }
+        } else {
+            //未生成,执行插入操作
+            poundLog.setId(null);
+            poundLogMapper.insert(poundLog);
+            //保存报检单信息
+            for (Inspection inspection : inspections) {
+                inspection.setId(null);
+                inspection.setPlId(poundLog.getId());
+                inspection.setPlNo(poundLog.getPoundLogNo());
+                inspectionMapper.insert(inspection);
+                if (StringUtils.isEmpty(poundLog.getCompName())) {
+                    poundLog.setCompName(inspection.getCompName());
+                    poundLogMapper.updateByPrimaryKey(poundLog);
+                }
+            }
+        }
     }
 }

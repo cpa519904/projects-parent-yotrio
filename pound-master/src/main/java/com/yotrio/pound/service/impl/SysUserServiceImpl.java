@@ -47,6 +47,11 @@ public class SysUserServiceImpl implements ISysUserService {
      */
     @Override
     public int createSysUser(SysUser sysUser) {
+        //先查找用户名是否已被占用
+        SysUser userInDB = sysUserMapper.findByUsername(sysUser.getUsername());
+        if (userInDB != null) {
+            return 0;
+        }
         if (sysUser.getRank() >= 0 && sysUser.getRank() <= SysUserRank.values().length) {
             sysUser.setNickname(SysUserRank.values()[sysUser.getRank()].getAdminRankName());
         }
@@ -123,6 +128,7 @@ public class SysUserServiceImpl implements ISysUserService {
 
     /**
      * 根据用户id获取用户角色
+     *
      * @param userId
      * @return
      */
@@ -160,5 +166,20 @@ public class SysUserServiceImpl implements ISysUserService {
         return permissionList;
     }
 
+    /**
+     * 测试事务
+     * @param sysUser
+     */
+    @Override
+    public void saveUserTest(SysUser sysUser) {
+        if (sysUser.getRank() >= 0 && sysUser.getRank() <= SysUserRank.values().length) {
+            sysUser.setNickname(SysUserRank.values()[sysUser.getRank()].getAdminRankName());
+        }
+        passwordHelper.encryptPassword(sysUser);
+        sysUser.setCreateTime(new Date());
+        sysUserMapper.insert(sysUser);
+//        sysUser.setSalt(null);
+//        sysUserMapper.insert(sysUser);
+    }
 
 }

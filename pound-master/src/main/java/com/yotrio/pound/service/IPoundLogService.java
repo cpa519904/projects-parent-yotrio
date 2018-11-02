@@ -2,6 +2,7 @@ package com.yotrio.pound.service;
 
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.dto.PoundLogDto;
 
@@ -32,4 +33,6 @@ public interface IPoundLogService {
     int updateByPlNoAndPoundId(PoundLog poundLog);
 
     PoundLog findByPoundLogNoAndPoundId(String poundLogNo, Integer poundId);
+
+    void savePoundLogAndInspections(PoundLog poundLog, List<Inspection> inspections);
 }

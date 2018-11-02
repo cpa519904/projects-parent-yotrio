@@ -11,9 +11,6 @@ import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.enums.GoodsKindEnum;
 import com.yotrio.common.helpers.UserAuthTokenHelper;
-import com.yotrio.common.utils.DateUtil;
-import com.yotrio.common.utils.ImageUtil;
-import com.yotrio.common.utils.PropertiesFileUtil;
 import com.yotrio.pound.exceptions.UploadLogException;
 import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundInfo;
@@ -47,14 +44,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/api")
 public class ApiController extends BaseController {
-    /**
-     * 本机url
-     */
-    private static String LOCALHOST_URL = PropertiesFileUtil.getInstance("SystemParameter").get("localhost.url");
-    /**
-     * 本机文件保存路径
-     */
-    private static String FILE_LOCATION = PropertiesFileUtil.getInstance("SystemParameter").get("file.location");
+
 
     @Autowired
     private IPoundLogService poundLogService;
@@ -125,7 +115,6 @@ public class ApiController extends BaseController {
 
         PoundLog poundLog;
         List<Inspection> inspections;
-        // TODO: 2018-10-19 这个操作应该放在事物里面
         try {
             //字符串格式转换，防止中文乱码，这里很奇怪，用httpUtil上传整合shiro后就会出现中文乱码问题,暂未有更好解决办法
             data = new String(data.getBytes("iso-8859-1"), "utf-8");
@@ -157,78 +146,8 @@ public class ApiController extends BaseController {
                 }
                 poundLog.setPoundName(poundInfo.getPoundName());
 
-                if (poundLog.getInspWeightTotal() == null) {
-                    //过磅单总数
-                    double inspWeightTotal = 0.0d;
-                    for (Inspection inspection : inspections) {
-                        inspWeightTotal += inspection.getInspWeight();
-                        if (StringUtils.isEmpty(poundLog.getCompName())) {
-                            poundLog.setCompName(inspection.getCompName());
-                        }
-                        if (poundLog.getGoodsKind() == null) {
-                            poundLog.setGoodsKind(inspection.getGoodsKind());
-                        }
-                    }
-                    poundLog.setInspWeightTotal(inspWeightTotal);
-                }
-
-                //构建图片存储路径
-                StringBuilder filePath = new StringBuilder();
-                String basePath = DateUtil.getFilePathByDate(FILE_LOCATION + "/statics/images/upload/");
-                filePath.append(basePath).append(poundLog.getPoundLogNo()).append("/");
-
-                //解析过磅图片，将base64图片字符串转成本地图片并保存图片url
-                if (StringUtils.isNotEmpty(poundLog.getGrossImgUrlBase64())) {
-                    //生成上传图片名
-                    String fileName = System.currentTimeMillis() + ".jpg";
-                    String imgLocalPath = ImageUtil.saveBase64Img(poundLog.getGrossImgUrlBase64(), filePath.toString(), fileName);
-                    if (StringUtils.isNotEmpty(imgLocalPath)) {
-                        //转换成http图片地址
-                        String imgUrl = LOCALHOST_URL + imgLocalPath.substring(FILE_LOCATION.length());
-                        poundLog.setGrossImgUrl(imgUrl);
-                    }
-                }
-                if (StringUtils.isNotEmpty(poundLog.getTareImgUrlBase64())) {
-                    //生成上传图片名
-                    String fileName = System.currentTimeMillis() + ".jpg";
-                    String imgLocalPath = ImageUtil.saveBase64Img(poundLog.getGrossImgUrlBase64(), filePath.toString(), fileName);
-                    if (StringUtils.isNotEmpty(imgLocalPath)) {
-                        //转换成http图片地址
-                        String imgUrl = LOCALHOST_URL + imgLocalPath.substring(FILE_LOCATION.length());
-                        poundLog.setTareImgUrl(imgUrl);
-                    }
-                }
-
-                //过磅记录是否已生成
-                PoundLog logInDB = poundLogService.findByPoundLogNoAndPoundId(poundLog.getPoundLogNo(), poundLog.getPoundId());
-                if (logInDB != null) {
-                    //已生成,执行更新操作
-                    poundLogService.updateByPlNoAndPoundId(poundLog);
-                    for (Inspection inspection : inspections) {
-                        inspection.setPlId(logInDB.getId());
-                        inspection.setPlNo(logInDB.getPoundLogNo());
-                        inspectionService.updateByPlIdSelective(inspection);
-                        if (StringUtils.isEmpty(poundLog.getCompName())) {
-                            poundLog.setCompName(inspection.getCompName());
-                            poundLogService.update(poundLog);
-                        }
-                    }
-                } else {
-                    //未生成,执行插入操作
-                    poundLog.setId(null);
-                    poundLogService.save(poundLog);
-                    //保存报检单信息
-                    for (Inspection inspection : inspections) {
-                        inspection.setId(null);
-                        inspection.setPlId(poundLog.getId());
-                        inspection.setPlNo(poundLog.getPoundLogNo());
-                        inspectionService.save(inspection);
-                        if (StringUtils.isEmpty(poundLog.getCompName())) {
-                            poundLog.setCompName(inspection.getCompName());
-                            poundLogService.update(poundLog);
-                        }
-                    }
-                }
+                //交给事务区处理并保存过磅单以及报检单
+                poundLogService.savePoundLogAndInspections(poundLog, inspections);
 
                 //进货有报检单的情况下，发送钉钉消息并更新进货单
                 if (poundLog.getTypes() == PoundLogConstant.TYPES_IN && inspections != null && inspections.size() > 0) {
@@ -263,7 +182,8 @@ public class ApiController extends BaseController {
                         task.setTypes(TaskConstant.TYPE_SEND_DING_TALK_CONFIRM_MSG);
                         task.setWeight(TaskConstant.WEIGHT_INIT);
                         StringBuffer sb = new StringBuffer();
-                        sb.append("过磅记录ID：").append(poundLog.getId()).append("|地磅ID：").append(poundInfo.getId()).append("|管理员工号：").append(poundInfo.getAdminEmpId());
+                        sb.append("过磅记录ID：").append(poundLog.getId()).append("|地磅ID：").append(poundInfo.getId()).append("|管理员工号：").append(poundInfo
+                                .getAdminEmpId());
                         task.setDescription(sb.toString());
                         taskService.save(task);
                     }

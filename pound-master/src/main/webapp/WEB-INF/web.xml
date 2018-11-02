@@ -132,13 +132,13 @@
     </servlet-mapping>
 
     <!-- ############################################ servlet end  ############################################ -->
-    <error-page>
-        <error-code>404</error-code>
-        <location>/WEB-INF/views/template/tips/404.html</location>
-    </error-page>
-    <error-page>
-        <error-code>500</error-code>
-        <location>/WEB-INF/views/template/tips/error.html</location>
-    </error-page>
+    <!--<error-page>-->
+        <!--<error-code>404</error-code>-->
+        <!--<location>/WEB-INF/views/template/tips/404.html</location>-->
+    <!--</error-page>-->
+    <!--<error-page>-->
+        <!--<error-code>500</error-code>-->
+        <!--<location>/WEB-INF/views/template/tips/error.html</location>-->
+    <!--</error-page>-->
 
 </web-app>

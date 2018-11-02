@@ -51,8 +51,8 @@ public class PoundLogMapperTest {
             PoundInfo poundInfo = poundInfoMapper.selectByPrimaryKey(1);
 
             PoundLog poundLog = new PoundLog();
-            poundLog.setPoundName(poundInfo.getPoundName());
-            poundLog.setPoundId(poundInfo.getId());
+            poundLog.setPoundName("123");
+            poundLog.setPoundId(1);
             poundLog.setPoundLogNo("ddddddd");
             poundLog.setGrossWeight(Double.valueOf(1000 + j * 100));
             poundLog.setTareWeight(Double.valueOf(1000 + j * 10));
@@ -63,7 +63,9 @@ public class PoundLogMapperTest {
             poundLog.setStatus(1);
             poundLog.setTypes(PoundLogConstant.TYPES_IN);
             poundLog.setCreateTime(new Date());
-            int id = poundLogMapper.insert(poundLog);
+             poundLogMapper.insert(poundLog);
+            int id = poundLog.getId();
+
             logger.info("id={}", id);
         }
     }

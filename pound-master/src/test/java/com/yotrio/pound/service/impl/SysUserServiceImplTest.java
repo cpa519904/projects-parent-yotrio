@@ -5,6 +5,7 @@ import com.yotrio.common.enums.SysUserRank;
 import com.yotrio.pound.model.SysUser;
 import com.yotrio.pound.service.IHttpService;
 import com.yotrio.pound.service.ISysUserService;
+import com.yotrio.pound.web.shiro.utils.PasswordHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class SysUserServiceImplTest {
     private ISysUserService sysUserService;
     @Autowired
     private IHttpService httpService;
+    @Autowired
+    private PasswordHelper passwordHelper;
 
     @Test
     public void createSysUser() throws Exception {
@@ -41,13 +44,16 @@ public class SysUserServiceImplTest {
         sysUser.setCreateTime(new Date());
         sysUser.setEmail("364514921@qq.com");
         sysUser.setNickname("管理员用户");
-        sysUser.setUsername("admin");
+        sysUser.setUsername("admin-1");
         sysUser.setStatus(SysUserConstants.SYS_USER_STATUS_IS_ENABLE);
-        sysUser.setEmpId(329876);
+        sysUser.setEmpId(326897);
         sysUser.setPhone("15726816286");
-        sysUser.setPassword("123456");
         sysUser.setRank(SysUserRank.SYS_USER_RANK_2.getRank());
-        sysUserService.createSysUser(sysUser);
+        sysUser.setPassword("123456");
+
+//        sysUserService.createSysUser(sysUser);
+        sysUserService.saveUserTest(sysUser);
+
     }
 
     @Test
