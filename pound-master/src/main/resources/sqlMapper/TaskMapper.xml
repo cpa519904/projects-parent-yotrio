@@ -36,10 +36,10 @@
         where other_id = #{otherId,jdbcType=VARCHAR}
     </select>
     <select id="findUnFinishTasksLimit" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
+        select top (#{account,jdbcType=INTEGER})
         <include refid="Base_Column_List"/>
         from task
-        where status = 0 limit #{account,jdbcType=INTEGER}
+        where status = 0
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from task

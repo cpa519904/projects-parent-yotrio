@@ -122,7 +122,7 @@ layui.define(['table', 'form'], function (exports) {
     //过磅记录管理
     table.render({
         elem: '#LAY-pound-log-manage'
-        , url: '/poundLog/list' //模拟接口
+        , url: '/poundLog/list'
         , toolbar: '#table-pound-log-toolbar'
         , totalRow: true
         , cols: [[
@@ -210,15 +210,14 @@ layui.define(['table', 'form'], function (exports) {
 
     //inspection列表
     var data = {};
-    data.plId = $("#poundLogId").val();
+    data.plNo = $("#poundLogNo").val();
     table.render({
         elem: '#LAY-inspection-manage'
         , url: '/inspection/list'
         , where: data //如果无需传递额外参数，可不加该参数
         , totalRow: true
         , cols: [[
-            {type: 'checkbox', fixed: 'left', totalRowText: '合计'}
-            , {field: 'plNo', title: '报检单单号', minWidth: 120}
+            {field: 'inspNo', title: '报检单单号', minWidth: 120, totalRowText: '合计'}
             , {field: 'goodsKindName', title: '货品', minWidth: 60, templet: '#goodsKindTpl'}
             , {field: 'inspWeight', title: '报检单重量', minWidth: 80, sort: true, totalRow: true}
             , {field: 'returnWeight', title: '随车退重量', minWidth: 80, sort: true, totalRow: true}

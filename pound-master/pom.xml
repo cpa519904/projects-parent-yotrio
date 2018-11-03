@@ -71,7 +71,7 @@
 
         <hibernate.validator.version>5.2.2.Final</hibernate.validator.version>
 
-        <yotrio.lib.dir>/Users/wangyiqiang/Work/Yotrio/libs</yotrio.lib.dir>
+        <yotrio.lib.dir>E:/Work/Yotrio/libs</yotrio.lib.dir>
 
     </properties>
 
@@ -268,9 +268,9 @@
 
         <!--sqlserver-->
         <!--<dependency>-->
-        <!--<groupId>com.microsoft.sqlserver</groupId>-->
-        <!--<artifactId>sqljdbc4</artifactId>-->
-        <!--<version>4.0</version>-->
+            <!--<groupId>com.microsoft.sqlserver</groupId>-->
+            <!--<artifactId>sqljdbc4</artifactId>-->
+            <!--<version>4.0</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>commons-dbcp</groupId>
@@ -387,7 +387,6 @@
             <version>2.9.0</version>
             <scope>compile</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -399,6 +398,14 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <configuration>
+                    <!--<source>1.8</source>-->
+                    <!--<target>1.8</target>-->
                 </configuration>
             </plugin>
         </plugins>

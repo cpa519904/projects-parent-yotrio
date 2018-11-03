@@ -116,29 +116,20 @@ public class TaskServiceImpl implements ITaskService {
         if (poundLog.getTypes() == PoundLogConstant.TYPES_IN && inspections != null && inspections.size() > 0) {
             String token = UserAuthTokenHelper.getUserAuthToken(poundInfo.getAdminEmpId(), null);
             boolean sendResult = false;
-            for (Inspection inspection : inspections) {
-                //查询发货单关联U9收货单信息，1.没生成发货单，创建定时任务，定时执行；2.生成发货单，直接钉钉推送消息
-                JSONObject u9ReceiveInfo = httpService.getU9ReceiveInfo(inspection.getInspNo());
-                if (u9ReceiveInfo != null) {
-                    List<String> userIds = new ArrayList<>(20);
-                    //通过员工工号获取钉钉用户id
-                    String dingUserId = dingTalkService.getDingTalkUserIdByEmpId(poundInfo.getAdminEmpId());
-                    userIds.add(dingUserId);
-                    String userIdList = StringUtils.join(userIds, ",");
-                    //发送钉钉消息
-                    sendResult = dingTalkService.sendConfirmMessage(token, poundLog.getId(), userIdList);
-                    //成功发送一次就够了
-                    if (sendResult) {
-                        //更新任务状态
-                        task.setStatus(TaskConstant.STATUS_FINISHED);
-                        task.setUpdateTime(new Date());
-                        taskMapper.updateByPrimaryKeySelective(task);
-                        return null;
-                    }
-                } else {
-                    //有一种收货单未生成，就先退出发送消息
-                    break;
-                }
+            List<String> userIds = new ArrayList<>(20);
+            //通过员工工号获取钉钉用户id
+            String dingUserId = dingTalkService.getDingTalkUserIdByEmpId(poundInfo.getAdminEmpId());
+            userIds.add(dingUserId);
+            String userIdList = StringUtils.join(userIds, ",");
+
+            //发送钉钉消息
+            sendResult = dingTalkService.sendConfirmMessage(token, poundLog.getId(), userIdList);
+            if (sendResult) {
+                //更新任务状态
+                task.setStatus(TaskConstant.STATUS_FINISHED);
+                task.setUpdateTime(new Date());
+                taskMapper.updateByPrimaryKeySelective(task);
+                return null;
             }
         }
 

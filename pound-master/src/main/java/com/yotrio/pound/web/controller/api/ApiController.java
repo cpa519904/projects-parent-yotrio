@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.constants.PoundConstant;
 import com.yotrio.common.constants.PoundLogConstant;
-import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.enums.GoodsKindEnum;
@@ -15,7 +14,6 @@ import com.yotrio.pound.exceptions.UploadLogException;
 import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundInfo;
 import com.yotrio.pound.model.PoundLog;
-import com.yotrio.pound.model.Task;
 import com.yotrio.pound.model.dto.PoundLogDto;
 import com.yotrio.pound.service.*;
 import com.yotrio.pound.web.controller.BaseController;
@@ -153,40 +151,27 @@ public class ApiController extends BaseController {
                 if (poundLog.getTypes() == PoundLogConstant.TYPES_IN && inspections != null && inspections.size() > 0) {
                     //是否发送成功
                     boolean sendResult = false;
-                    //查询发货单关联U9收货单信息，1.没生成发货单，创建定时任务，定时执行；2.生成发货单，直接钉钉推送消息
-                    for (Inspection inspection : inspections) {
-                        JSONObject u9ReceiveInfo = httpService.getU9ReceiveInfo(inspection.getInspNo());
-                        if (u9ReceiveInfo != null) {
-                            List<String> userIds = new ArrayList<>(20);
-                            //通过员工工号获取钉钉用户id
-                            String dingUserId = dingTalkService.getDingTalkUserIdByEmpId(poundInfo.getAdminEmpId());
-                            userIds.add(dingUserId);
-                            String userIdList = StringUtils.join(userIds, ",");
-                            sendResult = dingTalkService.sendConfirmMessage(token, poundLog.getId(), userIdList);
-                            //成功发送一次就够了
-                            if (sendResult) {
-                                break;
-                            }
-                        } else {
-                            //有一种收货单未生成，就先退出发送消息
-                            break;
-                        }
-                    }
+                    List<String> userIds = new ArrayList<>(20);
+                    //通过员工工号获取钉钉用户id
+                    String dingUserId = dingTalkService.getDingTalkUserIdByEmpId(poundInfo.getAdminEmpId());
+                    userIds.add(dingUserId);
+                    String userIdList = StringUtils.join(userIds, ",");
+                    sendResult = dingTalkService.sendConfirmMessage(token, poundLog.getId(), userIdList);
 
-                    if (!sendResult) {
-                        //发送失败，创建任务，定时去执行发送
-                        Task task = new Task();
-                        task.setStatus(TaskConstant.STATUS_INIT);
-                        task.setOtherId(poundLog.getId().toString());
-                        task.setTaskName("发送钉钉确认消息");
-                        task.setTypes(TaskConstant.TYPE_SEND_DING_TALK_CONFIRM_MSG);
-                        task.setWeight(TaskConstant.WEIGHT_INIT);
-                        StringBuffer sb = new StringBuffer();
-                        sb.append("过磅记录ID：").append(poundLog.getId()).append("|地磅ID：").append(poundInfo.getId()).append("|管理员工号：").append(poundInfo
-                                .getAdminEmpId());
-                        task.setDescription(sb.toString());
-                        taskService.save(task);
-                    }
+//                    if (!sendResult) {
+//                        //发送失败，创建任务，定时去执行发送
+//                        Task task = new Task();
+//                        task.setStatus(TaskConstant.STATUS_INIT);
+//                        task.setOtherId(poundLog.getId().toString());
+//                        task.setTaskName("发送钉钉消息");
+//                        task.setTypes(TaskConstant.TYPE_SEND_DING_TALK_CONFIRM_MSG);
+//                        task.setWeight(TaskConstant.WEIGHT_INIT);
+//                        StringBuffer sb = new StringBuffer();
+//                        sb.append("过磅记录ID：").append(poundLog.getId()).append("|地磅ID：").append(poundInfo.getId()).append("|管理员工号：").append(poundInfo
+//                                .getAdminEmpId());
+//                        task.setDescription(sb.toString());
+//                        taskService.save(task);
+//                    }
                 }
 
                 return returnSuccess("上传成功");
