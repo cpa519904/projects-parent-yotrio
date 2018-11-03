@@ -217,7 +217,7 @@ layui.define(['table', 'form'], function (exports) {
         , totalRow: true
         , cols: [[
             {type: 'checkbox', fixed: 'left', totalRowText: '合计'}
-            , {field: 'plNo', title: '报检单单号', minWidth: 120}
+            , {field: 'inspNo', title: '报检单单号', minWidth: 120}
             , {field: 'plateNo', title: '车牌号', minWidth: 80}
             , {field: 'goodsKindName', title: '货品', minWidth: 60}
             , {field: 'inspWeight', title: '报检单重量', minWidth: 80, sort: true, totalRow: true}

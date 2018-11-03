@@ -31,6 +31,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sqljdbc4-4.0" level="project" />
+    <orderEntry type="library" name="taobao-sdk-java-auto_1479188381469-20180918-source" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:4.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.2.5.RELEASE" level="project" />
@@ -84,15 +85,6 @@
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:1.12.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-oxm:4.2.8.RELEASE" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:jcl-over-slf4j:1.7.21" level="project" />
-    <orderEntry type="module-library">
-      <library name="Maven: com.dingtalk.open:client-sdk:1.0.0">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../libs/taobao-sdk-java-auto_1479188381469-20180918.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" name="Maven: org.mybatis:mybatis:3.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.mybatis:mybatis-spring:1.1.0" level="project" />
     <orderEntry type="library" name="Maven: com.github.pagehelper:pagehelper:4.0.3" level="project" />
@@ -129,10 +121,18 @@
     <orderEntry type="library" name="Maven: org.unbescape:unbescape:1.1.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.github.theborakompanioni:thymeleaf-extras-shiro:2.0.0" level="project" />
     <orderEntry type="library" name="Maven: net.coobird:thumbnailator:0.4.8" level="project" />
-    <orderEntry type="library" name="Maven: com.auth0:java-jwt:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.5.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4.4" level="project" />
     <orderEntry type="library" name="Maven: redis.clients:jedis:2.9.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-pool2:2.4.2" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: com.dingtalk.open:client-sdk:1.0.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../libs/taobao-sdk-java-auto_1479188381469-20180918.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4.4" level="project" />
   </component>
 </module>

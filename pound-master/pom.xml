@@ -362,13 +362,6 @@
             <artifactId>thumbnailator</artifactId>
             <version>0.4.8</version>
         </dependency>
-        <!--java 实现 json web token-->
-        <!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
-        <dependency>
-            <groupId>com.auth0</groupId>
-            <artifactId>java-jwt</artifactId>
-            <version>3.3.0</version>
-        </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -376,15 +369,30 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.2</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>2.9.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--DingTalk-->
+        <dependency>
+            <groupId>com.dingtalk.open</groupId>
+            <artifactId>client-sdk</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${yotrio.lib.dir}/taobao-sdk-java-auto_1479188381469-20180918.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.4</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

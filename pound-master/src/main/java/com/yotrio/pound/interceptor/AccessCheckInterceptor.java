@@ -24,7 +24,7 @@ public class AccessCheckInterceptor extends HandlerInterceptorAdapter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
 
-        logger.error("api/getmessage被拦截");
+//        logger.error("api/getmessage被拦截");
         return true;
     }
 

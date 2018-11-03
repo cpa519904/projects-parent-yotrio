@@ -245,11 +245,11 @@ public class PoundLogServiceImpl implements IPoundLogService {
             }
         } else {
             //未生成,执行插入操作
-            poundLog.setId(null);
+//            poundLog.setId(null);
             poundLogMapper.insert(poundLog);
             //保存报检单信息
             for (Inspection inspection : inspections) {
-                inspection.setId(null);
+//                inspection.setId(null);
                 inspection.setPlId(poundLog.getId());
                 inspection.setPlNo(poundLog.getPoundLogNo());
                 inspectionMapper.insert(inspection);

@@ -118,7 +118,7 @@ public class ApiController extends BaseController {
             //字符串格式转换，防止中文乱码，这里很奇怪，用httpUtil上传整合shiro后就会出现中文乱码问题,暂未有更好解决办法
             data = new String(data.getBytes("iso-8859-1"), "utf-8");
             token = new String(token.getBytes("iso-8859-1"), "utf-8");
-            Integer poundId = getAppUserId(token);
+            Integer poundId = UserAuthTokenHelper.getAppUserId(token);
             if (poundId == null) {
                 return returnError("无效的token");
             }
@@ -192,11 +192,13 @@ public class ApiController extends BaseController {
     @RequestMapping(value = "/getConfirmMessage", method = {RequestMethod.GET})
     @ResponseBody
     public Callback getConfirmMessage(String token, Integer plId) {
-        logger.error("进入控制类");
         Integer poundId = UserAuthTokenHelper.getAppUserId(token);
-        PoundInfo poundInfo = poundInfoService.findCacheById(poundId);
         if (poundId == null) {
             return returnError("token验证失败");
+        }
+        PoundInfo poundInfo = poundInfoService.findCacheById(poundId);
+        if (poundId == null) {
+            return returnError("过去地磅信息失败");
         }
         if (plId == null) {
             return returnError("过磅单号为空");
