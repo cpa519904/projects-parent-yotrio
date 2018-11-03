@@ -113,7 +113,7 @@ public class TaskServiceImpl implements ITaskService {
         data.put("inspections", inspections);
         Map<String, Object> map = new HashMap<>(10);
         map.put("data", data);
-        map.put("token", UserAuthTokenHelper.getUserAuthToken(systemProperties.getPoundClientEmpId(), null));
+        map.put("token", UserAuthTokenHelper.getUserAuthToken(systemProperties.getPoundClientId(), null));
 
         //过磅记录发送到服务器
         String url = systemProperties.getPoundMasterBaseUrl() + ApiUrlConstant.SAVE_POUND_LOG;

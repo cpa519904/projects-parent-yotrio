@@ -52,7 +52,7 @@ public class PoundInfoServiceImpl implements IPoundInfoService {
      * @return
      */
     @Override
-    public PoundInfo findById(Integer id) {
+    public PoundInfo findCacheById(Integer id) {
         String key = "PoundInfo:id:";
         PoundInfo poundInfo = RedisUtil.getObj(key + id, PoundInfo.class);
         if (poundInfo == null) {

@@ -482,7 +482,7 @@ public class PoundLogController extends BaseController {
         data.put("inspections", inspections);
         Map<String, Object> map = new HashMap<>(10);
         map.put("data", data.toJSONString());
-        String token = UserAuthTokenHelper.getUserAuthToken(Integer.valueOf(sysProperties.getPoundClientEmpId()), null);
+        String token = UserAuthTokenHelper.getUserAuthToken(Integer.valueOf(sysProperties.getPoundClientId()), null);
         map.put("token", token);
         map.put("poundLog", JSONObject.toJSON(poundLog));
         //上传线上服务器

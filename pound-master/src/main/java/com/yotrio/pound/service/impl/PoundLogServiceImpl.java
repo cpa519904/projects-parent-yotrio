@@ -126,7 +126,7 @@ public class PoundLogServiceImpl implements IPoundLogService {
      * @return
      */
     @Override
-    public PoundLog findById(Integer id) {
+    public PoundLog findCacheById(Integer id) {
         String key = "PoundLog:id:" + id;
         PoundLog poundLog = RedisUtil.getObj(key, PoundLog.class);
         if (poundLog == null) {

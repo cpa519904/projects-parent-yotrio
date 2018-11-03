@@ -12,9 +12,9 @@ public interface IDingTalkService {
 
     boolean sendConfirmMessage(String token, Integer poundLogId, String userIds);
 
-    String getAccessToken();
+    String getCacheAccessToken();
 
-    String getDingTalkUserIdByEmpId(Integer empId);
+    String getCacheDingTalkUserIdByEmpId(Integer empId);
 
-    String getDingTalkUserIdByMobile(String mobile);
+    String getCacheDingTalkUserIdByMobile(String mobile);
 }

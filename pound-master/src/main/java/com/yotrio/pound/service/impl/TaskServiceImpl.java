@@ -1,7 +1,6 @@
 package com.yotrio.pound.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.constants.PoundLogConstant;
@@ -101,11 +100,11 @@ public class TaskServiceImpl implements ITaskService {
     public String executeTask(Task task) {
         //获取过磅记录
         Integer poundLogId = Integer.valueOf(task.getOtherId());
-        PoundLog poundLog = poundLogService.findById(poundLogId);
+        PoundLog poundLog = poundLogService.findCacheById(poundLogId);
         if (poundLog == null) {
             return "找不到您要执行的任务信息";
         }
-        PoundInfo poundInfo = poundInfoService.findById(poundLog.getPoundId());
+        PoundInfo poundInfo = poundInfoService.findCacheById(poundLog.getPoundId());
         if (poundInfo == null) {
             return "找不到对应的地磅信息";
         }
@@ -118,7 +117,7 @@ public class TaskServiceImpl implements ITaskService {
             boolean sendResult = false;
             List<String> userIds = new ArrayList<>(20);
             //通过员工工号获取钉钉用户id
-            String dingUserId = dingTalkService.getDingTalkUserIdByEmpId(poundInfo.getAdminEmpId());
+            String dingUserId = dingTalkService.getCacheDingTalkUserIdByEmpId(poundInfo.getAdminEmpId());
             userIds.add(dingUserId);
             String userIdList = StringUtils.join(userIds, ",");
 

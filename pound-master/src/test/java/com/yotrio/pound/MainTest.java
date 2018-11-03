@@ -18,7 +18,7 @@ public class MainTest {
     private static final String URL_GET_TOKEN = PropertiesFileUtil.getInstance("SystemParameter").get("url.getToken");
 
     public static void main(String[] args) throws IOException {
-//        String accessToken = DingTalkUtil.getAccessToken();
+//        String accessToken = DingTalkUtil.getCacheAccessToken();
 //        System.out.println("token:" + accessToken);
 
 //        ArrayList<String> ports = SerialPortUtil.findPort();

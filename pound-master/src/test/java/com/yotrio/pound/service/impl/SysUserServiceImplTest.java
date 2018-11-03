@@ -58,7 +58,7 @@ public class SysUserServiceImplTest {
 
     @Test
     public void httpTest() throws Exception {
-        String u9Token = httpService.getU9Token();
+        String u9Token = httpService.getCacheU9Token();
     }
 
 }

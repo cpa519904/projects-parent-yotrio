@@ -14,7 +14,7 @@ import java.util.Map;
 public interface IHttpService {
     JSONObject getU9ReceiveInfo(String DeliveryNo);
 
-    String getU9Token();
+    String getCacheU9Token();
 
     String writeWeightToU9ReceiveInfo(Map<String, Object> map);
 }

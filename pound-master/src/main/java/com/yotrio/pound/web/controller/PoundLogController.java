@@ -60,7 +60,7 @@ public class PoundLogController extends BaseController {
                 poundLog.setGoodsName(GoodsKindEnum.getKindName(poundLog.getGoodsKind()));
             }
 
-            PoundInfo poundInfo = poundInfoService.findById(poundLog.getPoundId());
+            PoundInfo poundInfo = poundInfoService.findCacheById(poundLog.getPoundId());
             if (poundInfo != null) {
                 model.addAttribute("poundInfo", poundInfo);
             }

@@ -95,7 +95,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
      * @return
      */
     @Override
-    public String getAccessToken() {
+    public String getCacheAccessToken() {
         String key = "DingTalkAccessToken";
         String accessToken = RedisUtil.get(key);
         try {
@@ -125,7 +125,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
      * @return
      */
     @Override
-    public String getDingTalkUserIdByEmpId(Integer empId) {
+    public String getCacheDingTalkUserIdByEmpId(Integer empId) {
         String key = "DingTalkUserId:EmpId:" + empId;
         String userId = RedisUtil.get(key);
         try {
@@ -159,7 +159,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
      * @return
      */
     @Override
-    public String getDingTalkUserIdByMobile(String mobile) {
+    public String getCacheDingTalkUserIdByMobile(String mobile) {
         String key = "DingTalkUserId:mobile:" + mobile;
         String userId = RedisUtil.get(key);
         try {

@@ -16,7 +16,7 @@ import java.util.List;
 public interface IPoundInfoService {
     PageInfo findAllPaging(DataTablePage dataTablePage, PoundInfo poundInfo);
 
-    PoundInfo findById(Integer id);
+    PoundInfo findCacheById(Integer id);
 
     int updateById(PoundInfo poundInfo);
 

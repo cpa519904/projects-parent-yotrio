@@ -90,7 +90,7 @@ public class HttpServiceImpl implements IHttpService {
      * @return
      */
     @Override
-    public String getU9Token() {
+    public String getCacheU9Token() {
         String key = "U9Token";
         String u9Token = RedisUtil.get(key);
         if (StringUtils.isEmpty(u9Token)) {
@@ -150,7 +150,7 @@ public class HttpServiceImpl implements IHttpService {
             JSONObject jsonParam = new JSONObject();
             jsonParam.put(ORG_CODE_KEY, ORG_CODE_VALUE);
             jsonParam.put(LOGIN_USER_CODE_KEY, LOGIN_USER_CODE_VALUE);
-            jsonParam.put("Token", getU9Token());
+            jsonParam.put("Token", getCacheU9Token());
             jsonParam.put("BillNo", map.get("poundLogNo"));
             jsonParam.put("inspectJsonArr", map.get("inspectJsonArr"));
             jsonParam.put("Remark", map.get("remark"));

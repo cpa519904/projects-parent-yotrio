@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.constants.PoundConstant;
 import com.yotrio.common.constants.PoundLogConstant;
+import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.enums.GoodsKindEnum;
@@ -14,6 +15,7 @@ import com.yotrio.pound.exceptions.UploadLogException;
 import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundInfo;
 import com.yotrio.pound.model.PoundLog;
+import com.yotrio.pound.model.Task;
 import com.yotrio.pound.model.dto.PoundLogDto;
 import com.yotrio.pound.service.*;
 import com.yotrio.pound.web.controller.BaseController;
@@ -27,9 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 外部接口控制类
@@ -74,14 +74,15 @@ public class ApiController extends BaseController {
         if (StringUtils.isEmpty(token)) {
             return returnError("token丢失");
         }
-        PoundInfo poundInfo = poundInfoService.findById(poundLogDto.getPoundId());
+        Integer poundId = UserAuthTokenHelper.getAppUserId(token);
+        if (poundId == null) {
+            return returnError("token校验失败");
+        }
+        PoundInfo poundInfo = poundInfoService.findCacheById(poundId);
         if (poundInfo == null) {
             return returnError("获取地磅信息失败");
         }
-        Integer userId = getAppUserId(token);
-        if (!poundInfo.getAdminEmpId().equals(userId)) {
-            return returnError("token校验失败");
-        }
+
         PageInfo pageInfo = poundLogService.findAllPaging(dataTablePage, poundLogDto);
         return returnSuccess(pageInfo.getTotal(), pageInfo.getList());
     }
@@ -98,7 +99,7 @@ public class ApiController extends BaseController {
         if (id == null) {
             return returnError("地磅ID不能为空");
         }
-        PoundInfo poundInfo = poundInfoService.findById(id);
+        PoundInfo poundInfo = poundInfoService.findCacheById(id);
         return returnSuccess(poundInfo);
     }
 
@@ -117,8 +118,8 @@ public class ApiController extends BaseController {
             //字符串格式转换，防止中文乱码，这里很奇怪，用httpUtil上传整合shiro后就会出现中文乱码问题,暂未有更好解决办法
             data = new String(data.getBytes("iso-8859-1"), "utf-8");
             token = new String(token.getBytes("iso-8859-1"), "utf-8");
-            Integer userId = getAppUserId(token);
-            if (userId == null) {
+            Integer poundId = getAppUserId(token);
+            if (poundId == null) {
                 return returnError("无效的token");
             }
             if (data == null) {
@@ -132,19 +133,16 @@ public class ApiController extends BaseController {
 
             if (poundLog != null && inspections != null) {
                 //校验地磅状态
-                PoundInfo poundInfo = poundInfoService.findById(poundLog.getPoundId());
+                PoundInfo poundInfo = poundInfoService.findCacheById(poundId);
                 if (poundInfo == null) {
                     return returnError("找不到对应的地磅信息");
-                }
-                if (!poundInfo.getAdminEmpId().equals(userId)) {
-                    return returnError("token验证失败");
                 }
                 if (poundInfo.getStatus() == PoundConstant.STATUS_STOP) {
                     return returnError("此地磅已被停用，请联系管理员处理...");
                 }
                 poundLog.setPoundName(poundInfo.getPoundName());
 
-                //交给事务区处理并保存过磅单以及报检单
+                //交给事务去处理并保存过磅单以及报检单
                 poundLogService.savePoundLogAndInspections(poundLog, inspections);
 
                 //进货有报检单的情况下，发送钉钉消息并更新进货单
@@ -153,25 +151,25 @@ public class ApiController extends BaseController {
                     boolean sendResult = false;
                     List<String> userIds = new ArrayList<>(20);
                     //通过员工工号获取钉钉用户id
-                    String dingUserId = dingTalkService.getDingTalkUserIdByEmpId(poundInfo.getAdminEmpId());
+                    String dingUserId = dingTalkService.getCacheDingTalkUserIdByEmpId(poundInfo.getAdminEmpId());
                     userIds.add(dingUserId);
                     String userIdList = StringUtils.join(userIds, ",");
                     sendResult = dingTalkService.sendConfirmMessage(token, poundLog.getId(), userIdList);
 
-//                    if (!sendResult) {
-//                        //发送失败，创建任务，定时去执行发送
-//                        Task task = new Task();
-//                        task.setStatus(TaskConstant.STATUS_INIT);
-//                        task.setOtherId(poundLog.getId().toString());
-//                        task.setTaskName("发送钉钉消息");
-//                        task.setTypes(TaskConstant.TYPE_SEND_DING_TALK_CONFIRM_MSG);
-//                        task.setWeight(TaskConstant.WEIGHT_INIT);
-//                        StringBuffer sb = new StringBuffer();
-//                        sb.append("过磅记录ID：").append(poundLog.getId()).append("|地磅ID：").append(poundInfo.getId()).append("|管理员工号：").append(poundInfo
-//                                .getAdminEmpId());
-//                        task.setDescription(sb.toString());
-//                        taskService.save(task);
-//                    }
+                    if (!sendResult) {
+                        //发送失败，创建任务，定时去执行发送
+                        Task task = new Task();
+                        task.setStatus(TaskConstant.STATUS_INIT);
+                        task.setOtherId(poundLog.getId().toString());
+                        task.setTaskName("发送钉钉消息");
+                        task.setTypes(TaskConstant.TYPE_SEND_DING_TALK_CONFIRM_MSG);
+                        task.setWeight(TaskConstant.WEIGHT_INIT);
+                        StringBuffer sb = new StringBuffer();
+                        sb.append("过磅记录ID：").append(poundLog.getId()).append("|地磅ID：").append(poundInfo.getId()).append("|管理员工号：").append(poundInfo
+                                .getAdminEmpId());
+                        task.setDescription(sb.toString());
+                        taskService.save(task);
+                    }
                 }
 
                 return returnSuccess("上传成功");
@@ -185,48 +183,6 @@ public class ApiController extends BaseController {
     }
 
     /**
-     * 更新u9收货单
-     *
-     * @param token 校验token
-     * @param plId  过磅记录id
-     * @return
-     */
-    @RequestMapping(value = "/update/receiveInfo", method = {RequestMethod.GET})
-    @ResponseBody
-    public Callback updateReceiveInfo(String token, Integer plId) {
-        Integer userId = UserAuthTokenHelper.getAppUserId(token);
-        if (userId == null) {
-            return returnError("token验证失败");
-        }
-        if (plId == null) {
-            return returnError("过磅单号为空");
-        }
-        PoundLog poundLog = poundLogService.findById(plId);
-        if (poundLog == null) {
-            return returnError("获取过磅单失败");
-        }
-        List<Inspection> inspections = inspectionService.findListByPlId(poundLog.getId());
-        if (inspections == null || inspections.size() <= 0) {
-            return returnError("获取报检单失败");
-        }
-
-        JSONArray inspectionArr = new JSONArray();
-        for (Inspection inspection : inspections) {
-            JSONObject obj = new JSONObject();
-            obj.put("DeliveryNo", inspection.getInspNo());
-            obj.put("WeightValue", inspection.getInspNetWeight());
-            inspectionArr.add(obj);
-        }
-        //封装信息
-        Map<String, Object> paramsMap = new HashMap<>(10);
-        paramsMap.put("poundLogNo", poundLog.getPoundLogNo());
-        paramsMap.put("inspectJsonArr", inspectionArr.toJSONString());
-        paramsMap.put("remark", poundLog.getRemark());
-        httpService.writeWeightToU9ReceiveInfo(paramsMap);
-        return returnSuccess("操作成功!");
-    }
-
-    /**
      * 获取确认页面信息
      *
      * @param token 校验token
@@ -237,14 +193,15 @@ public class ApiController extends BaseController {
     @ResponseBody
     public Callback getConfirmMessage(String token, Integer plId) {
         logger.error("进入控制类");
-        Integer userId = UserAuthTokenHelper.getAppUserId(token);
-        if (userId == null) {
+        Integer poundId = UserAuthTokenHelper.getAppUserId(token);
+        PoundInfo poundInfo = poundInfoService.findCacheById(poundId);
+        if (poundId == null) {
             return returnError("token验证失败");
         }
         if (plId == null) {
             return returnError("过磅单号为空");
         }
-        PoundLog poundLog = poundLogService.findById(plId);
+        PoundLog poundLog = poundLogService.findCacheById(plId);
         if (poundLog == null) {
             return returnError("获取过磅单失败");
         }

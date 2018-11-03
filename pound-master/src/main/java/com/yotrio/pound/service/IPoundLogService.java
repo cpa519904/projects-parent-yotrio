@@ -26,7 +26,7 @@ public interface IPoundLogService {
 
     Integer save(PoundLog poundLog);
 
-    PoundLog findById(Integer id);
+    PoundLog findCacheById(Integer id);
 
     Integer update(PoundLog poundLog);
 
