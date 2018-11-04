@@ -11,7 +11,6 @@ layui.define(['table', 'form'], function (exports) {
         // , toolbar: '#table-pound-log-toolbar'
         , totalRow: true
         , where: {
-            "poundId": $("#poundId").val(),
             "token": $("#token").val()
         } //如果无需传递额外参数，可不加该参数
         , cols: [[

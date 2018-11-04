@@ -2,7 +2,6 @@ package com.yotrio.pound.controller;
 
 
 import cn.hutool.http.HttpUtil;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.yotrio.common.constants.ApiUrlConstant;
 import com.yotrio.common.constants.InspectionConstant;
@@ -16,7 +15,6 @@ import com.yotrio.common.utils.NetStateUtil;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.domain.SystemProperties;
 import com.yotrio.pound.model.Inspection;
-import com.yotrio.pound.model.PoundInfo;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.Task;
 import com.yotrio.pound.service.IHttpService;
@@ -101,12 +99,7 @@ public class PoundLogController extends BaseController {
         String token = "";
         Integer poundId = sysProperties.getPoundClientId();
         if (poundId != null) {
-            PoundInfo poundInfo = httpService.getPoundInfo(poundId);
-            if (poundInfo != null) {
-                //获取工号
-                Integer adminEmpId = poundInfo.getAdminEmpId();
-                token = UserAuthTokenHelper.getUserAuthToken(adminEmpId, null);
-            }
+            token = UserAuthTokenHelper.getUserAuthToken(poundId, null);
         }
         model.addAttribute("poundId", poundId);
         model.addAttribute("token", token);
@@ -170,7 +163,7 @@ public class PoundLogController extends BaseController {
         if (logInDB.getTypes() == PoundLogConstant.TYPES_OUT) {
             //出货
             logInDB.setFirstTime(new Date());
-            logInDB.setNetWeight(logInDB.getGrossWeight() - logInDB.getTareWeight());
+//            logInDB.setNetWeight(logInDB.getGrossWeight() - logInDB.getTareWeight());
             if (logInDB.getStatus() < PoundLogConstant.STATUS_POUND_SECOND) {
                 logInDB.setStatus(PoundLogConstant.STATUS_POUND_SECOND);
             }
@@ -187,7 +180,7 @@ public class PoundLogController extends BaseController {
             return ResultUtil.success(logInDB);
         } else {
             //进货
-            //计算净重 =毛重 - 皮重  - 样品
+            //计算净重 =毛重 - 皮重
             double netWeight = 0.0d;
             double totalReturnWeight = 0.0d;
             double totalSampleWeight = 0.0d;
@@ -213,11 +206,11 @@ public class PoundLogController extends BaseController {
                 netWeight = logInDB.getGrossWeight() - tareWeight;
                 logInDB.setNetWeight(netWeight);
             }
-            if (logInDB.getGrossWeight() != null && logInDB.getGrossWeight() < tareWeight) {
+            if (logInDB.getTareWeight() != null && logInDB.getGrossWeight() < tareWeight) {
                 return ResultUtil.error("数据异常，皮重怎么能比毛重大呢");
             }
             if (netWeight < 0) {
-                return ResultUtil.error("数据异常，请检查退货数量是否填写有误");
+                return ResultUtil.error("数据异常，净重怎么可能小于零");
             }
             logInDB.setReturnWeightTotal(totalReturnWeight);
             logInDB.setFirstTime(new Date());
@@ -307,7 +300,7 @@ public class PoundLogController extends BaseController {
             if (logInDB.getGrossWeight() != null && logInDB.getGrossWeight() > 0) {
                 logInDB.setDiffWeight(logInDB.getGrossWeight() - tareWeight - totalInspWeight);
                 //计算净重
-                netWeight = logInDB.getGrossWeight()  - tareWeight;
+                netWeight = logInDB.getGrossWeight() - tareWeight;
                 logInDB.setNetWeight(netWeight);
             }
 
@@ -463,14 +456,16 @@ public class PoundLogController extends BaseController {
 
         //将本地图片url转base64字符串上传，上传成功后再保存线上服务器
         if (StringUtils.isNotEmpty(poundLog.getGrossImgUrl())) {
-            String grossImgFilePath = sysProperties.getFileLocation() + poundLog.getGrossImgUrl().substring((sysProperties.getLocalhostUrl() + sysProperties.getServerPort()).length());
+            String grossImgFilePath = sysProperties.getFileLocation() + poundLog.getGrossImgUrl().substring((sysProperties.getLocalhostUrl() + sysProperties
+                    .getServerPort()).length());
             String grossImgUrlBase64 = ImageUtil.getImageBase64Str(grossImgFilePath);
             if (StringUtils.isNotEmpty(grossImgUrlBase64)) {
                 poundLog.setGrossImgUrlBase64(grossImgUrlBase64);
             }
         }
         if (StringUtils.isNotEmpty(poundLog.getTareImgUrl())) {
-            String tareImgFilePath = sysProperties.getFileLocation() + poundLog.getTareImgUrl().substring((sysProperties.getLocalhostUrl() + sysProperties.getServerPort()).length());
+            String tareImgFilePath = sysProperties.getFileLocation() + poundLog.getTareImgUrl().substring((sysProperties.getLocalhostUrl() + sysProperties
+                    .getServerPort()).length());
             String tareImgUrlBase64 = ImageUtil.getImageBase64Str(tareImgFilePath);
             if (StringUtils.isNotEmpty(tareImgUrlBase64)) {
                 poundLog.setTareImgUrlBase64(tareImgUrlBase64);
@@ -545,7 +540,7 @@ public class PoundLogController extends BaseController {
     @ResponseBody
     public Result destroy(String poundLogNo) {
         if (StringUtils.isEmpty(poundLogNo)) {
-            return ResultUtil.error("找不到您要打印的过磅单单号");
+            return ResultUtil.error("找不到您要删除的过磅单单号");
         }
         poundLogService.destroyPoundLogAndInspections(poundLogNo);
         return ResultUtil.success("删除成功");

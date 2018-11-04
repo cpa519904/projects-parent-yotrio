@@ -135,7 +135,7 @@ public class TaskServiceImpl implements ITaskService {
                 }
             }
         } catch (Exception e) {
-            logger.error("任务执行失败={}", e);
+            logger.error("任务执行失败={}", e.getMessage());
         }
         return "任务执行失败";
     }
