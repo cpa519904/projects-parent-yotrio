@@ -189,7 +189,6 @@ public class PoundLogServiceImpl implements IPoundLogService {
             double totalReturnWeight = 0.0d;
             double totalSampleWeight = 0.0d;
             double totalInspWeight = 0.0d;
-            double diffWeight = logInDB.getDiffWeight() != null ? logInDB.getDiffWeight() : 0.0d;
             List<Inspection> inspections = inspectionMapper.findListByPlNo(logInDB.getPoundLogNo());
             for (Inspection item : inspections) {
                 totalInspWeight += item.getInspWeight();
@@ -201,10 +200,6 @@ public class PoundLogServiceImpl implements IPoundLogService {
             logInDB.setInspWeightTotal(totalInspWeight);
             logInDB.setReturnWeightTotal(totalReturnWeight);
             logInDB.setSampleNetWeight(totalSampleWeight);
-            if (logInDB.getGrossWeight() != null && logInDB.getTareWeight()!=null) {
-                diffWeight = logInDB.getGrossWeight()-logInDB.getTareWeight() - totalInspWeight;
-                logInDB.setDiffWeight(diffWeight);
-            }
             logInDB.setUpdateTime(new Date());
             poundLogMapper.updateByPrimaryKeySelective(logInDB);
             return null;
