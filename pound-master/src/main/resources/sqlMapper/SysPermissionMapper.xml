@@ -48,11 +48,11 @@
     </foreach>
   </delete>
   <insert id="insert" parameterType="com.yotrio.pound.model.SysPermission">
-    insert into sys_permission (id, permission_name, permission, 
+    insert into sys_permission ( permission_name, permission,
       permission_desc, type, url, 
       pid, pids, status, 
       create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{permissionName,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR}, 
+    values ( #{permissionName,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR},
       #{permissionDesc,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
       #{pid,jdbcType=INTEGER}, #{pids,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
@@ -60,9 +60,6 @@
   <insert id="insertSelective" parameterType="com.yotrio.pound.model.SysPermission">
     insert into sys_permission
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="permissionName != null">
         permission_name,
       </if>
@@ -95,9 +92,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="permissionName != null">
         #{permissionName,jdbcType=VARCHAR},
       </if>

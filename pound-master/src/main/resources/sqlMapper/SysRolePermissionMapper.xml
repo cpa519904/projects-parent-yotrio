@@ -20,17 +20,14 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.yotrio.pound.model.SysRolePermission">
-    insert into sys_role_permission (id, role_id, permission_id
+    insert into sys_role_permission ( role_id, permission_id
       )
-    values (#{id,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{permissionId,jdbcType=INTEGER}
+    values (#{roleId,jdbcType=INTEGER}, #{permissionId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.yotrio.pound.model.SysRolePermission">
     insert into sys_role_permission
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="roleId != null">
         role_id,
       </if>
@@ -39,9 +36,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="roleId != null">
         #{roleId,jdbcType=INTEGER},
       </if>

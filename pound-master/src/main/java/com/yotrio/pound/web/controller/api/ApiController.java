@@ -12,13 +12,11 @@ import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.enums.GoodsKindEnum;
 import com.yotrio.common.helpers.UserAuthTokenHelper;
 import com.yotrio.pound.exceptions.UploadLogException;
-import com.yotrio.pound.model.Inspection;
-import com.yotrio.pound.model.PoundInfo;
-import com.yotrio.pound.model.PoundLog;
-import com.yotrio.pound.model.Task;
+import com.yotrio.pound.model.*;
 import com.yotrio.pound.model.dto.PoundLogDto;
 import com.yotrio.pound.service.*;
 import com.yotrio.pound.web.controller.BaseController;
+import com.yotrio.pound.web.shiro.utils.PasswordHelper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,7 +41,6 @@ import java.util.List;
 @RequestMapping("/api")
 public class ApiController extends BaseController {
 
-
     @Autowired
     private IPoundLogService poundLogService;
     @Autowired
@@ -56,6 +53,10 @@ public class ApiController extends BaseController {
     private IHttpService httpService;
     @Autowired
     private ITaskService taskService;
+    @Autowired
+    private ISysUserService sysUserService;
+    @Autowired
+    private PasswordHelper passwordHelper;
 
     /**
      * 分页获取过磅记录列表
@@ -153,8 +154,10 @@ public class ApiController extends BaseController {
                     //通过员工工号获取钉钉用户id
                     String dingUserId = dingTalkService.getCacheDingTalkUserIdByEmpId(poundInfo.getAdminEmpId());
                     userIds.add(dingUserId);
-                    String userIdList = StringUtils.join(userIds, ",");
-                    sendResult = dingTalkService.sendConfirmMessage(token, poundLog.getId(), userIdList);
+                    if (userIds.size() > 0) {
+                        String userIdList = StringUtils.join(userIds, ",");
+                        sendResult = dingTalkService.sendConfirmMessage(token, poundLog.getId(), userIdList);
+                    }
 
                     if (!sendResult) {
                         //发送失败，创建任务，定时去执行发送
@@ -216,5 +219,30 @@ public class ApiController extends BaseController {
         return returnSuccess(poundLog);
     }
 
+    /**
+     * 获取我地磅的token
+     */
+    @RequestMapping(value = "/getPoundToken", method = {RequestMethod.GET})
+    @ResponseBody
+    public Callback getConfirmMessage(String username, String password) {
+        if (StringUtils.isEmpty(username)) {
+            return returnError("用户名不能空");
+        }
+        if (StringUtils.isEmpty(password)) {
+            return returnError("密码不能为空");
+        }
+        SysUser sysUser = sysUserService.findByUsername(username);
+        if (sysUser == null) {
+            return returnError("用户不存在");
+        }
+
+        String  encryptPassword= passwordHelper.getEncryptPassword(sysUser, password);
+        if (!sysUser.getPassword().equals(encryptPassword)) {
+            return returnError("登录失败，请检查您的用户名获取密码");
+        }
+
+        String token = UserAuthTokenHelper.getUserAuthToken(sysUser.getId(), null);
+        return returnSuccess(token);
+    }
 
 }

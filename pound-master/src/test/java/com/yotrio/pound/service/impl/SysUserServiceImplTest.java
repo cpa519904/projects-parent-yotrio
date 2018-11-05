@@ -43,16 +43,16 @@ public class SysUserServiceImplTest {
         sysUser.setCreatedBy("SuperAdmin");
         sysUser.setCreateTime(new Date());
         sysUser.setEmail("364514921@qq.com");
-        sysUser.setNickname("管理员用户");
-        sysUser.setUsername("admin-1");
+        sysUser.setNickname("系统用户");
+        sysUser.setUsername("panyuyan");
         sysUser.setStatus(SysUserConstants.SYS_USER_STATUS_IS_ENABLE);
-        sysUser.setEmpId(326897);
-        sysUser.setPhone("15726816286");
-        sysUser.setRank(SysUserRank.SYS_USER_RANK_2.getRank());
-        sysUser.setPassword("123456");
+        sysUser.setEmpId(326601);
+        sysUser.setPhone("13957673594");
+        sysUser.setRank(SysUserRank.SYS_USER_RANK_7.getRank());
+        sysUser.setPassword("UzsUBwJyRtEIoB0Z");
 
-//        sysUserService.createSysUser(sysUser);
-        sysUserService.saveUserTest(sysUser);
+        sysUserService.createSysUser(sysUser);
+//        sysUserService.saveUserTest(sysUser);
 
     }
 

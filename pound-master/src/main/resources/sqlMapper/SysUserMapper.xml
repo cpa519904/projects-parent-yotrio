@@ -42,13 +42,13 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.yotrio.pound.model.SysUser">
-    insert into sys_user (id, username, password, 
+    insert into sys_user ( username, password,
       emp_id, dind_uid, group_id, 
       nickname, rank, status, 
       created_by, phone, create_time, 
       update_time, last_login_time, last_login_ip, 
       email, salt)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+    values ( #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{empId,jdbcType=INTEGER}, #{dindUid,jdbcType=VARCHAR}, #{groupId,jdbcType=INTEGER}, 
       #{nickname,jdbcType=VARCHAR}, #{rank,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
       #{createdBy,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
@@ -58,9 +58,6 @@
   <insert id="insertSelective" parameterType="com.yotrio.pound.model.SysUser">
     insert into sys_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="username != null">
         username,
       </if>
@@ -111,9 +108,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
       </if>

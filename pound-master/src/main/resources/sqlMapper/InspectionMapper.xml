@@ -51,12 +51,12 @@
         </foreach>
     </delete>
     <insert id="insert" parameterType="com.yotrio.pound.model.Inspection">
-    insert into inspection (id, pl_id, pl_no, 
+    insert into inspection (pl_id, pl_no,
       insp_no, plate_no, goods_kind, 
       comp_name, insp_weight, return_weight, insp_net_weight,
       types, status, create_time, 
       update_time)
-    values (#{id,jdbcType=INTEGER}, #{plId,jdbcType=INTEGER}, #{plNo,jdbcType=VARCHAR}, 
+    values ( #{plId,jdbcType=INTEGER}, #{plNo,jdbcType=VARCHAR},
       #{inspNo,jdbcType=VARCHAR}, #{plateNo,jdbcType=VARCHAR}, #{goodsKind,jdbcType=INTEGER}, 
       #{compName,jdbcType=VARCHAR}, #{inspWeight,jdbcType=DOUBLE}, #{returnWeight,jdbcType=DOUBLE}, #{inspNetWeight,jdbcType=DOUBLE},
       #{types,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
@@ -65,9 +65,6 @@
     <insert id="insertSelective" parameterType="com.yotrio.pound.model.Inspection">
         insert into inspection
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
             <if test="plId != null">
                 pl_id,
             </if>
@@ -109,9 +106,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
             <if test="plId != null">
                 #{plId,jdbcType=INTEGER},
             </if>

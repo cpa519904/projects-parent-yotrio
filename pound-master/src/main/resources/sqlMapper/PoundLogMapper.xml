@@ -69,7 +69,7 @@
         </foreach>
     </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.PoundLog">
-    insert into pound_log (id, pound_id, pound_name, 
+    insert into pound_log ( pound_id, pound_name,
       pound_log_no,goods_kind, comp_name, gross_weight, tare_weight,
       net_weight, sample_net_weight, return_weight_total, 
       diff_weight, insp_weight_total, gross_img_url, tare_img_url,
@@ -77,7 +77,7 @@
       types, status, return_goods, 
       create_time, update_time, first_time, 
       second_time)
-    values (#{id,jdbcType=INTEGER}, #{poundId,jdbcType=INTEGER}, #{poundName,jdbcType=VARCHAR}, 
+    values ( #{poundId,jdbcType=INTEGER}, #{poundName,jdbcType=VARCHAR},
       #{poundLogNo,jdbcType=VARCHAR}, #{goodsKind,jdbcType=INTEGER}, #{compName,jdbcType=VARCHAR}, #{grossWeight,jdbcType=DOUBLE}, #{tareWeight,jdbcType=DOUBLE},
       #{netWeight,jdbcType=DOUBLE}, #{sampleNetWeight,jdbcType=DOUBLE}, #{returnWeightTotal,jdbcType=DOUBLE}, 
       #{diffWeight,jdbcType=DOUBLE}, #{inspWeightTotal,jdbcType=DOUBLE}, #{grossImgUrl,jdbcType=VARCHAR}, #{tareImgUrl,jdbcType=VARCHAR},
@@ -90,9 +90,6 @@
             parameterType="com.yotrio.pound.model.PoundLog">
         insert into pound_log
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
             <if test="poundId != null">
                 pound_id,
             </if>
@@ -167,9 +164,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
             <if test="poundId != null">
                 #{poundId,jdbcType=INTEGER},
             </if>

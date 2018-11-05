@@ -34,19 +34,16 @@
         </foreach>
     </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.PoundInfo">
-    insert into pound_info (id, pound_name, admin_emp_id, admin_name, admin_mobile, unit_id,
+    insert into pound_info (pound_name, admin_emp_id, admin_name, admin_mobile, unit_id,
       model, remark, status, 
       create_time)
-    values (#{id,jdbcType=INTEGER}, #{poundName,jdbcType=VARCHAR}, #{adminEmpId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, #{adminMobile,jdbcType=VARCHAR}, #{unitId,jdbcType=INTEGER},
+    values ( #{poundName,jdbcType=VARCHAR}, #{adminEmpId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, #{adminMobile,jdbcType=VARCHAR}, #{unitId,jdbcType=INTEGER},
       #{model,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.PoundInfo">
         insert into pound_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
             <if test="poundName != null">
                 pound_name,
             </if>
@@ -76,9 +73,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
             <if test="poundName != null">
                 #{poundName,jdbcType=VARCHAR},
             </if>

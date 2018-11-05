@@ -46,11 +46,11 @@
     where id = #{id,jdbcType=INTEGER}
    </delete>
     <insert id="insert" parameterType="com.yotrio.pound.model.Task">
-    insert into task (id, task_name, description, 
+    insert into task ( task_name, description,
       other_id, datas, weight, types,
       status, create_time, update_time, execute_time
       )
-    values (#{id,jdbcType=INTEGER}, #{taskName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+    values ( #{taskName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
       #{otherId,jdbcType=VARCHAR}, #{datas,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, #{types,jdbcType=INTEGER},
       #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{executeTime,jdbcType=TIMESTAMP}
       )
@@ -58,9 +58,6 @@
     <insert id="insertSelective" parameterType="com.yotrio.pound.model.Task">
         insert into task
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
             <if test="taskName != null">
                 task_name,
             </if>
@@ -93,9 +90,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
             <if test="taskName != null">
                 #{taskName,jdbcType=VARCHAR},
             </if>

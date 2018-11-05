@@ -46,4 +46,22 @@ public class PasswordHelper {
 
         user.setPassword(newPassword);
     }
+
+    /**获取加密后的密码
+     *
+     * @param user 用户
+     * @return
+     */
+    public String getEncryptPassword(SysUser user,String password) {
+        try {
+           return new SimpleHash(
+                    algorithmName,
+                    password,
+                    ByteSource.Util.bytes(user.getCredentialsSalt()),
+                    hashIterations).toHex();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }
