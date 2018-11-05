@@ -50,8 +50,6 @@ public class ApiController extends BaseController {
     @Autowired
     private IDingTalkService dingTalkService;
     @Autowired
-    private IHttpService httpService;
-    @Autowired
     private ITaskService taskService;
     @Autowired
     private ISysUserService sysUserService;
@@ -132,7 +130,7 @@ public class ApiController extends BaseController {
             poundLog = JSON.parseObject(JSONObject.toJSONString(poundLogObj), PoundLog.class);
             inspections = JSONArray.parseArray(JSONArray.toJSONString(inspectionsArr), Inspection.class);
 
-            if (poundLog != null && inspections != null) {
+            if (poundLog != null && inspections != null && inspections.size() > 0) {
                 //校验地磅状态
                 PoundInfo poundInfo = poundInfoService.findCacheById(poundId);
                 if (poundInfo == null) {
@@ -180,7 +178,7 @@ public class ApiController extends BaseController {
                     }
                 }
 
-//                return returnSuccess("上传成功");
+                return returnSuccess("上传成功");
             }
         } catch (UploadLogException e) {
             logger.error("上传过磅信息异常:", e.getMessage());
@@ -257,6 +255,10 @@ public class ApiController extends BaseController {
 
     /**
      * 获取报检单
+     *
+     * @param token
+     * @param deliveryNo 报检单号等同于inspNo
+     * @return
      */
     @RequestMapping(value = "/getInspectionInfo", method = {RequestMethod.GET})
     @ResponseBody
