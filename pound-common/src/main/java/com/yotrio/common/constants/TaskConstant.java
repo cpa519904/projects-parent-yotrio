@@ -10,6 +10,12 @@ package com.yotrio.common.constants;
  **/
 
 public class TaskConstant {
+
+    /**
+     * 取消执行,如：找不到过磅信息，或者找不到地磅信息等
+     */
+    public static final int STATUS_CANCEL = -1;
+
     /**
      * 待执行
      */

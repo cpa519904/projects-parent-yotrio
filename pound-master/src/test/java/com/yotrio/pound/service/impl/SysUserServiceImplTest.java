@@ -40,6 +40,7 @@ public class SysUserServiceImplTest {
     @Test
     public void createSysUser() throws Exception {
         SysUser sysUser = new SysUser();
+        sysUser.setId(0);
         sysUser.setCreatedBy("SuperAdmin");
         sysUser.setCreateTime(new Date());
         sysUser.setEmail("364514921@qq.com");

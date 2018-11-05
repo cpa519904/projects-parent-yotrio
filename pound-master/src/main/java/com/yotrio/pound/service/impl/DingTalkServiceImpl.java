@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.yotrio.common.constants.ApiUrlConstant;
 import com.yotrio.common.utils.DingTalkUtil;
 import com.yotrio.common.utils.PropertiesFileUtil;
+import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.service.IDingTalkService;
 import com.yotrio.pound.utils.RedisUtil;
 import org.apache.commons.lang.StringUtils;
@@ -58,33 +59,40 @@ public class DingTalkServiceImpl implements IDingTalkService {
      * 通过发送钉钉工作消息 类型：action_card
      *
      * @param token
-     * @param poundLogId
+     * @param poundLog
      * @return
      */
     @Override
-    public boolean sendConfirmMessage(String token, Integer poundLogId, String userIds) {
+    public boolean sendConfirmMessage(String token, PoundLog poundLog, String userIds) {
+        try {
+            //编辑消息内容
+            JSONObject msg = new JSONObject();
+            msg.put("msg_type", "action_card");
+            JSONObject actionCard = new JSONObject();
+            actionCard.put("title", "确认过磅信息");
+            StringBuilder builder = new StringBuilder();
+            builder.append("# 过磅通知\n");
+            builder.append("#### 供应商：" + poundLog.getCompName() + "\n");
+            builder.append("#### 货品：" + poundLog.getGoodsName() + "\n");
+            builder.append("#### 报检重量：" + poundLog.getInspWeightTotal() + "公斤\n");
+            builder.append("#### 实际称重：" + poundLog.getNetWeight() + "公斤\n");
+            builder.append("#### 磅差：" + poundLog.getDiffWeight() + "公斤\n");
+            actionCard.put("markdown", builder.toString());
+            actionCard.put("single_title", "查看详情");
+            actionCard.put("single_url", SINGLE_URL_CONFIRM_ORDER + "?token=" + token + "&plId=" + poundLog.getId());
+            msg.put("action_card", actionCard);
 
-        //编辑消息内容
-        JSONObject msg = new JSONObject();
-        msg.put("msg_type", "action_card");
-        JSONObject actionCard = new JSONObject();
-        actionCard.put("title", "确认过磅信息");
-        StringBuilder builder = new StringBuilder();
-        builder.append("# 审批\n");
-        builder.append("#### 请确认过磅信息是否有误\n");
-        builder.append("> A man who stands for nothing will fall for anything. \n");
-        actionCard.put("markdown", builder.toString());
-        actionCard.put("single_title", "查看详情");
-        actionCard.put("single_url", SINGLE_URL_CONFIRM_ORDER + "?token=" + token + "&plId=" + poundLogId);
-        msg.put("action_card", actionCard);
-
-        //发送消息
-        JSONObject jsonObject = DingTalkUtil.sendWorkMessage(userIds, null, false, msg);
-        if (jsonObject != null) {
-            int code = jsonObject.getIntValue("code");
-            if (code == SUCCESS_CODE) {
-                return true;
+            //发送消息
+            JSONObject jsonObject = DingTalkUtil.sendWorkMessage(userIds, null, false, msg);
+            if (jsonObject != null) {
+                int code = jsonObject.getIntValue("code");
+                if (code == SUCCESS_CODE) {
+                    return true;
+                }
             }
+        } catch (Exception e) {
+            return false;
+
         }
         return false;
     }
@@ -103,7 +111,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
                 String response = HttpUtil.get(GET_DING_TALK_ACCESS_TOKEN_URL);
                 if (StringUtils.isNotEmpty(response)) {
                     JSONObject json = JSONObject.parseObject(response);
-                    if (json.getString(RESULT_KEY) == SUCCESS_RESULT) {
+                    if (json.getString(RESULT_KEY).equals(SUCCESS_RESULT)) {
                         JSONObject data = json.getJSONObject("response");
                         accessToken = data.getString("access_token");
                         if (StringUtils.isNotEmpty(accessToken)) {
@@ -132,12 +140,12 @@ public class DingTalkServiceImpl implements IDingTalkService {
             if (StringUtils.isEmpty(userId)) {
                 HashMap<String, Object> paramMap = new HashMap<>(5);
                 paramMap.put("type", "jobNumber");
-                paramMap.put("user", empId);
+                paramMap.put("user", String.valueOf(empId));
 
-                String response = HttpUtil.get(GET_DING_TALK_USER_ID_URL);
+                String response = HttpUtil.get(GET_DING_TALK_USER_ID_URL, paramMap);
                 if (StringUtils.isNotEmpty(response)) {
                     JSONObject json = JSONObject.parseObject(response);
-                    if (json.getString(RESULT_KEY) == SUCCESS_RESULT) {
+                    if (json.getString(RESULT_KEY).equals(SUCCESS_RESULT)) {
                         JSONObject data = json.getJSONObject("response");
                         userId = data.getString("userId");
                         if (StringUtils.isNotEmpty(userId)) {
@@ -168,10 +176,10 @@ public class DingTalkServiceImpl implements IDingTalkService {
                 paramMap.put("type", "mobile");
                 paramMap.put("user", mobile);
 
-                String response = HttpUtil.get(GET_DING_TALK_USER_ID_URL);
+                String response = HttpUtil.get(GET_DING_TALK_USER_ID_URL, paramMap);
                 if (StringUtils.isNotEmpty(response)) {
                     JSONObject json = JSONObject.parseObject(response);
-                    if (json.getString(RESULT_KEY) == SUCCESS_RESULT) {
+                    if (json.getString(RESULT_KEY).equals(SUCCESS_RESULT)) {
                         JSONObject data = json.getJSONObject("response");
                         userId = data.getString("userId");
                         if (StringUtils.isNotEmpty(userId)) {

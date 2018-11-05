@@ -1,6 +1,5 @@
 package com.yotrio.pound;
 
-import com.yotrio.common.helpers.UserAuthTokenHelper;
 import com.yotrio.common.utils.PropertiesFileUtil;
 
 import java.io.IOException;
@@ -57,8 +56,8 @@ public class MainTest {
 //        System.out.println("token: " + token);
 
 
-        String userAuthToken = UserAuthTokenHelper.getUserAuthToken(326897, null);
-        System.out.println(userAuthToken);
+//        String userAuthToken = UserAuthTokenHelper.getUserAuthToken(326897, null);
+//        System.out.println(userAuthToken);
 
     }
 }

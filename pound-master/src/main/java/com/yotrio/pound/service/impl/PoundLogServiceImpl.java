@@ -236,7 +236,7 @@ public class PoundLogServiceImpl implements IPoundLogService {
             for (Inspection inspection : inspections) {
                 inspection.setPlId(logInDB.getId());
                 inspection.setPlNo(logInDB.getPoundLogNo());
-                inspectionMapper.updateByPlIdSelective(inspection);
+                inspectionMapper.updateByPrimaryKeySelective(inspection);
                 if (StringUtils.isEmpty(poundLog.getCompName())) {
                     poundLog.setCompName(inspection.getCompName());
                     poundLog.setUpdateTime(new Date());
@@ -245,11 +245,9 @@ public class PoundLogServiceImpl implements IPoundLogService {
             }
         } else {
             //未生成,执行插入操作
-//            poundLog.setId(null);
             poundLogMapper.insert(poundLog);
             //保存报检单信息
             for (Inspection inspection : inspections) {
-//                inspection.setId(null);
                 inspection.setPlId(poundLog.getId());
                 inspection.setPlNo(poundLog.getPoundLogNo());
                 inspectionMapper.insert(inspection);

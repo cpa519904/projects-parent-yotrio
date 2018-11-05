@@ -26,20 +26,20 @@ public class DingTalkUtil {
     /**
      * 钉钉企业号AppKey
      */
-//    public static final String APP_KEY = "dingyzwm1i5jahdt44av";
-    public static final String APP_KEY = "dingew5vvjt4mmhuwqtx";
+    public static final String APP_KEY = "dingyzwm1i5jahdt44av";
+//    public static final String APP_KEY = "dingew5vvjt4mmhuwqtx";
 
     /**
      * 钉钉企业号AppSecret
      */
-//    public static final String APP_SECRET = "kHVowHEs9WntGi06RSbq1fmyAZUa-1CiYKmeKRArEk-_W7L_yTw4J71kGPvZyq5O";
-    public static final String APP_SECRET = "2fPjVXdrczsCzrIaa98PNYmlUwD2u_iG1kQh3eRJXumXjeT4mxADX_a0Hd6N5TVr";
+    public static final String APP_SECRET = "kHVowHEs9WntGi06RSbq1fmyAZUa-1CiYKmeKRArEk-_W7L_yTw4J71kGPvZyq5O";
+//    public static final String APP_SECRET = "2fPjVXdrczsCzrIaa98PNYmlUwD2u_iG1kQh3eRJXumXjeT4mxADX_a0Hd6N5TVr";
 
     /**
      * 钉钉企业号AgentId
      */
-//    public static final long AGENT_ID = 193238118L;
-    public static final long AGENT_ID = 194463808L;
+    public static final long AGENT_ID = 193238118L;
+//    public static final long AGENT_ID = 194463808L;
 
     /**
      * 授权方corpid

@@ -1,5 +1,7 @@
 package com.yotrio.pound.service;
 
+import com.yotrio.pound.model.PoundLog;
+
 /**
  * 模块名称：projects-parent com.yotrio.pound.service
  * 功能说明：<br>
@@ -10,7 +12,7 @@ package com.yotrio.pound.service;
 public interface IDingTalkService {
 
 
-    boolean sendConfirmMessage(String token, Integer poundLogId, String userIds);
+    boolean sendConfirmMessage(String token, PoundLog poundLog, String userIds);
 
     String getCacheAccessToken();
 

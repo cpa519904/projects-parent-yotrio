@@ -86,16 +86,6 @@ public class InspectionServiceImpl implements IInspectionService {
         return inspectionMapper.findListByPlNo(poundLogNo);
     }
 
-    /**
-     * 根据过磅单号id更新
-     *
-     * @param inspection
-     * @return
-     */
-    @Override
-    public int updateByPlIdSelective(Inspection inspection) {
-        return inspectionMapper.updateByPlIdSelective(inspection);
-    }
 
     /**
      * 根据过磅单id获取报检列表
@@ -105,6 +95,16 @@ public class InspectionServiceImpl implements IInspectionService {
     @Override
     public List<Inspection> findListByPlId(Integer id) {
         return inspectionMapper.findListByPlId(id);
+    }
+
+    /**
+     * 根据报检单号获取报检单
+     * @param inspNo
+     * @return
+     */
+    @Override
+    public Inspection findByInspNo(String inspNo) {
+        return inspectionMapper.findByInspNo(inspNo);
     }
 
     /**
@@ -139,13 +139,11 @@ public class InspectionServiceImpl implements IInspectionService {
      * @return
      */
     @Override
-
     public PageInfo findAllPaging(DataTablePage dataTablePage, Inspection inspection) {
         PageHelper.startPage(dataTablePage.getPage(), dataTablePage.getLimit());
         List<Inspection> inspectionList = inspectionMapper.selectListByMap(BeanUtil.beanToMap(inspection));
         PageInfo pageInfo = new PageInfo(inspectionList);
         return pageInfo;
     }
-
 
 }

@@ -383,6 +383,7 @@
             <scope>system</scope>
             <systemPath>${yotrio.lib.dir}/taobao-sdk-java-auto_1479188381469-20180918.jar</systemPath>
         </dependency>
+
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>

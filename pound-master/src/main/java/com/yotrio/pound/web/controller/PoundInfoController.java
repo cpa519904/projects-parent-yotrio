@@ -6,7 +6,6 @@ import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.pound.model.PoundInfo;
 import com.yotrio.pound.service.IPoundInfoService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,7 +37,7 @@ public class PoundInfoController extends BaseController {
      * @param model
      * @return
      */
-    @RequiresPermissions("poundInfoList:view")
+//    @RequiresPermissions("poundInfoList:view")
     @RequestMapping(value = {"/list.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String list(Model model) {
 

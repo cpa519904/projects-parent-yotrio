@@ -15,7 +15,8 @@ public enum SysUserRank {
     SYS_USER_RANK_3(3, "铂金管理员"),
     SYS_USER_RANK_4(4, "黄金管理员"),
     SYS_USER_RANK_5(5, "白银管理员"),
-    SYS_USER_RANK_6(6, "青铜管理员");
+    SYS_USER_RANK_6(6, "青铜管理员"),
+    SYS_USER_RANK_7(7, "系统用户");
 
     private Integer rank;
 

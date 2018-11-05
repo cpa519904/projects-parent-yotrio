@@ -26,8 +26,7 @@ public interface InspectionMapper {
 
     List<Inspection> findListByPlNo(String poundLogNo);
 
-
-    int updateByPlIdSelective(Inspection inspection);
-
     List<Inspection> findListByPlId(Integer poundLogId);
+
+    Inspection findByInspNo(String inspNo);
 }

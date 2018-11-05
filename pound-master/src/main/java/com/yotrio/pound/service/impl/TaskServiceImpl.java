@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.yotrio.common.constants.PoundLogConstant;
 import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.common.enums.GoodsKindEnum;
 import com.yotrio.common.helpers.UserAuthTokenHelper;
 import com.yotrio.pound.dao.InspectionMapper;
 import com.yotrio.pound.dao.TaskMapper;
@@ -102,7 +103,12 @@ public class TaskServiceImpl implements ITaskService {
         Integer poundLogId = Integer.valueOf(task.getOtherId());
         PoundLog poundLog = poundLogService.findCacheById(poundLogId);
         if (poundLog == null) {
+            task.setStatus(TaskConstant.STATUS_CANCEL);
+            taskMapper.updateByPrimaryKeySelective(task);
             return "找不到您要执行的任务信息";
+        }
+        if (poundLog.getGoodsKind() != null) {
+            poundLog.setGoodsName(GoodsKindEnum.getKindName(poundLog.getGoodsKind()));
         }
         PoundInfo poundInfo = poundInfoService.findCacheById(poundLog.getPoundId());
         if (poundInfo == null) {
@@ -118,11 +124,15 @@ public class TaskServiceImpl implements ITaskService {
             List<String> userIds = new ArrayList<>(20);
             //通过员工工号获取钉钉用户id
             String dingUserId = dingTalkService.getCacheDingTalkUserIdByEmpId(poundInfo.getAdminEmpId());
-            userIds.add(dingUserId);
-            String userIdList = StringUtils.join(userIds, ",");
+            if (dingUserId != null) {
+                userIds.add(dingUserId);
+            }
+            if (userIds.size() > 0) {
+                String userIdList = StringUtils.join(userIds, ",");
+                //发送钉钉消息
+                sendResult = dingTalkService.sendConfirmMessage(token, poundLog, userIdList);
+            }
 
-            //发送钉钉消息
-            sendResult = dingTalkService.sendConfirmMessage(token, poundLog.getId(), userIdList);
             if (sendResult) {
                 //更新任务状态
                 task.setStatus(TaskConstant.STATUS_FINISHED);

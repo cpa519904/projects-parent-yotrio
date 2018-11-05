@@ -142,6 +142,9 @@ public class ApiController extends BaseController {
                     return returnError("此地磅已被停用，请联系管理员处理...");
                 }
                 poundLog.setPoundName(poundInfo.getPoundName());
+                if (poundLog.getGoodsKind() != null) {
+                    poundLog.setGoodsName(GoodsKindEnum.getKindName(poundLog.getGoodsKind()));
+                }
 
                 //交给事务去处理并保存过磅单以及报检单
                 poundLogService.savePoundLogAndInspections(poundLog, inspections);
@@ -152,11 +155,13 @@ public class ApiController extends BaseController {
                     boolean sendResult = false;
                     List<String> userIds = new ArrayList<>(20);
                     //通过员工工号获取钉钉用户id
-                    String dingUserId = dingTalkService.getCacheDingTalkUserIdByEmpId(poundInfo.getAdminEmpId());
-                    userIds.add(dingUserId);
+                    String dingUserId = dingTalkService.getCacheDingTalkUserIdByMobile(poundInfo.getAdminMobile());
+                    if (dingUserId != null) {
+                        userIds.add(dingUserId);
+                    }
                     if (userIds.size() > 0) {
                         String userIdList = StringUtils.join(userIds, ",");
-                        sendResult = dingTalkService.sendConfirmMessage(token, poundLog.getId(), userIdList);
+                        sendResult = dingTalkService.sendConfirmMessage(token, poundLog, userIdList);
                     }
 
                     if (!sendResult) {
@@ -175,7 +180,7 @@ public class ApiController extends BaseController {
                     }
                 }
 
-                return returnSuccess("上传成功");
+//                return returnSuccess("上传成功");
             }
         } catch (UploadLogException e) {
             logger.error("上传过磅信息异常:", e.getMessage());
@@ -220,7 +225,11 @@ public class ApiController extends BaseController {
     }
 
     /**
-     * 获取我地磅的token
+     * 获取地磅的token
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @return
      */
     @RequestMapping(value = "/getPoundToken", method = {RequestMethod.GET})
     @ResponseBody
@@ -236,13 +245,51 @@ public class ApiController extends BaseController {
             return returnError("用户不存在");
         }
 
-        String  encryptPassword= passwordHelper.getEncryptPassword(sysUser, password);
+        String encryptPassword = passwordHelper.getEncryptPassword(sysUser, password);
         if (!sysUser.getPassword().equals(encryptPassword)) {
-            return returnError("登录失败，请检查您的用户名获取密码");
+            return returnError("登录失败，请检查您的用户名和密码");
+        }
+        String token = UserAuthTokenHelper.getUserAuthToken(sysUser.getId(), null);
+        JSONObject object = new JSONObject();
+        object.put("token", token);
+        return returnSuccess(object);
+    }
+
+    /**
+     * 获取报检单
+     */
+    @RequestMapping(value = "/getInspectionInfo", method = {RequestMethod.GET})
+    @ResponseBody
+    public Callback getInspectionInfo(String token, String deliveryNo) {
+        if (StringUtils.isEmpty(token)) {
+            return returnError("token为空");
+        }
+        Integer userId = UserAuthTokenHelper.getAppUserId(token);
+        if (userId == null) {
+            return returnError("token校验失败");
+        }
+        SysUser sysUser = sysUserService.findByUserId(userId);
+        if (sysUser == null) {
+            return returnError("token校验失败");
+        }
+        if (StringUtils.isEmpty(deliveryNo)) {
+            return returnError("deliveryNo为空");
+        }
+        Inspection inspection = inspectionService.findByInspNo(deliveryNo);
+        if (inspection == null) {
+            return returnError("找不到您要获取的报检单");
+        }
+        PoundLog poundLog = poundLogService.findByPoundLogNo(inspection.getPlNo());
+        if (poundLog == null) {
+            return returnError("找不到您要获取的过磅信息");
         }
 
-        String token = UserAuthTokenHelper.getUserAuthToken(sysUser.getId(), null);
-        return returnSuccess(token);
+        JSONObject data = new JSONObject();
+        data.put("BillNo", poundLog.getPoundLogNo());
+        data.put("Remark", poundLog.getRemark());
+        data.put("DeliveryNo", deliveryNo);
+        data.put("WeightValue", inspection.getInspNetWeight());
+        return returnSuccess(data);
     }
 
 }
