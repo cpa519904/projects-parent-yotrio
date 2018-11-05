@@ -180,7 +180,7 @@ public class ApiController extends BaseController {
                     }
                 }
 
-//                return returnSuccess("上传成功");
+                return returnSuccess("上传成功");
             }
         } catch (UploadLogException e) {
             logger.error("上传过磅信息异常:", e.getMessage());

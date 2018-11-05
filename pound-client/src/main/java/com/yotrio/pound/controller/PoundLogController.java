@@ -428,24 +428,24 @@ public class PoundLogController extends BaseController {
         String msg = "网络连接失败,联网后系统会自动为您提交";
         //先看网络连接是否成功？失败：创建定时任务，提示失败原因
         // TODO: 2018-10-31 这里判断网络是否连接太耗时，应该调整一下
-        if (!NetStateUtil.isConnect()) {
-            Task taskInDB = taskService.findByOtherId(poundLogNo);
-            if (taskInDB != null) {
-                return ResultUtil.error("已生成任务，请勿重复提交");
-            }
-            Task task = new Task();
-            task.setStatus(TaskConstant.STATUS_INIT);
-            task.setOtherId(String.valueOf(poundLog.getPoundLogNo()));
-            task.setWeight(TaskConstant.WEIGHT_INIT);
-            task.setTypes(TaskConstant.TYPE_UPLOAD_MSG);
-            task.setTaskName("上传过磅记录失败|plNo=" + poundLog.getPoundLogNo());
-            task.setDescription(msg);
-            taskService.save(task);
-            //更改过磅单状态网络断开，定时任务执行上传
-            poundLog.setStatus(PoundLogConstant.STATUS_NET_DISCONNECT);
-            poundLogService.update(poundLog);
-            return ResultUtil.error(msg, poundLog);
-        }
+//        if (!NetStateUtil.isConnect()) {
+//            Task taskInDB = taskService.findByOtherId(poundLogNo);
+//            if (taskInDB != null) {
+//                return ResultUtil.error("已生成任务，请勿重复提交");
+//            }
+//            Task task = new Task();
+//            task.setStatus(TaskConstant.STATUS_INIT);
+//            task.setOtherId(String.valueOf(poundLog.getPoundLogNo()));
+//            task.setWeight(TaskConstant.WEIGHT_INIT);
+//            task.setTypes(TaskConstant.TYPE_UPLOAD_MSG);
+//            task.setTaskName("上传过磅记录失败|plNo=" + poundLog.getPoundLogNo());
+//            task.setDescription(msg);
+//            taskService.save(task);
+//            //更改过磅单状态网络断开，定时任务执行上传
+//            poundLog.setStatus(PoundLogConstant.STATUS_NET_DISCONNECT);
+//            poundLogService.update(poundLog);
+//            return ResultUtil.error(msg, poundLog);
+//        }
 
         //获取关联的报检单
         List<Inspection> inspections = inspectionService.findListByPlNo(poundLogNo);

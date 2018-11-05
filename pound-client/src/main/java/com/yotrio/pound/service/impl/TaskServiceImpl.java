@@ -102,6 +102,8 @@ public class TaskServiceImpl implements ITaskService {
         String poundLogNo = task.getOtherId();
         PoundLog poundLog = poundLogMapper.findByPoundLogNo(poundLogNo);
         if (poundLog == null) {
+            task.setStatus(TaskConstant.STATUS_CANCEL);
+            taskMapper.updateByPrimaryKeySelective(task);
             return "找不到您要执行的任务信息";
         }
 

@@ -1,6 +1,5 @@
 package com.yotrio.pound.sockets;
 
-import cn.hutool.core.util.RandomUtil;
 import com.yotrio.common.exceptions.*;
 import com.yotrio.common.utils.SerialPortUtil;
 import gnu.io.SerialPort;
@@ -47,12 +46,12 @@ public class PoundWebSocket {
     private static SerialPortEventListener serialPortEventListener = null;
 
     //监听串口
-//    private static final String PORT_NAME = "COM1";
-    private static final String PORT_NAME = "COM5";
+    private static final String PORT_NAME = "COM1";
+//    private static final String PORT_NAME = "COM5";
 
     //监听串口波特率
-    private static final int BAUDRATE = 1200;
-//    private static final int BAUDRATE = 2400;
+//    private static final int BAUDRATE = 1200;
+    private static final int BAUDRATE = 9600;
 
     /**
      * 处理连接建立
@@ -98,7 +97,9 @@ public class PoundWebSocket {
 //                                }
 
 //                                System.out.println("收到的数据：" + new String(bytes, "GB2312"));
-                                sendMessage(String.valueOf(Integer.valueOf(new String(bytes, "GB2312")) - RandomUtil.randomInt(1000,10000)));
+//                                sendMessage(String.valueOf(Integer.valueOf(new String(bytes, "GB2312")) - RandomUtil.randomInt(1000,10000)));
+                                String msg = new String(bytes, "GBK");
+                                sendMessage(msg);
 
                             } catch (ReadDataFromSerialPortFailure readDataFromSerialPortFailure) {
                                 logger.error(readDataFromSerialPortFailure.toString());

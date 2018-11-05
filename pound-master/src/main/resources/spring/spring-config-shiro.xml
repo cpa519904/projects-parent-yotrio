@@ -118,7 +118,8 @@
     <!-- 验证码过滤器 -->
     <bean id="vercodeValidateFilter" class="com.yotrio.pound.web.shiro.filter.VercodeValidateFilter">
         <property name="vercodeParam" value="vercode"/>
-        <property name="vercodeEbabled" value="true"/>
+        <!--true：打开验证码-->
+        <property name="vercodeEbabled" value="false"/>
         <property name="loginUrl" value="/login"/>
         <!-- (默认 shiroLoginFailure) -->
         <property name="failureKeyAttribute" value="shiroLoginFailure"/>
