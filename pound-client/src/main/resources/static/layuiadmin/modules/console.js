@@ -104,8 +104,8 @@ layui.define(['table', 'form'], function (exports) {
 
                             //过磅单状态
                             var status = currPoundLog.status;
-                            console.log("status:", status);
-                            methods.reloadButtonStatus(status);
+                            // console.log("status:", status);
+                            methods.reloadButtonStatus(status, currPoundLog.types);
                         }
                     } else {
                         layer.alert("获取未处理过磅单异常：" + result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
@@ -160,7 +160,7 @@ layui.define(['table', 'form'], function (exports) {
             };
         }
         //重新加载按钮状态
-        , reloadButtonStatus(status) {
+        , reloadButtonStatus(status, types) {
             if (status == 2) {//两个数据都有了,可以显示提交按钮了
                 $("#btn-submit-server").removeClass("layui-btn-disabled");
             } else if (status == 3 || status == 4) {
@@ -196,6 +196,14 @@ layui.define(['table', 'form'], function (exports) {
                 $("#weigh-gross-submit").removeClass("layui-btn-disabled");
                 //称皮重
                 $("#weigh-tare-submit").removeClass("layui-btn-disabled");
+            }
+            //出货不显示添加删除报价单按钮
+            if (types != null && types != 0) {
+                //添加报检单
+                $("#btn-add-inspection").addClass("layui-btn-disabled");
+                //删除报检单
+                $("#btn-delete-inspections").addClass("layui-btn-disabled");
+                //编辑报检单
             }
         }
     }
@@ -384,7 +392,7 @@ layui.define(['table', 'form'], function (exports) {
 
                             //过磅单状态
                             var status = result.data.status;
-                            methods.reloadButtonStatus(status);
+                            methods.reloadButtonStatus(status, result.data.types);
                             // if (status == 2) {//两个数据都有了,可以显示提交按钮了
                             //     $("#btn-submit-server").removeClass("layui-btn-disabled");
                             // } else if (status == 3 || status == 4) {
@@ -472,12 +480,7 @@ layui.define(['table', 'form'], function (exports) {
 
                             //过磅单状态
                             var status = result.data.status;
-                            // if (status == 2) {//两个数据都有了,可以显示提交按钮了
-                            //     $("#btn-submit-server").removeClass("layui-btn-disabled");
-                            // } else if (status == 3 || status == 4) {
-                            //     $("#btn-print").removeClass("layui-btn-disabled");
-                            // }
-                            methods.reloadButtonStatus(status);
+                            methods.reloadButtonStatus(status, result.data.types);
                         } else {
                             //如果还未生成过磅单就称皮重，提示用户是否要执行退货或者卖废铁操作
                             if (result.msg == '找不到您要更新的过磅记录') {
@@ -654,11 +657,18 @@ layui.define(['table', 'form'], function (exports) {
                         $("#btn-print").removeClass("layui-btn-disabled");
                         $("#unitName").val(result.data.unitName);
                         if (result.data.status) {
-                            methods.reloadButtonStatus(result.data.status);
+                            methods.reloadButtonStatus(result.data.status, result.data.types);
                         }
                         layer.msg('提交成功');
                     } else {
-                        layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                        if (result.msg == '网络连接失败,联网后系统会自动为您提交') {
+                            layer.alert(result.msg, {icon: 5}, function (index) {
+                                //刷新页面
+                                window.location.reload();
+                            }); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                        } else {
+                            layer.alert(result.msg, {icon: 5});
+                        }
                     }
                 },
                 error: function (error) {
@@ -686,7 +696,7 @@ layui.define(['table', 'form'], function (exports) {
                     if (result.code == 0) {
                         $("#btn-print").removeClass("layui-btn-disabled");
                         if (result.data.status) {
-                            methods.reloadButtonStatus(result.data.status);
+                            methods.reloadButtonStatus(result.data.status, result.data.types);
                         }
 
                         //更新未完成列表

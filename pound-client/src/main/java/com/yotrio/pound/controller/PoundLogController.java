@@ -1,6 +1,7 @@
 package com.yotrio.pound.controller;
 
 
+import cn.hutool.http.HttpException;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.yotrio.common.constants.ApiUrlConstant;
@@ -15,6 +16,7 @@ import com.yotrio.common.utils.NetStateUtil;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.domain.SystemProperties;
 import com.yotrio.pound.model.Inspection;
+import com.yotrio.pound.model.PoundInfo;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.Task;
 import com.yotrio.pound.service.IHttpService;
@@ -74,17 +76,42 @@ public class PoundLogController extends BaseController {
 
     /**
      * 过磅记录详情页面
+     *
+     * @param model
+     * @param poundLogNo
+     * @return
      */
     @RequestMapping(value = {"/detail.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String detail(Model model, Integer id) {
-        PoundLog poundLog = poundLogService.findById(id);
-        if (poundLog != null) {
-            if (poundLog.getGoodsKind() != null) {
-                poundLog.setGoodsName(GoodsKindEnum.getKindName(poundLog.getGoodsKind()));
+    public String detail(Model model, String poundLogNo) {
+
+        Map<String, Object> map = new HashMap<>(10);
+        String token = UserAuthTokenHelper.getUserAuthToken(Integer.valueOf(sysProperties.getPoundClientId()), null);
+        map.put("token", token);
+        map.put("poundLogNo", poundLogNo);
+
+        //调接口获取过磅信息
+        String url = sysProperties.getPoundMasterBaseUrl() + ApiUrlConstant.GET_POUND_LOG_DETAIL;
+        try {
+            String response = HttpUtil.get(url, map);
+            if (StringUtils.isNotEmpty(response)) {
+                JSONObject json = JSONObject.parseObject(response);
+                if (json.getIntValue("code") == SUCCESS_CODE) {
+                    JSONObject data = json.getJSONObject("data");
+                    JSONObject logJson = data.getJSONObject("poundLog");
+                    PoundLog poundLog = JSONObject.parseObject(logJson.toJSONString(), PoundLog.class);
+                    if (poundLog != null) {
+                        if (poundLog.getGoodsKind() != null) {
+                            poundLog.setGoodsName(GoodsKindEnum.getKindName(poundLog.getGoodsKind()));
+                        }
+                        model.addAttribute("poundLog", poundLog);
+                    }
+                }
             }
+        } catch (Exception e) {
+            logger.error("获取过磅详情失败={}", e);
         }
-        model.addAttribute("poundLog", poundLog);
-        model.addAttribute("id", id);
+        model.addAttribute("inspectionListUrl", sysProperties.getPoundMasterBaseUrl() + ApiUrlConstant.GET_INSPECTION_LIST);
+        model.addAttribute("token", token);
         return "pound/pound_log_detail";
     }
 
@@ -426,33 +453,8 @@ public class PoundLogController extends BaseController {
         poundLog.setUnitName(unitName);
 
         String msg = "网络连接失败,联网后系统会自动为您提交";
-        //先看网络连接是否成功？失败：创建定时任务，提示失败原因
-        // TODO: 2018-10-31 这里判断网络是否连接太耗时，应该调整一下
-//        if (!NetStateUtil.isConnect()) {
-//            Task taskInDB = taskService.findByOtherId(poundLogNo);
-//            if (taskInDB != null) {
-//                return ResultUtil.error("已生成任务，请勿重复提交");
-//            }
-//            Task task = new Task();
-//            task.setStatus(TaskConstant.STATUS_INIT);
-//            task.setOtherId(String.valueOf(poundLog.getPoundLogNo()));
-//            task.setWeight(TaskConstant.WEIGHT_INIT);
-//            task.setTypes(TaskConstant.TYPE_UPLOAD_MSG);
-//            task.setTaskName("上传过磅记录失败|plNo=" + poundLog.getPoundLogNo());
-//            task.setDescription(msg);
-//            taskService.save(task);
-//            //更改过磅单状态网络断开，定时任务执行上传
-//            poundLog.setStatus(PoundLogConstant.STATUS_NET_DISCONNECT);
-//            poundLogService.update(poundLog);
-//            return ResultUtil.error(msg, poundLog);
-//        }
-
         //获取关联的报检单
         List<Inspection> inspections = inspectionService.findListByPlNo(poundLogNo);
-        //进货要计算报每张检单称重结果，按报检单上重量 的比例分配
-        if (poundLog.getTypes() == PoundLogConstant.TYPES_IN && inspections.size() > 0) {
-            inspectionService.countInspNetWeight(inspections, poundLog);
-        }
 
         //将本地图片url转base64字符串上传，上传成功后再保存线上服务器
         if (StringUtils.isNotEmpty(poundLog.getGrossImgUrl())) {
@@ -497,6 +499,25 @@ public class PoundLogController extends BaseController {
                     return ResultUtil.error(msg);
                 }
             }
+        } catch (HttpException e) {
+            //网络异常，断网状态，创建任务，网络通后去提交
+            Task taskInDB = taskService.findByOtherId(poundLogNo);
+            if (taskInDB != null) {
+                return ResultUtil.error("已生成任务，请勿重复提交");
+            }
+            Task task = new Task();
+            task.setStatus(TaskConstant.STATUS_INIT);
+            task.setOtherId(String.valueOf(poundLog.getPoundLogNo()));
+            task.setWeight(TaskConstant.WEIGHT_INIT);
+            task.setTypes(TaskConstant.TYPE_UPLOAD_MSG);
+            task.setTaskName("上传过磅记录失败|plNo=" + poundLog.getPoundLogNo());
+            task.setDescription(msg);
+            taskService.save(task);
+            //更改过磅单状态网络断开，定时任务执行上传
+            poundLog.setStatus(PoundLogConstant.STATUS_NET_DISCONNECT);
+            poundLogService.update(poundLog);
+            logger.error("上传过磅单失败={}", e.getMessage());
+            return ResultUtil.error(msg, poundLog);
         } catch (Exception e) {
             logger.error("上传过磅单失败={}", e);
         }

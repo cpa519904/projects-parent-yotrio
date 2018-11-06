@@ -69,7 +69,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
             JSONObject msg = new JSONObject();
             msg.put("msg_type", "action_card");
             JSONObject actionCard = new JSONObject();
-            actionCard.put("title", "确认过磅信息");
+            actionCard.put("title", "过磅通知");
             StringBuilder builder = new StringBuilder();
             builder.append("# 过磅通知\n");
             builder.append("#### 供应商：" + poundLog.getCompName() + "\n");

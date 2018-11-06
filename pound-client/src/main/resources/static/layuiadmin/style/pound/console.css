@@ -41,3 +41,13 @@
     background-color: #4E5465;
 }
 
+.print-content-title {
+    text-align: center;
+    font-size: 18px;
+}
+
+.print-content-title img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 5px;
+}

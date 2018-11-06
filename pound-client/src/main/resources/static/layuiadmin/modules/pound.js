@@ -33,7 +33,7 @@ layui.define(['table', 'form'], function (exports) {
             , {field: 'remark', title: '备注'}
             // , {field: 'status', title: '状态'}
             // , {field: 'updateTime', title: '更新时间', sort: true}
-            // , {title: '操作', width: 120, align: 'center', fixed: 'right', toolbar: '#table-pound-log'}
+            , {title: '操作', width: 120, align: 'center', fixed: 'right', toolbar: '#table-pound-log'}
         ]]
         , page: true
         , limit: 10
@@ -61,7 +61,7 @@ layui.define(['table', 'form'], function (exports) {
             var index = layer.open({
                 type: 2
                 , title: '查看过磅记录'
-                , content: '/poundLog/detail.htm?id=' + data.id
+                , content: '/poundLog/detail.htm?poundLogNo=' + data.poundLogNo
                 , maxmin: true
                 , area: ['500px', '450px']
                 , btn: '关闭'
@@ -78,6 +78,34 @@ layui.define(['table', 'form'], function (exports) {
             });
 
             layer.full(index);
+        }
+    });
+
+    //inspection列表
+    var data = {};
+    data.plNo = $("#poundLogNo").val();
+    data.token = $("#token").val();
+    table.render({
+        elem: '#LAY-inspection-manage'
+        , url: $("#inspectionListUrl").val()
+        , where: data //如果无需传递额外参数，可不加该参数
+        , totalRow: true
+        , cols: [[
+            {field: 'inspNo', title: '报检单单号', minWidth: 120, totalRowText: '合计'}
+            , {field: 'goodsKindName', title: '货品', minWidth: 60, templet: '#goodsKindTpl'}
+            , {field: 'inspWeight', title: '报检单重量', minWidth: 80, sort: true, totalRow: true}
+            , {field: 'returnWeight', title: '随车退重量', minWidth: 80, sort: true, totalRow: true}
+            , {field: 'inspNetWeight', title: '净重', minWidth: 80, sort: true, totalRow: true}
+            , {field: 'types', title: '样品', minWidth: 60, templet: '#typesTpl'}
+            // , {title: '操作', width: 80, align: 'center', fixed: 'right', toolbar: '#table-inspection'}
+            // , {field: 'status', title: '状态'}
+            // , {field: 'updateTime', title: '更新时间', sort: true}
+        ]]
+        , limit: 10
+        , text: {
+            none: '暂无数据'
+        }, done: function (result) {
+
         }
     });
 

@@ -69,7 +69,7 @@ public class ApiController extends BaseController {
     @RequestMapping(value = "/poundLog/list", method = {RequestMethod.GET})
     @ResponseBody
     public Callback list(DataTablePage dataTablePage, PoundLogDto poundLogDto, String token) {
-        if (poundLogDto == null || poundLogDto.getPoundId() == null) {
+        if (poundLogDto == null) {
             return returnError("地磅参数异常");
         }
         if (StringUtils.isEmpty(token)) {
@@ -89,6 +89,34 @@ public class ApiController extends BaseController {
     }
 
     /**
+     * 根据根据过磅单那报检单列表
+     *
+     * @param plNo 过磅单单号
+     * @param token      认证秘钥
+     * @return
+     */
+    @RequestMapping(value = "/inspection/list", method = {RequestMethod.GET})
+    @ResponseBody
+    public Callback list(String plNo, String token) {
+        Integer poundId = UserAuthTokenHelper.getAppUserId(token);
+        if (poundId == null) {
+            return returnError("token校验失败");
+        }
+        if (StringUtils.isEmpty(plNo)) {
+            return returnError("过磅单单号为空");
+        }
+        PoundLog poundLog = poundLogService.findByPoundLogNoAndPoundId(plNo, poundId);
+        if (poundLog == null) {
+            return returnError("获取过磅信息失败");
+        }
+        List<Inspection> inspections = inspectionService.findListByPlNo(plNo);
+        if (inspections == null || inspections.size() == 0) {
+            return returnError("报检单数据为空");
+        }
+        return returnSuccess(Long.valueOf(inspections.size()), inspections);
+    }
+
+    /**
      * 根据id获取地磅信息
      *
      * @param id
@@ -102,6 +130,34 @@ public class ApiController extends BaseController {
         }
         PoundInfo poundInfo = poundInfoService.findCacheById(id);
         return returnSuccess(poundInfo);
+    }
+
+    /**
+     * 根据id获取地磅信息
+     *
+     * @param token      校验凭证
+     * @param poundLogNo 过磅单单号
+     * @return
+     */
+    @RequestMapping(value = "/getPoundLogDetail", method = {RequestMethod.GET})
+    @ResponseBody
+    public Callback getPoundLogDetail(String token, String poundLogNo) {
+        Integer poundId = UserAuthTokenHelper.getAppUserId(token);
+        if (poundId == null) {
+            return returnError("token校验失败");
+        }
+        if (StringUtils.isEmpty(poundLogNo)) {
+            return returnError("过磅单号为空");
+        }
+
+        //获取过磅信息
+        PoundLog poundLog = poundLogService.findByPoundLogNoAndPoundId(poundLogNo, poundId);
+        PoundInfo poundInfo = poundInfoService.findCacheById(poundId);
+        JSONObject dataObject = new JSONObject();
+        dataObject.put("poundLog", poundLog);
+        dataObject.put("poundInfo", poundInfo);
+
+        return returnSuccess(dataObject);
     }
 
     /**

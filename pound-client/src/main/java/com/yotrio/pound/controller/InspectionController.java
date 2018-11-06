@@ -115,6 +115,11 @@ public class InspectionController extends BaseController {
             return ResultUtil.error("过磅单已提交，不能再修改");
         }
 
+        //出货不能添加或者删除报检单
+        if (logInDB.getTypes() == PoundLogConstant.TYPES_OUT) {
+            return ResultUtil.error("出货不支持添加报检单");
+        }
+
         int saveResult = inspectionService.save(inspection);
         if (saveResult >= 1) {
             //添加成功更新过磅记录中数据 报检单总数、退回总数、样品总数
@@ -156,7 +161,7 @@ public class InspectionController extends BaseController {
     }
 
     /**
-     * 根据ids删除过磅信息
+     * 根据ids删除报检单信息
      *
      * @param ids        [1,2,3]
      * @param poundLogNo 过磅单单号
@@ -168,6 +173,10 @@ public class InspectionController extends BaseController {
         PoundLog logInDB = poundLogService.findByPoundLogNo(poundLogNo);
         if (logInDB == null) {
             return ResultUtil.error("找不到相应的过磅记录");
+        }
+        //出货不能添加或者删除报检单
+        if (logInDB.getTypes() == PoundLogConstant.TYPES_OUT) {
+            return ResultUtil.error("出货不支持删除报检单");
         }
         //过磅单状态控制，提交之后不能再修改
         if (logInDB.getStatus() > PoundLogConstant.STATUS_POUND_SECOND) {

@@ -34,7 +34,8 @@
                             <button class="layui-btn btn-inspection" style="margin-bottom: 0" data-type="newPoundLog">
                                 新增
                             </button>
-                            <button lay-submit lay-filter="btn-save-submit" id="btn-save-submit" class="layui-btn layui-btn-disabled"
+                            <button lay-submit lay-filter="btn-save-submit" id="btn-save-submit"
+                                    class="layui-btn layui-btn-disabled"
                                     style="margin-bottom: 0">保存
                             </button>
                             <button lay-submit lay-filter="btn-submit-server" id="btn-submit-server"
@@ -67,10 +68,12 @@
                                                placeholder="请输入" class="layui-input">
                                     </div>
                                 </div>
-                                <button id="btn-add-inspection" class="layui-btn btn-inspection layui-btn-sm" data-type="add"
+                                <button id="btn-add-inspection" class="layui-btn btn-inspection layui-btn-sm"
+                                        data-type="add"
                                         style="margin-left: 50px;">添加
                                 </button>
-                                <button id="btn-delete-inspections" class="layui-btn btn-inspection layui-btn-sm layui-btn-danger"
+                                <button id="btn-delete-inspections"
+                                        class="layui-btn btn-inspection layui-btn-sm layui-btn-danger"
                                         data-type="batchdel">删除
                                 </button>
                             </div>
@@ -86,7 +89,8 @@
                                     {{#  } }}
                                 </script>
                                 <script type="text/html" id="table-inspection">
-                                    <a  class="layui-btn layui-btn-normal layui-btn-xs btn-edit-inspection" lay-event="edit"><i
+                                    <a class="layui-btn layui-btn-normal layui-btn-xs btn-edit-inspection"
+                                       lay-event="edit"><i
                                             class="layui-icon layui-icon-edit"></i>编辑</a>
                                     <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>-->
                                 </script>
@@ -107,7 +111,7 @@
                                                        style="padding-left:0;width:120px;">实时重量</label>
                                                 <div class="layui-input-inline">
                                                     <input id="currentWeight" name="currentWeight" type="text"
-                                                           autocomplete="off" class="layui-input"
+                                                           autocomplete="off" class="layui-input" lay-verify="number"
                                                            style="color: #009688;" readonly="readonly">
                                                 </div>
                                             </div>
@@ -168,7 +172,7 @@
                             <div class="layui-col-md6">
                                 <div class="layui-card">
                                     <div class="layui-card-header">
-                                        <button  lay-submit lay-filter="weigh-gross-submit" id="weigh-gross-submit"
+                                        <button lay-submit lay-filter="weigh-gross-submit" id="weigh-gross-submit"
                                                 class="layui-btn layui-btn-sm">称毛重
                                         </button>
                                     </div>
@@ -268,14 +272,16 @@
             </div>
         </div>
     </div>
-
 </div>
+
+<!--打印页面-->
 <div class="layui-container" style="display: none" id="print-content">
     <div class="layui-row">
         <div class="layui-col-md12 ">
             <div class="layui-card">
                 <div class="layui-form layui-card-header">
-                    <div style="text-align: center;font-size: 18px;"><span>浙江永强过磅单</span></div>
+                    <div class="print-content-title"><img src="../layuiadmin/style/pound/logo.png"><span>浙江永强过磅单</span>
+                    </div>
                 </div>
                 <div class="layui-card-body">
                     <div class="layui-row">
@@ -299,7 +305,7 @@
                                             <div>净重：<span id="print-net-weight"></span></div>
                                         </div>
                                         <!--<div class="layui-col-xs12">-->
-                                            <!--<div>磅差：<span id="print-diff-weight"></span></div>-->
+                                        <!--<div>磅差：<span id="print-diff-weight"></span></div>-->
                                         <!--</div>-->
                                     </div>
                                 </div>
@@ -344,23 +350,23 @@
                     </div>
                     <div class="layui-row" id="print-table-inspections">
                         <!--<div class="layui-col-xs12">-->
-                            <!--<div class="layui-card-body" style="padding-left: 0">-->
-                                <!--<table id="LAY-inspection-print-manage" class="layui-table">-->
-                                    <!--<tr>-->
-                                        <!--<th>报检单</th>-->
-                                        <!--<th>单号</th>-->
-                                        <!--<th>重量</th>-->
-                                        <!--<th>退货重量</th>-->
-                                    <!--</tr>-->
-                                    <!--<tr>-->
-                                        <!--<td>1</td>-->
-                                        <!--<td>20180306123512</td>-->
-                                        <!--<td>100</td>-->
-                                        <!--<td>0</td>-->
-                                    <!--</tr>-->
-                                    <!--<tr>-->
-                                <!--</table>-->
-                            <!--</div>-->
+                        <!--<div class="layui-card-body" style="padding-left: 0">-->
+                        <!--<table id="LAY-inspection-print-manage" class="layui-table">-->
+                        <!--<tr>-->
+                        <!--<th>报检单</th>-->
+                        <!--<th>单号</th>-->
+                        <!--<th>重量</th>-->
+                        <!--<th>退货重量</th>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                        <!--<td>1</td>-->
+                        <!--<td>20180306123512</td>-->
+                        <!--<td>100</td>-->
+                        <!--<td>0</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                        <!--</table>-->
+                        <!--</div>-->
                         <!--</div>-->
                     </div>
                     <div class="layui-row">

@@ -24,27 +24,27 @@
                                th:value="${poundInfo.poundName}">
                     </div>
                 </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">地磅管理员</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="adminName" autocomplete="off" readonly="readonly" class="layui-input"
-                               th:value="${poundInfo.adminName}">
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">工号</label>
-                    <div class="layui-input-inline">
-                        <input type="number" name="adminEmpId" autocomplete="off" readonly="readonly"
-                               class="layui-input" th:value="${poundInfo.adminEmpId}">
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">手机号</label>
-                    <div class="layui-input-inline">
-                        <input type="number" name="adminMobile" autocomplete="off" class="layui-input"
-                               th:value="${poundInfo.adminMobile}">
-                    </div>
-                </div>
+                <!--<div class="layui-inline">-->
+                <!--<label class="layui-form-label">地磅管理员</label>-->
+                <!--<div class="layui-input-inline">-->
+                <!--<input type="text" name="adminName" autocomplete="off" readonly="readonly" class="layui-input"-->
+                <!--th:value="${poundInfo.adminName}">-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="layui-inline">-->
+                <!--<label class="layui-form-label">工号</label>-->
+                <!--<div class="layui-input-inline">-->
+                <!--<input type="number" name="adminEmpId" autocomplete="off" readonly="readonly"-->
+                <!--class="layui-input" th:value="${poundInfo.adminEmpId}">-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="layui-inline">-->
+                <!--<label class="layui-form-label">手机号</label>-->
+                <!--<div class="layui-input-inline">-->
+                <!--<input type="number" name="adminMobile" autocomplete="off" class="layui-input"-->
+                <!--th:value="${poundInfo.adminMobile}">-->
+                <!--</div>-->
+                <!--</div>-->
             </div>
             <div class="layui-form-item">
                 <div class="layui-inline">
@@ -141,22 +141,6 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <div class="layui-inline">
-                    <div class="layui-card">
-                        <div class="layui-card-body">
-                            <img th:src="@{${poundLog.grossImgUrl}}" alt="毛重图片">
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <div class="layui-card">
-                        <div class="layui-card-body">
-                            <img th:src="@{${poundLog.tareImgUrl}}" alt="皮重图片">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="layui-form-item">
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label">磅差</label>
@@ -180,6 +164,29 @@
                             <input type="number" name="returnWeightTotal" autocomplete="off" readonly="readonly"
                                    class="layui-input"
                                    th:value="${poundLog.returnWeightTotal}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text" th:if="${poundLog.remark}">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="" class="layui-textarea" th:value="${poundLog.remark}"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <img th:src="@{${poundLog.grossImgUrl}}" alt="毛重图片">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <img th:src="@{${poundLog.tareImgUrl}}" alt="皮重图片">
                         </div>
                     </div>
                 </div>

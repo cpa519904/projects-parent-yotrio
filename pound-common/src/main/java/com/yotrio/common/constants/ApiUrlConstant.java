@@ -16,6 +16,15 @@ public class ApiUrlConstant {
     public static final String GET_POUND_INFO = "/api/pound/info/";
 
     /**
+     * 根据poundLogNo和poundId获取过磅详情
+     */
+    public static final String GET_POUND_LOG_DETAIL = "/api/getPoundLogDetail";
+    /**
+     * 根据poundLogNo和poundId获取报检单
+     */
+    public static final String GET_INSPECTION_LIST = "/api/inspection/list";
+
+    /**
      * 上传过磅信息
      */
     public static final String SAVE_POUND_LOG = "/api/poundLog/save";
