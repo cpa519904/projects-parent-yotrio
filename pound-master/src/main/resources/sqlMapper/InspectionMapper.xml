@@ -198,6 +198,45 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+    <update id="updateByinspNoSelective" parameterType="com.yotrio.pound.model.Inspection">
+        update inspection
+        <set>
+            <if test="inspNo != null">
+                insp_no = #{inspNo,jdbcType=VARCHAR},
+            </if>
+            <if test="plateNo != null">
+                plate_no = #{plateNo,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsKind != null">
+                goods_kind = #{goodsKind,jdbcType=INTEGER},
+            </if>
+            <if test="compName != null">
+                comp_name = #{compName,jdbcType=VARCHAR},
+            </if>
+            <if test="inspWeight != null">
+                insp_weight = #{inspWeight,jdbcType=DOUBLE},
+            </if>
+            <if test="returnWeight != null">
+                return_weight = #{returnWeight,jdbcType=DOUBLE},
+            </if>
+            <if test="inspNetWeight != null">
+                insp_net_weight = #{inspNetWeight,jdbcType=DOUBLE},
+            </if>
+            <if test="types != null">
+                types = #{types,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where insp_no = #{inspNo,jdbcType=VARCHAR}
+    </update>
     <update id="updateByPrimaryKey" parameterType="com.yotrio.pound.model.Inspection">
     update inspection
     set pl_id = #{plId,jdbcType=INTEGER},

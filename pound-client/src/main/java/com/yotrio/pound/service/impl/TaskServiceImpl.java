@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.constants.ApiUrlConstant;
-import com.yotrio.common.constants.PoundLogConstant;
 import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.helpers.UserAuthTokenHelper;
@@ -116,10 +115,6 @@ public class TaskServiceImpl implements ITaskService {
 
         //获取关联的报检单
         List<Inspection> inspections = inspectionMapper.findListByPlNo(poundLogNo);
-        //进货要计算报每张检单称重结果，按报检单上重量 的比例分配
-        if (poundLog.getTypes() == PoundLogConstant.TYPES_IN && inspections.size() > 0) {
-            inspectionService.countInspNetWeight(inspections, poundLog);
-        }
 
         //将本地图片url转base64字符串上传，上传成功后再保存线上服务器
         if (StringUtils.isNotEmpty(poundLog.getGrossImgUrl())) {

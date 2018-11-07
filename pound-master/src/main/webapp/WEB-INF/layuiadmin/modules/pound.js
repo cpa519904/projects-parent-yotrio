@@ -160,7 +160,7 @@ layui.define(['table', 'form'], function (exports) {
     table.on('tool(LAY-pound-log-manage)', function (obj) {
         var data = obj.data;
         if (obj.event === 'del') {
-            layer.confirm('真的删除行么', function (index) {
+            layer.confirm('确定删除行么', function (index) {
                 //提交 Ajax 成功后，静态更新表格中的数据
                 $.ajax({
                     type: 'get',
@@ -218,10 +218,10 @@ layui.define(['table', 'form'], function (exports) {
         , totalRow: true
         , cols: [[
             {field: 'inspNo', title: '报检单单号', minWidth: 120, totalRowText: '合计'}
-            , {field: 'goodsKindName', title: '货品', minWidth: 60, templet: '#goodsKindTpl'}
+            // , {field: 'goodsKindName', title: '货品', minWidth: 60, templet: '#goodsKindTpl'}
             , {field: 'inspWeight', title: '报检单重量', minWidth: 80, sort: true, totalRow: true}
+            , {field: 'inspNetWeight', title: '结算重量', minWidth: 80, sort: true, totalRow: true}
             , {field: 'returnWeight', title: '随车退重量', minWidth: 80, sort: true, totalRow: true}
-            , {field: 'inspNetWeight', title: '净重', minWidth: 80, sort: true, totalRow: true}
             , {field: 'types', title: '样品', minWidth: 60, templet: '#typesTpl'}
             // , {title: '操作', width: 80, align: 'center', fixed: 'right', toolbar: '#table-inspection'}
             // , {field: 'status', title: '状态'}

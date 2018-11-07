@@ -731,20 +731,31 @@ layui.define(['table', 'form'], function (exports) {
                                 '<th>报检单</th>' +
                                 '<th>单号</th>' +
                                 '<th>重量</th>' +
+                                '<th>结算重量</th>' +
                                 '<th>退货重量</th>' +
-                                // '<th>净重</th>' +
                                 '</tr>';
 
+                            var totalInspNetWeight = 0;
                             layui.each(inspections, function (index, item) {
+                                totalInspNetWeight += item.inspNetWeight;
                                 var trHtml = '';
-                                trHtml += ' <tr>' +
+                                trHtml += '<tr>' +
                                     '<td>' + (index + 1) + '</td>' +
                                     '<td>' + item.inspNo + '</td>' +
                                     '<td>' + item.inspWeight + '</td>' +
-                                    // '<td>' + item.netWeight + '</td>'
-                                    '<td>' + item.returnWeight + '</td>'
+                                    '<td>' + item.inspNetWeight + '</td>' +
+                                    '<td>' + item.returnWeight + '</td>' +
+                                    '</tr>'
                                 htmlStr += trHtml;
                             });
+
+                            htmlStr += '<tr>' +
+                                '<td>总计</td>' +
+                                '<td></td>' +
+                                '<td>' + poundLog.inspWeightTotal + '</td>' +
+                                '<td>' + totalInspNetWeight + '</td>' +
+                                '<td>' + poundLog.returnWeightTotal + '</td>' +
+                                '</tr>'
 
                             htmlStr += '</table>' +
                                 '</div>' +

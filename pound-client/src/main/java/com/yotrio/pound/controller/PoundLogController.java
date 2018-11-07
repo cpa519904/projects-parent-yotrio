@@ -442,7 +442,6 @@ public class PoundLogController extends BaseController {
         if (StringUtils.isEmpty(unitName)) {
             return ResultUtil.error("请先填写组织");
         }
-        // TODO: 2018-10-19 这里应该使用一对多关联查询，但是使用pouLogNo关联查询时映射出来有问题，貌似根据id去映射了
         PoundLog poundLog = poundLogService.findByPoundLogNo(poundLogNo);
         if (poundLog == null) {
             return ResultUtil.error("找不到您要提交的过磅单");
@@ -455,6 +454,10 @@ public class PoundLogController extends BaseController {
         String msg = "网络连接失败,联网后系统会自动为您提交";
         //获取关联的报检单
         List<Inspection> inspections = inspectionService.findListByPlNo(poundLogNo);
+        //进货要计算报每张检单称重结果，按报检单上重量 的比例分配
+        if (poundLog.getTypes() == PoundLogConstant.TYPES_IN && inspections.size() > 0) {
+            inspectionService.countInspNetWeight(inspections, poundLog);
+        }
 
         //将本地图片url转base64字符串上传，上传成功后再保存线上服务器
         if (StringUtils.isNotEmpty(poundLog.getGrossImgUrl())) {

@@ -45,7 +45,7 @@ layui.define(['table', 'form'], function (exports) {
             }, function (value, index) {
                 layer.close(index);
 
-                layer.confirm('真的删除行么', function (index) {
+                layer.confirm('确定删除行么', function (index) {
                     obj.del();
                     layer.close(index);
                 });

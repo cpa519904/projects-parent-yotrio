@@ -217,7 +217,11 @@ public class ApiController extends BaseController {
                     }
                     if (userIds.size() > 0) {
                         String userIdList = StringUtils.join(userIds, ",");
-                        sendResult = dingTalkService.sendConfirmMessage(token, poundLog, userIdList);
+                        PoundLog logInDB = poundLogService.findByPoundLogNoAndPoundId(poundLog.getPoundLogNo(), poundId);
+                        if (logInDB.getGoodsKind() != null) {
+                            logInDB.setGoodsName(GoodsKindEnum.getKindName(logInDB.getGoodsKind()));
+                        }
+                        sendResult = dingTalkService.sendConfirmMessage(token, logInDB, userIdList);
                     }
 
                     if (!sendResult) {

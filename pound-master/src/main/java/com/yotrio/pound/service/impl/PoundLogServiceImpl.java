@@ -236,15 +236,16 @@ public class PoundLogServiceImpl implements IPoundLogService {
             for (Inspection inspection : inspections) {
                 inspection.setPlId(logInDB.getId());
                 inspection.setPlNo(logInDB.getPoundLogNo());
-                inspectionMapper.updateByPrimaryKeySelective(inspection);
+                inspectionMapper.updateByinspNoSelective(inspection);
                 if (StringUtils.isEmpty(poundLog.getCompName())) {
                     poundLog.setCompName(inspection.getCompName());
                     poundLog.setUpdateTime(new Date());
-                    poundLogMapper.updateByPrimaryKey(poundLog);
+                    poundLogMapper.updateByPlNoAndPoundIdSelective(poundLog);
                 }
             }
         } else {
             //未生成,执行插入操作
+            poundLog.setId(null);
             poundLogMapper.insert(poundLog);
             //保存报检单信息
             for (Inspection inspection : inspections) {
@@ -253,7 +254,7 @@ public class PoundLogServiceImpl implements IPoundLogService {
                 inspectionMapper.insert(inspection);
                 if (StringUtils.isEmpty(poundLog.getCompName())) {
                     poundLog.setCompName(inspection.getCompName());
-                    poundLogMapper.updateByPrimaryKey(poundLog);
+                    poundLogMapper.updateByPlNoAndPoundIdSelective(poundLog);
                 }
             }
         }

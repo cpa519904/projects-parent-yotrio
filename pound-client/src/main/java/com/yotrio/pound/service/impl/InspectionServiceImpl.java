@@ -121,7 +121,7 @@ public class InspectionServiceImpl implements IInspectionService {
 
         double totalNetWeight = poundLog.getNetWeight() != null ? poundLog.getNetWeight() : 0.0d;
 
-        //报检单称重后，我们给的总净重
+        //报检单称重后，按我们称的总净重
         double totalInspNetWeight = 0.0d;
         //实际总重按小的来，如果自己称重大，按报检单总重
         if (totalNetWeight >= totalInspWeight) {
