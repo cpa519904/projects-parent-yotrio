@@ -130,6 +130,12 @@ public class InspectionController extends BaseController {
         }
     }
 
+    /**
+     * 更新报检单
+     *
+     * @param inspection
+     * @return
+     */
     @RequestMapping(value = "/update", method = {RequestMethod.POST})
     @ResponseBody
     public Result update(Inspection inspection) {

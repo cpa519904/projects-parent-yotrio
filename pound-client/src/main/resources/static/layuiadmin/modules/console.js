@@ -694,93 +694,93 @@ layui.define(['table', 'form'], function (exports) {
                 dataType: 'json',
                 success: function (result) {
                     if (result.code == 0) {
-                        $("#btn-print").removeClass("layui-btn-disabled");
-                        if (result.data.status) {
-                            methods.reloadButtonStatus(result.data.status, result.data.types);
-                        }
+            $("#btn-print").removeClass("layui-btn-disabled");
+            if (result.data.status) {
+                methods.reloadButtonStatus(result.data.status, result.data.types);
+            }
 
-                        //更新未完成列表
-                        methods.listUnFinishedAndPoundLog(poundLogNoStr);
+            //更新未完成列表
+            methods.listUnFinishedAndPoundLog(poundLogNoStr);
 
-                        var poundLog = result.data;
-                        var inspections = poundLog.inspections;
-                        // console.log("poundLog:", poundLog, "inspections:", inspections);
+            var poundLog = result.data;
+            var inspections = poundLog.inspections;
+            // console.log("poundLog:", poundLog, "inspections:", inspections);
 
-                        $("#print-content").show();
-                        //给表单赋值
-                        $('#print-poundLogNo').text(poundLog.poundLogNo);
-                        $('#print-plateNo').text(poundLog.plateNo);
-                        $('#print-gross-weight').text(poundLog.grossWeight);
-                        $('#print-tare-weight').text(poundLog.tareWeight);
-                        $('#print-net-weight').text(poundLog.netWeight);
-                        // $('#print-diff-weight').text(poundLog.diffWeight);
-                        $('#print-remark').text(poundLog.remark);
-                        $('#print-unit-name').text(poundLog.unitName);
-                        $('#print-gross-img').attr("src", poundLog.grossImgUrl);
-                        $('#print-tare-img').attr("src", poundLog.tareImgUrl);
-                        $('#print-gross-time').text(poundLog.firstTime);
-                        $('#print-tare-time').text(poundLog.secondTime);
-                        $('#print-time').text(moment().format('YYYY-MM-DD hh:mm:ss'));
+            $("#print-content").show();
+            //给表单赋值
+            $('#print-poundLogNo').text(poundLog.poundLogNo);
+            $('#print-plateNo').text(poundLog.plateNo);
+            $('#print-gross-weight').text(poundLog.grossWeight);
+            $('#print-tare-weight').text(poundLog.tareWeight);
+            $('#print-net-weight').text(poundLog.netWeight);
+            // $('#print-diff-weight').text(poundLog.diffWeight);
+            $('#print-remark').text(poundLog.remark);
+            $('#print-unit-name').text(poundLog.unitName);
+            $('#print-gross-img').attr("src", poundLog.grossImgUrl);
+            $('#print-tare-img').attr("src", poundLog.tareImgUrl);
+            $('#print-gross-time').text(poundLog.firstTime);
+            $('#print-tare-time').text(poundLog.secondTime);
+            $('#print-time').text(moment().format('YYYY-MM-DD hh:mm:ss'));
 
-                        //拼接报价单table html
-                        if (inspections.length > 0) {
-                            var htmlStr = '<div class="layui-col-xs12">' +
-                                '<div class="layui-card-body" style="padding-left: 0">' +
-                                '<table id="LAY-inspection-print-manage" class="layui-table">' +
-                                '<tr>' +
-                                '<th>报检单</th>' +
-                                '<th>单号</th>' +
-                                '<th>重量</th>' +
-                                '<th>结算重量</th>' +
-                                '<th>退货重量</th>' +
-                                '</tr>';
+            //拼接报价单table html
+            if (inspections.length > 0) {
+                var htmlStr = '<div class="layui-col-xs12">' +
+                    '<div class="layui-card-body" style="padding-left: 0">' +
+                    '<table id="LAY-inspection-print-manage" class="layui-table">' +
+                    '<tr>' +
+                    '<th>报检单</th>' +
+                    '<th>单号</th>' +
+                    '<th>重量</th>' +
+                    '<th>结算重量</th>' +
+                    '<th>退货重量</th>' +
+                    '</tr>';
 
-                            var totalInspNetWeight = 0;
-                            layui.each(inspections, function (index, item) {
-                                totalInspNetWeight += item.inspNetWeight;
-                                var trHtml = '';
-                                trHtml += '<tr>' +
-                                    '<td>' + (index + 1) + '</td>' +
-                                    '<td>' + item.inspNo + '</td>' +
-                                    '<td>' + item.inspWeight + '</td>' +
-                                    '<td>' + item.inspNetWeight + '</td>' +
-                                    '<td>' + item.returnWeight + '</td>' +
-                                    '</tr>'
-                                htmlStr += trHtml;
-                            });
+                var totalInspNetWeight = 0;
+                layui.each(inspections, function (index, item) {
+                    totalInspNetWeight += item.inspNetWeight;
+                    var trHtml = '';
+                    trHtml += '<tr>' +
+                        '<td>' + (index + 1) + '</td>' +
+                        '<td>' + item.inspNo + '</td>' +
+                        '<td>' + item.inspWeight + '</td>' +
+                        '<td>' + item.inspNetWeight + '</td>' +
+                        '<td>' + item.returnWeight + '</td>' +
+                        '</tr>'
+                    htmlStr += trHtml;
+                });
 
-                            htmlStr += '<tr>' +
-                                '<td>总计</td>' +
-                                '<td></td>' +
-                                '<td>' + poundLog.inspWeightTotal + '</td>' +
-                                '<td>' + totalInspNetWeight + '</td>' +
-                                '<td>' + poundLog.returnWeightTotal + '</td>' +
-                                '</tr>'
+                htmlStr += '<tr>' +
+                '<td>总计</td>' +
+                '<td></td>' +
+                '<td>' + poundLog.inspWeightTotal + '</td>' +
+                '<td>' + totalInspNetWeight + '</td>' +
+                '<td>' + poundLog.returnWeightTotal + '</td>' +
+                '</tr>'
 
-                            htmlStr += '</table>' +
-                                '</div>' +
-                                '</div>'
+                htmlStr += '</table>' +
+                    '</div>' +
+                    '</div>'
 
-                            $("#print-table-inspections").html(htmlStr);
-                        }
+                $("#print-table-inspections").html(htmlStr);
+            }
 
 
-                        //弹出打印页面
-                        $("#print-content").print({
-                            globalStyles: true,
-                            mediaPrint: false,
-                            stylesheet: null,
-                            noPrintSelector: ".no-print",
-                            iframe: true,
-                            append: null,
-                            prepend: null,
-                            manuallyCopyFormValues: true,
-                            deferred: $.Deferred(),
-                            timeout: 750,
-                            title: null,
-                            doctype: '<!doctype html>'
-                        });
-                        $("#print-content").hide();
+            //弹出打印页面
+            $("#print-content").print({
+                globalStyles: true,
+                mediaPrint: false,
+                stylesheet: null,
+                noPrintSelector: ".no-print",
+                iframe: true,
+                append: null,
+                prepend: null,
+                manuallyCopyFormValues: true,
+                deferred: $.Deferred(),
+                timeout: 750,
+                title: null,
+                doctype: '<!doctype html>'
+            });
+            $("#print-content").hide();
                     } else {
                         layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
                     }
@@ -960,8 +960,13 @@ layui.define(['table', 'form'], function (exports) {
                             if (event.which == 13 && body.find('#inspNo')[0].value.length > 25) {
                                 //获取扫码枪数据
                                 var inputData = body.find('#inspNo')[0].value;
+                                //url解码
+                                console.log("inputData:", inputData);
+                                var decodeStr = decodeURIComponent(inputData);
+                                console.log("decodeStr:", decodeStr);
                                 //todo 可以做一下数据校验工作
-                                var dataArr = inputData.split("#");
+                                var dataArr = decodeStr.split("#");
+                                console.log("dataArr", dataArr);
                                 if (dataArr.length >= 4) {
                                     body.find("#inspNo")[0].value = dataArr[0];
                                     body.find("#inspWeight")[0].value = dataArr[3];
@@ -1055,7 +1060,7 @@ layui.define(['table', 'form'], function (exports) {
         console.log("链接服务器成功");
     };
     websocket.onmessage = function (evnt) {
-        // console.log("event", evnt);
+        // console.log("event", evnt.data);
         $("#currentWeight").val(evnt.data);
         if (!$("#currentWeight").val()) {
             console.log("重新初始化websocket");
@@ -1063,23 +1068,10 @@ layui.define(['table', 'form'], function (exports) {
         }
     };
     websocket.onerror = function (evnt) {
-
+        console.log("消息异常："+evnt.data);
     };
     websocket.onclose = function (evnt) {
-        $("#tou").html("与服务器断开了链接!");
         console.log("与服务器断开了链接");
-    }
-    $('#send').bind('click', function () {
-        send();
-    });
-
-    function send() {
-        if (websocket != null) {
-            var message = document.getElementById('message').value;
-            websocket.send(message);
-        } else {
-            alert('未与服务器链接.');
-        }
     }
 
     //监听是否有地磅数据传送过来，没有的话重新初始化websocket

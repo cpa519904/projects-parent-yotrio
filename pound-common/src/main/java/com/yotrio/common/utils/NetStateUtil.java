@@ -21,7 +21,7 @@ public class NetStateUtil {
         Runtime runtime = Runtime.getRuntime();
         Process process;
         try {
-            process = runtime.exec("ping " + "www.baidu.com");
+            process = runtime.exec("ping " + "192.168.0.98");
             InputStream is = process.getInputStream();
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);

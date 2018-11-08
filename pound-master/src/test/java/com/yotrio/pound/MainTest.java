@@ -1,6 +1,5 @@
 package com.yotrio.pound;
 
-import com.yotrio.common.utils.AESUtil;
 import com.yotrio.common.utils.PropertiesFileUtil;
 
 import java.io.IOException;
@@ -60,7 +59,10 @@ public class MainTest {
 //        String userAuthToken = UserAuthTokenHelper.getUserAuthToken(326897, null);
 //        System.out.println(userAuthToken);
 
-        System.out.println( AESUtil.AESEncode("redis@2018."));
+//        System.out.println( AESUtil.AESEncode("redis@2018."));
 
+//        String text = "FD201811081002%23%e6%b5%99%e6%b1%9f%e9%be%99%e5%a8%81%e7%81%af%e9%a5%b0%e5%93%81%e6%9c%89%e9%99%90%e5%85%ac%e5%8f%b8%23%e6%b5%99J12345%231230.00";
+        String text = "FD201811081002%23%e6%b5%99%e6%b1%9f%e9%be%99%e5%a8%81%e7%81%af%25e";
+        System.out.println(text.length());
     }
 }

@@ -186,13 +186,10 @@
             <version>0.4.8</version>
         </dependency>
 
-        <!--串口组件-->
         <dependency>
             <groupId>gnu.io</groupId>
             <artifactId>RXTXcomm</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/RXTXcomm.jar</systemPath>
+            <version>1.0</version>
         </dependency>
 
     </dependencies>
@@ -204,6 +201,14 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <fork>false</fork> <!-- 如果没有该配置，devtools不会生效,设置了该参数调试断点无效 -->
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.4</version>
+                <configuration>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
         </plugins>

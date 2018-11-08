@@ -1,4 +1,4 @@
-package com.yotrio.common;
+package common;
 
 import com.yotrio.common.exceptions.ReadDataFromSerialPortFailure;
 import com.yotrio.common.exceptions.SerialPortInputStreamCloseFailure;

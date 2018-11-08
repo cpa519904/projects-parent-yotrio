@@ -27,7 +27,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 外部接口控制类
@@ -91,8 +93,8 @@ public class ApiController extends BaseController {
     /**
      * 根据根据过磅单那报检单列表
      *
-     * @param plNo 过磅单单号
-     * @param token      认证秘钥
+     * @param plNo  过磅单单号
+     * @param token 认证秘钥
      * @return
      */
     @RequestMapping(value = "/inspection/list", method = {RequestMethod.GET})
@@ -221,7 +223,8 @@ public class ApiController extends BaseController {
                         if (logInDB.getGoodsKind() != null) {
                             logInDB.setGoodsName(GoodsKindEnum.getKindName(logInDB.getGoodsKind()));
                         }
-                        sendResult = dingTalkService.sendConfirmMessage(token, logInDB, userIdList);
+
+                        sendResult = dingTalkService.sendConfirmMessage(token, logInDB, userIdList, inspections);
                     }
 
                     if (!sendResult) {

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.yotrio.common.constants.ApiUrlConstant;
 import com.yotrio.common.utils.DingTalkUtil;
 import com.yotrio.common.utils.PropertiesFileUtil;
+import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.service.IDingTalkService;
 import com.yotrio.pound.utils.RedisUtil;
@@ -13,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * 钉钉服务层接口类
@@ -63,8 +64,14 @@ public class DingTalkServiceImpl implements IDingTalkService {
      * @return
      */
     @Override
-    public boolean sendConfirmMessage(String token, PoundLog poundLog, String userIds) {
+    public boolean sendConfirmMessage(String token, PoundLog poundLog, String userIds, List<Inspection> inspections) {
         try {
+            Set<String> inspNoSet = new HashSet<>(20);
+            if (inspections.size() > 0) {
+                for (Inspection inspection : inspections) {
+                    inspNoSet.add(inspection.getInspNo());
+                }
+            }
             //编辑消息内容
             JSONObject msg = new JSONObject();
             msg.put("msg_type", "action_card");
@@ -73,7 +80,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
             StringBuilder builder = new StringBuilder();
             builder.append("# 过磅通知\n");
             builder.append("#### 供应商：" + poundLog.getCompName() + "\n");
-            builder.append("#### 货品：" + poundLog.getGoodsName() + "\n");
+            builder.append("#### 报检单：" + StringUtils.join(inspNoSet, ",") + "\n");
             builder.append("#### 报检重量：" + poundLog.getInspWeightTotal() + "公斤\n");
             builder.append("#### 实际称重：" + poundLog.getNetWeight() + "公斤\n");
             builder.append("#### 磅差：" + poundLog.getDiffWeight() + "公斤\n");

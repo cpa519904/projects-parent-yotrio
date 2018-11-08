@@ -14,6 +14,7 @@ import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -65,7 +66,6 @@ public class PoundWebSocket {
         webSocketMap.put(session.getId(), this);
         addCount();
 //        logger.info("新的连接加入：{}", session.getId());
-
         try {
             //创建串口 COM5位串口名称 9600波特率
             if (serialPort == null) {
@@ -97,8 +97,8 @@ public class PoundWebSocket {
 //                                    }
 //                                }
 
-//                                System.out.println("收到的数据：" + new String(bytes, "GB2312"));
-                                sendMessage(String.valueOf(Integer.valueOf(new String(bytes, "GB2312")) - RandomUtil.randomInt(1000,10000)));
+                                System.out.println("收到的数据：" + new String(bytes, "GB2312") + "----" + new Date());
+                                sendMessage(String.valueOf(Integer.valueOf(new String(bytes, "GB2312")) - RandomUtil.randomInt(1000, 10000)));
 //                                String msg = new String(bytes, "GBK");
 //                                sendMessage(msg);
 

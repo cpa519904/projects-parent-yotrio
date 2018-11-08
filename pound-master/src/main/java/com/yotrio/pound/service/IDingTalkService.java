@@ -1,6 +1,9 @@
 package com.yotrio.pound.service;
 
+import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundLog;
+
+import java.util.List;
 
 /**
  * 模块名称：projects-parent com.yotrio.pound.service
@@ -11,8 +14,7 @@ import com.yotrio.pound.model.PoundLog;
  **/
 public interface IDingTalkService {
 
-
-    boolean sendConfirmMessage(String token, PoundLog poundLog, String userIds);
+    boolean sendConfirmMessage(String token, PoundLog poundLog, String userIds, List<Inspection> inspections);
 
     String getCacheAccessToken();
 

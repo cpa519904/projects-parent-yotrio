@@ -160,7 +160,7 @@ public class PoundLogController extends BaseController {
     /**
      * 更新毛重过磅记录
      *
-     * @param poundLog
+     * @param poundLog 过磅记录
      * @return
      */
     @RequestMapping(value = "/updateGross", method = {RequestMethod.POST})

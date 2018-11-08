@@ -1,4 +1,4 @@
-package com.yotrio.common;
+package common;
 
 import com.yotrio.common.exceptions.*;
 import com.yotrio.common.utils.SerialPortUtil;

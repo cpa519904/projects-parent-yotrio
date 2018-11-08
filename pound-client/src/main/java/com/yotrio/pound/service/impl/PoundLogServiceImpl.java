@@ -197,6 +197,9 @@ public class PoundLogServiceImpl implements IPoundLogService {
                     totalSampleWeight += item.getInspWeight();
                 }
             }
+            if (logInDB.getNetWeight() != null) {
+                logInDB.setDiffWeight(logInDB.getNetWeight() - totalInspWeight);
+            }
             logInDB.setInspWeightTotal(totalInspWeight);
             logInDB.setReturnWeightTotal(totalReturnWeight);
             logInDB.setSampleNetWeight(totalSampleWeight);
