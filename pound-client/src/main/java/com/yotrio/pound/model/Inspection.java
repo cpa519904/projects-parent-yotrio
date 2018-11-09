@@ -2,7 +2,6 @@ package com.yotrio.pound.model;
 
 import java.io.Serializable;
 import java.util.Date;
-
 public class Inspection implements Serializable {
     /**
      * 自增id
