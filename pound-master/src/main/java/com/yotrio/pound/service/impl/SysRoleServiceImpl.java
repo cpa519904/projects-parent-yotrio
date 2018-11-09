@@ -21,7 +21,7 @@ import java.util.Set;
  * 创建时间： 2018-06-30 上午10:08
  * 系统版本：1.0.0
  **/
-@Service
+@Service("sysRoleService")
 public class SysRoleServiceImpl implements ISysRoleService {
     @Autowired
     private SysRoleMapper sysRoleMapper;

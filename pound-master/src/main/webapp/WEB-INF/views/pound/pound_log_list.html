@@ -117,8 +117,9 @@
                 {{#  } }}
             </script>
             <script type="text/html" id="table-pound-log">
-                <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                <a lay-href="/poundLog/detail.htm/?poundLogNo={{d.poundLogNo}}" class="layui-table-link" target="_blank">{{ d.poundLogNo }}</a>
+                <!--<a href="/?table-demo-id={{d.id}}" class="layui-table-link" target="_blank">{{ d.username }}</a>-->
+                <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
             </script>
         </div>
     </div>

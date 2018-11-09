@@ -130,7 +130,7 @@ public class TaskServiceImpl implements ITaskService {
             if (userIds.size() > 0) {
                 String userIdList = StringUtils.join(userIds, ",");
                 //发送钉钉消息
-                sendResult = dingTalkService.sendConfirmMessage(token, poundLog, userIdList);
+                sendResult = dingTalkService.sendConfirmMessage(token, poundLog, userIdList, inspections);
             }
 
             if (sendResult) {

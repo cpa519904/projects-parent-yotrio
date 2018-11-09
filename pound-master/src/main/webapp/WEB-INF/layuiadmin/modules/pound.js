@@ -21,6 +21,7 @@ layui.define(['table', 'form'], function (exports) {
             , {title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-pound-info'}
         ]]
         , page: true
+        , height: 'full-200'
         , text: {
             none: '暂无相关数据'
         }
@@ -127,13 +128,13 @@ layui.define(['table', 'form'], function (exports) {
         , totalRow: true
         , cols: [[
             {type: 'checkbox', fixed: 'left'}
-            , {field: 'id', title: 'ID', sort: true, totalRowText: '合计'}
-            , {field: 'poundName', title: '所属地磅', minWidth: 120}
+            , {field: 'id', title: 'ID', sort: true, totalRowText: '合计', width: 60}
             // , {field: 'types', title: '类别', minWidth: 60,templet:'#logTypes'}
-            , {field: 'poundLogNo', title: '过磅单单号', minWidth: 120}
-            , {field: 'goodsName', title: '货品', minWidth: 80}
+            , {field: 'poundLogNo', title: '过磅单单号', minWidth: 140, toolbar: '#table-pound-log'}
+            , {field: 'poundName', title: '所属地磅', minWidth: 80}
+            , {field: 'compName', title: '供应商', minWidth: 180}
             , {field: 'unitName', title: '组织', minWidth: 100}
-            , {field: 'compName', title: '供应商', minWidth: 80}
+            , {field: 'goodsName', title: '货品', minWidth: 60}
             , {field: 'plateNo', title: '车牌号', minWidth: 80}
             , {field: 'grossWeight', title: '总重', minWidth: 80, sort: true, totalRow: true}
             , {field: 'tareWeight', title: '皮重', minWidth: 80, sort: true, totalRow: true}
@@ -141,72 +142,74 @@ layui.define(['table', 'form'], function (exports) {
             , {field: 'diffWeight', title: '磅差', minWidth: 80, sort: true, totalRow: true}
             , {field: 'returnWeightTotal', title: '退货', minWidth: 80, sort: true, totalRow: true}
             , {field: 'sampleNetWeight', title: '样品', minWidth: 80, sort: true, totalRow: true}
-            , {field: 'grossImgUrl', title: '图1', templet: '#imgTpl1'}
-            , {field: 'tareImgUrl', title: '图2', templet: '#imgTpl2'}
+            // , {field: 'grossImgUrl', title: '图1', templet: '#imgTpl1'}
+            // , {field: 'tareImgUrl', title: '图2', templet: '#imgTpl2'}
             , {field: 'createTime', title: '创建时间', sort: true, minWidth: 150}
-            , {field: 'remark', title: '备注'}
+            // , {field: 'remark', title: '备注'}
             // , {field: 'status', title: '状态'}
             // , {field: 'updateTime', title: '更新时间', sort: true}
-            , {title: '操作', width: 120, align: 'center', fixed: 'right', toolbar: '#table-pound-log'}
+            // , {title: '操作', width: 120, align: 'center', fixed: 'right'}
         ]]
         , page: true
         , limit: 10
+        , height: 'full-200'
         , text: {
             none: '暂无相关数据'
         }
     });
 
     //监听工具条
-    table.on('tool(LAY-pound-log-manage)', function (obj) {
-        var data = obj.data;
-        if (obj.event === 'del') {
-            layer.confirm('确定删除行么', function (index) {
-                //提交 Ajax 成功后，静态更新表格中的数据
-                $.ajax({
-                    type: 'get',
-                    url: '/poundLog/delete',
-                    data: {
-                        id: data.id
-                    },
-                    cache: false,
-                    dataType: 'json',
-                    success: function (result) {
-                        if (result.code == 0) {
-                            obj.del();
-                            layer.close(index);
-                            layer.msg('已删除');
-                        } else {
-                            layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-                        }
-                    },
-                    error: function (error) {
-                        layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-                    }
-                });
-            });
-        } else if (obj.event === 'detail') {
-            var index = layer.open({
-                type: 2
-                , title: '查看过磅记录'
-                , content: '/poundLog/detail.htm?poundLogNo=' + data.poundLogNo
-                , maxmin: true
-                , area: ['500px', '450px']
-                , btn: '关闭'
-                , yes: function (index, layero) {
-                    var iframeWindow = window['layui-layer-iframe' + index]
-                        , submitID = 'LAY-pound-log-submit'
-                        , submit = layero.find('iframe').contents().find('#' + submitID);
-
-                    layer.closeAll();
-                }
-                , success: function (layero, index) {
-
-                }
-            });
-
-            layer.full(index);
-        }
-    });
+    // table.on('tool(LAY-pound-log-manage)', function (obj) {
+    //     var data = obj.data;
+    //     if (obj.event === 'del') {
+    //         layer.confirm('确定删除行么', function (index) {
+    //             //提交 Ajax 成功后，静态更新表格中的数据
+    //             $.ajax({
+    //                 type: 'get',
+    //                 url: '/poundLog/delete',
+    //                 data: {
+    //                     id: data.id
+    //                 },
+    //                 cache: false,
+    //                 dataType: 'json',
+    //                 success: function (result) {
+    //                     if (result.code == 0) {
+    //                         obj.del();
+    //                         layer.close(index);
+    //                         layer.msg('已删除');
+    //                     } else {
+    //                         layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+    //                     }
+    //                 },
+    //                 error: function (error) {
+    //                     layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+    //                 }
+    //             });
+    //         });
+    //     } else
+    //     if (obj.event === 'detail') {
+    //         var index = layer.open({
+    //             type: 2
+    //             , title: '查看过磅记录'
+    //             , content: '/poundLog/detail.htm?poundLogNo=' + data.poundLogNo
+    //             , maxmin: true
+    //             , area: ['500px', '450px']
+    //             , btn: '关闭'
+    //             , yes: function (index, layero) {
+    //                 var iframeWindow = window['layui-layer-iframe' + index]
+    //                     , submitID = 'LAY-pound-log-submit'
+    //                     , submit = layero.find('iframe').contents().find('#' + submitID);
+    //
+    //                 layer.closeAll();
+    //             }
+    //             , success: function (layero, index) {
+    //
+    //             }
+    //         });
+    //
+    //         layer.full(index);
+    //     }
+    // });
 
     //inspection列表
     var data = {};

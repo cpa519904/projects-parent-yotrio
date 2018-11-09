@@ -19,13 +19,13 @@
     delete from sys_role_permission
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yotrio.pound.model.SysRolePermission">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.SysRolePermission">
     insert into sys_role_permission ( role_id, permission_id
       )
     values (#{roleId,jdbcType=INTEGER}, #{permissionId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.yotrio.pound.model.SysRolePermission">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.SysRolePermission">
     insert into sys_role_permission
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="roleId != null">
@@ -44,7 +44,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yotrio.pound.model.SysRolePermission">
+  <update id="updateByPrimaryKeySelective"  parameterType="com.yotrio.pound.model.SysRolePermission">
     update sys_role_permission
     <set>
       <if test="roleId != null">

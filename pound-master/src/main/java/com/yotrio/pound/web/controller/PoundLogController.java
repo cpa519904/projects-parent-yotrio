@@ -83,7 +83,6 @@ public class PoundLogController extends BaseController {
         return returnSuccess(pageInfo.getTotal(), pageInfo.getList());
     }
 
-
     /**
      * 过磅记录报表展示
      *
@@ -152,6 +151,5 @@ public class PoundLogController extends BaseController {
             return returnError("删除失败");
         }
     }
-
 
 }

@@ -27,7 +27,7 @@ import java.util.Set;
  * 创建时间： 2018-03-04 下午7:40
  * 系统版本：1.0.0
  **/
-@Service
+@Service("sysUserService")
 public class SysUserServiceImpl implements ISysUserService {
 
     @Autowired

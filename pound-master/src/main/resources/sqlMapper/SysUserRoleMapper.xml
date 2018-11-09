@@ -20,13 +20,13 @@
     delete from sys_user_role
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yotrio.pound.model.SysUserRole">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.SysUserRole">
     insert into sys_user_role ( u_id, emp_id,
       role_id)
     values ( #{uId,jdbcType=INTEGER}, #{empId,jdbcType=INTEGER},
       #{roleId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.yotrio.pound.model.SysUserRole">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.SysUserRole">
     insert into sys_user_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="uId != null">

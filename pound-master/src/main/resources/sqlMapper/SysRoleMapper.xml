@@ -46,13 +46,13 @@
       #{id}
     </foreach>
   </delete>
-  <insert id="insert" parameterType="com.yotrio.pound.model.SysRole">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.SysRole">
     insert into sys_role ( role_name, role_cname,
       role_desc, status)
     values ( #{roleName,jdbcType=VARCHAR}, #{roleCname,jdbcType=VARCHAR},
       #{roleDesc,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.yotrio.pound.model.SysRole">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.SysRole">
     insert into sys_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="roleName != null">

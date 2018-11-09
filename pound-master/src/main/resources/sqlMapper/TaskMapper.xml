@@ -45,7 +45,7 @@
     delete from task
     where id = #{id,jdbcType=INTEGER}
    </delete>
-    <insert id="insert" parameterType="com.yotrio.pound.model.Task">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.Task">
     insert into task ( task_name, description,
       other_id, datas, weight, types,
       status, create_time, update_time, execute_time
@@ -55,7 +55,7 @@
       #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{executeTime,jdbcType=TIMESTAMP}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.yotrio.pound.model.Task">
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.Task">
         insert into task
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="taskName != null">
