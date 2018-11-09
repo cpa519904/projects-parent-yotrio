@@ -3,7 +3,7 @@
 <mapper namespace="com.yotrio.pound.dao.GoodsMapper">
   <resultMap id="BaseResultMap" type="com.yotrio.pound.model.Goods">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
     <result column="types" jdbcType="INTEGER" property="types" />
     <result column="status" jdbcType="INTEGER" property="status" />
@@ -11,13 +11,19 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, code, goods_name, types, status, description, update_time
+    id, goods_code, goods_name, types, status, description, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from goods
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findAll"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from goods
+    where 1=1
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from goods
@@ -31,18 +37,18 @@
     </foreach>
   </delete>
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.Goods">
-    insert into goods (code, goods_name,
+    insert into goods (goods_code, goods_name,
       types, status, description, 
       update_time)
-    values (#{code,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR},
+    values (#{goodsCode,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR},
       #{types,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.Goods">
     insert into goods
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="code != null">
-        code,
+      <if test="goodsCode != null">
+        goods_code,
       </if>
       <if test="goodsName != null">
         goods_name,
@@ -61,8 +67,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="code != null">
-        #{code,jdbcType=VARCHAR},
+      <if test="goodsCode != null">
+        #{goodsCode,jdbcType=VARCHAR},
       </if>
       <if test="goodsName != null">
         #{goodsName,jdbcType=VARCHAR},
@@ -84,8 +90,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.yotrio.pound.model.Goods">
     update goods
     <set>
-      <if test="code != null">
-        code = #{code,jdbcType=VARCHAR},
+      <if test="goodsCode != null">
+        goods_code = #{goodsCode,jdbcType=VARCHAR},
       </if>
       <if test="goodsName != null">
         goods_name = #{goodsName,jdbcType=VARCHAR},
@@ -107,7 +113,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yotrio.pound.model.Goods">
     update goods
-    set code = #{code,jdbcType=VARCHAR},
+    set goods_code = #{goodsCode,jdbcType=VARCHAR},
       goods_name = #{goodsName,jdbcType=VARCHAR},
       types = #{types,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
@@ -126,8 +132,8 @@
       <if test="id != null and id != ''">
          AND id = #{id,jdbcType=INTEGER}
       </if>
-      <if test="code != null and code != ''">
-         AND code = #{code,jdbcType=VARCHAR}
+      <if test="goodsCode != null and goodsCode != ''">
+         AND goods_code = #{goodsCode,jdbcType=VARCHAR}
       </if>
       <if test="goodsName != null and goodsName != ''">
          AND goods_name = #{goodsName,jdbcType=VARCHAR}
@@ -147,8 +153,8 @@
       <if test="myGreater_id != null and myGreater_id != ''">
          AND id &gt; #{myGreater_id,jdbcType=INTEGER}
       </if>
-      <if test="myGreater_code != null and myGreater_code != ''">
-         AND code &gt; #{myGreater_code,jdbcType=VARCHAR}
+      <if test="myGreater_goodsCode != null and myGreater_goodsCode != ''">
+         AND goods_code &gt; #{myGreater_goodsCode,jdbcType=VARCHAR}
       </if>
       <if test="myGreater_goodsName != null and myGreater_goodsName != ''">
          AND goods_name &gt; #{myGreater_goodsName,jdbcType=VARCHAR}
@@ -168,8 +174,8 @@
       <if test="myLesser_id != null and myLesser_id != ''">
          AND id &lt; #{myLesser_id,jdbcType=INTEGER}
       </if>
-      <if test="myLesser_code != null and myLesser_code != ''">
-         AND code &lt; #{myLesser_code,jdbcType=VARCHAR}
+      <if test="myLesser_goodsCode != null and myLesser_goodsCode != ''">
+         AND goods_code &lt; #{myLesser_goodsCode,jdbcType=VARCHAR}
       </if>
       <if test="myLesser_goodsName != null and myLesser_goodsName != ''">
          AND goods_name &lt; #{myLesser_goodsName,jdbcType=VARCHAR}
@@ -189,8 +195,8 @@
       <if test="myLike_id != null and myLike_id != ''">
          AND id like CONCAT('%', #{myLike_id,jdbcType=INTEGER},'%' )
       </if>
-      <if test="myLike_code != null and myLike_code != ''">
-         AND code like CONCAT('%', #{myLike_code,jdbcType=VARCHAR},'%' )
+      <if test="myLike_goodsCode != null and myLike_goodsCode != ''">
+         AND goods_code like CONCAT('%', #{myLike_goodsCode,jdbcType=VARCHAR},'%' )
       </if>
       <if test="myLike_goodsName != null and myLike_goodsName != ''">
          AND goods_name like CONCAT('%', #{myLike_goodsName,jdbcType=VARCHAR},'%' )
@@ -210,8 +216,8 @@
       <if test="myLikeStart_id != null and myLikeStart_id != ''">
          AND id like CONCAT('%', #{myLikeStart_id,jdbcType=INTEGER})
       </if>
-      <if test="myLikeStart_code != null and myLikeStart_code != ''">
-         AND code like CONCAT('%', #{myLikeStart_code,jdbcType=VARCHAR})
+      <if test="myLikeStart_GoodsCode != null and myLikeStart_GoodsCode != ''">
+         AND goods_code like CONCAT('%', #{myLikeStart_GoodsCode,jdbcType=VARCHAR})
       </if>
       <if test="myLikeStart_goodsName != null and myLikeStart_goodsName != ''">
          AND goods_name like CONCAT('%', #{myLikeStart_goodsName,jdbcType=VARCHAR})
@@ -231,8 +237,8 @@
       <if test="myLikeEnd_id != null and myLikeEnd_id != ''">
          AND id like CONCAT( #{myLikeEnd_id,jdbcType=INTEGER},'%' )
       </if>
-      <if test="myLikeEnd_code != null and myLikeEnd_code != ''">
-         AND code like CONCAT( #{myLikeEnd_code,jdbcType=VARCHAR},'%' )
+      <if test="myLikeEnd_goodsCode != null and myLikeEnd_goodsCode != ''">
+         AND goods_code like CONCAT( #{myLikeEnd_goodsCode,jdbcType=VARCHAR},'%' )
       </if>
       <if test="myLikeEnd_goodsName != null and myLikeEnd_goodsName != ''">
          AND goods_name like CONCAT( #{myLikeEnd_goodsName,jdbcType=VARCHAR},'%' )
@@ -252,8 +258,8 @@
       <if test="myIn_id != null and myIn_id != ''">
          AND id in <foreach item="item" index="index" collection="myIn_id" open="(" separator="," close=")"> #{item} </foreach>
       </if>
-      <if test="myIn_code != null and myIn_code != ''">
-         AND code in <foreach item="item" index="index" collection="myIn_code" open="(" separator="," close=")"> #{item} </foreach>
+      <if test="myIn_goodsCode != null and myIn_goodsCode != ''">
+         AND goods_code in <foreach item="item" index="index" collection="myIn_goodsCode" open="(" separator="," close=")"> #{item} </foreach>
       </if>
       <if test="myIn_goodsName != null and myIn_goodsName != ''">
          AND goods_name in <foreach item="item" index="index" collection="myIn_goodsName" open="(" separator="," close=")"> #{item} </foreach>

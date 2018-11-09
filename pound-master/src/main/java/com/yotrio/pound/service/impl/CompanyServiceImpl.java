@@ -32,7 +32,7 @@ public class CompanyServiceImpl implements ICompanyService {
     private CompanyMapper companyMapper;
 
     /**
-     * 分页获取地磅数据
+     * 分页获取公司数据
      *
      * @param dataTablePage 分页条件
      * @param companyDto    查询条件
@@ -65,7 +65,7 @@ public class CompanyServiceImpl implements ICompanyService {
     }
 
     /**
-     * 更新地磅数据
+     * 更新公司数据
      *
      * @param company
      * @return
@@ -77,7 +77,7 @@ public class CompanyServiceImpl implements ICompanyService {
     }
 
     /**
-     * 根据id删除地磅数据
+     * 根据id删除公司数据
      *
      * @param id
      * @return
@@ -88,7 +88,7 @@ public class CompanyServiceImpl implements ICompanyService {
     }
 
     /**
-     * 根据id删除地磅数据
+     * 根据id删除公司数据
      *
      * @param ids
      * @return
@@ -99,7 +99,7 @@ public class CompanyServiceImpl implements ICompanyService {
     }
 
     /**
-     * 添加地磅
+     * 添加公司
      *
      * @param company
      * @return
@@ -118,7 +118,7 @@ public class CompanyServiceImpl implements ICompanyService {
      */
     @Override
     public String checkForm(Company company) {
-        if (StringUtils.isEmpty(company.getCode())) {
+        if (StringUtils.isEmpty(company.getCompCode())) {
             return "公司编码不能为空";
         }
         if (StringUtils.isEmpty(company.getCompName())) {

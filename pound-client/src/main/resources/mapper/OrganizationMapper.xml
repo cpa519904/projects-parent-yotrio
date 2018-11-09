@@ -3,7 +3,7 @@
 <mapper namespace="com.yotrio.pound.dao.OrganizationMapper">
   <resultMap id="BaseResultMap" type="com.yotrio.pound.model.Organization">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="org_code" jdbcType="VARCHAR" property="orgCode" />
     <result column="org_name" jdbcType="VARCHAR" property="orgName" />
     <result column="types" jdbcType="INTEGER" property="types" />
     <result column="status" jdbcType="INTEGER" property="status" />
@@ -11,7 +11,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, code, org_name, types, status, description, update_time
+    id, org_code, org_name, types, status, description, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -24,10 +24,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.yotrio.pound.model.Organization">
-    insert into organization (id, code, org_name, 
+    insert into organization (id, org_code, org_name,
       types, status, description, 
       update_time)
-    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{orgCode,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR},
       #{types,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -37,8 +37,8 @@
       <if test="id != null">
         id,
       </if>
-      <if test="code != null">
-        code,
+      <if test="orgCode != null">
+        org_code,
       </if>
       <if test="orgName != null">
         org_name,
@@ -60,8 +60,8 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="code != null">
-        #{code,jdbcType=VARCHAR},
+      <if test="orgCode != null">
+        #{orgCode,jdbcType=VARCHAR},
       </if>
       <if test="orgName != null">
         #{orgName,jdbcType=VARCHAR},
@@ -83,8 +83,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.yotrio.pound.model.Organization">
     update organization
     <set>
-      <if test="code != null">
-        code = #{code,jdbcType=VARCHAR},
+      <if test="orgCode != null">
+        org_code = #{orgCode,jdbcType=VARCHAR},
       </if>
       <if test="orgName != null">
         org_name = #{orgName,jdbcType=VARCHAR},
@@ -106,7 +106,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yotrio.pound.model.Organization">
     update organization
-    set code = #{code,jdbcType=VARCHAR},
+    set org_code = #{orgCode,jdbcType=VARCHAR},
       org_name = #{orgName,jdbcType=VARCHAR},
       types = #{types,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
@@ -125,8 +125,8 @@
       <if test="id != null and id != ''">
          AND id = #{id,jdbcType=INTEGER}
       </if>
-      <if test="code != null and code != ''">
-         AND code = #{code,jdbcType=VARCHAR}
+      <if test="orgCode != null and orgCode != ''">
+         AND org_code = #{orgCode,jdbcType=VARCHAR}
       </if>
       <if test="orgName != null and orgName != ''">
          AND org_name = #{orgName,jdbcType=VARCHAR}
@@ -146,8 +146,8 @@
       <if test="myGreater_id != null and myGreater_id != ''">
          AND id &gt; #{myGreater_id,jdbcType=INTEGER}
       </if>
-      <if test="myGreater_code != null and myGreater_code != ''">
-         AND code &gt; #{myGreater_code,jdbcType=VARCHAR}
+      <if test="myGreater_orgCode != null and myGreater_orgCode != ''">
+         AND org_code &gt; #{myGreater_orgCode,jdbcType=VARCHAR}
       </if>
       <if test="myGreater_orgName != null and myGreater_orgName != ''">
          AND org_name &gt; #{myGreater_orgName,jdbcType=VARCHAR}
@@ -167,8 +167,8 @@
       <if test="myLesser_id != null and myLesser_id != ''">
          AND id &lt; #{myLesser_id,jdbcType=INTEGER}
       </if>
-      <if test="myLesser_code != null and myLesser_code != ''">
-         AND code &lt; #{myLesser_code,jdbcType=VARCHAR}
+      <if test="myLesser_orgCode != null and myLesser_orgCode != ''">
+         AND org_code &lt; #{myLesser_orgCode,jdbcType=VARCHAR}
       </if>
       <if test="myLesser_orgName != null and myLesser_orgName != ''">
          AND org_name &lt; #{myLesser_orgName,jdbcType=VARCHAR}
@@ -188,8 +188,8 @@
       <if test="myLike_id != null and myLike_id != ''">
          AND id like CONCAT('%', #{myLike_id,jdbcType=INTEGER},'%' )
       </if>
-      <if test="myLike_code != null and myLike_code != ''">
-         AND code like CONCAT('%', #{myLike_code,jdbcType=VARCHAR},'%' )
+      <if test="myLike_orgCode != null and myLike_orgCode != ''">
+         AND org_code like CONCAT('%', #{myLike_orgCode,jdbcType=VARCHAR},'%' )
       </if>
       <if test="myLike_orgName != null and myLike_orgName != ''">
          AND org_name like CONCAT('%', #{myLike_orgName,jdbcType=VARCHAR},'%' )
@@ -209,8 +209,8 @@
       <if test="myLikeStart_id != null and myLikeStart_id != ''">
          AND id like CONCAT('%', #{myLikeStart_id,jdbcType=INTEGER})
       </if>
-      <if test="myLikeStart_code != null and myLikeStart_code != ''">
-         AND code like CONCAT('%', #{myLikeStart_code,jdbcType=VARCHAR})
+      <if test="myLikeStart_orgCode != null and myLikeStart_orgCode != ''">
+         AND org_code like CONCAT('%', #{myLikeStart_orgCode,jdbcType=VARCHAR})
       </if>
       <if test="myLikeStart_orgName != null and myLikeStart_orgName != ''">
          AND org_name like CONCAT('%', #{myLikeStart_orgName,jdbcType=VARCHAR})
@@ -230,8 +230,8 @@
       <if test="myLikeEnd_id != null and myLikeEnd_id != ''">
          AND id like CONCAT( #{myLikeEnd_id,jdbcType=INTEGER},'%' )
       </if>
-      <if test="myLikeEnd_code != null and myLikeEnd_code != ''">
-         AND code like CONCAT( #{myLikeEnd_code,jdbcType=VARCHAR},'%' )
+      <if test="myLikeEnd_orgCode != null and myLikeEnd_orgCode != ''">
+         AND org_code like CONCAT( #{myLikeEnd_orgCode,jdbcType=VARCHAR},'%' )
       </if>
       <if test="myLikeEnd_orgName != null and myLikeEnd_orgName != ''">
          AND org_name like CONCAT( #{myLikeEnd_orgName,jdbcType=VARCHAR},'%' )
@@ -251,8 +251,8 @@
       <if test="myIn_id != null and myIn_id != ''">
          AND id in <foreach item="item" index="index" collection="myIn_id" open="(" separator="," close=")"> #{item} </foreach>
       </if>
-      <if test="myIn_code != null and myIn_code != ''">
-         AND code in <foreach item="item" index="index" collection="myIn_code" open="(" separator="," close=")"> #{item} </foreach>
+      <if test="myIn_orgCode != null and myIn_orgCode != ''">
+         AND org_code in <foreach item="item" index="index" collection="myIn_orgCode" open="(" separator="," close=")"> #{item} </foreach>
       </if>
       <if test="myIn_orgName != null and myIn_orgName != ''">
          AND org_name in <foreach item="item" index="index" collection="myIn_orgName" open="(" separator="," close=")"> #{item} </foreach>

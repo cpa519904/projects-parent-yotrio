@@ -16,7 +16,7 @@ public class Company implements Serializable {
      *
      * @mbg.generated
      */
-    private String code;
+    private String compCode;
 
     /**
      * 组织名称
@@ -63,12 +63,12 @@ public class Company implements Serializable {
         this.id = id;
     }
 
-    public String getCode() {
-        return code;
+    public String getCompCode() {
+        return compCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setCompCode(String compCode) {
+        this.compCode = compCode;
     }
 
     public String getCompName() {
@@ -118,7 +118,7 @@ public class Company implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", code=").append(code);
+        sb.append(", compCode=").append(compCode);
         sb.append(", compName=").append(compName);
         sb.append(", types=").append(types);
         sb.append(", status=").append(status);
@@ -141,7 +141,7 @@ public class Company implements Serializable {
         }
         Company other = (Company) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getCode() == null ? other.getCode() == null : this.getCode().equals(other.getCode()))
+            && (this.getCompCode() == null ? other.getCompCode() == null : this.getCompCode().equals(other.getCompCode()))
             && (this.getCompName() == null ? other.getCompName() == null : this.getCompName().equals(other.getCompName()))
             && (this.getTypes() == null ? other.getTypes() == null : this.getTypes().equals(other.getTypes()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
@@ -154,7 +154,7 @@ public class Company implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getCode() == null) ? 0 : getCode().hashCode());
+        result = prime * result + ((getCompCode() == null) ? 0 : getCompCode().hashCode());
         result = prime * result + ((getCompName() == null) ? 0 : getCompName().hashCode());
         result = prime * result + ((getTypes() == null) ? 0 : getTypes().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());

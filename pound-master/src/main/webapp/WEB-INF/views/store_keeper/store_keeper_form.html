@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>地磅系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
+</head>
+<body>
+
+<div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin"
+     style="padding: 20px 30px 0 0;">
+    <!-- 使用隐藏域用于保存编辑项的ID值，便于提交修改 -->
+    <input type="hidden" id="id" name="id">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">物料</label>
+        <div class="layui-input-inline">
+            <select id="goodsCode" name="goodsCode"  lay-search="" lay-verify="required">
+                <option value="">直接选择或搜索选择</option>
+                <option th:each="goods : ${goodsList}" th:value="${goods.goodsCode}" th:text="${goods.goodsName}"></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">组织</label>
+        <div class="layui-input-inline">
+            <select id="orgCode" name="orgCode"  lay-search="" lay-verify="required">
+                <option value="">直接选择或搜索选择</option>
+                <option th:each="organization : ${organizationList}" th:value="${organization.orgCode}" th:text="${organization.orgName}"></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">仓管员</label>
+        <div class="layui-input-inline">
+            <input type="text" id="keeperName" name="keeperName" lay-verify="required" placeholder="请输入" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">工号</label>
+        <div class="layui-input-inline">
+            <input type="number" id="keeperEmpid" name="keeperEmpid" lay-verify="number" placeholder="请输入" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-inline">
+            <input type="tel" id="keeperMobile" name="keeperMobile" lay-verify="phone" placeholder="请输入" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="LAY-store-keeper-submit" id="LAY-store-keeper-submit" value="确认">
+    </div>
+</div>
+
+<script src="../../../layuiadmin/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form'], function () {
+        var $ = layui.$
+            , form = layui.form
+    })
+</script>
+</body>
+</html>

@@ -16,7 +16,7 @@ public class Goods implements Serializable {
      *
      * @mbg.generated
      */
-    private String code;
+    private String goodsCode;
 
     /**
      * 货品名称
@@ -63,12 +63,12 @@ public class Goods implements Serializable {
         this.id = id;
     }
 
-    public String getCode() {
-        return code;
+    public String getGoodsCode() {
+        return goodsCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setGoodsCode(String goodsCode) {
+        this.goodsCode = goodsCode;
     }
 
     public String getGoodsName() {
@@ -118,7 +118,7 @@ public class Goods implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", code=").append(code);
+        sb.append(", goodsCode=").append(goodsCode);
         sb.append(", goodsName=").append(goodsName);
         sb.append(", types=").append(types);
         sb.append(", status=").append(status);
@@ -141,7 +141,7 @@ public class Goods implements Serializable {
         }
         Goods other = (Goods) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getCode() == null ? other.getCode() == null : this.getCode().equals(other.getCode()))
+            && (this.getGoodsCode() == null ? other.getGoodsCode() == null : this.getGoodsCode().equals(other.getGoodsCode()))
             && (this.getGoodsName() == null ? other.getGoodsName() == null : this.getGoodsName().equals(other.getGoodsName()))
             && (this.getTypes() == null ? other.getTypes() == null : this.getTypes().equals(other.getTypes()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
@@ -154,7 +154,7 @@ public class Goods implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getCode() == null) ? 0 : getCode().hashCode());
+        result = prime * result + ((getGoodsCode() == null) ? 0 : getGoodsCode().hashCode());
         result = prime * result + ((getGoodsName() == null) ? 0 : getGoodsName().hashCode());
         result = prime * result + ((getTypes() == null) ? 0 : getTypes().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());

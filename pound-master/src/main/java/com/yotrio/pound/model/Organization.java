@@ -16,7 +16,7 @@ public class Organization implements Serializable {
      *
      * @mbg.generated
      */
-    private String code;
+    private String orgCode;
 
     /**
      * 组织名称
@@ -63,12 +63,12 @@ public class Organization implements Serializable {
         this.id = id;
     }
 
-    public String getCode() {
-        return code;
+    public String getOrgCode() {
+        return orgCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
     }
 
     public String getOrgName() {
@@ -118,7 +118,7 @@ public class Organization implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", code=").append(code);
+        sb.append(", orgCode=").append(orgCode);
         sb.append(", orgName=").append(orgName);
         sb.append(", types=").append(types);
         sb.append(", status=").append(status);
@@ -141,7 +141,7 @@ public class Organization implements Serializable {
         }
         Organization other = (Organization) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getCode() == null ? other.getCode() == null : this.getCode().equals(other.getCode()))
+            && (this.getOrgCode() == null ? other.getOrgCode() == null : this.getOrgCode().equals(other.getOrgCode()))
             && (this.getOrgName() == null ? other.getOrgName() == null : this.getOrgName().equals(other.getOrgName()))
             && (this.getTypes() == null ? other.getTypes() == null : this.getTypes().equals(other.getTypes()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
@@ -154,7 +154,7 @@ public class Organization implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getCode() == null) ? 0 : getCode().hashCode());
+        result = prime * result + ((getOrgCode() == null) ? 0 : getOrgCode().hashCode());
         result = prime * result + ((getOrgName() == null) ? 0 : getOrgName().hashCode());
         result = prime * result + ((getTypes() == null) ? 0 : getTypes().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());

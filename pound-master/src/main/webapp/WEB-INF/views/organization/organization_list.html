@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>供应商列表</title>
+    <title>组织列表</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -17,15 +17,15 @@
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">供应商编码</label>
+                    <label class="layui-form-label">组织编码</label>
                     <div class="layui-input-block">
-                        <input type="text" name="myLike_compCode" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="myLike_orgCode" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">供应商名称</label>
+                    <label class="layui-form-label">组织名称</label>
                     <div class="layui-input-block">
-                        <input type="text" name="myLike_compName" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="myLike_orgName" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -38,11 +38,11 @@
 
         <div class="layui-card-body">
             <div style="padding-bottom: 10px;">
-                <button class="layui-btn layuiadmin-btn-company layui-btn-danger" data-type="batchdel">删除</button>
-                <button class="layui-btn layuiadmin-btn-company" data-type="add">添加</button>
+                <button class="layui-btn layuiadmin-btn-organization layui-btn-danger" data-type="batchdel">删除</button>
+                <button class="layui-btn layuiadmin-btn-organization" data-type="add">添加</button>
             </div>
 
-            <table id="LAY-company-manage" lay-filter="LAY-company-manage"></table>
+            <table id="LAY-organization-manage" lay-filter="LAY-organization-manage"></table>
             <script type="text/html" id="buttonTpl">
                 {{#  if(d.status == 1){ }}
                 <button class="layui-btn layui-btn-xs">正常</button>
@@ -50,7 +50,7 @@
                 <button class="layui-btn layui-btn-primary layui-btn-xs">停机</button>
                 {{#  } }}
             </script>
-            <script type="text/html" id="table-company">
+            <script type="text/html" id="table-organization">
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
                 <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>-->
             </script>
@@ -64,7 +64,7 @@
         base: '../../../layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'company', 'table'], function () {
+    }).use(['index', 'organization', 'table'], function () {
         var $ = layui.$
             , form = layui.form
             , table = layui.table;
@@ -74,7 +74,7 @@
             var field = data.field;
 
             //执行重载
-            table.reload('LAY-company-manage', {
+            table.reload('LAY-organization-manage', {
                 where: field
             });
         });
@@ -82,7 +82,7 @@
         //事件
         var active = {
             batchdel: function () {
-                var checkStatus = table.checkStatus('LAY-company-manage')
+                var checkStatus = table.checkStatus('LAY-organization-manage')
                     , checkData = checkStatus.data; //得到选中的数据
 
                 var ids = [];
@@ -103,7 +103,7 @@
                     //提交 Ajax 成功后，静态更新表格中的数据
                     $.ajax({
                         type: 'get',
-                        url: '/company/deleteByIds',
+                        url: '/organization/deleteByIds',
                         data: {
                             ids: ids.toString()
                         },
@@ -111,7 +111,7 @@
                         dataType: 'json',
                         success: function (result) {
                             if (result.code == 0) {
-                                table.reload('LAY-company-manage');
+                                table.reload('LAY-organization-manage');
                                 layer.msg('已删除');
                             } else {
                                 layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
@@ -126,14 +126,14 @@
             , add: function () {
                 layer.open({
                     type: 2
-                    , title: '添加供应商'
-                    , content: '/company/form.htm'
+                    , title: '添加组织'
+                    , content: '/organization/form.htm'
                     , maxmin: true
                     , area: ['500px', '450px']
                     , btn: ['确定', '取消']
                     , yes: function (index, layero) {
                         var iframeWindow = window['layui-layer-iframe' + index]
-                            , submitID = 'LAY-company-submit'
+                            , submitID = 'LAY-organization-submit'
                             , submit = layero.find('iframe').contents().find('#' + submitID);
 
                         //监听提交
@@ -145,13 +145,13 @@
                             //提交 Ajax 成功后，静态更新表格中的数据
                             $.ajax({
                                 type: 'post',
-                                url: '/company/save',
+                                url: '/organization/save',
                                 data: field,
                                 cache: false,
                                 dataType: 'json',
                                 success: function (result) {
                                     if (result.code == 0) {
-                                        table.reload('LAY-company-manage'); //数据刷新
+                                        table.reload('LAY-organization-manage'); //数据刷新
                                         layer.close(index); //关闭弹层
                                     } else {
                                         layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
@@ -173,7 +173,7 @@
                         form.render();
 
                         setTimeout(function () {
-                            layui.layer.tips('点击此处返回供应商列表', '.layui-layer-setwin .layui-layer-close', {
+                            layui.layer.tips('点击此处返回组织列表', '.layui-layer-setwin .layui-layer-close', {
                                 tips: 3
                             });
                         }, 500);
@@ -181,7 +181,7 @@
                 });
             }
         }
-        $('.layui-btn.layuiadmin-btn-company').on('click', function () {
+        $('.layui-btn.layuiadmin-btn-organization').on('click', function () {
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });

@@ -1,5 +1,12 @@
 package com.yotrio.pound.service;
 
+import com.github.pagehelper.PageInfo;
+import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.pound.model.Organization;
+import com.yotrio.pound.model.dto.OrganizationDto;
+
+import java.util.List;
+
 /**
  * 模块名称：projects-parent com.yotrio.pound.service
  * 功能说明：<br>
@@ -9,4 +16,19 @@ package com.yotrio.pound.service;
  **/
 public interface IOrganizationService {
 
+    PageInfo findAllPaging(DataTablePage dataTablePage, OrganizationDto organizationDto);
+
+    Organization findCacheById(Integer id);
+
+    int updateById(Organization organization);
+
+    int deleteById(Integer id);
+
+    int deleteByIds(List<Integer> ids);
+
+    int save(Organization organization);
+
+    String checkForm(Organization organization);
+
+    List<Organization> findAllCache();
 }

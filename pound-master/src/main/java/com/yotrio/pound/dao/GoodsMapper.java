@@ -3,6 +3,9 @@ package com.yotrio.pound.dao;
 import com.yotrio.pound.model.Goods;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface GoodsMapper {
     int deleteByPrimaryKey(Integer id);
@@ -16,4 +19,11 @@ public interface GoodsMapper {
     int updateByPrimaryKeySelective(Goods record);
 
     int updateByPrimaryKey(Goods record);
+
+    List<Goods> selectListByMap(Map<String, Object> beanToMap);
+
+    int deleteByIds(List<Integer> ids);
+
+    List<Goods> findAll();
+
 }

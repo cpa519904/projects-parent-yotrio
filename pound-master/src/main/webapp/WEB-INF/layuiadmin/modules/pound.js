@@ -22,6 +22,7 @@ layui.define(['table', 'form'], function (exports) {
         ]]
         , page: true
         , height: 'full-200'
+        , limit: 20
         , text: {
             none: '暂无相关数据'
         }
@@ -151,7 +152,7 @@ layui.define(['table', 'form'], function (exports) {
             // , {title: '操作', width: 120, align: 'center', fixed: 'right'}
         ]]
         , page: true
-        , limit: 10
+        , limit: 20
         , height: 'full-200'
         , text: {
             none: '暂无相关数据'

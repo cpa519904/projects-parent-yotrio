@@ -1,6 +1,12 @@
 package com.yotrio.pound.service;
 
+import com.github.pagehelper.PageInfo;
+import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.pound.model.StoreKeeper;
+import com.yotrio.pound.model.dto.StoreKeeperDto;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 模块名称：projects-parent com.yotrio.pound.service
@@ -11,4 +17,17 @@ import org.springframework.stereotype.Service;
  **/
 public interface IStoreKeeperService {
 
+    PageInfo findAllPaging(DataTablePage dataTablePage, StoreKeeperDto storeKeeperDto);
+
+    StoreKeeper findCacheById(Integer id);
+
+    int updateById(StoreKeeper storeKeeper);
+
+    int deleteById(Integer id);
+
+    int deleteByIds(List<Integer> ids);
+
+    int save(StoreKeeper storeKeeper);
+
+    String checkForm(StoreKeeper storeKeeper);
 }
