@@ -59,9 +59,9 @@ public class StoreKeeperController extends BaseController {
     @RequestMapping(value = {"/form.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String form(Model model) {
         //获取所有组织列表
-        List<Organization> organizationList = organizationService.findAllCache();
+        List<Organization> organizationList = organizationService.findAll();
         //获取所有物料列表
-        List<Goods> goodsList = goodsService.findAllCache();
+        List<Goods> goodsList = goodsService.findAll();
 
         model.addAttribute("organizationList", organizationList);
         model.addAttribute("goodsList", goodsList);

@@ -5,6 +5,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.constants.StoreKeeperConstant;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.pound.dao.GoodsMapper;
+import com.yotrio.pound.dao.OrganizationMapper;
 import com.yotrio.pound.dao.StoreKeeperMapper;
 import com.yotrio.pound.model.StoreKeeper;
 import com.yotrio.pound.model.dto.StoreKeeperDto;
@@ -31,6 +33,10 @@ public class StoreKeeperServiceImpl implements IStoreKeeperService {
 
     @Autowired
     private StoreKeeperMapper storeKeeperMapper;
+    @Autowired
+    private GoodsMapper goodsMapper;
+    @Autowired
+    private OrganizationMapper organizationMapper;
 
     /**
      * 分页获取仓库数据
@@ -73,6 +79,14 @@ public class StoreKeeperServiceImpl implements IStoreKeeperService {
      */
     @Override
     public int updateById(StoreKeeper storeKeeper) {
+        if (StringUtils.isNotEmpty(storeKeeper.getGoodsCode())) {
+            String goodsName = goodsMapper.findGoodsNameByGoodsCode(storeKeeper.getGoodsCode());
+            storeKeeper.setGoodsName(goodsName);
+        }
+        if (StringUtils.isNotEmpty(storeKeeper.getOrgCode())) {
+            String orgName = organizationMapper.findOrgNameByOrgCode(storeKeeper.getOrgCode());
+            storeKeeper.setOrgName(orgName);
+        }
         storeKeeper.setUpdateTime(new Date());
         return storeKeeperMapper.updateByPrimaryKeySelective(storeKeeper);
     }
@@ -107,6 +121,11 @@ public class StoreKeeperServiceImpl implements IStoreKeeperService {
      */
     @Override
     public int save(StoreKeeper storeKeeper) {
+        String goodsName = goodsMapper.findGoodsNameByGoodsCode(storeKeeper.getGoodsCode());
+        String orgName = organizationMapper.findOrgNameByOrgCode(storeKeeper.getOrgCode());
+        storeKeeper.setGoodsName(goodsName);
+        storeKeeper.setGoodsName(orgName);
+        storeKeeper.setCreateTime(new Date());
         storeKeeper.setStatus(StoreKeeperConstant.STATUS_INIT);
         return storeKeeperMapper.insert(storeKeeper);
     }
@@ -125,6 +144,16 @@ public class StoreKeeperServiceImpl implements IStoreKeeperService {
         if (StringUtils.isEmpty(storeKeeper.getOrgCode())) {
             return "组织名称不能为空";
         }
+        if (StringUtils.isEmpty(storeKeeper.getKeeperName())) {
+            return "管理员不能为空";
+        }
+        if (storeKeeper.getKeeperEmpid() == null) {
+            return "工号不能为空";
+        }
+        if (StringUtils.isEmpty(storeKeeper.getKeeperMobile())) {
+            return "手机号不能为空";
+        }
+
         return null;
     }
 

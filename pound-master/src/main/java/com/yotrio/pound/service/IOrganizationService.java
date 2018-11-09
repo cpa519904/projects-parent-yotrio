@@ -20,6 +20,8 @@ public interface IOrganizationService {
 
     Organization findCacheById(Integer id);
 
+    Organization findCacheByOrgCode(String orgCode);
+
     int updateById(Organization organization);
 
     int deleteById(Integer id);
@@ -31,4 +33,6 @@ public interface IOrganizationService {
     String checkForm(Organization organization);
 
     List<Organization> findAllCache();
+
+    List<Organization> findAll();
 }

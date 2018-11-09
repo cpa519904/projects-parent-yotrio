@@ -26,4 +26,7 @@ public interface OrganizationMapper {
 
     List<Organization> getAllOrganizations();
 
+    Organization selectByOrgCode(String orgCode);
+
+    String findOrgNameByOrgCode(String orgCode);
 }

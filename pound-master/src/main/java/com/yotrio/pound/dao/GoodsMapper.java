@@ -26,4 +26,7 @@ public interface GoodsMapper {
 
     List<Goods> findAll();
 
+    Goods selectByGoodsCode(String goodsCode);
+
+    String findGoodsNameByGoodsCode(String goodsCode);
 }

@@ -15,10 +15,10 @@ layui.define(['table', 'form'], function (exports) {
             , {field: 'keeperName', title: '仓管员'}
             , {field: 'keeperEmpid', title: '工号'}
             , {field: 'keeperMobile', title: '手机号'}
-            , {field: 'description', title: '描述'}
+            // , {field: 'description', title: '描述'}
             // , {field: 'updateTime', title: '更新时间', sort: true}
             // , {field: 'status', title: '状态', templet: '#buttonTpl', align: 'center'}
-            , {title: '操作', width: 80, align: 'center', fixed: 'right', toolbar: '#table-organization'}
+            , {title: '操作', width: 80, align: 'center', fixed: 'right', toolbar: '#table-store-keep'}
         ]]
         , page: true
         , height: 'full-200'
@@ -29,19 +29,19 @@ layui.define(['table', 'form'], function (exports) {
     });
 
     //监听工具条
-    table.on('tool(LAY-organization-manage)', function (obj) {
+    table.on('tool(LAY-store-keeper-manage)', function (obj) {
         var data = obj.data;
         if (obj.event === 'edit') {
             layer.open({
                 type: 2
                 , title: '编辑仓库'
-                , content: '/organization/form.htm'
+                , content: '/storeKeeper/form.htm'
                 , maxmin: true
                 , area: ['500px', '450px']
                 , btn: ['确定', '取消']
                 , yes: function (index, layero) {
                     var iframeWindow = window['layui-layer-iframe' + index]
-                        , submitID = 'LAY-organization-submit'
+                        , submitID = 'LAY-store-keeper-submit'
                         , submit = layero.find('iframe').contents().find('#' + submitID);
 
                     //监听提交
@@ -51,13 +51,13 @@ layui.define(['table', 'form'], function (exports) {
                         //提交 Ajax 成功后，静态更新表格中的数据
                         $.ajax({
                             type: 'post',
-                            url: '/organization/update',
+                            url: '/storeKeeper/update',
                             data: field,
                             cache: false,
                             dataType: 'json',
                             success: function (result) {
                                 if (result.code == 0) {
-                                    table.reload('LAY-organization-manage'); //数据刷新
+                                    table.reload('LAY-store-keeper-manage'); //数据刷新
                                     layer.close(index); //关闭弹层
                                 } else {
                                     layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
@@ -75,8 +75,11 @@ layui.define(['table', 'form'], function (exports) {
                     var body = layui.layer.getChildFrame('body', index);
                     // 取到弹出层里的元素，并把编辑的内容放进去
                     body.find("#id").val(obj.data.id);  //将选中的数据的id传到编辑页面的隐藏域，便于根据ID修改数据
-                    body.find("#orgName").val(obj.data.orgName);
-                    body.find("#goodsName").val(obj.data.goodsName);
+                    body.find("#orgCode").val(obj.data.orgCode);
+                    body.find("#goodsCode").val(obj.data.goodsCode);
+                    body.find("#keeperName").val(obj.data.keeperName);
+                    body.find("#keeperEmpid").val(obj.data.keeperEmpid);
+                    body.find("#keeperMobile").val(obj.data.keeperMobile);
                     body.find("#description").val(obj.data.description);
                     // 记得重新渲染表单
                     form.render();

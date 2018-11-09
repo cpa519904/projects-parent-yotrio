@@ -66,6 +66,24 @@ public class OrganizationServiceImpl implements IOrganizationService {
     }
 
     /**
+     * 根据组织编码获取对象
+     *
+     * @param orgCode 组织编码
+     * @return
+     */
+    @Override
+    public Organization findCacheByOrgCode(String orgCode) {
+        String key = "FindCacheByOrgCode:orgCode:" + orgCode;
+        Organization organization = RedisUtil.getObj(key, Organization.class);
+        if (organization == null) {
+            organization = organizationMapper.selectByOrgCode(orgCode);
+            RedisUtil.setObj(key, organization, 10 * 60);
+        }
+
+        return organization;
+    }
+
+    /**
      * 更新组织数据
      *
      * @param organization
@@ -143,5 +161,14 @@ public class OrganizationServiceImpl implements IOrganizationService {
         }
 
         return organizations;
+    }
+
+    /**
+     * 获取所有组织列表
+     * @return
+     */
+    @Override
+    public List<Organization> findAll() {
+        return organizationMapper.getAllOrganizations();
     }
 }

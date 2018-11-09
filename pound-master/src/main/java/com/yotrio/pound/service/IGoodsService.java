@@ -19,6 +19,8 @@ public interface IGoodsService {
 
     Goods findCacheById(Integer id);
 
+    Goods findCacheByGoodsCode(String goodsCode);
+
     int updateById(Goods goods);
 
     int deleteById(Integer id);
@@ -30,4 +32,6 @@ public interface IGoodsService {
     String checkForm(Goods goods);
 
     List<Goods> findAllCache();
+
+    List<Goods> findAll();
 }

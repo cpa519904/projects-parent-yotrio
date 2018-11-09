@@ -35,7 +35,7 @@ public class GoodsServiceImpl implements IGoodsService {
      * 分页获取货品数据
      *
      * @param dataTablePage 分页条件
-     * @param goodsDto    查询条件
+     * @param goodsDto      查询条件
      * @return
      */
     @Override
@@ -59,6 +59,24 @@ public class GoodsServiceImpl implements IGoodsService {
         if (goods == null) {
             goods = goodsMapper.selectByPrimaryKey(id);
             RedisUtil.setObj(key + id, goods, 10 * 60);
+        }
+
+        return goods;
+    }
+
+    /**
+     * 根据货品编码获取对象
+     *
+     * @param goodsCode 货品编码
+     * @return
+     */
+    @Override
+    public Goods findCacheByGoodsCode(String goodsCode) {
+        String key = "FindCacheByGoodsCode:goodsCode:" + goodsCode;
+        Goods goods = RedisUtil.getObj(key, Goods.class);
+        if (goods == null) {
+            goods = goodsMapper.selectByGoodsCode(goodsCode);
+            RedisUtil.setObj(key, goods, 10 * 60);
         }
 
         return goods;
@@ -106,6 +124,8 @@ public class GoodsServiceImpl implements IGoodsService {
      */
     @Override
     public int save(Goods goods) {
+        //时间戳作为货品编码
+        goods.setGoodsCode(String.valueOf(System.currentTimeMillis()));
         goods.setStatus(GoodsConstant.STATUS_INIT);
         return goodsMapper.insert(goods);
     }
@@ -118,17 +138,15 @@ public class GoodsServiceImpl implements IGoodsService {
      */
     @Override
     public String checkForm(Goods goods) {
-        if (StringUtils.isEmpty(goods.getGoodsCode())) {
-            return "货品编码不能为空";
-        }
         if (StringUtils.isEmpty(goods.getGoodsName())) {
-            return "货品名称不能为空";
+            return "物料名称不能为空";
         }
         return null;
     }
 
     /**
      * 获取所有物料列表
+     *
      * @return
      */
     @Override
@@ -142,5 +160,15 @@ public class GoodsServiceImpl implements IGoodsService {
         }
 
         return goods;
+    }
+
+    /**
+     * 获取所有物料列表
+     *
+     * @return
+     */
+    @Override
+    public List<Goods> findAll() {
+        return goodsMapper.findAll();
     }
 }

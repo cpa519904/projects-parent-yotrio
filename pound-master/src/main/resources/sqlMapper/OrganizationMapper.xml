@@ -19,6 +19,18 @@
     from organization
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByOrgCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from organization
+    where org_code = #{orgCode,jdbcType=VARCHAR}
+  </select>
+  <select id="findOrgNameByOrgCode" parameterType="java.lang.String" resultType="string">
+    select
+    org_name
+    from organization
+    where org_code = #{orgCode,jdbcType=VARCHAR}
+  </select>
   <select id="getAllOrganizations" resultMap="BaseResultMap">
     select top 500
     <include refid="Base_Column_List" />
