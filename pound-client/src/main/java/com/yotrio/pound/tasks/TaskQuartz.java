@@ -1,12 +1,12 @@
 package com.yotrio.pound.tasks;
 
 import com.alibaba.fastjson.JSON;
-import com.yotrio.common.utils.NetStateUtil;
 import com.yotrio.pound.domain.SystemProperties;
 import com.yotrio.pound.model.Task;
 import com.yotrio.pound.service.IInspectionService;
 import com.yotrio.pound.service.IPoundLogService;
 import com.yotrio.pound.service.ITaskService;
+import com.yotrio.pound.utils.NetStateUtil;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;

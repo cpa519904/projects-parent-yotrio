@@ -4,6 +4,8 @@ import com.yotrio.pound.model.Organization;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface OrganizationMapper {
@@ -18,4 +20,10 @@ public interface OrganizationMapper {
     int updateByPrimaryKeySelective(Organization record);
 
     int updateByPrimaryKey(Organization record);
+
+    Organization selectByOrgCode(String orgCode);
+
+    List<Organization> findAll();
+
+    int updateByOrgCodeSelective(Organization organization);
 }

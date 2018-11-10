@@ -1,5 +1,6 @@
-package com.yotrio.common.utils;
+package com.yotrio.pound.utils;
 
+import com.yotrio.common.utils.PropertiesFileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,12 +17,14 @@ import java.io.InputStreamReader;
 public class NetStateUtil {
     private static Logger logger = LoggerFactory.getLogger(NetStateUtil.class);
 
+    private static String SERVER_IP = PropertiesFileUtil.getInstance("application").get("server.ip");
+
     public static boolean isConnect() {
         boolean connect = false;
         Runtime runtime = Runtime.getRuntime();
         Process process;
         try {
-            process = runtime.exec("ping " + "192.168.0.98");
+            process = runtime.exec("ping " + SERVER_IP);
             InputStream is = process.getInputStream();
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);

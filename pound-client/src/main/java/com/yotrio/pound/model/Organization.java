@@ -53,6 +53,11 @@ public class Organization implements Serializable {
      */
     private Date updateTime;
 
+    /**
+     * 上次更新时间
+     */
+    private Date lastUpdateTime;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -111,6 +116,14 @@ public class Organization implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Date getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(Date lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -124,6 +137,7 @@ public class Organization implements Serializable {
         sb.append(", status=").append(status);
         sb.append(", description=").append(description);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", lastUpdateTime=").append(lastUpdateTime);
         sb.append("]");
         return sb.toString();
     }
@@ -146,7 +160,8 @@ public class Organization implements Serializable {
             && (this.getTypes() == null ? other.getTypes() == null : this.getTypes().equals(other.getTypes()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
-            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
+            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
+            && (this.getLastUpdateTime() == null ? other.getLastUpdateTime() == null : this.getLastUpdateTime().equals(other.getLastUpdateTime()));
     }
 
     @Override
@@ -160,6 +175,7 @@ public class Organization implements Serializable {
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
+        result = prime * result + ((getLastUpdateTime() == null) ? 0 : getLastUpdateTime().hashCode());
         return result;
     }
 }

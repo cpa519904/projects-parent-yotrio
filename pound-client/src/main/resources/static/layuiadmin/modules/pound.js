@@ -15,11 +15,13 @@ layui.define(['table', 'form'], function (exports) {
         } //如果无需传递额外参数，可不加该参数
         , cols: [[
             {type: 'checkbox', fixed: 'left'}
-            , {field: 'id', title: 'ID', sort: true, totalRowText: '合计'}
-            , {field: 'poundLogNo', title: '过磅单单号', minWidth: 120}
-            , {field: 'compName', title: '供应商', minWidth: 80}
+            , {field: 'id', title: 'ID', sort: true, totalRowText: '合计', width: 60}
+            // , {field: 'types', title: '类别', minWidth: 60,templet:'#logTypes'}
+            , {field: 'poundLogNo', title: '过磅单单号', minWidth: 140, toolbar: '#table-pound-log'}
+            , {field: 'poundName', title: '所属地磅', minWidth: 80}
+            , {field: 'compName', title: '供应商', minWidth: 180}
             , {field: 'unitName', title: '组织', minWidth: 100}
-            , {field: 'goodsName', title: '货品', minWidth: 80}
+            , {field: 'goodsName', title: '货品', minWidth: 60}
             , {field: 'plateNo', title: '车牌号', minWidth: 80}
             , {field: 'grossWeight', title: '总重', minWidth: 80, sort: true, totalRow: true}
             , {field: 'tareWeight', title: '皮重', minWidth: 80, sort: true, totalRow: true}
@@ -27,13 +29,13 @@ layui.define(['table', 'form'], function (exports) {
             , {field: 'diffWeight', title: '磅差', minWidth: 80, sort: true, totalRow: true}
             , {field: 'returnWeightTotal', title: '退货', minWidth: 80, sort: true, totalRow: true}
             , {field: 'sampleNetWeight', title: '样品', minWidth: 80, sort: true, totalRow: true}
-            , {field: 'grossImgUrl', title: '图1', templet: '#imgTpl1'}
-            , {field: 'tareImgUrl', title: '图2', templet: '#imgTpl2'}
+            // , {field: 'grossImgUrl', title: '图1', templet: '#imgTpl1'}
+            // , {field: 'tareImgUrl', title: '图2', templet: '#imgTpl2'}
             , {field: 'createTime', title: '创建时间', sort: true, minWidth: 150}
-            , {field: 'remark', title: '备注'}
+            // , {field: 'remark', title: '备注'}
             // , {field: 'status', title: '状态'}
             // , {field: 'updateTime', title: '更新时间', sort: true}
-            , {title: '操作', width: 120, align: 'center', fixed: 'right', toolbar: '#table-pound-log'}
+            , {title: '操作', width: 80, align: 'center', fixed: 'right', toolbar: '#btnTpl'}
         ]]
         , page: true
         , limit: 10

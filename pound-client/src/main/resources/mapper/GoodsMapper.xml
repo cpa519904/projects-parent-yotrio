@@ -1,275 +1,376 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yotrio.pound.dao.GoodsMapper">
-  <resultMap id="BaseResultMap" type="com.yotrio.pound.model.Goods">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
-    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
-    <result column="types" jdbcType="INTEGER" property="types" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, goods_code, goods_name, types, status, description, update_time
+    <resultMap id="BaseResultMap" type="com.yotrio.pound.model.Goods">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="goods_code" jdbcType="VARCHAR" property="goodsCode"/>
+        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="types" jdbcType="INTEGER" property="types"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, goods_code, goods_name, types, status, description, update_time, last_update_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from goods
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from goods
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByGoodsCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from goods
+        where goods_code = #{goodsCode,jdbcType=VARCHAR}
+    </select>
+    <select id="findAll"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from goods
+        where 1=1
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from goods
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.yotrio.pound.model.Goods">
+    <insert id="insert" parameterType="com.yotrio.pound.model.Goods">
     insert into goods (id, goods_code, goods_name,
       types, status, description, 
-      update_time)
+      update_time, last_update_time)
     values (#{id,jdbcType=INTEGER}, #{goodsCode,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR},
       #{types,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{updateTime,jdbcType=TIMESTAMP}, #{lastUpdateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.yotrio.pound.model.Goods">
-    insert into goods
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="goodsCode != null">
-        goods_code,
-      </if>
-      <if test="goodsName != null">
-        goods_name,
-      </if>
-      <if test="types != null">
-        types,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="description != null">
-        description,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="goodsCode != null">
-        #{goodsCode,jdbcType=VARCHAR},
-      </if>
-      <if test="goodsName != null">
-        #{goodsName,jdbcType=VARCHAR},
-      </if>
-      <if test="types != null">
-        #{types,jdbcType=INTEGER},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yotrio.pound.model.Goods">
-    update goods
-    <set>
-      <if test="goodsCode != null">
-        goods_code = #{goodsCode,jdbcType=VARCHAR},
-      </if>
-      <if test="goodsName != null">
-        goods_name = #{goodsName,jdbcType=VARCHAR},
-      </if>
-      <if test="types != null">
-        types = #{types,jdbcType=INTEGER},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yotrio.pound.model.Goods">
+    <insert id="insertSelective" parameterType="com.yotrio.pound.model.Goods">
+        insert into goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="goodsCode != null">
+                goods_code,
+            </if>
+            <if test="goodsName != null">
+                goods_name,
+            </if>
+            <if test="types != null">
+                types,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="goodsCode != null">
+                #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="types != null">
+                #{types,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateTime != null">
+                #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yotrio.pound.model.Goods">
+        update goods
+        <set>
+            <if test="goodsCode != null">
+                goods_code = #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                goods_name = #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="types != null">
+                types = #{types,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time =#{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByGoodsCodeSelective" parameterType="com.yotrio.pound.model.Goods">
+        update goods
+        <set>
+            <if test="goodsCode != null">
+                goods_code = #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                goods_name = #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="types != null">
+                types = #{types,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time =#{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where goods_code = #{goodsCode,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yotrio.pound.model.Goods">
     update goods
     set goods_code = #{goodsCode,jdbcType=VARCHAR},
       goods_name = #{goodsName,jdbcType=VARCHAR},
       types = #{types,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       description = #{description,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectCountByMap" parameterType="map" resultType="int">
-    select count(*) from  <if test="dynamicTableName != null and dynamicTableName != ''"> ${dynamicTableName}  </if><if test="dynamicTableName == null or dynamicTableName == ''"> goods</if> <include refid="Base_Query_Map_Condition" /> 
-  </select>
-  <select id="selectListByMap" parameterType="map" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" /> from  <if test="dynamicTableName != null and dynamicTableName != ''"> ${dynamicTableName}  </if><if test="dynamicTableName == null or dynamicTableName == ''"> goods</if> <include refid="Base_Query_Map_Condition" />  order by  id desc
-  </select>
-  <sql id="Base_Query_Map_Condition">
-    <trim prefix="where" prefixOverrides="and | or">
-      <if test="id != null and id != ''">
-         AND id = #{id,jdbcType=INTEGER}
-      </if>
-      <if test="goodsCode != null and goodsCode != ''">
-         AND goods_code = #{goodsCode,jdbcType=VARCHAR}
-      </if>
-      <if test="goodsName != null and goodsName != ''">
-         AND goods_name = #{goodsName,jdbcType=VARCHAR}
-      </if>
-      <if test="types != null and types != ''">
-         AND types = #{types,jdbcType=INTEGER}
-      </if>
-      <if test="status != null and status != ''">
-         AND status = #{status,jdbcType=INTEGER}
-      </if>
-      <if test="description != null and description != ''">
-         AND description = #{description,jdbcType=VARCHAR}
-      </if>
-      <if test="updateTime != null and updateTime != ''">
-         AND update_time = #{updateTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="myGreater_id != null and myGreater_id != ''">
-         AND id &gt; #{myGreater_id,jdbcType=INTEGER}
-      </if>
-      <if test="myGreater_goodsCode != null and myGreater_goodsCode != ''">
-         AND goods_code &gt; #{myGreater_goodsCode,jdbcType=VARCHAR}
-      </if>
-      <if test="myGreater_goodsName != null and myGreater_goodsName != ''">
-         AND goods_name &gt; #{myGreater_goodsName,jdbcType=VARCHAR}
-      </if>
-      <if test="myGreater_types != null and myGreater_types != ''">
-         AND types &gt; #{myGreater_types,jdbcType=INTEGER}
-      </if>
-      <if test="myGreater_status != null and myGreater_status != ''">
-         AND status &gt; #{myGreater_status,jdbcType=INTEGER}
-      </if>
-      <if test="myGreater_description != null and myGreater_description != ''">
-         AND description &gt; #{myGreater_description,jdbcType=VARCHAR}
-      </if>
-      <if test="myGreater_updateTime != null and myGreater_updateTime != ''">
-         AND update_time &gt; #{myGreater_updateTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="myLesser_id != null and myLesser_id != ''">
-         AND id &lt; #{myLesser_id,jdbcType=INTEGER}
-      </if>
-      <if test="myLesser_goodsCode != null and myLesser_goodsCode != ''">
-         AND goods_code &lt; #{myLesser_goodsCode,jdbcType=VARCHAR}
-      </if>
-      <if test="myLesser_goodsName != null and myLesser_goodsName != ''">
-         AND goods_name &lt; #{myLesser_goodsName,jdbcType=VARCHAR}
-      </if>
-      <if test="myLesser_types != null and myLesser_types != ''">
-         AND types &lt; #{myLesser_types,jdbcType=INTEGER}
-      </if>
-      <if test="myLesser_status != null and myLesser_status != ''">
-         AND status &lt; #{myLesser_status,jdbcType=INTEGER}
-      </if>
-      <if test="myLesser_description != null and myLesser_description != ''">
-         AND description &lt; #{myLesser_description,jdbcType=VARCHAR}
-      </if>
-      <if test="myLesser_updateTime != null and myLesser_updateTime != ''">
-         AND update_time &lt; #{myLesser_updateTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="myLike_id != null and myLike_id != ''">
-         AND id like CONCAT('%', #{myLike_id,jdbcType=INTEGER},'%' )
-      </if>
-      <if test="myLike_goodsCode != null and myLike_goodsCode != ''">
-         AND goods_code like CONCAT('%', #{myLike_goodsCode,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLike_goodsName != null and myLike_goodsName != ''">
-         AND goods_name like CONCAT('%', #{myLike_goodsName,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLike_types != null and myLike_types != ''">
-         AND types like CONCAT('%', #{myLike_types,jdbcType=INTEGER},'%' )
-      </if>
-      <if test="myLike_status != null and myLike_status != ''">
-         AND status like CONCAT('%', #{myLike_status,jdbcType=INTEGER},'%' )
-      </if>
-      <if test="myLike_description != null and myLike_description != ''">
-         AND description like CONCAT('%', #{myLike_description,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLike_updateTime != null and myLike_updateTime != ''">
-         AND update_time like CONCAT('%', #{myLike_updateTime,jdbcType=TIMESTAMP},'%' )
-      </if>
-      <if test="myLikeStart_id != null and myLikeStart_id != ''">
-         AND id like CONCAT('%', #{myLikeStart_id,jdbcType=INTEGER})
-      </if>
-      <if test="myLikeStart_goodsCode != null and myLikeStart_goodsCode != ''">
-         AND goods_code like CONCAT('%', #{myLikeStart_goodsCode,jdbcType=VARCHAR})
-      </if>
-      <if test="myLikeStart_goodsName != null and myLikeStart_goodsName != ''">
-         AND goods_name like CONCAT('%', #{myLikeStart_goodsName,jdbcType=VARCHAR})
-      </if>
-      <if test="myLikeStart_types != null and myLikeStart_types != ''">
-         AND types like CONCAT('%', #{myLikeStart_types,jdbcType=INTEGER})
-      </if>
-      <if test="myLikeStart_status != null and myLikeStart_status != ''">
-         AND status like CONCAT('%', #{myLikeStart_status,jdbcType=INTEGER})
-      </if>
-      <if test="myLikeStart_description != null and myLikeStart_description != ''">
-         AND description like CONCAT('%', #{myLikeStart_description,jdbcType=VARCHAR})
-      </if>
-      <if test="myLikeStart_updateTime != null and myLikeStart_updateTime != ''">
-         AND update_time like CONCAT('%', #{myLikeStart_updateTime,jdbcType=TIMESTAMP})
-      </if>
-      <if test="myLikeEnd_id != null and myLikeEnd_id != ''">
-         AND id like CONCAT( #{myLikeEnd_id,jdbcType=INTEGER},'%' )
-      </if>
-      <if test="myLikeEnd_goodsCode != null and myLikeEnd_goodsCode != ''">
-         AND goods_code like CONCAT( #{myLikeEnd_goodsCode,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLikeEnd_goodsName != null and myLikeEnd_goodsName != ''">
-         AND goods_name like CONCAT( #{myLikeEnd_goodsName,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLikeEnd_types != null and myLikeEnd_types != ''">
-         AND types like CONCAT( #{myLikeEnd_types,jdbcType=INTEGER},'%' )
-      </if>
-      <if test="myLikeEnd_status != null and myLikeEnd_status != ''">
-         AND status like CONCAT( #{myLikeEnd_status,jdbcType=INTEGER},'%' )
-      </if>
-      <if test="myLikeEnd_description != null and myLikeEnd_description != ''">
-         AND description like CONCAT( #{myLikeEnd_description,jdbcType=VARCHAR},'%' )
-      </if>
-      <if test="myLikeEnd_updateTime != null and myLikeEnd_updateTime != ''">
-         AND update_time like CONCAT( #{myLikeEnd_updateTime,jdbcType=TIMESTAMP},'%' )
-      </if>
-      <if test="myIn_id != null and myIn_id != ''">
-         AND id in <foreach item="item" index="index" collection="myIn_id" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_goodsCode != null and myIn_goodsCode != ''">
-         AND goods_code in <foreach item="item" index="index" collection="myIn_goodsCode" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_goodsName != null and myIn_goodsName != ''">
-         AND goods_name in <foreach item="item" index="index" collection="myIn_goodsName" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_types != null and myIn_types != ''">
-         AND types in <foreach item="item" index="index" collection="myIn_types" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_status != null and myIn_status != ''">
-         AND status in <foreach item="item" index="index" collection="myIn_status" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_description != null and myIn_description != ''">
-         AND description in <foreach item="item" index="index" collection="myIn_description" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-      <if test="myIn_updateTime != null and myIn_updateTime != ''">
-         AND update_time in <foreach item="item" index="index" collection="myIn_updateTime" open="(" separator="," close=")"> #{item} </foreach>
-      </if>
-    </trim>
-  </sql>
-  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+    <select id="selectCountByMap" parameterType="map" resultType="int">
+        select count(*) from
+        <if test="dynamicTableName != null and dynamicTableName != ''">${dynamicTableName}</if>
+        <if test="dynamicTableName == null or dynamicTableName == ''">goods</if>
+        <include refid="Base_Query_Map_Condition"/>
+    </select>
+    <select id="selectListByMap" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <if test="dynamicTableName != null and dynamicTableName != ''">${dynamicTableName}</if>
+        <if test="dynamicTableName == null or dynamicTableName == ''">goods</if>
+        <include refid="Base_Query_Map_Condition"/>
+        order by id desc
+    </select>
+    <sql id="Base_Query_Map_Condition">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="id != null and id != ''">
+                AND id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="goodsCode != null and goodsCode != ''">
+                AND goods_code = #{goodsCode,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsName != null and goodsName != ''">
+                AND goods_name = #{goodsName,jdbcType=VARCHAR}
+            </if>
+            <if test="types != null and types != ''">
+                AND types = #{types,jdbcType=INTEGER}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="description != null and description != ''">
+                AND description = #{description,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastUpdateTime != null and lastUpdateTime != ''">
+                AND last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myGreater_id != null and myGreater_id != ''">
+                AND id &gt; #{myGreater_id,jdbcType=INTEGER}
+            </if>
+            <if test="myGreater_goodsCode != null and myGreater_goodsCode != ''">
+                AND goods_code &gt; #{myGreater_goodsCode,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_goodsName != null and myGreater_goodsName != ''">
+                AND goods_name &gt; #{myGreater_goodsName,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_types != null and myGreater_types != ''">
+                AND types &gt; #{myGreater_types,jdbcType=INTEGER}
+            </if>
+            <if test="myGreater_status != null and myGreater_status != ''">
+                AND status &gt; #{myGreater_status,jdbcType=INTEGER}
+            </if>
+            <if test="myGreater_description != null and myGreater_description != ''">
+                AND description &gt; #{myGreater_description,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_updateTime != null and myGreater_updateTime != ''">
+                AND update_time &gt; #{myGreater_updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myGreater_lastUpdateTime != null and myGreater_lastUpdateTime != ''">
+                AND last_update_time &gt; #{myGreater_lastUpdateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myLesser_id != null and myLesser_id != ''">
+                AND id &lt; #{myLesser_id,jdbcType=INTEGER}
+            </if>
+            <if test="myLesser_goodsCode != null and myLesser_goodsCode != ''">
+                AND goods_code &lt; #{myLesser_goodsCode,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_goodsName != null and myLesser_goodsName != ''">
+                AND goods_name &lt; #{myLesser_goodsName,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_types != null and myLesser_types != ''">
+                AND types &lt; #{myLesser_types,jdbcType=INTEGER}
+            </if>
+            <if test="myLesser_status != null and myLesser_status != ''">
+                AND status &lt; #{myLesser_status,jdbcType=INTEGER}
+            </if>
+            <if test="myLesser_description != null and myLesser_description != ''">
+                AND description &lt; #{myLesser_description,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_updateTime != null and myLesser_updateTime != ''">
+                AND update_time &lt; #{myLesser_updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myLesser_lastUpdateTime != null and myLesser_lastUpdateTime != ''">
+                AND last_update_time &lt; #{myLesser_lastUpdateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myLike_id != null and myLike_id != ''">
+                AND id like CONCAT('%', #{myLike_id,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLike_goodsCode != null and myLike_goodsCode != ''">
+                AND goods_code like CONCAT('%', #{myLike_goodsCode,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_goodsName != null and myLike_goodsName != ''">
+                AND goods_name like CONCAT('%', #{myLike_goodsName,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_types != null and myLike_types != ''">
+                AND types like CONCAT('%', #{myLike_types,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLike_status != null and myLike_status != ''">
+                AND status like CONCAT('%', #{myLike_status,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLike_description != null and myLike_description != ''">
+                AND description like CONCAT('%', #{myLike_description,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_updateTime != null and myLike_updateTime != ''">
+                AND update_time like CONCAT('%', #{myLike_updateTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myLike_lastUpdateTime != null and myLike_lastUpdateTime != ''">
+                AND last_update_time like CONCAT('%', #{myLike_lastUpdateTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myLikeStart_id != null and myLikeStart_id != ''">
+                AND id like CONCAT('%', #{myLikeStart_id,jdbcType=INTEGER})
+            </if>
+            <if test="myLikeStart_goodsCode != null and myLikeStart_goodsCode != ''">
+                AND goods_code like CONCAT('%', #{myLikeStart_goodsCode,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_goodsName != null and myLikeStart_goodsName != ''">
+                AND goods_name like CONCAT('%', #{myLikeStart_goodsName,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_types != null and myLikeStart_types != ''">
+                AND types like CONCAT('%', #{myLikeStart_types,jdbcType=INTEGER})
+            </if>
+            <if test="myLikeStart_status != null and myLikeStart_status != ''">
+                AND status like CONCAT('%', #{myLikeStart_status,jdbcType=INTEGER})
+            </if>
+            <if test="myLikeStart_description != null and myLikeStart_description != ''">
+                AND description like CONCAT('%', #{myLikeStart_description,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_updateTime != null and myLikeStart_updateTime != ''">
+                AND update_time like CONCAT('%', #{myLikeStart_updateTime,jdbcType=TIMESTAMP})
+            </if>
+            <if test="myLikeStart_lastUpdateTime != null and myLikeStart_lastUpdateTime != ''">
+                AND last_update_time like CONCAT('%', #{myLikeStart_lastUpdateTime,jdbcType=TIMESTAMP})
+            </if>
+            <if test="myLikeEnd_id != null and myLikeEnd_id != ''">
+                AND id like CONCAT( #{myLikeEnd_id,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLikeEnd_goodsCode != null and myLikeEnd_goodsCode != ''">
+                AND goods_code like CONCAT( #{myLikeEnd_goodsCode,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_goodsName != null and myLikeEnd_goodsName != ''">
+                AND goods_name like CONCAT( #{myLikeEnd_goodsName,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_types != null and myLikeEnd_types != ''">
+                AND types like CONCAT( #{myLikeEnd_types,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLikeEnd_status != null and myLikeEnd_status != ''">
+                AND status like CONCAT( #{myLikeEnd_status,jdbcType=INTEGER},'%' )
+            </if>
+            <if test="myLikeEnd_description != null and myLikeEnd_description != ''">
+                AND description like CONCAT( #{myLikeEnd_description,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_updateTime != null and myLikeEnd_updateTime != ''">
+                AND update_time like CONCAT( #{myLikeEnd_updateTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myLikeEnd_lastUpdateTime != null and myLikeEnd_lastUpdateTime != ''">
+                AND last_update_time like CONCAT( #{myLikeEnd_lastUpdateTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myIn_id != null and myIn_id != ''">
+                AND id in
+                <foreach item="item" index="index" collection="myIn_id" open="(" separator="," close=")">#{item}
+                </foreach>
+            </if>
+            <if test="myIn_goodsCode != null and myIn_goodsCode != ''">
+                AND goods_code in
+                <foreach item="item" index="index" collection="myIn_goodsCode" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_goodsName != null and myIn_goodsName != ''">
+                AND goods_name in
+                <foreach item="item" index="index" collection="myIn_goodsName" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_types != null and myIn_types != ''">
+                AND types in
+                <foreach item="item" index="index" collection="myIn_types" open="(" separator="," close=")">#{item}
+                </foreach>
+            </if>
+            <if test="myIn_status != null and myIn_status != ''">
+                AND status in
+                <foreach item="item" index="index" collection="myIn_status" open="(" separator="," close=")">#{item}
+                </foreach>
+            </if>
+            <if test="myIn_description != null and myIn_description != ''">
+                AND description in
+                <foreach item="item" index="index" collection="myIn_description" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_updateTime != null and myIn_updateTime != ''">
+                AND update_time in
+                <foreach item="item" index="index" collection="myIn_updateTime" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="myIn_lastUpdateTime != null and myIn_lastUpdateTime != ''">
+                AND last_update_time in
+                <foreach item="item" index="index" collection="myIn_lastUpdateTime" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </trim>
+    </sql>
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
 </mapper>

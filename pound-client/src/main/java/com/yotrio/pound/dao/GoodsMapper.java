@@ -4,6 +4,8 @@ import com.yotrio.pound.model.Goods;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface GoodsMapper {
@@ -18,4 +20,10 @@ public interface GoodsMapper {
     int updateByPrimaryKeySelective(Goods record);
 
     int updateByPrimaryKey(Goods record);
+
+    Goods selectByGoodsCode(String goodsCode);
+
+    List<Goods> findAll();
+
+    int updateByGoodsCodeSelective(Goods goods);
 }

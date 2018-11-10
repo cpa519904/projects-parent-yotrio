@@ -14,10 +14,11 @@
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
     id, goods_code, goods_name, org_code, org_name, keeper_name, keeper_empid, keeper_mobile, 
-    status, description, create_time, update_time
+    status, description, create_time, update_time, last_update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -33,12 +34,13 @@
     insert into store_keeper (id, goods_code, goods_name, 
       org_code, org_name, keeper_name, 
       keeper_empid, keeper_mobile, status, 
-      description, create_time, update_time
+      description, create_time, update_time, last_update_time
       )
     values (#{id,jdbcType=INTEGER}, #{goodsCode,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, 
       #{orgCode,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, #{keeperName,jdbcType=VARCHAR}, 
       #{keeperEmpid,jdbcType=INTEGER}, #{keeperMobile,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{lastUpdateTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.yotrio.pound.model.StoreKeeper">
@@ -80,6 +82,9 @@
       <if test="updateTime != null">
         update_time,
       </if>
+      <if test="lastUpdateTime != null">
+        last_update_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -117,6 +122,9 @@
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateTime != null">
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -156,6 +164,9 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="lastUpdateTime != null">
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -171,7 +182,8 @@
       status = #{status,jdbcType=INTEGER},
       description = #{description,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectCountByMap" parameterType="map" resultType="int">
@@ -218,6 +230,9 @@
       <if test="updateTime != null and updateTime != ''">
          AND update_time = #{updateTime,jdbcType=TIMESTAMP}
       </if>
+      <if test="lastUpdateTime != null and lastUpdateTime != ''">
+         AND last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+      </if>
       <if test="myGreater_id != null and myGreater_id != ''">
          AND id &gt; #{myGreater_id,jdbcType=INTEGER}
       </if>
@@ -253,6 +268,9 @@
       </if>
       <if test="myGreater_updateTime != null and myGreater_updateTime != ''">
          AND update_time &gt; #{myGreater_updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="myGreater_lastUpdateTime != null and myGreater_lastUpdateTime != ''">
+         AND last_update_time &gt; #{myGreater_lastUpdateTime,jdbcType=TIMESTAMP}
       </if>
       <if test="myLesser_id != null and myLesser_id != ''">
          AND id &lt; #{myLesser_id,jdbcType=INTEGER}
@@ -290,6 +308,9 @@
       <if test="myLesser_updateTime != null and myLesser_updateTime != ''">
          AND update_time &lt; #{myLesser_updateTime,jdbcType=TIMESTAMP}
       </if>
+      <if test="myLesser_lastUpdateTime != null and myLesser_lastUpdateTime != ''">
+         AND last_update_time &lt; #{myLesser_lastUpdateTime,jdbcType=TIMESTAMP}
+      </if>
       <if test="myLike_id != null and myLike_id != ''">
          AND id like CONCAT('%', #{myLike_id,jdbcType=INTEGER},'%' )
       </if>
@@ -325,6 +346,9 @@
       </if>
       <if test="myLike_updateTime != null and myLike_updateTime != ''">
          AND update_time like CONCAT('%', #{myLike_updateTime,jdbcType=TIMESTAMP},'%' )
+      </if>
+      <if test="myLike_lastUpdateTime != null and myLike_lastUpdateTime != ''">
+         AND last_update_time like CONCAT('%', #{myLike_lastUpdateTime,jdbcType=TIMESTAMP},'%' )
       </if>
       <if test="myLikeStart_id != null and myLikeStart_id != ''">
          AND id like CONCAT('%', #{myLikeStart_id,jdbcType=INTEGER})
@@ -362,6 +386,9 @@
       <if test="myLikeStart_updateTime != null and myLikeStart_updateTime != ''">
          AND update_time like CONCAT('%', #{myLikeStart_updateTime,jdbcType=TIMESTAMP})
       </if>
+      <if test="myLikeStart_lastUpdateTime != null and myLikeStart_lastUpdateTime != ''">
+         AND last_update_time like CONCAT('%', #{myLikeStart_lastUpdateTime,jdbcType=TIMESTAMP})
+      </if>
       <if test="myLikeEnd_id != null and myLikeEnd_id != ''">
          AND id like CONCAT( #{myLikeEnd_id,jdbcType=INTEGER},'%' )
       </if>
@@ -398,6 +425,9 @@
       <if test="myLikeEnd_updateTime != null and myLikeEnd_updateTime != ''">
          AND update_time like CONCAT( #{myLikeEnd_updateTime,jdbcType=TIMESTAMP},'%' )
       </if>
+      <if test="myLikeEnd_lastUpdateTime != null and myLikeEnd_lastUpdateTime != ''">
+         AND last_update_time like CONCAT( #{myLikeEnd_lastUpdateTime,jdbcType=TIMESTAMP},'%' )
+      </if>
       <if test="myIn_id != null and myIn_id != ''">
          AND id in <foreach item="item" index="index" collection="myIn_id" open="(" separator="," close=")"> #{item} </foreach>
       </if>
@@ -433,6 +463,9 @@
       </if>
       <if test="myIn_updateTime != null and myIn_updateTime != ''">
          AND update_time in <foreach item="item" index="index" collection="myIn_updateTime" open="(" separator="," close=")"> #{item} </foreach>
+      </if>
+      <if test="myIn_lastUpdateTime != null and myIn_lastUpdateTime != ''">
+         AND last_update_time in <foreach item="item" index="index" collection="myIn_lastUpdateTime" open="(" separator="," close=")"> #{item} </foreach>
       </if>
     </trim>
   </sql>

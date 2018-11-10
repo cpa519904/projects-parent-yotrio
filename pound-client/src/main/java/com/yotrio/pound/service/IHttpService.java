@@ -1,6 +1,11 @@
 package com.yotrio.pound.service;
 
+import com.yotrio.pound.model.Company;
+import com.yotrio.pound.model.Goods;
+import com.yotrio.pound.model.Organization;
 import com.yotrio.pound.model.PoundInfo;
+
+import java.util.List;
 
 /**
  * 模块名称：projects-parent com.yotrio.pound.service
@@ -11,4 +16,10 @@ import com.yotrio.pound.model.PoundInfo;
  **/
 public interface IHttpService {
     PoundInfo getPoundInfo(Integer id);
+
+    List<Company> findAllCompany();
+
+    List<Goods> findAllGoods();
+
+    List<Organization> findAllOrganization();
 }

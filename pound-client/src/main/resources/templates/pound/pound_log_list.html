@@ -110,7 +110,11 @@
                 {{#  } }}
             </script>
             <script type="text/html" id="table-pound-log">
-                <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+                <a lay-href="/poundLog/detail.htm/?poundLogNo={{d.poundLogNo}}" class="layui-table-link" target="_blank">{{ d.poundLogNo }}</a>
+            </script>
+            <script type="text/html" id="btnTpl">
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-print"></i>打印</a>
+                <!--<a lay-href="/poundLog/detail.htm/?poundLogNo={{d.poundLogNo}}" class="layui-table-link" target="_blank">{{ d.poundLogNo }}</a>-->
             </script>
         </div>
     </div>
