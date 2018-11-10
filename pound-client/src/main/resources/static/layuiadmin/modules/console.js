@@ -14,6 +14,7 @@ layui.define(['table', 'form'], function (exports) {
             var strHour = date.getHours();
             var strMinute = date.getMinutes();
             var strSeconds = date.getSeconds();
+            var strMilleSeconds = date.getMilliseconds()
             if (month >= 1 && month <= 9) {
                 month = "0" + month;
             }
@@ -29,7 +30,12 @@ layui.define(['table', 'form'], function (exports) {
             if (strSeconds >= 0 && strSeconds <= 9) {
                 strSeconds = "0" + strSeconds;
             }
-            var currentDate = date.getFullYear().toString() + month.toString() + strDate.toString() + strHour.toString() + strMinute.toString() + strSeconds.toString();
+            if (strMilleSeconds >= 0 && strMilleSeconds <= 9) {
+                strSeconds = "00" + strSeconds;
+            } else if (strMilleSeconds >= 10 && strMilleSeconds <= 99) {
+                strSeconds = "0" + strSeconds;
+            }
+            var currentDate = date.getFullYear().toString() + month.toString() + strDate.toString() + strHour.toString() + strMinute.toString() + strSeconds.toString() + strMilleSeconds.toString();
             return currentDate;
         },
         //获取未处理过磅单以及当前过磅单信息
@@ -361,6 +367,7 @@ layui.define(['table', 'form'], function (exports) {
 
             function doFormSubmit() {
                 var field = data.field; //获取提交的字段
+                var fieldRoot = data.field; //根字段，给退货是弹出窗口用
                 //获取地磅数据
                 field.grossWeight = field.currentWeight;
                 //更新磅单数据
@@ -393,13 +400,71 @@ layui.define(['table', 'form'], function (exports) {
                             //过磅单状态
                             var status = result.data.status;
                             methods.reloadButtonStatus(status, result.data.types);
-                            // if (status == 2) {//两个数据都有了,可以显示提交按钮了
-                            //     $("#btn-submit-server").removeClass("layui-btn-disabled");
-                            // } else if (status == 3 || status == 4) {
-                            //     $("#btn-print").removeClass("layui-btn-disabled");
-                            // }
                         } else {
-                            layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                            //如果还未生成过磅单就称毛重，提示用户是否要不添加报检单就过磅称重
+                            if (result.msg == '请先添加报检单') {
+                                layer.confirm('您还未添加报检单，确定要直接称重吗？', {
+                                    icon: 3,
+                                    title: '提示'
+                                }, function (index) {
+                                    layer.close(index);
+
+                                    layer.open({
+                                        type: 2
+                                        , title: '请填写过磅相关信息'
+                                        , content: '/poundLog/outPoundLogForm.htm'
+                                        , maxmin: true
+                                        , area: ['500px', '450px']
+                                        , btn: ['确定', '取消']
+                                        , yes: function (index, layero) {
+                                            var iframeWindow = window['layui-layer-iframe' + index]
+                                                , submitID = 'LAY-pound-log-out-submit'
+                                                , checkboxID = 'LAY-types-checkbox'
+                                                , submit = layero.find('iframe').contents().find('#' + submitID);
+
+                                            //监听提交
+                                            iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                                                var field = data.field; //获取提交的字段
+                                                fieldRoot.goodsCode = field.goodsCode;
+                                                fieldRoot.plateNo = field.plateNo;
+
+                                                //提交 Ajax 成功后，静态更新表格中的数据
+                                                $.ajax({
+                                                    type: 'post',
+                                                    url: '/poundLog/saveGrossWithoutInspection',
+                                                    data: fieldRoot,
+                                                    cache: false,
+                                                    dataType: 'json',
+                                                    success: function (result) {
+                                                        if (result.code == 0) {
+                                                            $("#grossWeight").val(result.data.grossWeight);
+                                                            $("#firstTime").val(result.data.firstTime);
+                                                            //上传图片
+                                                            uploadImg();
+                                                        } else {
+                                                            layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                                                        }
+                                                    },
+                                                    error: function (error) {
+                                                        layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                                                    }
+                                                });
+                                                layer.close(index);
+                                            });
+
+                                            submit.trigger('click');
+                                        }
+                                        , success: function (layero, index) {
+
+                                            // 记得重新渲染表单
+                                            form.render();
+                                        }
+                                    })
+                                });
+
+                            } else {
+                                layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                            }
                         }
                     },
                     error: function (error) {
@@ -602,7 +667,7 @@ layui.define(['table', 'form'], function (exports) {
             var fieldData = {};
             //这里只保存备注跟收货单位两个字段，因为其他字段都已经保存过了，这里就不再保存一遍了
             fieldData.remark = field.remark;
-            fieldData.unitName = field.unitName;
+            fieldData.orgCode = field.orgCode;
             fieldData.poundLogNo = field.poundLogNo;
 
             // console.log("保存数据", field);
@@ -634,8 +699,8 @@ layui.define(['table', 'form'], function (exports) {
     form.on('submit(btn-submit-server)', function (data) {
         if (!$("#btn-submit-server").hasClass("layui-btn-disabled")) {
             var field = data.field;
-            if (!field.unitName) {
-                $("#unitName").focus();
+            if (!field.orgCode) {
+                $("#orgCode").focus();
                 return layer.msg('请先填写组织');
             }
             var index = layer.load(4, {time: 10 * 1000}); //又换了种风格，并且设定最长等待10秒
@@ -644,7 +709,7 @@ layui.define(['table', 'form'], function (exports) {
                 url: '/poundLog/uploadServer',
                 data: {
                     poundLogNo: field.poundLogNo,
-                    unitName: field.unitName
+                    orgCode: field.orgCode
                 },
                 cache: false,
                 dataType: 'json',
@@ -655,7 +720,7 @@ layui.define(['table', 'form'], function (exports) {
                         //数据刷新
                         $("#btn-submit-server").addClass("layui-btn-disabled");
                         $("#btn-print").removeClass("layui-btn-disabled");
-                        $("#unitName").val(result.data.unitName);
+                        $("#orgCode").val(result.data.orgCode);
                         if (result.data.status) {
                             methods.reloadButtonStatus(result.data.status, result.data.types);
                         }
@@ -694,93 +759,93 @@ layui.define(['table', 'form'], function (exports) {
                 dataType: 'json',
                 success: function (result) {
                     if (result.code == 0) {
-            $("#btn-print").removeClass("layui-btn-disabled");
-            if (result.data.status) {
-                methods.reloadButtonStatus(result.data.status, result.data.types);
-            }
+                        $("#btn-print").removeClass("layui-btn-disabled");
+                        if (result.data.status) {
+                            methods.reloadButtonStatus(result.data.status, result.data.types);
+                        }
 
-            //更新未完成列表
-            methods.listUnFinishedAndPoundLog(poundLogNoStr);
+                        //更新未完成列表
+                        methods.listUnFinishedAndPoundLog(poundLogNoStr);
 
-            var poundLog = result.data;
-            var inspections = poundLog.inspections;
-            // console.log("poundLog:", poundLog, "inspections:", inspections);
+                        var poundLog = result.data;
+                        var inspections = poundLog.inspections;
+                        // console.log("poundLog:", poundLog, "inspections:", inspections);
 
-            $("#print-content").show();
-            //给表单赋值
-            $('#print-poundLogNo').text(poundLog.poundLogNo);
-            $('#print-plateNo').text(poundLog.plateNo);
-            $('#print-gross-weight').text(poundLog.grossWeight);
-            $('#print-tare-weight').text(poundLog.tareWeight);
-            $('#print-net-weight').text(poundLog.netWeight);
-            // $('#print-diff-weight').text(poundLog.diffWeight);
-            $('#print-remark').text(poundLog.remark);
-            $('#print-unit-name').text(poundLog.unitName);
-            $('#print-gross-img').attr("src", poundLog.grossImgUrl);
-            $('#print-tare-img').attr("src", poundLog.tareImgUrl);
-            $('#print-gross-time').text(poundLog.firstTime);
-            $('#print-tare-time').text(poundLog.secondTime);
-            $('#print-time').text(moment().format('YYYY-MM-DD hh:mm:ss'));
+                        $("#print-content").show();
+                        //给表单赋值
+                        $('#print-poundLogNo').text(poundLog.poundLogNo);
+                        $('#print-plateNo').text(poundLog.plateNo);
+                        $('#print-gross-weight').text(poundLog.grossWeight);
+                        $('#print-tare-weight').text(poundLog.tareWeight);
+                        $('#print-net-weight').text(poundLog.netWeight);
+                        // $('#print-diff-weight').text(poundLog.diffWeight);
+                        $('#print-remark').text(poundLog.remark);
+                        $('#print-unit-name').text(poundLog.unitName);
+                        $('#print-gross-img').attr("src", poundLog.grossImgUrl);
+                        $('#print-tare-img').attr("src", poundLog.tareImgUrl);
+                        $('#print-gross-time').text(poundLog.firstTime);
+                        $('#print-tare-time').text(poundLog.secondTime);
+                        $('#print-time').text(moment().format('YYYY-MM-DD hh:mm:ss'));
 
-            //拼接报价单table html
-            if (inspections.length > 0) {
-                var htmlStr = '<div class="layui-col-xs12">' +
-                    '<div class="layui-card-body" style="padding-left: 0">' +
-                    '<table id="LAY-inspection-print-manage" class="layui-table">' +
-                    '<tr>' +
-                    '<th>报检单</th>' +
-                    '<th>单号</th>' +
-                    '<th>重量</th>' +
-                    '<th>结算重量</th>' +
-                    '<th>退货重量</th>' +
-                    '</tr>';
+                        //拼接报价单table html
+                        if (inspections.length > 0) {
+                            var htmlStr = '<div class="layui-col-xs12">' +
+                                '<div class="layui-card-body" style="padding-left: 0">' +
+                                '<table id="LAY-inspection-print-manage" class="layui-table">' +
+                                '<tr>' +
+                                '<th>报检单</th>' +
+                                '<th>单号</th>' +
+                                '<th>重量</th>' +
+                                '<th>结算重量</th>' +
+                                '<th>退货重量</th>' +
+                                '</tr>';
 
-                var totalInspNetWeight = 0;
-                layui.each(inspections, function (index, item) {
-                    totalInspNetWeight += item.inspNetWeight;
-                    var trHtml = '';
-                    trHtml += '<tr>' +
-                        '<td>' + (index + 1) + '</td>' +
-                        '<td>' + item.inspNo + '</td>' +
-                        '<td>' + item.inspWeight + '</td>' +
-                        '<td>' + item.inspNetWeight + '</td>' +
-                        '<td>' + item.returnWeight + '</td>' +
-                        '</tr>'
-                    htmlStr += trHtml;
-                });
+                            var totalInspNetWeight = 0;
+                            layui.each(inspections, function (index, item) {
+                                totalInspNetWeight += item.inspNetWeight;
+                                var trHtml = '';
+                                trHtml += '<tr>' +
+                                    '<td>' + (index + 1) + '</td>' +
+                                    '<td>' + item.inspNo + '</td>' +
+                                    '<td>' + item.inspWeight + '</td>' +
+                                    '<td>' + item.inspNetWeight + '</td>' +
+                                    '<td>' + item.returnWeight + '</td>' +
+                                    '</tr>'
+                                htmlStr += trHtml;
+                            });
 
-                htmlStr += '<tr>' +
-                '<td>总计</td>' +
-                '<td></td>' +
-                '<td>' + poundLog.inspWeightTotal + '</td>' +
-                '<td>' + totalInspNetWeight + '</td>' +
-                '<td>' + poundLog.returnWeightTotal + '</td>' +
-                '</tr>'
+                            htmlStr += '<tr>' +
+                                '<td>总计</td>' +
+                                '<td></td>' +
+                                '<td>' + poundLog.inspWeightTotal + '</td>' +
+                                '<td>' + totalInspNetWeight + '</td>' +
+                                '<td>' + poundLog.returnWeightTotal + '</td>' +
+                                '</tr>'
 
-                htmlStr += '</table>' +
-                    '</div>' +
-                    '</div>'
+                            htmlStr += '</table>' +
+                                '</div>' +
+                                '</div>'
 
-                $("#print-table-inspections").html(htmlStr);
-            }
+                            $("#print-table-inspections").html(htmlStr);
+                        }
 
 
-            //弹出打印页面
-            $("#print-content").print({
-                globalStyles: true,
-                mediaPrint: false,
-                stylesheet: null,
-                noPrintSelector: ".no-print",
-                iframe: true,
-                append: null,
-                prepend: null,
-                manuallyCopyFormValues: true,
-                deferred: $.Deferred(),
-                timeout: 750,
-                title: null,
-                doctype: '<!doctype html>'
-            });
-            $("#print-content").hide();
+                        //弹出打印页面
+                        $("#print-content").print({
+                            globalStyles: true,
+                            mediaPrint: false,
+                            stylesheet: null,
+                            noPrintSelector: ".no-print",
+                            iframe: true,
+                            append: null,
+                            prepend: null,
+                            manuallyCopyFormValues: true,
+                            deferred: $.Deferred(),
+                            timeout: 750,
+                            title: null,
+                            doctype: '<!doctype html>'
+                        });
+                        $("#print-content").hide();
                     } else {
                         layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
                     }
@@ -957,7 +1022,7 @@ layui.define(['table', 'form'], function (exports) {
                         body.find('#inspNo')[0].onkeydown = function (event) {
 
                             // 键入Enter表明扫码枪输入完毕
-                            if (event.which == 13 && body.find('#inspNo')[0].value.length > 25) {
+                            if (event.which == 13 && body.find('#inspNo')[0].value.length > 20) {
                                 //获取扫码枪数据
                                 var inputData = body.find('#inspNo')[0].value;
                                 //url解码
@@ -970,118 +1035,137 @@ layui.define(['table', 'form'], function (exports) {
                                 if (dataArr.length >= 4) {
                                     body.find("#inspNo")[0].value = dataArr[0];
                                     body.find("#inspWeight")[0].value = dataArr[3];
-                                    body.find("#compName")[0].value = dataArr[2];
                                     body.find("#plateNo")[0].value = dataArr[1];
-                                    form.render();
-                                } else {
-                                    layer.alert("扫码获取失败，请手工填写", {icon: 5});
+                                    var compCode = dataArr[2];
+                                    if (compCode) {
+                                        //根据供应商编码获取供应商名称
+                                        $.ajax({
+                                            type: 'get',
+                                            url: '/company/getInfoByCompCode',
+                                            data: {
+                                                compCode: compCode
+                                            },
+                                            cache: false,
+                                            dataType: 'json',
+                                            success: function (result) {
+                                                var compName = result.data.compName;
+                                                body.find("#compName")[0].value = compName;
+                                            }
+                                        });
+                                    }
                                 }
+                                form.render();
+                            } else {
+                                layer.alert("扫码获取失败，请手工填写", {icon: 5});
                             }
                         }
                     }
-                });
+                }
             }
-        }
-        //新增过磅单
-        , newPoundLog: function () {
-            //【删除】：修改poundLog表plNo字段
-            layui.data('pound_log', {
-                key: 'plNo'
-                , remove: true
-            });
-            //刷新页面
-            window.location.reload();
-        }
-
-    }
-    //监听点击事件
-    $('.layui-btn.btn-inspection').on('click', function () {
-        var type = $(this).data('type');
-        active[type] ? active[type].call(this) : '';
+        );
+}
+}
+//新增过磅单
+,
+newPoundLog: function () {
+    //【删除】：修改poundLog表plNo字段
+    layui.data('pound_log', {
+        key: 'plNo'
+        , remove: true
     });
+    //刷新页面
+    window.location.reload();
+}
 
-    //访问用户媒体设备的兼容方法
-    function getUserMedia(constraints, success, error) {
-        if (navigator.mediaDevices.getUserMedia) {
-            //最新的标准API
-            navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
-        } else if (navigator.webkitGetUserMedia) {
-            //webkit核心浏览器
-            navigator.webkitGetUserMedia(constraints, success, error)
-        } else if (navigator.mozGetUserMedia) {
-            //firfox浏览器
-            navigator.mozGetUserMedia(constraints, success, error);
-        } else if (navigator.getUserMedia) {
-            //旧版API
-            navigator.getUserMedia(constraints, success, error);
-        }
+}
+//监听点击事件
+$('.layui-btn.btn-inspection').on('click', function () {
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+});
+
+//访问用户媒体设备的兼容方法
+function getUserMedia(constraints, success, error) {
+    if (navigator.mediaDevices.getUserMedia) {
+        //最新的标准API
+        navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
+    } else if (navigator.webkitGetUserMedia) {
+        //webkit核心浏览器
+        navigator.webkitGetUserMedia(constraints, success, error)
+    } else if (navigator.mozGetUserMedia) {
+        //firfox浏览器
+        navigator.mozGetUserMedia(constraints, success, error);
+    } else if (navigator.getUserMedia) {
+        //旧版API
+        navigator.getUserMedia(constraints, success, error);
     }
+}
 
-    var video = document.getElementById('video');
+var video = document.getElementById('video');
 
-    //成功回调
-    function success(stream) {
-        //兼容webkit核心浏览器
-        var CompatibleURL = window.URL || window.webkitURL;
-        //将视频流设置为video元素的源
-        // console.log(stream);
-        //video.src = CompatibleURL.createObjectURL(stream);
-        video.srcObject = stream;
-        video.play();
-    }
+//成功回调
+function success(stream) {
+    //兼容webkit核心浏览器
+    var CompatibleURL = window.URL || window.webkitURL;
+    //将视频流设置为video元素的源
+    // console.log(stream);
+    //video.src = CompatibleURL.createObjectURL(stream);
+    video.srcObject = stream;
+    video.play();
+}
 
-    //失败回调
-    function error(error) {
-        console.log("访问用户媒体设备失败");
-    }
+//失败回调
+function error(error) {
+    console.log("访问用户媒体设备失败");
+}
 
-    //访问摄像头
-    if (navigator.mediaDevices.getUserMedia || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia) {
-        //调用用户媒体设备, 访问摄像头
-        getUserMedia({video: {width: 330, height: 212}}, success, error);
-    } else {
-        alert('不支持访问用户媒体');
-    }
+//访问摄像头
+if (navigator.mediaDevices.getUserMedia || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia) {
+    //调用用户媒体设备, 访问摄像头
+    getUserMedia({video: {width: 330, height: 212}}, success, error);
+} else {
+    alert('不支持访问用户媒体');
+}
 
-    //websocket实现
-    var websocket;
-    var socketUrl = "ws://127.0.0.1:8000/websocket";
-    var count = 0;
-    if ('WebSocket' in window) {
-        // console.log("此浏览器支持websocket");
+//websocket实现
+var websocket;
+var socketUrl = "ws://127.0.0.1:8000/websocket";
+var count = 0;
+if ('WebSocket' in window) {
+    // console.log("此浏览器支持websocket");
+    websocket = new WebSocket(socketUrl);
+} else if ('MozWebSocket' in window) {
+    alert("此浏览器只支持MozWebSocket");
+} else {
+    alert("此浏览器只支持SockJS");
+}
+websocket.onopen = function (evnt) {
+    // $("#tou").html("链接服务器成功!");
+    console.log("链接服务器成功");
+};
+websocket.onmessage = function (evnt) {
+    // console.log("event", evnt.data);
+    $("#currentWeight").val(evnt.data);
+    if (!$("#currentWeight").val()) {
+        console.log("重新初始化websocket");
         websocket = new WebSocket(socketUrl);
-    } else if ('MozWebSocket' in window) {
-        alert("此浏览器只支持MozWebSocket");
-    } else {
-        alert("此浏览器只支持SockJS");
     }
-    websocket.onopen = function (evnt) {
-        // $("#tou").html("链接服务器成功!");
-        console.log("链接服务器成功");
-    };
-    websocket.onmessage = function (evnt) {
-        // console.log("event", evnt.data);
-        $("#currentWeight").val(evnt.data);
-        if (!$("#currentWeight").val()) {
-            console.log("重新初始化websocket");
-            websocket = new WebSocket(socketUrl);
-        }
-    };
-    websocket.onerror = function (evnt) {
-        console.log("消息异常："+evnt.data);
-    };
-    websocket.onclose = function (evnt) {
-        console.log("与服务器断开了链接");
+};
+websocket.onerror = function (evnt) {
+    console.log("消息异常：" + evnt.data);
+};
+websocket.onclose = function (evnt) {
+    console.log("与服务器断开了链接");
+}
+
+//监听是否有地磅数据传送过来，没有的话重新初始化websocket
+setTimeout(function () {
+    if (!$("#currentWeight").val()) {
+        console.log("重新初始化websocket");
+        websocket = new WebSocket(socketUrl);
     }
+}, 1000);
 
-    //监听是否有地磅数据传送过来，没有的话重新初始化websocket
-    setTimeout(function () {
-        if (!$("#currentWeight").val()) {
-            console.log("重新初始化websocket");
-            websocket = new WebSocket(socketUrl);
-        }
-    }, 1000);
-
-    exports('console', {});
+exports('console', {});
 })
 ;

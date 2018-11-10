@@ -4,7 +4,6 @@ import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.pound.model.StoreKeeper;
 import com.yotrio.pound.model.dto.StoreKeeperDto;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -30,4 +29,6 @@ public interface IStoreKeeperService {
     int save(StoreKeeper storeKeeper);
 
     String checkForm(StoreKeeper storeKeeper);
+
+    StoreKeeper findByOrgCodeAndGoodsCode(String orgCode, String goodsCode);
 }

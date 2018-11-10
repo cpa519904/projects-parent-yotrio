@@ -4,11 +4,11 @@ package com.yotrio.pound.controller;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.constants.PoundLogConstant;
 import com.yotrio.common.domain.DataTablePage;
-import com.yotrio.common.enums.GoodsKindEnum;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.domain.SystemProperties;
 import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundLog;
+import com.yotrio.pound.service.IGoodsService;
 import com.yotrio.pound.service.IInspectionService;
 import com.yotrio.pound.service.IPoundLogService;
 import com.yotrio.pound.utils.ResultUtil;
@@ -43,6 +43,8 @@ public class InspectionController extends BaseController {
     private IPoundLogService poundLogService;
     @Autowired
     private SystemProperties sysProperties;
+    @Autowired
+    private IGoodsService goodsService;
 
     /**
      * 添加报检单页面
@@ -52,7 +54,7 @@ public class InspectionController extends BaseController {
      */
     @RequestMapping(value = {"/form.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String inspection(Model model) {
-        model.addAttribute("goodsKinds", GoodsKindEnum.values());
+        model.addAttribute("goodsList", goodsService.findAll());
         return "home/inspect_form";
     }
 

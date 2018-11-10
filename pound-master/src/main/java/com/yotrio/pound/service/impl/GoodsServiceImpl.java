@@ -127,6 +127,7 @@ public class GoodsServiceImpl implements IGoodsService {
         //时间戳作为货品编码
         goods.setGoodsCode(String.valueOf(System.currentTimeMillis()));
         goods.setStatus(GoodsConstant.STATUS_INIT);
+        goods.setUpdateTime(new Date());
         return goodsMapper.insert(goods);
     }
 

@@ -3,10 +3,13 @@ package com.yotrio.pound.web.controller;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
-import com.yotrio.common.enums.GoodsKindEnum;
+import com.yotrio.pound.model.Goods;
+import com.yotrio.pound.model.Organization;
 import com.yotrio.pound.model.PoundInfo;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.dto.PoundLogDto;
+import com.yotrio.pound.service.IGoodsService;
+import com.yotrio.pound.service.IOrganizationService;
 import com.yotrio.pound.service.IPoundInfoService;
 import com.yotrio.pound.service.IPoundLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,10 @@ public class PoundLogController extends BaseController {
     private IPoundLogService poundLogService;
     @Autowired
     private IPoundInfoService poundInfoService;
+    @Autowired
+    private IGoodsService goodsService;
+    @Autowired
+    private IOrganizationService organizationService;
 
     /**
      * 过磅记录列表
@@ -44,10 +51,12 @@ public class PoundLogController extends BaseController {
      */
     @RequestMapping(value = {"/list.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String list(Model model) {
-        model.addAttribute("goodsKinds", GoodsKindEnum.values());
+        List<Goods> goodsList = goodsService.findAllCache();
+        List<Organization> organizationList = organizationService.findAllCache();
+        model.addAttribute("goodsList", goodsList);
+        model.addAttribute("organizationList", organizationList);
         return "pound/pound_log_list";
     }
-
 
     /**
      * 过磅记录详情页面
@@ -56,10 +65,6 @@ public class PoundLogController extends BaseController {
     public String detail(Model model, String poundLogNo) {
         PoundLog poundLog = poundLogService.findByPoundLogNo(poundLogNo);
         if (poundLog != null) {
-            if (poundLog.getGoodsKind() != null) {
-                poundLog.setGoodsName(GoodsKindEnum.getKindName(poundLog.getGoodsKind()));
-            }
-
             PoundInfo poundInfo = poundInfoService.findCacheById(poundLog.getPoundId());
             if (poundInfo != null) {
                 model.addAttribute("poundInfo", poundInfo);

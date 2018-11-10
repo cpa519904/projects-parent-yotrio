@@ -6,7 +6,6 @@ import com.github.pagehelper.PageInfo;
 import com.yotrio.common.constants.PoundLogConstant;
 import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.domain.DataTablePage;
-import com.yotrio.common.enums.GoodsKindEnum;
 import com.yotrio.common.helpers.UserAuthTokenHelper;
 import com.yotrio.pound.dao.InspectionMapper;
 import com.yotrio.pound.dao.TaskMapper;
@@ -51,6 +50,8 @@ public class TaskServiceImpl implements ITaskService {
     private IDingTalkService dingTalkService;
     @Autowired
     private IPoundInfoService poundInfoService;
+    @Autowired
+    private IGoodsService goodsService;
 
 
     /**
@@ -107,9 +108,7 @@ public class TaskServiceImpl implements ITaskService {
             taskMapper.updateByPrimaryKeySelective(task);
             return "找不到您要执行的任务信息";
         }
-        if (poundLog.getGoodsKind() != null) {
-            poundLog.setGoodsName(GoodsKindEnum.getKindName(poundLog.getGoodsKind()));
-        }
+
         PoundInfo poundInfo = poundInfoService.findCacheById(poundLog.getPoundId());
         if (poundInfo == null) {
             return "找不到对应的地磅信息";

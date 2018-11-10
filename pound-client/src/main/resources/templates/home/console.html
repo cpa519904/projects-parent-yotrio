@@ -63,9 +63,10 @@
                                 <div class="layui-inline">
                                     <label class="layui-form-label">组织</label>
                                     <div class="layui-input-block">
-                                        <input id="unitName" type="text" name="unitName"
-                                               autocomplete="off"
-                                               placeholder="请输入" class="layui-input">
+                                        <select id="orgCode" name="orgCode"  lay-search="" lay-verify="required">
+                                            <option value="">直接选择或搜索选择</option>
+                                            <option th:each="organization : ${organizationList}" th:value="${organization.orgCode}" th:text="${organization.orgName}"></option>
+                                        </select>
                                     </div>
                                 </div>
                                 <button id="btn-add-inspection" class="layui-btn btn-inspection layui-btn-sm"

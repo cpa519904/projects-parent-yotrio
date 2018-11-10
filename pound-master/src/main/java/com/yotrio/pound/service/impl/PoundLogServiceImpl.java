@@ -4,7 +4,6 @@ import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.domain.DataTablePage;
-import com.yotrio.common.enums.GoodsKindEnum;
 import com.yotrio.common.utils.DateUtil;
 import com.yotrio.common.utils.ImageUtil;
 import com.yotrio.common.utils.PropertiesFileUtil;
@@ -63,9 +62,6 @@ public class PoundLogServiceImpl implements IPoundLogService {
             List<Inspection> inspections = inspectionMapper.findListByPlNo(poundLog.getPoundLogNo());
             for (Inspection inspection : inspections) {
                 poundLog.setCompName(inspection.getCompName());
-                int goodsKind = inspection.getGoodsKind();
-                String goodKindName = GoodsKindEnum.getKindName(goodsKind);
-                poundLog.setGoodsName(goodKindName);
                 if (StringUtils.isNotEmpty(poundLog.getCompName()) && StringUtils.isNotEmpty(poundLog.getGoodsName())) {
                     break;
                 }

@@ -27,11 +27,14 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="first_time" jdbcType="TIMESTAMP" property="firstTime"/>
         <result column="second_time" jdbcType="TIMESTAMP" property="secondTime"/>
+        <result column="org_code" jdbcType="VARCHAR" property="orgCode"/>
+        <result column="goods_code" jdbcType="VARCHAR" property="goodsCode"/>
+        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, pound_id, pound_name, pound_log_no, goods_kind, comp_name, gross_weight, tare_weight, net_weight, sample_net_weight,
     return_weight_total, diff_weight, insp_weight_total, gross_img_url, tare_img_url, unit_name, plate_no,
-    remark, types, status, return_goods, create_time, update_time, first_time, second_time
+    remark, types, status, return_goods, create_time, update_time, first_time, second_time, org_code, goods_code, goods_name
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -76,7 +79,7 @@
       unit_name, plate_no, remark, 
       types, status, return_goods, 
       create_time, update_time, first_time, 
-      second_time)
+      second_time, org_code, goods_code, goods_name)
     values ( #{poundId,jdbcType=INTEGER}, #{poundName,jdbcType=VARCHAR},
       #{poundLogNo,jdbcType=VARCHAR}, #{goodsKind,jdbcType=INTEGER}, #{compName,jdbcType=VARCHAR}, #{grossWeight,jdbcType=DOUBLE}, #{tareWeight,jdbcType=DOUBLE},
       #{netWeight,jdbcType=DOUBLE}, #{sampleNetWeight,jdbcType=DOUBLE}, #{returnWeightTotal,jdbcType=DOUBLE}, 
@@ -84,7 +87,7 @@
       #{unitName,jdbcType=VARCHAR}, #{plateNo,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{types,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{returnGoods,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{firstTime,jdbcType=TIMESTAMP}, 
-      #{secondTime,jdbcType=TIMESTAMP})
+      #{secondTime,jdbcType=TIMESTAMP}, #{orgCode,jdbcType=VARCHAR}, #{goodsCode,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
             parameterType="com.yotrio.pound.model.PoundLog">
@@ -162,6 +165,15 @@
             <if test="secondTime != null">
                 second_time,
             </if>
+            <if test="orgCode != null">
+                org_code,
+            </if>
+            <if test="goodsCode != null">
+                goods_code,
+            </if>
+            <if test="goodsName != null">
+                goods_name,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="poundId != null">
@@ -235,6 +247,15 @@
             </if>
             <if test="secondTime != null">
                 #{secondTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orgCode != null">
+                #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCode != null">
+                #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                #{goodsName,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -312,6 +333,15 @@
             </if>
             <if test="secondTime != null">
                 second_time = #{secondTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orgCode != null">
+                org_code = #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCode != null">
+                goods_code = #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                goods_name = #{goodsName,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -391,6 +421,15 @@
             <if test="secondTime != null">
                 second_time = #{secondTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="orgCode != null">
+                org_code = #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCode != null">
+                goods_code = #{goodsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsName != null">
+                goods_name = #{goodsName,jdbcType=VARCHAR},
+            </if>
         </set>
         where pound_id = #{poundId,jdbcType=INTEGER} and pound_log_no = #{poundLogNo,jdbcType=VARCHAR}
     </update>
@@ -419,7 +458,10 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       first_time = #{firstTime,jdbcType=TIMESTAMP},
-      second_time = #{secondTime,jdbcType=TIMESTAMP}
+      second_time = #{secondTime,jdbcType=TIMESTAMP},
+      org_code = #{orgCode,jdbcType=VARCHAR},
+      goods_code = #{goodsCode,jdbcType=VARCHAR},
+      goods_name = #{goodsName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
     <select id="selectCountByMap" parameterType="map" resultType="int">
@@ -514,6 +556,15 @@
             <if test="secondTime != null and secondTime != ''">
                 AND second_time = #{secondTime,jdbcType=TIMESTAMP}
             </if>
+            <if test="orgCode != null and orgCode != ''">
+                AND org_code = #{orgCode,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsCode != null and goodsCode != ''">
+                AND goods_code = #{goodsCode,jdbcType=VARCHAR}
+            </if>
+            <if test="goodsName != null and goodsName != ''">
+                AND goods_name = #{goodsName,jdbcType=VARCHAR}
+            </if>
             <if test="myGreater_id != null and myGreater_id != ''">
                 AND id &gt; #{myGreater_id,jdbcType=INTEGER}
             </if>
@@ -588,6 +639,15 @@
             </if>
             <if test="myGreater_secondTime != null and myGreater_secondTime != ''">
                 AND second_time &gt; #{myGreater_secondTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="myGreater_orgCode != null and myGreater_orgCode != ''">
+                AND org_code &gt; #{myGreater_orgCode,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_goodsCode != null and myGreater_goodsCode != ''">
+                AND goods_code &gt; #{myGreater_goodsCode,jdbcType=VARCHAR}
+            </if>
+            <if test="myGreater_goodsName != null and myGreater_goodsName != ''">
+                AND goods_name &gt; #{myGreater_goodsName,jdbcType=VARCHAR}
             </if>
             <if test="myLesser_id != null and myLesser_id != ''">
                 AND id &lt; #{myLesser_id,jdbcType=INTEGER}
@@ -664,6 +724,15 @@
             <if test="myLesser_secondTime != null and myLesser_secondTime != ''">
                 AND second_time &lt; #{myLesser_secondTime,jdbcType=TIMESTAMP}
             </if>
+            <if test="myLesser_orgCode != null and myLesser_orgCode != ''">
+                AND org_code &lt; #{myLesser_orgCode,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_goodsCode != null and myLesser_goodsCode != ''">
+                AND goods_code &lt; #{myLesser_goodsCode,jdbcType=VARCHAR}
+            </if>
+            <if test="myLesser_goodsName != null and myLesser_goodsName != ''">
+                AND goods_name &lt; #{myLesser_goodsName,jdbcType=VARCHAR}
+            </if>
             <if test="myLike_id != null and myLike_id != ''">
                 AND id like CONCAT('%', #{myLike_id,jdbcType=INTEGER},'%' )
             </if>
@@ -738,6 +807,15 @@
             </if>
             <if test="myLike_secondTime != null and myLike_secondTime != ''">
                 AND second_time like CONCAT('%', #{myLike_secondTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myLike_orgCode != null and myLike_orgCode != ''">
+                AND org_code like CONCAT('%', #{myLike_orgCode,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_goodsCode != null and myLike_goodsCode != ''">
+                AND goods_code like CONCAT('%', #{myLike_goodsCode,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLike_goodsName != null and myLike_goodsName != ''">
+                AND goods_name like CONCAT('%', #{myLike_goodsName,jdbcType=VARCHAR},'%' )
             </if>
             <if test="myLikeStart_id != null and myLikeStart_id != ''">
                 AND id like CONCAT('%', #{myLikeStart_id,jdbcType=INTEGER})
@@ -814,6 +892,15 @@
             <if test="myLikeStart_secondTime != null and myLikeStart_secondTime != ''">
                 AND second_time like CONCAT('%', #{myLikeStart_secondTime,jdbcType=TIMESTAMP})
             </if>
+            <if test="myLikeStart_orgCode != null and myLikeStart_orgCode != ''">
+                AND org_code like CONCAT('%', #{myLikeStart_orgCode,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_goodsCode != null and myLikeStart_goodsCode != ''">
+                AND goods_code like CONCAT('%', #{myLikeStart_goodsCode,jdbcType=VARCHAR})
+            </if>
+            <if test="myLikeStart_goodsName != null and myLikeStart_goodsName != ''">
+                AND goods_name like CONCAT('%', #{myLikeStart_goodsCode,jdbcType=VARCHAR})
+            </if>
             <if test="myLikeEnd_id != null and myLikeEnd_id != ''">
                 AND id like CONCAT( #{myLikeEnd_id,jdbcType=INTEGER},'%' )
             </if>
@@ -888,6 +975,15 @@
             </if>
             <if test="myLikeEnd_secondTime != null and myLikeEnd_secondTime != ''">
                 AND second_time like CONCAT( #{myLikeEnd_secondTime,jdbcType=TIMESTAMP},'%' )
+            </if>
+            <if test="myLikeEnd_orgCode != null and myLikeEnd_orgCode != ''">
+                AND org_code like CONCAT( #{myLikeEnd_orgCode,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_goodsCode != null and myLikeEnd_goodsCode != ''">
+                AND goods_code like CONCAT( #{myLikeEnd_goodsCode,jdbcType=VARCHAR},'%' )
+            </if>
+            <if test="myLikeEnd_goodsName != null and myLikeEnd_goodsName != ''">
+                AND goods_name like CONCAT( #{myLikeEnd_goodsName,jdbcType=VARCHAR},'%' )
             </if>
             <if test="myIn_id != null and myIn_id != ''">
                 AND id in
@@ -1012,6 +1108,21 @@
                 AND second_time in
                 <foreach close=")" collection="myIn_secondTime" index="index" item="item" open="(" separator=",">
                     #{item}
+                </foreach>
+            </if>
+            <if test="myIn_orgCode != null and myIn_orgCode != ''">
+                AND org_code in
+                <foreach close=")" collection="myIn_orgCode" index="index" item="item" open="(" separator=",">#{item}
+                </foreach>
+            </if>
+            <if test="myIn_goodsCode != null and myIn_goodsCode != ''">
+                AND goods_code in
+                <foreach close=")" collection="myIn_goodsCode" index="index" item="item" open="(" separator=",">#{item}
+                </foreach>
+            </if>
+            <if test="myIn_goodsName != null and myIn_goodsName != ''">
+                AND goods_name in
+                <foreach close=")" collection="myIn_goodsName" index="index" item="item" open="(" separator=",">#{item}
                 </foreach>
             </if>
         </trim>

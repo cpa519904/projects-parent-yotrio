@@ -34,6 +34,17 @@ public class GoodsServiceImpl implements IGoodsService {
     }
 
     /**
+     * 根据货品编码获取对象
+     *
+     * @param goodsCode 货品编码
+     * @return
+     */
+    @Override
+    public String findGoodsNameByGoodsCode(String goodsCode) {
+        return goodsMapper.findGoodsNameByGoodsCode(goodsCode);
+    }
+
+    /**
      * 更新货品数据
      *
      * @param goods
@@ -74,7 +85,7 @@ public class GoodsServiceImpl implements IGoodsService {
      * @return
      */
     @Override
-    public List<Goods> findAllCache() {
+    public List<Goods> findAll() {
         return goodsMapper.findAll();
     }
 

@@ -31,7 +31,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
      */
     @Override
     public Organization findById(Integer id) {
-        return  organizationMapper.selectByPrimaryKey(id);
+        return organizationMapper.selectByPrimaryKey(id);
     }
 
     /**
@@ -43,6 +43,17 @@ public class OrganizationServiceImpl implements IOrganizationService {
     @Override
     public Organization findByOrgCode(String orgCode) {
         return organizationMapper.selectByOrgCode(orgCode);
+    }
+
+    /**
+     * 根据组织编码获取组织名称
+     *
+     * @param orgCode 组织编码
+     * @return
+     */
+    @Override
+    public String findOrgNameByOrgCode(String orgCode) {
+        return organizationMapper.findOrgNameByOrgCode(orgCode);
     }
 
     /**
@@ -82,6 +93,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     /**
      * 获取所有组织列表
+     *
      * @return
      */
     @Override

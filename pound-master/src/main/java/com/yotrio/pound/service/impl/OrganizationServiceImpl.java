@@ -126,6 +126,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
     @Override
     public int save(Organization organization) {
         organization.setStatus(OrganizationConstant.STATUS_INIT);
+        organization.setUpdateTime(new Date());
         return organizationMapper.insert(organization);
     }
 

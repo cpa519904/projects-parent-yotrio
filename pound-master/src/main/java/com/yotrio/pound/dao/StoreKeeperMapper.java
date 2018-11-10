@@ -24,4 +24,6 @@ public interface StoreKeeperMapper {
     List<StoreKeeper> selectListByMap(Map<String, Object> beanToMap);
 
     int deleteByIds(List<Integer> ids);
+
+    StoreKeeper findByOrgCodeAndGoodsCode(String orgCode, String goodsCode);
 }

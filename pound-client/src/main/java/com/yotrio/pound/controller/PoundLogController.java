@@ -8,21 +8,16 @@ import com.yotrio.common.constants.ApiUrlConstant;
 import com.yotrio.common.constants.InspectionConstant;
 import com.yotrio.common.constants.PoundLogConstant;
 import com.yotrio.common.constants.TaskConstant;
-import com.yotrio.common.enums.GoodsKindEnum;
 import com.yotrio.common.helpers.UserAuthTokenHelper;
 import com.yotrio.common.utils.BeansUtil;
 import com.yotrio.common.utils.ImageUtil;
-import com.yotrio.common.utils.NetStateUtil;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.domain.SystemProperties;
+import com.yotrio.pound.model.Goods;
 import com.yotrio.pound.model.Inspection;
-import com.yotrio.pound.model.PoundInfo;
 import com.yotrio.pound.model.PoundLog;
 import com.yotrio.pound.model.Task;
-import com.yotrio.pound.service.IHttpService;
-import com.yotrio.pound.service.IInspectionService;
-import com.yotrio.pound.service.IPoundLogService;
-import com.yotrio.pound.service.ITaskService;
+import com.yotrio.pound.service.*;
 import com.yotrio.pound.utils.ResultUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +55,10 @@ public class PoundLogController extends BaseController {
     private IInspectionService inspectionService;
     @Autowired
     private IHttpService httpService;
+    @Autowired
+    private IGoodsService goodsService;
+    @Autowired
+    private IOrganizationService organizationService;
 
 
     /**
@@ -70,7 +69,8 @@ public class PoundLogController extends BaseController {
      */
     @RequestMapping(value = {"/outPoundLogForm.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String outPoundLogForm(Model model) {
-        model.addAttribute("goodsKinds", GoodsKindEnum.values());
+        List<Goods> goodsList = goodsService.findAll();
+        model.addAttribute("goodsList", goodsList);
         return "home/out_pound_log_form";
     }
 
@@ -100,15 +100,12 @@ public class PoundLogController extends BaseController {
                     JSONObject logJson = data.getJSONObject("poundLog");
                     PoundLog poundLog = JSONObject.parseObject(logJson.toJSONString(), PoundLog.class);
                     if (poundLog != null) {
-                        if (poundLog.getGoodsKind() != null) {
-                            poundLog.setGoodsName(GoodsKindEnum.getKindName(poundLog.getGoodsKind()));
-                        }
                         model.addAttribute("poundLog", poundLog);
                     }
                 }
             }
         } catch (Exception e) {
-            logger.error("获取过磅详情失败={}", e);
+            logger.error("获取过磅详情失败 {}", e.getMessage());
         }
         model.addAttribute("inspectionListUrl", sysProperties.getPoundMasterBaseUrl() + ApiUrlConstant.GET_INSPECTION_LIST);
         model.addAttribute("token", token);
@@ -130,7 +127,7 @@ public class PoundLogController extends BaseController {
         }
         model.addAttribute("poundId", poundId);
         model.addAttribute("token", token);
-        model.addAttribute("goodsKinds", GoodsKindEnum.values());
+        model.addAttribute("goodsList", goodsService.findAll());
         model.addAttribute("poundMasterBaseUrl", sysProperties.getPoundMasterBaseUrl());
         return "pound/pound_log_list";
     }
@@ -156,6 +153,57 @@ public class PoundLogController extends BaseController {
         map.put("poundLog", poundLog);
         return ResultUtil.success(map);
     }
+
+    /**
+     * 不填报检单生成 毛重过磅记录
+     *
+     * @param poundLog
+     * @return
+     */
+    @RequestMapping(value = "/saveGrossWithoutInspection", method = {RequestMethod.POST})
+    @ResponseBody
+    public Result saveGrossWithoutInspection(PoundLog poundLog) {
+        //校验表单
+        if (poundLog == null) {
+            return ResultUtil.error("过磅信息为空，请先填写报检单相关信息");
+        }
+        if (poundLog.getGrossWeight() == null) {
+            return ResultUtil.error("过磅数据为空，请检查设备是否异常");
+        }
+        if (StringUtils.isEmpty(poundLog.getPoundLogNo())) {
+            return ResultUtil.error("过磅单号为空");
+        }
+        if (StringUtils.isEmpty(poundLog.getGoodsCode())) {
+            return ResultUtil.error("请先选择物料类型");
+        }
+        PoundLog logInDB = poundLogService.findByPoundLogNo(poundLog.getPoundLogNo());
+        if (logInDB != null) {
+            return ResultUtil.error("过磅记录已存在");
+        }
+
+        //获取物料名称
+        String goodsName = goodsService.findGoodsNameByGoodsCode(poundLog.getGoodsCode());
+        if (StringUtils.isNotEmpty(goodsName)) {
+            poundLog.setGoodsName(goodsName);
+        }
+        //获取组织名称
+        if (StringUtils.isNotEmpty(poundLog.getOrgCode())) {
+            String orgName = organizationService.findOrgNameByOrgCode(poundLog.getOrgCode());
+        }
+        //生成过磅单
+        poundLog.setPoundId(sysProperties.getPoundClientId());
+        poundLog.setPoundName(sysProperties.getPoundClientName());
+        poundLog.setFirstTime(new Date());
+        poundLog.setTypes(PoundLogConstant.TYPES_IN);
+        poundLog.setStatus(PoundLogConstant.STATUS_POUND_FIRST);
+
+        int result = poundLogService.save(poundLog);
+        if (result < 1) {
+            return ResultUtil.error("称重失败");
+        }
+        return ResultUtil.success(poundLog);
+    }
+
 
     /**
      * 更新毛重过磅记录
@@ -229,9 +277,15 @@ public class PoundLogController extends BaseController {
             }
             //计算磅差和净重,有了皮重之后才可以计算
             if (logInDB.getTareWeight() != null && logInDB.getTareWeight() > 0) {
-                logInDB.setDiffWeight(logInDB.getGrossWeight() - tareWeight - totalInspWeight);
                 netWeight = logInDB.getGrossWeight() - tareWeight;
                 logInDB.setNetWeight(netWeight);
+
+                //报检单存在才计算磅差,否则磅差为0
+                if (inspectionList != null && inspectionList.size() > 0) {
+                    logInDB.setDiffWeight(logInDB.getGrossWeight() - tareWeight - totalInspWeight);
+                } else {
+                    logInDB.setDiffWeight(0.0d);
+                }
             }
             if (logInDB.getTareWeight() != null && logInDB.getGrossWeight() < tareWeight) {
                 return ResultUtil.error("数据异常，皮重怎么能比毛重大呢");
@@ -325,10 +379,16 @@ public class PoundLogController extends BaseController {
 
             //计算磅差及净重，有了毛重之后才可以计算
             if (logInDB.getGrossWeight() != null && logInDB.getGrossWeight() > 0) {
-                logInDB.setDiffWeight(logInDB.getGrossWeight() - tareWeight - totalInspWeight);
                 //计算净重
                 netWeight = logInDB.getGrossWeight() - tareWeight;
                 logInDB.setNetWeight(netWeight);
+
+                //报检单存在才计算磅差,否则磅差为0
+                if (inspectionList != null && inspectionList.size() > 0) {
+                    logInDB.setDiffWeight(logInDB.getGrossWeight() - tareWeight - totalInspWeight);
+                } else {
+                    logInDB.setDiffWeight(0.0d);
+                }
             }
 
             if (logInDB.getGrossWeight() != null && logInDB.getGrossWeight() < tareWeight) {
@@ -409,10 +469,13 @@ public class PoundLogController extends BaseController {
         if (logInDB == null) {
             return ResultUtil.error("请先过磅或者填写报检单");
         }
-        //如果是收货，必须填写收货单位
-        if (logInDB.getTypes() == PoundLogConstant.TYPES_IN && StringUtils.isEmpty(poundLog.getUnitName())) {
-            return ResultUtil.error("收货组织不能为空，请输入收货组织");
+        if (StringUtils.isEmpty(poundLog.getOrgCode())) {
+            return ResultUtil.error("组织不能为空，请选择组织");
         }
+        //获取组织名称
+        String orgName = organizationService.findOrgNameByOrgCode(poundLog.getOrgCode());
+        poundLog.setUnitName(orgName);
+
         if (logInDB.getStatus() > PoundLogConstant.STATUS_POUND_SECOND) {
             return ResultUtil.error("记录已提交，不能再修改");
         }
@@ -430,17 +493,17 @@ public class PoundLogController extends BaseController {
      * 上传本地数据到服务器
      *
      * @param poundLogNo 过磅单单号
-     * @param unitName   组织
+     * @param orgCode   组织编码
      * @return
      */
     @RequestMapping(value = "/uploadServer", method = {RequestMethod.POST})
     @ResponseBody
-    public Result uploadServer(String poundLogNo, String unitName) {
+    public Result uploadServer(String poundLogNo, String orgCode) {
         if (StringUtils.isEmpty(poundLogNo)) {
             return ResultUtil.error("获取不到过磅单号");
         }
-        if (StringUtils.isEmpty(unitName)) {
-            return ResultUtil.error("请先填写组织");
+        if (StringUtils.isEmpty(orgCode)) {
+            return ResultUtil.error("请先选择组织");
         }
         PoundLog poundLog = poundLogService.findByPoundLogNo(poundLogNo);
         if (poundLog == null) {
@@ -449,6 +512,7 @@ public class PoundLogController extends BaseController {
         if (poundLog.getStatus() < PoundLogConstant.STATUS_POUND_SECOND) {
             return ResultUtil.error("请先完成两次称重操作再提交");
         }
+        String unitName = organizationService.findOrgNameByOrgCode(orgCode);
         poundLog.setUnitName(unitName);
 
         String msg = "网络连接失败,联网后系统会自动为您提交";

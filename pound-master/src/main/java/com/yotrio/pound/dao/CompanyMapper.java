@@ -23,4 +23,8 @@ public interface CompanyMapper {
     List<Company> selectListByMap(Map<String, Object> beanToMap);
 
     int deleteByIds(List<Integer> ids);
+
+    List<Company> findAll();
+
+
 }

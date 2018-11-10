@@ -20,7 +20,9 @@ public interface IGoodsService {
 
     int save(Goods goods);
 
-    List<Goods> findAllCache();
+    List<Goods> findAll();
 
     int updateByGoodsCode(Goods goods);
+
+    String findGoodsNameByGoodsCode(String goodsCode);
 }

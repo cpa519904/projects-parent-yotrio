@@ -19,6 +19,18 @@
     from company
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="compCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from company
+    where comp_code = #{compCode,jdbcType=VARCHAR}
+  </select>
+  <select id="findAll"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from company
+    where 1=1
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from company
     where id = #{id,jdbcType=INTEGER}

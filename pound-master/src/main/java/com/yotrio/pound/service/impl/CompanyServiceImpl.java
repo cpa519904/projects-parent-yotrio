@@ -1,6 +1,7 @@
 package com.yotrio.pound.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.constants.CompanyConstant;
@@ -65,6 +66,25 @@ public class CompanyServiceImpl implements ICompanyService {
     }
 
     /**
+     * 获取所有供应商列表
+     *
+     * @return
+     */
+    @Override
+    public List<Company> findAllCache() {
+        String key = "Company:all";
+        String result = RedisUtil.get(key);
+        List<Company> companies = JSONArray.parseArray(result, Company.class);
+        if (StringUtils.isEmpty(result)) {
+            companies = companyMapper.findAll();
+            RedisUtil.set(key, JSONArray.toJSONString(companies), 10 * 60);
+        }
+
+        return companies;
+    }
+
+
+    /**
      * 更新公司数据
      *
      * @param company
@@ -107,6 +127,7 @@ public class CompanyServiceImpl implements ICompanyService {
     @Override
     public int save(Company company) {
         company.setStatus(CompanyConstant.STATUS_INIT);
+        company.setUpdateTime(new Date());
         return companyMapper.insert(company);
     }
 

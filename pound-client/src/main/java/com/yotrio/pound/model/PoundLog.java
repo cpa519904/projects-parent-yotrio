@@ -1,9 +1,5 @@
 package com.yotrio.pound.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -103,11 +99,32 @@ public class PoundLog implements Serializable {
     private String tareImgUrl;
 
     /**
-     * 收货单位
+     * 收货组织
      *
      * @mbg.generated
      */
     private String unitName;
+
+    /**
+     * 组织编码
+     */
+    private String orgCode;
+
+    /**
+     * 物料编码
+     */
+    private String goodsCode;
+
+    /**
+     * 物料名称
+     */
+    private String goodsName;
+
+
+    /**
+     * 供应商名称
+     */
+    private String compName;
 
     /**
      * 车牌号
@@ -186,16 +203,6 @@ public class PoundLog implements Serializable {
      * 报检单列表
      */
     private List<Inspection> inspections;
-
-    /**
-     * 供应商名称
-     */
-    private String compName;
-
-    /**
-     * 货品名称
-     */
-    private String goodsName;
 
     /**
      * 查询时间大于（创建时间）
@@ -496,6 +503,22 @@ public class PoundLog implements Serializable {
         this.goodsName = goodsName;
     }
 
+    public String getOrgCode() {
+        return orgCode;
+    }
+
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
+    }
+
+    public String getGoodsCode() {
+        return goodsCode;
+    }
+
+    public void setGoodsCode(String goodsCode) {
+        this.goodsCode = goodsCode;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -517,6 +540,10 @@ public class PoundLog implements Serializable {
         sb.append(", grossImgUrl=").append(grossImgUrl);
         sb.append(", tareImgUrl=").append(tareImgUrl);
         sb.append(", unitName=").append(unitName);
+        sb.append(", orgCode=").append(orgCode);
+        sb.append(", goodsCode=").append(goodsCode);
+        sb.append(", goodsName=").append(goodsName);
+        sb.append(", compName=").append(compName);
         sb.append(", plateNo=").append(plateNo);
         sb.append(", remark=").append(remark);
         sb.append(", types=").append(types);
@@ -557,6 +584,10 @@ public class PoundLog implements Serializable {
                 && (this.getGrossImgUrl() == null ? other.getGrossImgUrl() == null : this.getGrossImgUrl().equals(other.getGrossImgUrl()))
                 && (this.getTareImgUrl() == null ? other.getTareImgUrl() == null : this.getTareImgUrl().equals(other.getTareImgUrl()))
                 && (this.getUnitName() == null ? other.getUnitName() == null : this.getUnitName().equals(other.getUnitName()))
+                && (this.getOrgCode() == null ? other.getOrgCode() == null : this.getOrgCode().equals(other.getOrgCode()))
+                && (this.getGoodsCode() == null ? other.getGoodsCode() == null : this.getGoodsCode().equals(other.getGoodsCode()))
+                && (this.getGoodsName() == null ? other.getGoodsName() == null : this.getGoodsName().equals(other.getGoodsName()))
+                && (this.getCompName() == null ? other.getCompName() == null : this.getCompName().equals(other.getCompName()))
                 && (this.getPlateNo() == null ? other.getPlateNo() == null : this.getPlateNo().equals(other.getPlateNo()))
                 && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
                 && (this.getTypes() == null ? other.getTypes() == null : this.getTypes().equals(other.getTypes()))
@@ -587,6 +618,10 @@ public class PoundLog implements Serializable {
         result = prime * result + ((getGrossImgUrl() == null) ? 0 : getGrossImgUrl().hashCode());
         result = prime * result + ((getTareImgUrl() == null) ? 0 : getTareImgUrl().hashCode());
         result = prime * result + ((getUnitName() == null) ? 0 : getUnitName().hashCode());
+        result = prime * result + ((getOrgCode() == null) ? 0 : getOrgCode().hashCode());
+        result = prime * result + ((getGoodsCode() == null) ? 0 : getGoodsCode().hashCode());
+        result = prime * result + ((getGoodsName() == null) ? 0 : getGoodsName().hashCode());
+        result = prime * result + ((getCompName() == null) ? 0 : getCompName().hashCode());
         result = prime * result + ((getPlateNo() == null) ? 0 : getPlateNo().hashCode());
         result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
         result = prime * result + ((getTypes() == null) ? 0 : getTypes().hashCode());

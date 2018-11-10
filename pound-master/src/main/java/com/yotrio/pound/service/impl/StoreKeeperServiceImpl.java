@@ -157,4 +157,16 @@ public class StoreKeeperServiceImpl implements IStoreKeeperService {
         return null;
     }
 
+    /**
+     * 根据组织和物料获取仓管员信息
+     *
+     * @param orgCode
+     * @param goodsCode
+     * @return
+     */
+    @Override
+    public StoreKeeper findByOrgCodeAndGoodsCode(String orgCode, String goodsCode) {
+        return storeKeeperMapper.findByOrgCodeAndGoodsCode(orgCode,goodsCode);
+    }
+
 }

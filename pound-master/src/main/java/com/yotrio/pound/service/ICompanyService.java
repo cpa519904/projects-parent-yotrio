@@ -20,6 +20,8 @@ public interface ICompanyService {
 
     Company findCacheById(Integer id);
 
+    List<Company> findAllCache();
+
     int updateById(Company company);
 
     int deleteById(Integer id);

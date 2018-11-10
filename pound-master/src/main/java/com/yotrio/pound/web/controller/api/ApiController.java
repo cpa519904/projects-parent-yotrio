@@ -9,7 +9,6 @@ import com.yotrio.common.constants.PoundLogConstant;
 import com.yotrio.common.constants.TaskConstant;
 import com.yotrio.common.domain.Callback;
 import com.yotrio.common.domain.DataTablePage;
-import com.yotrio.common.enums.GoodsKindEnum;
 import com.yotrio.common.helpers.UserAuthTokenHelper;
 import com.yotrio.pound.exceptions.UploadLogException;
 import com.yotrio.pound.model.*;
@@ -27,9 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 外部接口控制类
@@ -55,6 +52,14 @@ public class ApiController extends BaseController {
     private ITaskService taskService;
     @Autowired
     private ISysUserService sysUserService;
+    @Autowired
+    private IOrganizationService organizationService;
+    @Autowired
+    private IGoodsService goodsService;
+    @Autowired
+    private ICompanyService companyService;
+    @Autowired
+    private IStoreKeeperService storeKeeperService;
     @Autowired
     private PasswordHelper passwordHelper;
 
@@ -188,7 +193,7 @@ public class ApiController extends BaseController {
             poundLog = JSON.parseObject(JSONObject.toJSONString(poundLogObj), PoundLog.class);
             inspections = JSONArray.parseArray(JSONArray.toJSONString(inspectionsArr), Inspection.class);
 
-            if (poundLog != null && inspections != null && inspections.size() > 0) {
+            if (poundLog != null) {
                 //校验地磅状态
                 PoundInfo poundInfo = poundInfoService.findCacheById(poundId);
                 if (poundInfo == null) {
@@ -198,9 +203,6 @@ public class ApiController extends BaseController {
                     return returnError("此地磅已被停用，请联系管理员处理...");
                 }
                 poundLog.setPoundName(poundInfo.getPoundName());
-                if (poundLog.getGoodsKind() != null) {
-                    poundLog.setGoodsName(GoodsKindEnum.getKindName(poundLog.getGoodsKind()));
-                }
 
                 //交给事务去处理并保存过磅单以及报检单
                 poundLogService.savePoundLogAndInspections(poundLog, inspections);
@@ -210,6 +212,9 @@ public class ApiController extends BaseController {
                     //是否发送成功
                     boolean sendResult = false;
                     List<String> userIds = new ArrayList<>(20);
+                    //根据组织和物料获取仓管员信息
+                    // TODO: 2018-11-10
+                    StoreKeeper storeKeeper = storeKeeperService.findByOrgCodeAndGoodsCode(poundLog.getOrgCode(), poundLog.getGoodsCode());
                     //通过员工工号获取钉钉用户id
                     String dingUserId = dingTalkService.getCacheDingTalkUserIdByMobile(poundInfo.getAdminMobile());
                     if (dingUserId != null) {
@@ -218,10 +223,6 @@ public class ApiController extends BaseController {
                     if (userIds.size() > 0) {
                         String userIdList = StringUtils.join(userIds, ",");
                         PoundLog logInDB = poundLogService.findByPoundLogNoAndPoundId(poundLog.getPoundLogNo(), poundId);
-                        if (logInDB.getGoodsKind() != null) {
-                            logInDB.setGoodsName(GoodsKindEnum.getKindName(logInDB.getGoodsKind()));
-                        }
-
                         sendResult = dingTalkService.sendConfirmMessage(token, logInDB, userIdList, inspections);
                     }
 
@@ -266,7 +267,7 @@ public class ApiController extends BaseController {
             return returnError("token验证失败");
         }
         PoundInfo poundInfo = poundInfoService.findCacheById(poundId);
-        if (poundId == null) {
+        if (poundInfo == null) {
             return returnError("过去地磅信息失败");
         }
         if (plId == null) {
@@ -275,9 +276,6 @@ public class ApiController extends BaseController {
         PoundLog poundLog = poundLogService.findCacheById(plId);
         if (poundLog == null) {
             return returnError("获取过磅单失败");
-        }
-        if (poundLog.getGoodsKind() != null) {
-            poundLog.setGoodsName(GoodsKindEnum.getKindName(poundLog.getGoodsKind()));
         }
         List<Inspection> inspections = inspectionService.findListByPlId(poundLog.getId());
         poundLog.setInspections(inspections);
@@ -317,7 +315,7 @@ public class ApiController extends BaseController {
     }
 
     /**
-     * 获取报检单
+     * 获取报检单 给u9系统用
      *
      * @param token
      * @param deliveryNo 报检单号等同于inspNo
@@ -357,4 +355,57 @@ public class ApiController extends BaseController {
         return returnSuccess(data);
     }
 
+    /**
+     * 获取所有组织
+     */
+    @RequestMapping(value = "/getAllOrganization", method = {RequestMethod.GET})
+    @ResponseBody
+    public Callback getAllOrganization(String token) {
+        if (StringUtils.isEmpty(token)) {
+            return returnError("token为空");
+        }
+        Integer poundId = UserAuthTokenHelper.getAppUserId(token);
+        if (poundId == null) {
+            return returnError("token校验失败");
+        }
+
+        List<Organization> organizations = organizationService.findAllCache();
+        return returnSuccess(organizations);
+    }
+
+    /**
+     * 获取所有物料
+     */
+    @RequestMapping(value = "/getAllGoods", method = {RequestMethod.GET})
+    @ResponseBody
+    public Callback getAllGoods(String token) {
+        if (StringUtils.isEmpty(token)) {
+            return returnError("token为空");
+        }
+        Integer poundId = UserAuthTokenHelper.getAppUserId(token);
+        if (poundId == null) {
+            return returnError("token校验失败");
+        }
+
+        List<Goods> goodsList = goodsService.findAllCache();
+        return returnSuccess(goodsList);
+    }
+
+    /**
+     * 获取所有供应商
+     */
+    @RequestMapping(value = "/getAllCompany", method = {RequestMethod.GET})
+    @ResponseBody
+    public Callback getAllCompany(String token) {
+        if (StringUtils.isEmpty(token)) {
+            return returnError("token为空");
+        }
+        Integer poundId = UserAuthTokenHelper.getAppUserId(token);
+        if (poundId == null) {
+            return returnError("token校验失败");
+        }
+
+        List<Company> companyList = companyService.findAllCache();
+        return returnSuccess(companyList);
+    }
 }

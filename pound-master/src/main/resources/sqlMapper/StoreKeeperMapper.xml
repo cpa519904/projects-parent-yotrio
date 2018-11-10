@@ -25,6 +25,12 @@
     from store_keeper
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="findByOrgCodeAndGoodsCode" parameterType="com.yotrio.pound.model.StoreKeeper"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from store_keeper
+    where org_code = #{orgCode,jdbcType=VARCHAR} and goods_code =  #{goodsCode,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from store_keeper
     where id = #{id,jdbcType=INTEGER}

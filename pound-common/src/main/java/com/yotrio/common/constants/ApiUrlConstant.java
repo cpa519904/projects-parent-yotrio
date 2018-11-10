@@ -81,4 +81,19 @@ public class ApiUrlConstant {
      */
     public static final String GET_DING_TALK_ACCESS_TOKEN = "/DingTalk/http/getAccess_token";
 
+    /**
+     * 获取所有供应商信息
+     */
+    public static final String GET_ALL_COMPANY = "/api/getAllCompany";
+
+    /**
+     * 获取所有组织信息
+     */
+    public static final String GET_ALL_ORGANIZATION = "/api/getAllOrganization";
+
+    /**
+     * 获取所有物料信息
+     */
+    public static final String GET_ALL_GOODS = "/api/getAllGoods";
+
 }

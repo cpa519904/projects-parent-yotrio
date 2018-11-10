@@ -1,11 +1,15 @@
 package com.yotrio.pound.controller;
 
+import com.yotrio.pound.model.Organization;
+import com.yotrio.pound.service.IOrganizationService;
 import com.yotrio.pound.service.IPoundLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
 
 /**
  * 模块名称：demo com.example.demo.controller
@@ -21,6 +25,8 @@ public class IndexController extends BaseController{
 
     @Autowired
     private IPoundLogService poundLogService;
+    @Autowired
+    private IOrganizationService organizationService;
 
     @RequestMapping(value = {"/", "/index.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String index(Model model) {
@@ -35,11 +41,8 @@ public class IndexController extends BaseController{
      */
     @RequestMapping(value = { "/console.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String console(Model model,String plNo) {
-        //未处理过磅记录列表
-//        List<PoundLog> poundLogs = poundLogService.listUnFinished();
-        //报检单列表及过磅单数据
-
-//        model.addAttribute("poundLogs", poundLogs);
+        List<Organization> organizationList = organizationService.findAll();
+        model.addAttribute("organizationList", organizationList);
         model.addAttribute("plNo", plNo);
         return "home/console";
     }

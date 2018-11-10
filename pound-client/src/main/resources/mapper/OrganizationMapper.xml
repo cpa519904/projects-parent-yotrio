@@ -26,6 +26,12 @@
     from organization
     where org_code = #{orgCode,jdbcType=VARCHAR}
   </select>
+  <select id="findOrgNameByOrgCode" parameterType="java.lang.String" resultType="string">
+    select
+    org_name
+    from organization
+    where org_code = #{orgCode,jdbcType=VARCHAR}
+  </select>
   <select id="findAll"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

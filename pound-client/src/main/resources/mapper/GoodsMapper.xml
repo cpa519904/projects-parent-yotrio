@@ -26,6 +26,12 @@
         from goods
         where goods_code = #{goodsCode,jdbcType=VARCHAR}
     </select>
+    <select id="findGoodsNameByGoodsCode" parameterType="java.lang.String" resultType="string">
+        select
+        goods_name
+        from goods
+        where goods_code = #{goodsCode,jdbcType=VARCHAR}
+    </select>
     <select id="findAll"  resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

@@ -182,6 +182,21 @@ public class PoundLog implements Serializable {
     private Date secondTime;
 
     /**
+     * 组织编码
+     */
+    private String orgCode;
+
+    /**
+     * 物料编码
+     */
+    private String goodsCode;
+
+    /**
+     * 物料名称
+     */
+    private String goodsName;
+
+    /**
      * 毛重base64图片字符串
      */
     private String grossImgUrlBase64;
@@ -190,11 +205,6 @@ public class PoundLog implements Serializable {
      * 皮重base64图片字符串
      */
     private String tareImgUrlBase64;
-
-    /**
-     * 货品名称
-     */
-    private String goodsName;
 
     /**
      * 报检单列表
@@ -437,6 +447,22 @@ public class PoundLog implements Serializable {
         this.inspWeightTotal = inspWeightTotal;
     }
 
+    public String getOrgCode() {
+        return orgCode;
+    }
+
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
+    }
+
+    public String getGoodsCode() {
+        return goodsCode;
+    }
+
+    public void setGoodsCode(String goodsCode) {
+        this.goodsCode = goodsCode;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -468,6 +494,9 @@ public class PoundLog implements Serializable {
         sb.append(", updateTime=").append(updateTime);
         sb.append(", firstTime=").append(firstTime);
         sb.append(", secondTime=").append(secondTime);
+        sb.append(", orgCode=").append(orgCode);
+        sb.append(", goodsCode=").append(goodsCode);
+        sb.append(", goodsName=").append(goodsName);
         sb.append("]");
         return sb.toString();
     }
@@ -508,7 +537,10 @@ public class PoundLog implements Serializable {
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getFirstTime() == null ? other.getFirstTime() == null : this.getFirstTime().equals(other.getFirstTime()))
-            && (this.getSecondTime() == null ? other.getSecondTime() == null : this.getSecondTime().equals(other.getSecondTime()));
+            && (this.getSecondTime() == null ? other.getSecondTime() == null : this.getSecondTime().equals(other.getSecondTime()))
+            && (this.getOrgCode() == null ? other.getOrgCode() == null : this.getOrgCode().equals(other.getOrgCode()))
+            && (this.getGoodsCode() == null ? other.getGoodsCode() == null : this.getGoodsCode().equals(other.getGoodsCode()))
+            && (this.getGoodsName() == null ? other.getGoodsName() == null : this.getGoodsName().equals(other.getGoodsName()));
     }
 
     @Override
@@ -540,6 +572,9 @@ public class PoundLog implements Serializable {
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getFirstTime() == null) ? 0 : getFirstTime().hashCode());
         result = prime * result + ((getSecondTime() == null) ? 0 : getSecondTime().hashCode());
+        result = prime * result + ((getOrgCode() == null) ? 0 : getOrgCode().hashCode());
+        result = prime * result + ((getGoodsCode() == null) ? 0 : getGoodsCode().hashCode());
+        result = prime * result + ((getGoodsName() == null) ? 0 : getGoodsName().hashCode());
         return result;
     }
 }

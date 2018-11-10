@@ -25,4 +25,6 @@ public interface IOrganizationService {
     List<Organization> findAll();
 
     int updateByOrgCode(Organization organization);
+
+    String findOrgNameByOrgCode(String orgCode);
 }
