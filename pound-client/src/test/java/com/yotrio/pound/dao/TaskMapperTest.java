@@ -10,8 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TaskMapperTest {
@@ -29,6 +27,7 @@ public class TaskMapperTest {
         Map<String, Object> map = new HashMap<>();
         map.put("status", 0);
         List<Task> tasks = taskMapper.selectListByMap(map);
+        System.out.println(tasks);
 
     }
 }

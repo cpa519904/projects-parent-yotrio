@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.constants.InspectionConstant;
 import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.common.utils.DateUtil;
 import com.yotrio.pound.dao.GoodsMapper;
 import com.yotrio.pound.dao.InspectionMapper;
 import com.yotrio.pound.dao.PoundLogMapper;
@@ -150,6 +151,16 @@ public class InspectionServiceImpl implements IInspectionService {
                 inspectionMapper.updateByPrimaryKeySelective(inspection);
             }
         }
+    }
+
+    /**
+     * 删除历史数据
+     * @param beforeTime
+     */
+    @Override
+    public void deleteHistoryInspections(Integer beforeTime) {
+        Date date = DateUtil.add(new Date(), -beforeTime);
+        inspectionMapper.deleteHistoryInspections(date);
     }
 
     /**

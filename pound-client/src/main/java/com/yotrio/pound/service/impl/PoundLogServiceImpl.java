@@ -4,8 +4,9 @@ import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.constants.InspectionConstant;
-import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.constants.PoundLogConstant;
+import com.yotrio.common.domain.DataTablePage;
+import com.yotrio.common.utils.DateUtil;
 import com.yotrio.pound.dao.InspectionMapper;
 import com.yotrio.pound.dao.PoundLogMapper;
 import com.yotrio.pound.model.Inspection;
@@ -15,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -180,6 +182,7 @@ public class PoundLogServiceImpl implements IPoundLogService {
 
     /**
      * 操作报检单后，更新过磅单数据
+     *
      * @param logInDB
      * @return
      */
@@ -209,6 +212,19 @@ public class PoundLogServiceImpl implements IPoundLogService {
         } catch (Exception e) {
             return "更新过磅单数据异常";
         }
+    }
+
+    /**
+     * 删除历史过磅记录
+     *
+     * @param dayBefore
+     * @return
+     */
+    @Override
+    public void deleteHistoryLogs(Integer dayBefore) {
+        Date dateTime = DateUtil.add(new Date(), -dayBefore);
+
+        poundLogMapper.deleteHistoryLogs(dateTime);
     }
 
 

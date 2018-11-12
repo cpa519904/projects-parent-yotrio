@@ -43,6 +43,10 @@
     delete from inspection
     where id = #{id,jdbcType=INTEGER}
   </delete>
+    <delete id="deleteHistoryInspections" parameterType="java.util.Date">
+    delete from inspection
+    where inspection.create_time &lt; #{beforeTime,jdbcType=TIMESTAMP}
+    </delete>
     <delete id="deleteByIds" parameterType="java.lang.Integer">
         delete from inspection
         where id in

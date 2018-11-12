@@ -1,9 +1,6 @@
 package com.yotrio.pound.configuration;
 
-import com.yotrio.pound.tasks.SyncCompanyTask;
-import com.yotrio.pound.tasks.SyncGoodsTask;
-import com.yotrio.pound.tasks.SyncOrganizationTask;
-import com.yotrio.pound.tasks.TaskQuartz;
+import com.yotrio.pound.tasks.*;
 import org.quartz.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +16,7 @@ public class QuartzConfig {
     /**
      * 同步任务执行时间/小时
      */
-    private static final int INTERVAL_IN_HOURS_SYNC = 1 ;
+    private static final int INTERVAL_IN_HOURS_SYNC = 4 ;
 
     /**
      * 执行定时任务
@@ -65,7 +62,6 @@ public class QuartzConfig {
     @Bean
     public Trigger syncCompanyQuartzTrigger() {
         SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
-                //6小时执行一次
                 .withIntervalInHours(INTERVAL_IN_HOURS_SYNC)  //设置时间周期单位小时
                 .repeatForever();
 
@@ -127,6 +123,31 @@ public class QuartzConfig {
 
         return TriggerBuilder.newTrigger().forJob(syncGoodsQuartzDetail())
                 .withIdentity("syncGoodsTask")
+                .withSchedule(scheduleBuilder)
+                .build();
+    }
+
+    /**
+     * 删除历史数据
+     *
+     * @return
+     */
+    @Bean
+    public JobDetail deleteDataQuartzDetail() {
+        return JobBuilder.newJob(DeleteDataTask.class).withIdentity("deleteDataTask").storeDurably().build();
+    }
+
+    /**
+     * 删除历史数据
+     *
+     * @return
+     */
+    @Bean
+    public Trigger deleteDataQuartzTrigger() {
+        SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule();
+
+        return TriggerBuilder.newTrigger().forJob(deleteDataQuartzDetail())
+                .withIdentity("deleteDateTask")
                 .withSchedule(scheduleBuilder)
                 .build();
     }

@@ -31,4 +31,6 @@ public interface IInspectionService {
     Inspection findByInspNo(String inspNo);
 
     void countInspNetWeight(List<Inspection> inspections, PoundLog poundLog);
+
+    void deleteHistoryInspections(Integer beforeTime);
 }

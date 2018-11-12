@@ -35,4 +35,6 @@ public interface IPoundLogService {
     void destroyPoundLogAndInspections(String poundLogNo);
 
     String updateWeight(PoundLog logInDB);
+
+    void deleteHistoryLogs(Integer dayBefore);
 }

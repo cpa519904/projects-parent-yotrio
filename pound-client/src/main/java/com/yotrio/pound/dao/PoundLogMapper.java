@@ -2,8 +2,10 @@ package com.yotrio.pound.dao;
 
 import com.yotrio.pound.model.PoundLog;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,4 +33,6 @@ public interface PoundLogMapper {
     PoundLog findLogWithInspectionsByPoundLogNo(String poundLogNo);
 
     int deleteByPoundLogNo(String poundLogNo);
+
+    int deleteHistoryLogs(@Param("beforeTime") Date beforeTime);
 }

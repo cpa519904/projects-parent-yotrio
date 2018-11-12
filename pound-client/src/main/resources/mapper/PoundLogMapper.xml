@@ -76,7 +76,6 @@
             <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         </collection>
     </resultMap>
-
     <sql id="Base_Column_List">
     id, pound_id, pound_name, pound_log_no, goods_kind, gross_weight, tare_weight, net_weight, sample_net_weight,
     return_weight_total, insp_weight_total, diff_weight, gross_img_url, tare_img_url, unit_name, org_code, goods_code, goods_name, comp_name, plate_no,
@@ -113,6 +112,10 @@
     <delete id="deleteByPoundLogNo" parameterType="java.lang.String">
     delete from pound_log
     where pound_log_no = #{poundLogNo,jdbcType=VARCHAR}
+  </delete>
+    <delete id="deleteHistoryLogs" parameterType="java.util.Date">
+    delete from pound_log
+    where  pound_log.create_time &lt; #{beforeTime,jdbcType=TIMESTAMP}
   </delete>
     <insert id="insert" parameterType="com.yotrio.pound.model.PoundLog">
     insert into pound_log (id, pound_id, pound_name, 
