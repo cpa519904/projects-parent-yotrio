@@ -211,35 +211,43 @@ public class ApiController extends BaseController {
                 if (poundLog.getTypes() == PoundLogConstant.TYPES_IN && inspections != null && inspections.size() > 0) {
                     //是否发送成功
                     boolean sendResult = false;
-                    List<String> userIds = new ArrayList<>(20);
+                    List<String> userIds = new ArrayList<>(100);
                     //根据组织和物料获取仓管员信息
-                    // TODO: 2018-11-10
-                    StoreKeeper storeKeeper = storeKeeperService.findByOrgCodeAndGoodsCode(poundLog.getOrgCode(), poundLog.getGoodsCode());
-                    //通过员工工号获取钉钉用户id
-                    String dingUserId = dingTalkService.getCacheDingTalkUserIdByMobile(poundInfo.getAdminMobile());
-                    if (dingUserId != null) {
-                        userIds.add(dingUserId);
+                    List<StoreKeeper> storeKeepers = storeKeeperService.findByOrgCodeAndGoodsCode(poundLog.getOrgCode(), poundLog.getGoodsCode());
+                    for (StoreKeeper storeKeeper : storeKeepers) {
+                        String mobile = storeKeeper.getKeeperMobile();
+                        //通过员工手机号码获取钉钉用户id
+                        String dingUserId = dingTalkService.getCacheDingTalkUserIdByMobile(mobile);
+                        if (StringUtils.isNotEmpty(dingUserId)) {
+                            userIds.add(dingUserId);
+                        }
                     }
+
+                    //发送钉钉消息
                     if (userIds.size() > 0) {
                         String userIdList = StringUtils.join(userIds, ",");
                         PoundLog logInDB = poundLogService.findByPoundLogNoAndPoundId(poundLog.getPoundLogNo(), poundId);
                         sendResult = dingTalkService.sendConfirmMessage(token, logInDB, userIdList, inspections);
+
+                        //发送失败，创建任务，定时去执行发送
+                        if (!sendResult) {
+                            Task taskInDB = taskService.findByOtherId(poundLog.getId().toString());
+                            if (taskInDB == null) {
+                                Task task = new Task();
+                                task.setStatus(TaskConstant.STATUS_INIT);
+                                task.setOtherId(poundLog.getId().toString());
+                                task.setTaskName("发送钉钉消息");
+                                task.setTypes(TaskConstant.TYPE_SEND_DING_TALK_CONFIRM_MSG);
+                                task.setWeight(TaskConstant.WEIGHT_INIT);
+                                StringBuffer sb = new StringBuffer();
+                                sb.append("过磅记录ID：").append(poundLog.getId()).append("|地磅ID：").append(poundInfo.getId()).append("|管理员工号：").append(poundInfo
+                                        .getAdminEmpId());
+                                task.setDescription(sb.toString());
+                                taskService.save(task);
+                            }
+                        }
                     }
 
-                    if (!sendResult) {
-                        //发送失败，创建任务，定时去执行发送
-                        Task task = new Task();
-                        task.setStatus(TaskConstant.STATUS_INIT);
-                        task.setOtherId(poundLog.getId().toString());
-                        task.setTaskName("发送钉钉消息");
-                        task.setTypes(TaskConstant.TYPE_SEND_DING_TALK_CONFIRM_MSG);
-                        task.setWeight(TaskConstant.WEIGHT_INIT);
-                        StringBuffer sb = new StringBuffer();
-                        sb.append("过磅记录ID：").append(poundLog.getId()).append("|地磅ID：").append(poundInfo.getId()).append("|管理员工号：").append(poundInfo
-                                .getAdminEmpId());
-                        task.setDescription(sb.toString());
-                        taskService.save(task);
-                    }
                 }
 
                 return returnSuccess("上传成功");

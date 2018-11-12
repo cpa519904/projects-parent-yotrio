@@ -1,6 +1,7 @@
 package com.yotrio.pound.dao;
 
 import com.yotrio.pound.model.StoreKeeper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,5 +26,5 @@ public interface StoreKeeperMapper {
 
     int deleteByIds(List<Integer> ids);
 
-    StoreKeeper findByOrgCodeAndGoodsCode(String orgCode, String goodsCode);
+    List<StoreKeeper> findByOrgCodeAndGoodsCode(@Param("orgCode") String orgCode, @Param("goodsCode") String goodsCode);
 }

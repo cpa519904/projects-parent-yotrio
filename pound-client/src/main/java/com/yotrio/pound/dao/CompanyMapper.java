@@ -26,4 +26,6 @@ public interface CompanyMapper {
     Company findByCompCode(String compCode);
 
     int updateByCompCodeSelective(Company company);
+
+    String findCompNameByCompCode(String compCode);
 }

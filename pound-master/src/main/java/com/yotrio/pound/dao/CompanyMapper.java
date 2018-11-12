@@ -26,5 +26,6 @@ public interface CompanyMapper {
 
     List<Company> findAll();
 
+    Company findByCompCode(String compCode);
 
 }

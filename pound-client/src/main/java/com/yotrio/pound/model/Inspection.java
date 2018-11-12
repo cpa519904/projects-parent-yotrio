@@ -39,11 +39,11 @@ public class Inspection implements Serializable {
     private String plateNo;
 
     /**
-     * 货品类型
+     * 物料编码
      *
      * @mbg.generated
      */
-    private Integer goodsKind;
+    private String goodsCode;
 
     /**
      * 供货商
@@ -111,7 +111,7 @@ public class Inspection implements Serializable {
     /**
      * 货品类型名称
      */
-    private String goodsKindName;
+    private String goodsName;
 
     private String sample;
 
@@ -157,12 +157,12 @@ public class Inspection implements Serializable {
         this.plateNo = plateNo;
     }
 
-    public Integer getGoodsKind() {
-        return goodsKind;
+    public String getGoodsCode() {
+        return goodsCode;
     }
 
-    public void setGoodsKind(Integer goodsKind) {
-        this.goodsKind = goodsKind;
+    public void setGoodsCode(String goodsCode) {
+        this.goodsCode = goodsCode;
     }
 
     public String getCompName() {
@@ -237,12 +237,12 @@ public class Inspection implements Serializable {
         this.unit_name = unit_name;
     }
 
-    public String getGoodsKindName() {
-        return goodsKindName;
+    public String getGoodsName() {
+        return goodsName;
     }
 
-    public void setGoodsKindName(String goodsKindName) {
-        this.goodsKindName = goodsKindName;
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
     }
 
     public String getSample() {
@@ -264,7 +264,7 @@ public class Inspection implements Serializable {
         sb.append(", plNo=").append(plNo);
         sb.append(", inspNo=").append(inspNo);
         sb.append(", plateNo=").append(plateNo);
-        sb.append(", goodsKind=").append(goodsKind);
+        sb.append(", goodsCode=").append(goodsCode);
         sb.append(", compName=").append(compName);
         sb.append(", inspWeight=").append(inspWeight);
         sb.append(", returnWeight=").append(returnWeight);
@@ -294,7 +294,7 @@ public class Inspection implements Serializable {
             && (this.getPlNo() == null ? other.getPlNo() == null : this.getPlNo().equals(other.getPlNo()))
             && (this.getInspNo() == null ? other.getInspNo() == null : this.getInspNo().equals(other.getInspNo()))
             && (this.getPlateNo() == null ? other.getPlateNo() == null : this.getPlateNo().equals(other.getPlateNo()))
-            && (this.getGoodsKind() == null ? other.getGoodsKind() == null : this.getGoodsKind().equals(other.getGoodsKind()))
+            && (this.getGoodsCode() == null ? other.getGoodsCode() == null : this.getGoodsCode().equals(other.getGoodsCode()))
             && (this.getCompName() == null ? other.getCompName() == null : this.getCompName().equals(other.getCompName()))
             && (this.getInspWeight() == null ? other.getInspWeight() == null : this.getInspWeight().equals(other.getInspWeight()))
             && (this.getReturnWeight() == null ? other.getReturnWeight() == null : this.getReturnWeight().equals(other.getReturnWeight()))
@@ -314,7 +314,7 @@ public class Inspection implements Serializable {
         result = prime * result + ((getPlNo() == null) ? 0 : getPlNo().hashCode());
         result = prime * result + ((getInspNo() == null) ? 0 : getInspNo().hashCode());
         result = prime * result + ((getPlateNo() == null) ? 0 : getPlateNo().hashCode());
-        result = prime * result + ((getGoodsKind() == null) ? 0 : getGoodsKind().hashCode());
+        result = prime * result + ((getGoodsCode() == null) ? 0 : getGoodsCode().hashCode());
         result = prime * result + ((getCompName() == null) ? 0 : getCompName().hashCode());
         result = prime * result + ((getInspWeight() == null) ? 0 : getInspWeight().hashCode());
         result = prime * result + ((getReturnWeight() == null) ? 0 : getReturnWeight().hashCode());

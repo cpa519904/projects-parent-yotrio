@@ -231,13 +231,13 @@ layui.define(['table', 'form'], function (exports) {
         , totalRow: true
         , cols: [[
             {type: 'checkbox', fixed: 'left', totalRowText: '合计'}
-            , {field: 'inspNo', title: '报检单单号', minWidth: 120}
+            , {field: 'inspNo', title: '报检单单号', minWidth: 150}
             , {field: 'plateNo', title: '车牌号', minWidth: 80}
-            , {field: 'goodsKindName', title: '货品', minWidth: 60}
+            , {field: 'goodsName', title: '物料', minWidth: 60}
             , {field: 'inspWeight', title: '报检单重量', minWidth: 80, sort: true, totalRow: true}
             , {field: 'returnWeight', title: '随车退重量', minWidth: 80, sort: true, totalRow: true}
-            , {field: 'compName', title: '供应商名称', minWidth: 80}
-            , {field: 'types', title: '样品', minWidth: 60, templet: '#typesTpl'}
+            , {field: 'compName', title: '供应商名称', minWidth: 180}
+            , {field: 'types', title: '样品', width: 60, templet: '#typesTpl'}
             , {title: '操作', width: 80, align: 'center', fixed: 'right', toolbar: '#table-inspection'}
             // , {field: 'status', title: '状态'}
             // , {field: 'updateTime', title: '更新时间', sort: true}
@@ -345,7 +345,8 @@ layui.define(['table', 'form'], function (exports) {
                         body.find("#compName").val(obj.data.compName);
                         body.find("#plateNo").val(obj.data.plateNo);
                         body.find("#returnWeight").val(obj.data.returnWeight);
-                        body.find("#goodsKind").val(obj.data.goodsKind);
+                        body.find("#goodsCode").val(obj.data.goodsCode);
+                        body.find("#inspNo")[0].blur();
                         // body.find("#LAY-types-checkbox").val(obj.data.types);
 
                         if (obj.data.types == 1) {
@@ -949,223 +950,232 @@ layui.define(['table', 'form'], function (exports) {
         , add: function () {
             if (!$("#btn-add-inspection").hasClass("layui-btn-disabled")) {
                 layer.open({
-                    type: 2
-                    , title: '扫码获取或者编辑报检单信息'
-                    , content: '/inspection/form.htm'
-                    , maxmin: true
-                    , area: ['500px', '450px']
-                    , btn: ['确定', '取消']
-                    , yes: function (index, layero) {
-                        var iframeWindow = window['layui-layer-iframe' + index]
-                            , submitID = 'LAY-inspection-submit'
-                            , submit = layero.find('iframe').contents().find('#' + submitID);
+                        type: 2
+                        , title: '扫码获取或者编辑报检单信息'
+                        , content: '/inspection/form.htm'
+                        , maxmin: true
+                        , area: ['500px', '450px']
+                        , btn: ['确定', '取消']
+                        , yes: function (index, layero) {
+                            var iframeWindow = window['layui-layer-iframe' + index]
+                                , submitID = 'LAY-inspection-submit'
+                                , submit = layero.find('iframe').contents().find('#' + submitID);
 
-                        //获取过磅单号
-                        var poundLogNo = $("#poundLogNo").val();
-                        //获取收货组织
-                        var unitName = $("#unitName").val();
-                        // console.log("获取过磅单号：" + poundLogNo);
+                            //获取过磅单号
+                            var poundLogNo = $("#poundLogNo").val();
+                            //获取收货组织
+                            var unitName = $("#unitName").val();
+                            // console.log("获取过磅单号：" + poundLogNo);
 
-                        //监听提交
-                        iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
-                            var field = data.field; //获取提交的字段
-                            field.plNo = poundLogNo;
-                            field.unitName = unitName;
-                            //处理checkBox的状态值
-                            var types = 0;
-                            if (field.types == 'on') {
-                                types = 1;
-                            }
-                            field.types = types;
-
-                            // console.log("field:", field);
-                            //提交 Ajax 成功后，静态更新表格中的数据
-                            $.ajax({
-                                type: 'post',
-                                url: '/inspection/save',
-                                data: field,
-                                cache: false,
-                                dataType: 'json',
-                                success: function (result) {
-                                    if (result.code == 0) {
-                                        var poundLog = result.data;
-                                        methods.reloadWeight(poundLog);
-                                        //数据刷新
-                                        table.reload('LAY-inspection-manage', {
-                                            done: function (result) {
-
-                                            }
-                                        });
-                                        layer.close(index); //关闭弹层
-                                    } else {
-                                        layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
-                                    }
-                                },
-                                error: function (error) {
-                                    layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                            //监听提交
+                            iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                                var field = data.field; //获取提交的字段
+                                field.plNo = poundLogNo;
+                                field.unitName = unitName;
+                                //处理checkBox的状态值
+                                var types = 0;
+                                if (field.types == 'on') {
+                                    types = 1;
                                 }
+                                field.types = types;
+
+                                // console.log("field:", field);
+                                //提交 Ajax 成功后，静态更新表格中的数据
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/inspection/save',
+                                    data: field,
+                                    cache: false,
+                                    dataType: 'json',
+                                    success: function (result) {
+                                        if (result.code == 0) {
+                                            var poundLog = result.data;
+                                            methods.reloadWeight(poundLog);
+                                            //数据刷新
+                                            table.reload('LAY-inspection-manage', {
+                                                done: function (result) {
+
+                                                }
+                                            });
+                                            layer.close(index); //关闭弹层
+                                        } else {
+                                            layer.alert(result.msg, {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                                        }
+                                    },
+                                    error: function (error) {
+                                        layer.alert("数据请求异常", {icon: 5}); //这时如果你也还想执行yes回调，可以放在第三个参数中。
+                                    }
+                                });
                             });
-                        });
 
-                        submit.trigger('click');
-                    }
-                    , success: function (layero, index) {
-                        var body = layui.layer.getChildFrame('body', index);
+                            submit.trigger('click');
+                        }
+                        , success: function (layero, index) {
+                            var body = layui.layer.getChildFrame('body', index);
 
-                        // 取到弹出层里的元素，并把编辑的内容放进去
-                        body.find("#radio-1").attr("checked", "checked");
-                        // 记得重新渲染表单
-                        form.render();
+                            // 取到弹出层里的元素，并把编辑的内容放进去
+                            body.find("#radio-1").attr("checked", "checked");
+                            // 记得重新渲染表单
+                            form.render();
 
-                        //监听扫码事件
-                        // methods.getScanningCode();
-                        body.find('#inspNo')[0].onkeydown = function (event) {
+                            //监听扫码事件
+                            // methods.getScanningCode();
+                            body.find('#inspNo')[0].onkeydown = function (event) {
 
-                            // 键入Enter表明扫码枪输入完毕
-                            if (event.which == 13 && body.find('#inspNo')[0].value.length > 20) {
-                                //获取扫码枪数据
-                                var inputData = body.find('#inspNo')[0].value;
-                                //url解码
-                                console.log("inputData:", inputData);
-                                var decodeStr = decodeURIComponent(inputData);
-                                console.log("decodeStr:", decodeStr);
-                                //todo 可以做一下数据校验工作
-                                var dataArr = decodeStr.split("#");
-                                console.log("dataArr", dataArr);
-                                if (dataArr.length >= 4) {
-                                    body.find("#inspNo")[0].value = dataArr[0];
-                                    body.find("#inspWeight")[0].value = dataArr[3];
-                                    body.find("#plateNo")[0].value = dataArr[1];
-                                    var compCode = dataArr[2];
-                                    if (compCode) {
-                                        //根据供应商编码获取供应商名称
-                                        $.ajax({
-                                            type: 'get',
-                                            url: '/company/getInfoByCompCode',
-                                            data: {
-                                                compCode: compCode
-                                            },
-                                            cache: false,
-                                            dataType: 'json',
-                                            success: function (result) {
-                                                var compName = result.data.compName;
-                                                body.find("#compName")[0].value = compName;
-                                            }
-                                        });
+                                // 键入Enter表明扫码枪输入完毕
+                                if (event.which == 13 && body.find('#inspNo')[0].value.length >20) {
+                                    //获取扫码枪数据
+                                    var inputData = body.find('#inspNo')[0].value;
+                                    //todo 可以做一下数据校验工作
+                                    var dataArr = inputData.split("#");
+                                    console.log("dataArr", dataArr);
+                                    if (dataArr.length >= 4) {
+                                        //清空扫码获取的数据
+                                        cleanFormData();
+                                        //表单赋值
+                                        body.find("#inspNo")[0].value = dataArr[0];
+                                        body.find("#inspWeight")[0].value = dataArr[3];
+                                        body.find("#plateNo")[0].value = dataArr[1];
+                                        var compCode = dataArr[2];
+                                        if (compCode) {
+                                            //根据供应商编码获取供应商名称
+                                            $.ajax({
+                                                type: 'get',
+                                                url: '/company/getInfoByCompCode',
+                                                data: {
+                                                    compCode: compCode
+                                                },
+                                                cache: false,
+                                                dataType: 'json',
+                                                success: function (result) {
+                                                    var compName = result.data.compName;
+                                                    body.find("#compName")[0].value = compName;
+                                                }
+                                            });
+                                        }
+
+                                        //焦点事件
+                                        body.find("#inspNo")[0].blur();
+                                        body.find("#goodsCode")[0].focus();
                                     }
+                                    form.render();
                                 }
-                                form.render();
-                            } else {
-                                layer.alert("扫码获取失败，请手工填写", {icon: 5});
+                            }
+
+                            //清空扫码获取的数据表单数据
+                            function cleanFormData() {
+                                body.find("#inspNo")[0].value = '';
+                                body.find("#inspWeight")[0].value = '';
+                                body.find("#plateNo")[0].value = '';
+                                body.find("#compName")[0].value = '';
                             }
                         }
-                    }
-                }
-            }
-        );
-}
-}
-//新增过磅单
-,
-newPoundLog: function () {
-    //【删除】：修改poundLog表plNo字段
-    layui.data('pound_log', {
-        key: 'plNo'
-        , remove: true
-    });
-    //刷新页面
-    window.location.reload();
-}
 
-}
+                    }
+                );
+            }
+        }
+        //新增过磅单
+        ,
+        newPoundLog: function () {
+            //【删除】：修改poundLog表plNo字段
+            layui.data('pound_log', {
+                key: 'plNo'
+                , remove: true
+            });
+            //刷新页面
+            window.location.reload();
+        }
+
+    }
 //监听点击事件
-$('.layui-btn.btn-inspection').on('click', function () {
-    var type = $(this).data('type');
-    active[type] ? active[type].call(this) : '';
-});
+    $('.layui-btn.btn-inspection').on('click', function () {
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+    });
 
 //访问用户媒体设备的兼容方法
-function getUserMedia(constraints, success, error) {
-    if (navigator.mediaDevices.getUserMedia) {
-        //最新的标准API
-        navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
-    } else if (navigator.webkitGetUserMedia) {
-        //webkit核心浏览器
-        navigator.webkitGetUserMedia(constraints, success, error)
-    } else if (navigator.mozGetUserMedia) {
-        //firfox浏览器
-        navigator.mozGetUserMedia(constraints, success, error);
-    } else if (navigator.getUserMedia) {
-        //旧版API
-        navigator.getUserMedia(constraints, success, error);
+    function getUserMedia(constraints, success, error) {
+        if (navigator.mediaDevices.getUserMedia) {
+            //最新的标准API
+            navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
+        } else if (navigator.webkitGetUserMedia) {
+            //webkit核心浏览器
+            navigator.webkitGetUserMedia(constraints, success, error)
+        } else if (navigator.mozGetUserMedia) {
+            //firfox浏览器
+            navigator.mozGetUserMedia(constraints, success, error);
+        } else if (navigator.getUserMedia) {
+            //旧版API
+            navigator.getUserMedia(constraints, success, error);
+        }
     }
-}
 
-var video = document.getElementById('video');
+    var video = document.getElementById('video');
 
 //成功回调
-function success(stream) {
-    //兼容webkit核心浏览器
-    var CompatibleURL = window.URL || window.webkitURL;
-    //将视频流设置为video元素的源
-    // console.log(stream);
-    //video.src = CompatibleURL.createObjectURL(stream);
-    video.srcObject = stream;
-    video.play();
-}
+    function success(stream) {
+        //兼容webkit核心浏览器
+        var CompatibleURL = window.URL || window.webkitURL;
+        //将视频流设置为video元素的源
+        // console.log(stream);
+        //video.src = CompatibleURL.createObjectURL(stream);
+        video.srcObject = stream;
+        video.play();
+    }
 
 //失败回调
-function error(error) {
-    console.log("访问用户媒体设备失败");
-}
+    function error(error) {
+        console.log("访问用户媒体设备失败");
+    }
 
 //访问摄像头
-if (navigator.mediaDevices.getUserMedia || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia) {
-    //调用用户媒体设备, 访问摄像头
-    getUserMedia({video: {width: 330, height: 212}}, success, error);
-} else {
-    alert('不支持访问用户媒体');
-}
+    if (navigator.mediaDevices.getUserMedia || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia) {
+        //调用用户媒体设备, 访问摄像头
+        getUserMedia({video: {width: 330, height: 212}}, success, error);
+    } else {
+        alert('不支持访问用户媒体');
+    }
 
 //websocket实现
-var websocket;
-var socketUrl = "ws://127.0.0.1:8000/websocket";
-var count = 0;
-if ('WebSocket' in window) {
-    // console.log("此浏览器支持websocket");
-    websocket = new WebSocket(socketUrl);
-} else if ('MozWebSocket' in window) {
-    alert("此浏览器只支持MozWebSocket");
-} else {
-    alert("此浏览器只支持SockJS");
-}
-websocket.onopen = function (evnt) {
-    // $("#tou").html("链接服务器成功!");
-    console.log("链接服务器成功");
-};
-websocket.onmessage = function (evnt) {
-    // console.log("event", evnt.data);
-    $("#currentWeight").val(evnt.data);
-    if (!$("#currentWeight").val()) {
-        console.log("重新初始化websocket");
+    var websocket;
+    var socketUrl = "ws://127.0.0.1:8000/websocket";
+    var count = 0;
+    if ('WebSocket' in window) {
+        // console.log("此浏览器支持websocket");
         websocket = new WebSocket(socketUrl);
+    } else if ('MozWebSocket' in window) {
+        alert("此浏览器只支持MozWebSocket");
+    } else {
+        alert("此浏览器只支持SockJS");
     }
-};
-websocket.onerror = function (evnt) {
-    console.log("消息异常：" + evnt.data);
-};
-websocket.onclose = function (evnt) {
-    console.log("与服务器断开了链接");
-}
+    websocket.onopen = function (evnt) {
+        // $("#tou").html("链接服务器成功!");
+        console.log("链接服务器成功");
+    };
+    websocket.onmessage = function (evnt) {
+        // console.log("event", evnt.data);
+        $("#currentWeight").val(evnt.data);
+        if (!$("#currentWeight").val()) {
+            console.log("重新初始化websocket");
+            websocket = new WebSocket(socketUrl);
+        }
+    };
+    websocket.onerror = function (evnt) {
+        console.log("消息异常：" + evnt.data);
+    };
+    websocket.onclose = function (evnt) {
+        console.log("与服务器断开了链接");
+    }
 
 //监听是否有地磅数据传送过来，没有的话重新初始化websocket
-setTimeout(function () {
-    if (!$("#currentWeight").val()) {
-        console.log("重新初始化websocket");
-        websocket = new WebSocket(socketUrl);
-    }
-}, 1000);
+    setTimeout(function () {
+        if (!$("#currentWeight").val()) {
+            console.log("重新初始化websocket");
+            websocket = new WebSocket(socketUrl);
+        }
+    }, 1000);
 
-exports('console', {});
+    exports('console', {});
 })
 ;

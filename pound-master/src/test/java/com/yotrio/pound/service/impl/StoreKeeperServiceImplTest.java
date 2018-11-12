@@ -9,7 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import static org.junit.Assert.*;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/spring-config.xml", "classpath:spring/spring-dataSource.xml", "classpath:spring/spring-mybatis.xml",
@@ -22,7 +22,7 @@ public class StoreKeeperServiceImplTest {
 
     @Test
     public void findByOrgCodeAndGoodsCode() {
-        StoreKeeper storeKeeper = storeKeeperService.findByOrgCodeAndGoodsCode("001", "1541768960488");
-        System.out.println(storeKeeper.toString());
+        List<StoreKeeper> storeKeepers = storeKeeperService.findByOrgCodeAndGoodsCode("001", "1541768960488");
+        System.out.println(storeKeepers.toString());
     }
 }

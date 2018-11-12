@@ -7,7 +7,7 @@
         <result column="pl_no" jdbcType="VARCHAR" property="plNo"/>
         <result column="insp_no" jdbcType="VARCHAR" property="inspNo"/>
         <result column="plate_no" jdbcType="VARCHAR" property="plateNo"/>
-        <result column="goods_kind" jdbcType="INTEGER" property="goodsKind"/>
+        <result column="goods_code" jdbcType="VARCHAR" property="goodsCode"/>
         <result column="comp_name" jdbcType="VARCHAR" property="compName"/>
         <result column="insp_weight" jdbcType="DOUBLE" property="inspWeight"/>
         <result column="return_weight" jdbcType="DOUBLE" property="returnWeight"/>
@@ -18,7 +18,7 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, pl_id, pl_no, insp_no, plate_no, goods_kind, comp_name, insp_weight, return_weight, insp_net_weight,
+    id, pl_id, pl_no, insp_no, plate_no, goods_code, comp_name, insp_weight, return_weight, insp_net_weight,
     types, status, create_time, update_time
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -58,12 +58,12 @@
     </delete>
     <insert id="insert" parameterType="com.yotrio.pound.model.Inspection">
     insert into inspection (pl_id, pl_no,
-      insp_no, plate_no, goods_kind, 
+      insp_no, plate_no, goods_code,
       comp_name, insp_weight, return_weight, insp_net_weight,
       types, status, create_time, 
       update_time)
     values ( #{plId,jdbcType=INTEGER}, #{plNo,jdbcType=VARCHAR},
-      #{inspNo,jdbcType=VARCHAR}, #{plateNo,jdbcType=VARCHAR}, #{goodsKind,jdbcType=INTEGER}, 
+      #{inspNo,jdbcType=VARCHAR}, #{plateNo,jdbcType=VARCHAR}, #{goodsCode,jdbcType=VARCHAR},
       #{compName,jdbcType=VARCHAR}, #{inspWeight,jdbcType=DOUBLE}, #{returnWeight,jdbcType=DOUBLE}, #{inspNetWeight,jdbcType=DOUBLE},
       #{types,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
@@ -83,8 +83,8 @@
             <if test="plateNo != null">
                 plate_no,
             </if>
-            <if test="goodsKind != null">
-                goods_kind,
+            <if test="goodsCode != null">
+                goods_code,
             </if>
             <if test="compName != null">
                 comp_name,
@@ -124,8 +124,8 @@
             <if test="plateNo != null">
                 #{plateNo,jdbcType=VARCHAR},
             </if>
-            <if test="goodsKind != null">
-                #{goodsKind,jdbcType=INTEGER},
+            <if test="goodsCode != null">
+                #{goodsCode,jdbcType=VARCHAR},
             </if>
             <if test="compName != null">
                 #{compName,jdbcType=VARCHAR},
@@ -168,8 +168,8 @@
             <if test="plateNo != null">
                 plate_no = #{plateNo,jdbcType=VARCHAR},
             </if>
-            <if test="goodsKind != null">
-                goods_kind = #{goodsKind,jdbcType=INTEGER},
+            <if test="goodsCode != null">
+                goods_code = #{goodsCode,jdbcType=VARCHAR},
             </if>
             <if test="compName != null">
                 comp_name = #{compName,jdbcType=VARCHAR},
@@ -207,8 +207,8 @@
             <if test="plateNo != null">
                 plate_no = #{plateNo,jdbcType=VARCHAR},
             </if>
-            <if test="goodsKind != null">
-                goods_kind = #{goodsKind,jdbcType=INTEGER},
+            <if test="goodsCode != null">
+                goods_code = #{goodsCode,jdbcType=VARCHAR},
             </if>
             <if test="compName != null">
                 comp_name = #{compName,jdbcType=VARCHAR},
@@ -243,7 +243,7 @@
       pl_no = #{plNo,jdbcType=VARCHAR},
       insp_no = #{inspNo,jdbcType=VARCHAR},
       plate_no = #{plateNo,jdbcType=VARCHAR},
-      goods_kind = #{goodsKind,jdbcType=INTEGER},
+      goods_code = #{goodsCode,jdbcType=VARCHAR},
       comp_name = #{compName,jdbcType=VARCHAR},
       insp_weight = #{inspWeight,jdbcType=DOUBLE},
       return_weight = #{returnWeight,jdbcType=DOUBLE},
@@ -286,8 +286,8 @@
             <if test="plateNo != null and plateNo != ''">
                 AND plate_no = #{plateNo,jdbcType=VARCHAR}
             </if>
-            <if test="goodsKind != null and goodsKind != ''">
-                AND goods_kind = #{goodsKind,jdbcType=INTEGER}
+            <if test="goodsCode != null and goodsCode != ''">
+                AND goods_code = #{goodsCode,jdbcType=VARCHAR}
             </if>
             <if test="compName != null and compName != ''">
                 AND comp_name = #{compName,jdbcType=VARCHAR}
@@ -328,8 +328,8 @@
             <if test="myGreater_plateNo != null and myGreater_plateNo != ''">
                 AND plate_no &gt; #{myGreater_plateNo,jdbcType=VARCHAR}
             </if>
-            <if test="myGreater_goodsKind != null and myGreater_goodsKind != ''">
-                AND goods_kind &gt; #{myGreater_goodsKind,jdbcType=INTEGER}
+            <if test="myGreater_goodsCode != null and myGreater_goodsCode != ''">
+                AND goods_code &gt; #{myGreater_goodsCode,jdbcType=VARCHAR}
             </if>
             <if test="myGreater_compName != null and myGreater_compName != ''">
                 AND comp_name &gt; #{myGreater_compName,jdbcType=VARCHAR}
@@ -370,8 +370,8 @@
             <if test="myLesser_plateNo != null and myLesser_plateNo != ''">
                 AND plate_no &lt; #{myLesser_plateNo,jdbcType=VARCHAR}
             </if>
-            <if test="myLesser_goodsKind != null and myLesser_goodsKind != ''">
-                AND goods_kind &lt; #{myLesser_goodsKind,jdbcType=INTEGER}
+            <if test="myLesser_goodsCode != null and myLesser_goodsCode != ''">
+                AND goods_code &lt; #{myLesser_goodsCode,jdbcType=VARCHAR}
             </if>
             <if test="myLesser_compName != null and myLesser_compName != ''">
                 AND comp_name &lt; #{myLesser_compName,jdbcType=VARCHAR}
@@ -412,8 +412,8 @@
             <if test="myLike_plateNo != null and myLike_plateNo != ''">
                 AND plate_no like CONCAT('%', #{myLike_plateNo,jdbcType=VARCHAR},'%' )
             </if>
-            <if test="myLike_goodsKind != null and myLike_goodsKind != ''">
-                AND goods_kind like CONCAT('%', #{myLike_goodsKind,jdbcType=INTEGER},'%' )
+            <if test="myLike_goodsCode != null and myLike_goodsCode != ''">
+                AND goods_code like CONCAT('%', #{myLike_goodsCode,jdbcType=VARCHAR},'%' )
             </if>
             <if test="myLike_compName != null and myLike_compName != ''">
                 AND comp_name like CONCAT('%', #{myLike_compName,jdbcType=VARCHAR},'%' )
@@ -454,8 +454,8 @@
             <if test="myLikeStart_plateNo != null and myLikeStart_plateNo != ''">
                 AND plate_no like CONCAT('%', #{myLikeStart_plateNo,jdbcType=VARCHAR})
             </if>
-            <if test="myLikeStart_goodsKind != null and myLikeStart_goodsKind != ''">
-                AND goods_kind like CONCAT('%', #{myLikeStart_goodsKind,jdbcType=INTEGER})
+            <if test="myLikeStart_goodsCode != null and myLikeStart_goodsCode != ''">
+                AND goods_code like CONCAT('%', #{myLikeStart_goodsCode,jdbcType=VARCHAR})
             </if>
             <if test="myLikeStart_compName != null and myLikeStart_compName != ''">
                 AND comp_name like CONCAT('%', #{myLikeStart_compName,jdbcType=VARCHAR})
@@ -496,8 +496,8 @@
             <if test="myLikeEnd_plateNo != null and myLikeEnd_plateNo != ''">
                 AND plate_no like CONCAT( #{myLikeEnd_plateNo,jdbcType=VARCHAR},'%' )
             </if>
-            <if test="myLikeEnd_goodsKind != null and myLikeEnd_goodsKind != ''">
-                AND goods_kind like CONCAT( #{myLikeEnd_goodsKind,jdbcType=INTEGER},'%' )
+            <if test="myLikeEnd_goodsCode != null and myLikeEnd_goodsCode != ''">
+                AND goods_code like CONCAT( #{myLikeEnd_goodsCode,jdbcType=VARCHAR},'%' )
             </if>
             <if test="myLikeEnd_compName != null and myLikeEnd_compName != ''">
                 AND comp_name like CONCAT( #{myLikeEnd_compName,jdbcType=VARCHAR},'%' )
@@ -548,9 +548,9 @@
                 <foreach item="item" index="index" collection="myIn_plateNo" open="(" separator="," close=")">#{item}
                 </foreach>
             </if>
-            <if test="myIn_goodsKind != null and myIn_goodsKind != ''">
-                AND goods_kind in
-                <foreach item="item" index="index" collection="myIn_goodsKind" open="(" separator="," close=")">
+            <if test="myIn_goodsCode != null and myIn_goodsCode != ''">
+                AND goods_code in
+                <foreach item="item" index="index" collection="myIn_goodsCode" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>

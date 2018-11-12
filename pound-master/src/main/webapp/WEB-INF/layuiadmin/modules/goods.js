@@ -10,8 +10,8 @@ layui.define(['table', 'form'], function (exports) {
         , cols: [[
             {type: 'checkbox', fixed: 'left'}
             , {field: 'id', width: 50, title: 'ID', sort: true}
-            , {field: 'goodsCode', title: '货品编码'}
-            , {field: 'goodsName', title: '货品名称'}
+            , {field: 'goodsCode', title: '物料编码'}
+            , {field: 'goodsName', title: '物料名称'}
             , {field: 'description', title: '描述'}
             // , {field: 'updateTime', title: '更新时间', sort: true}
             // , {field: 'status', title: '状态', templet: '#buttonTpl', align: 'center'}
@@ -31,7 +31,7 @@ layui.define(['table', 'form'], function (exports) {
         if (obj.event === 'edit') {
             layer.open({
                 type: 2
-                , title: '编辑货品'
+                , title: '编辑物料'
                 , content: '/goods/form.htm'
                 , maxmin: true
                 , area: ['500px', '450px']

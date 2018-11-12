@@ -8,6 +8,7 @@ import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.domain.SystemProperties;
 import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.PoundLog;
+import com.yotrio.pound.service.ICompanyService;
 import com.yotrio.pound.service.IGoodsService;
 import com.yotrio.pound.service.IInspectionService;
 import com.yotrio.pound.service.IPoundLogService;
@@ -45,6 +46,8 @@ public class InspectionController extends BaseController {
     private SystemProperties sysProperties;
     @Autowired
     private IGoodsService goodsService;
+    @Autowired
+    private ICompanyService companyService;
 
     /**
      * 添加报检单页面
@@ -95,7 +98,12 @@ public class InspectionController extends BaseController {
             PoundLog poundLog = new PoundLog();
             poundLog.setPoundId(sysProperties.getPoundClientId());
             poundLog.setPoundName(sysProperties.getPoundClientName());
-            poundLog.setGoodsKind(inspection.getGoodsKind());
+            poundLog.setGoodsCode(inspection.getGoodsCode());
+            String goodsName = goodsService.findGoodsNameByGoodsCode(inspection.getGoodsCode());
+            if (StringUtils.isNotEmpty(goodsName)) {
+                poundLog.setGoodsName(goodsName);
+            }
+            poundLog.setCompName(inspection.getCompName());
             poundLog.setPoundLogNo(inspection.getPlNo());
             poundLog.setPlateNo(inspection.getPlateNo());
             poundLog.setCreateTime(new Date());
@@ -158,6 +166,11 @@ public class InspectionController extends BaseController {
             return ResultUtil.error("过磅单已提交，不能再修改");
         }
 
+        //如果供应商名称为空，设置供应商名称
+        if (logInDB != null && StringUtils.isEmpty(logInDB.getCompName())) {
+            logInDB.setCompName(inspection.getCompName());
+            poundLogService.update(logInDB);
+        }
         int result = inspectionService.update(inspection);
         if (result >= 1) {
             //重新计算过磅记录中的重量信息

@@ -5,7 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yotrio.common.constants.InspectionConstant;
 import com.yotrio.common.domain.DataTablePage;
-import com.yotrio.common.enums.GoodsKindEnum;
+import com.yotrio.pound.dao.GoodsMapper;
 import com.yotrio.pound.dao.InspectionMapper;
 import com.yotrio.pound.dao.PoundLogMapper;
 import com.yotrio.pound.model.Inspection;
@@ -34,6 +34,8 @@ public class InspectionServiceImpl implements IInspectionService {
     private InspectionMapper inspectionMapper;
     @Autowired
     private PoundLogMapper poundLogMapper;
+    @Autowired
+    private GoodsMapper goodsMapper;
 
     /**
      * 新增报检单
@@ -161,7 +163,7 @@ public class InspectionServiceImpl implements IInspectionService {
         if (StringUtils.isEmpty(inspection.getInspNo())) {
             return "报检单号不能为空";
         }
-        if (inspection.getGoodsKind() == null) {
+        if (inspection.getGoodsCode() == null) {
             return "货品类型不能为空";
         }
         if (StringUtils.isEmpty(inspection.getCompName())) {
@@ -187,7 +189,7 @@ public class InspectionServiceImpl implements IInspectionService {
         PageHelper.startPage(dataTablePage.getPage(), dataTablePage.getLimit());
         List<Inspection> inspectionList = inspectionMapper.selectListByMap(BeanUtil.beanToMap(inspection));
         for (Inspection item : inspectionList) {
-            item.setGoodsKindName(GoodsKindEnum.getKindName(item.getGoodsKind()));
+            item.setGoodsName(goodsMapper.findGoodsNameByGoodsCode(item.getGoodsCode()));
         }
         PageInfo pageInfo = new PageInfo(inspectionList);
         return pageInfo;

@@ -30,5 +30,5 @@ public interface IStoreKeeperService {
 
     String checkForm(StoreKeeper storeKeeper);
 
-    StoreKeeper findByOrgCodeAndGoodsCode(String orgCode, String goodsCode);
+    List<StoreKeeper> findByOrgCodeAndGoodsCode(String orgCode, String goodsCode);
 }

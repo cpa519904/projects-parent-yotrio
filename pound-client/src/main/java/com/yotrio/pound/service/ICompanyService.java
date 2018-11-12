@@ -18,6 +18,8 @@ public interface ICompanyService {
 
     Company findByCompCode(String compCode);
 
+    String findCompNameByCompCode(String compCode);
+
     int updateById(Company company);
 
     int updateByCompCode(Company company);

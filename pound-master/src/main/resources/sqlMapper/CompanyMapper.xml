@@ -19,7 +19,7 @@
     from company
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="compCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="findByCompCode" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from company
@@ -53,7 +53,7 @@
   <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.yotrio.pound.model.Company">
     insert into company
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="comp_code != null">
+      <if test="compCode != null">
         comp_code,
       </if>
       <if test="compName != null">
@@ -264,8 +264,8 @@
       <if test="myIn_id != null and myIn_id != ''">
          AND id in <foreach item="item" index="index" collection="myIn_id" open="(" separator="," close=")"> #{item} </foreach>
       </if>
-      <if test="myIn_compCode != null and myIn_compCode != ''">
-         AND comp_code in <foreach item="item" index="index" collection="myIn_compCode" open="(" separator="," close=")"> #{item} </foreach>
+      <if test="myLikeEnd_compCode != null and myLikeEnd_compCode != ''">
+         AND comp_code in <foreach item="item" index="index" collection="myLikeEnd_compCode" open="(" separator="," close=")"> #{item} </foreach>
       </if>
       <if test="myIn_compName != null and myIn_compName != ''">
          AND comp_name in <foreach item="item" index="index" collection="myIn_compName" open="(" separator="," close=")"> #{item} </foreach>

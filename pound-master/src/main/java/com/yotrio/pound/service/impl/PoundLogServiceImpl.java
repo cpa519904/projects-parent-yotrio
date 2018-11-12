@@ -7,6 +7,8 @@ import com.yotrio.common.domain.DataTablePage;
 import com.yotrio.common.utils.DateUtil;
 import com.yotrio.common.utils.ImageUtil;
 import com.yotrio.common.utils.PropertiesFileUtil;
+import com.yotrio.pound.dao.CompanyMapper;
+import com.yotrio.pound.dao.GoodsMapper;
 import com.yotrio.pound.dao.InspectionMapper;
 import com.yotrio.pound.dao.PoundLogMapper;
 import com.yotrio.pound.model.Inspection;
@@ -46,6 +48,10 @@ public class PoundLogServiceImpl implements IPoundLogService {
     private PoundLogMapper poundLogMapper;
     @Autowired
     private InspectionMapper inspectionMapper;
+    @Autowired
+    private CompanyMapper companyMapper;
+    @Autowired
+    private GoodsMapper goodsMapper;
 
     /**
      * 分页获取过磅数据
@@ -58,15 +64,6 @@ public class PoundLogServiceImpl implements IPoundLogService {
     public PageInfo findAllPaging(DataTablePage dataTablePage, PoundLogDto poundLogDto) {
         PageHelper.startPage(dataTablePage.getPage(), dataTablePage.getLimit());
         List<PoundLog> poundLogs = poundLogMapper.selectListByMap(BeanUtil.beanToMap(poundLogDto));
-        for (PoundLog poundLog : poundLogs) {
-            List<Inspection> inspections = inspectionMapper.findListByPlNo(poundLog.getPoundLogNo());
-            for (Inspection inspection : inspections) {
-                poundLog.setCompName(inspection.getCompName());
-                if (StringUtils.isNotEmpty(poundLog.getCompName()) && StringUtils.isNotEmpty(poundLog.getGoodsName())) {
-                    break;
-                }
-            }
-        }
         PageInfo pageInfo = new PageInfo(poundLogs);
         return pageInfo;
     }
@@ -180,16 +177,10 @@ public class PoundLogServiceImpl implements IPoundLogService {
     @Override
     public void savePoundLogAndInspections(PoundLog poundLog, List<Inspection> inspections) {
         if (poundLog.getInspWeightTotal() == null) {
-            //过磅单总数
+            //过磅单总重量
             double inspWeightTotal = 0.0d;
             for (Inspection inspection : inspections) {
                 inspWeightTotal += inspection.getInspWeight();
-                if (StringUtils.isEmpty(poundLog.getCompName())) {
-                    poundLog.setCompName(inspection.getCompName());
-                }
-                if (poundLog.getGoodsKind() == null) {
-                    poundLog.setGoodsKind(inspection.getGoodsKind());
-                }
             }
             poundLog.setInspWeightTotal(inspWeightTotal);
         }
@@ -233,11 +224,6 @@ public class PoundLogServiceImpl implements IPoundLogService {
                 inspection.setPlId(logInDB.getId());
                 inspection.setPlNo(logInDB.getPoundLogNo());
                 inspectionMapper.updateByinspNoSelective(inspection);
-                if (StringUtils.isEmpty(poundLog.getCompName())) {
-                    poundLog.setCompName(inspection.getCompName());
-                    poundLog.setUpdateTime(new Date());
-                    poundLogMapper.updateByPlNoAndPoundIdSelective(poundLog);
-                }
             }
         } else {
             //未生成,执行插入操作
@@ -248,10 +234,6 @@ public class PoundLogServiceImpl implements IPoundLogService {
                 inspection.setPlId(poundLog.getId());
                 inspection.setPlNo(poundLog.getPoundLogNo());
                 inspectionMapper.insert(inspection);
-                if (StringUtils.isEmpty(poundLog.getCompName())) {
-                    poundLog.setCompName(inspection.getCompName());
-                    poundLogMapper.updateByPlNoAndPoundIdSelective(poundLog);
-                }
             }
         }
     }

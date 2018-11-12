@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>货品列表</title>
+    <title>物料列表</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -17,13 +17,13 @@
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">货品编码</label>
+                    <label class="layui-form-label">物料编码</label>
                     <div class="layui-input-block">
                         <input type="text" name="myLike_goodsCode" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">货品名称</label>
+                    <label class="layui-form-label">物料</label>
                     <div class="layui-input-block">
                         <input type="text" name="myLike_compName" placeholder="请输入" autocomplete="off" class="layui-input">
                     </div>
@@ -126,7 +126,7 @@
             , add: function () {
                 layer.open({
                     type: 2
-                    , title: '添加货品'
+                    , title: '添加物料'
                     , content: '/goods/form.htm'
                     , maxmin: true
                     , area: ['500px', '450px']
@@ -173,7 +173,7 @@
                         form.render();
 
                         setTimeout(function () {
-                            layui.layer.tips('点击此处返回货品列表', '.layui-layer-setwin .layui-layer-close', {
+                            layui.layer.tips('点击此处返回物料列表', '.layui-layer-setwin .layui-layer-close', {
                                 tips: 3
                             });
                         }, 500);

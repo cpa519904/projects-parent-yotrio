@@ -32,7 +32,7 @@ public class CompanyController extends BaseController {
      * @param compCode
      * @return
      */
-    @RequestMapping(value = "/getInfoByCompCode", method = {RequestMethod.POST})
+    @RequestMapping(value = "/getInfoByCompCode", method = {RequestMethod.GET})
     @ResponseBody
     public Result getInfoByCompCode(String compCode) {
         if (StringUtils.isEmpty(compCode)) {

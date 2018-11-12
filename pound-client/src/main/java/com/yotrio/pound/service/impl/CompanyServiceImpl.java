@@ -34,14 +34,25 @@ public class CompanyServiceImpl implements ICompanyService {
     }
 
     /**
-     * 根据id获取对象
+     * 根据供应商编码获取供应商
      *
-     * @param compCode 公司编码
+     * @param compCode 供应商编码
      * @return
      */
     @Override
     public Company findByCompCode(String compCode) {
         return companyMapper.findByCompCode(compCode);
+    }
+
+    /**
+     * 根据供应商编码获取供应商名称
+     *
+     * @param compCode 供应商编码
+     * @return
+     */
+    @Override
+    public String findCompNameByCompCode(String compCode) {
+        return companyMapper.findCompNameByCompCode(compCode);
     }
 
     /**

@@ -124,7 +124,7 @@ public class StoreKeeperServiceImpl implements IStoreKeeperService {
         String goodsName = goodsMapper.findGoodsNameByGoodsCode(storeKeeper.getGoodsCode());
         String orgName = organizationMapper.findOrgNameByOrgCode(storeKeeper.getOrgCode());
         storeKeeper.setGoodsName(goodsName);
-        storeKeeper.setGoodsName(orgName);
+        storeKeeper.setOrgName(orgName);
         storeKeeper.setCreateTime(new Date());
         storeKeeper.setStatus(StoreKeeperConstant.STATUS_INIT);
         return storeKeeperMapper.insert(storeKeeper);
@@ -165,7 +165,7 @@ public class StoreKeeperServiceImpl implements IStoreKeeperService {
      * @return
      */
     @Override
-    public StoreKeeper findByOrgCodeAndGoodsCode(String orgCode, String goodsCode) {
+    public List<StoreKeeper> findByOrgCodeAndGoodsCode(String orgCode, String goodsCode) {
         return storeKeeperMapper.findByOrgCodeAndGoodsCode(orgCode,goodsCode);
     }
 
