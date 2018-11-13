@@ -89,7 +89,7 @@ public class InspectionController extends BaseController {
         //一张报检单只能使用一次
         Inspection inspectionInDB = inspectionService.findByInspNo(inspection.getInspNo());
         if (inspectionInDB != null) {
-            return ResultUtil.error("该过磅单已录入系统，请换张过磅单");
+            return ResultUtil.error("该报检单已录入系统，请换张报检单");
         }
 
         //查询是否已生成过磅记录，未生成的先生成过磅记录

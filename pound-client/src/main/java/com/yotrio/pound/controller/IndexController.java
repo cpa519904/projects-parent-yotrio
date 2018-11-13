@@ -1,6 +1,9 @@
 package com.yotrio.pound.controller;
 
+import com.yotrio.pound.model.Inspection;
 import com.yotrio.pound.model.Organization;
+import com.yotrio.pound.model.PoundLog;
+import com.yotrio.pound.service.IInspectionService;
 import com.yotrio.pound.service.IOrganizationService;
 import com.yotrio.pound.service.IPoundLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,8 @@ public class IndexController extends BaseController{
     private IPoundLogService poundLogService;
     @Autowired
     private IOrganizationService organizationService;
+    @Autowired
+    private IInspectionService inspectionService;
 
     @RequestMapping(value = {"/", "/index.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String index(Model model) {
@@ -53,7 +58,16 @@ public class IndexController extends BaseController{
      * @return
      */
     @RequestMapping(value = { "/printPoundLog.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
-    public String printPoundLog(Model model) {
+    public String printPoundLog(Model model,String plNo) {
+        PoundLog poundLog = poundLogService.findByPoundLogNo(plNo);
+        List<Inspection> inspections = inspectionService.findListByPlNo(plNo);
+        double totalInspNetWeight = 0.0d;
+        for (Inspection inspection : inspections) {
+            totalInspNetWeight += inspection.getInspNetWeight();
+        }
+        model.addAttribute("poundLog", poundLog);
+        model.addAttribute("inspections", inspections);
+        model.addAttribute("totalInspNetWeight", totalInspNetWeight);
         return "print/print_pound_log";
     }
 

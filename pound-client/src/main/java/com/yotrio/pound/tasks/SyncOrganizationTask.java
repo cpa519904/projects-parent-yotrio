@@ -34,8 +34,8 @@ public class SyncOrganizationTask extends QuartzJobBean {
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         logger.info("定时任务 同步组织 SyncOrganizationTask {}", new Date());
         List<Organization> organizations = httpService.findAllOrganization();
+        int[] count = {0, 0};
         if (organizations != null && organizations.size() > 0) {
-            int[] count = {0, 0};
             try {
                 for (Organization organization : organizations) {
                     Organization organizationInDB = organizationService.findByOrgCode(organization.getOrgCode());
@@ -55,10 +55,10 @@ public class SyncOrganizationTask extends QuartzJobBean {
                         }
                     }
                 }
-                logger.info("组织|添加：" + count[0] + "|更新：" + count[1]);
             } catch (Exception e) {
                 logger.error("组织数据同步失败 {}" + e.getMessage());
             }
         }
+        logger.info("组织|添加：" + count[0] + "|更新：" + count[1]);
     }
 }

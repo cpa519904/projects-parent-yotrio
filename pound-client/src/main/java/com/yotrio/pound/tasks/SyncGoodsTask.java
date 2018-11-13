@@ -34,8 +34,8 @@ public class SyncGoodsTask extends QuartzJobBean {
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         logger.info("定时任务 同步物料 SyncGoodsTask {}", new Date());
         List<Goods> goodsList = httpService.findAllGoods();
+        int[] count = {0, 0};
         if (goodsList != null && goodsList.size() > 0) {
-            int[] count = {0, 0};
             try {
                 for (Goods goods : goodsList) {
                     Goods goodsInDB = goodsService.findByGoodsCode(goods.getGoodsCode());
@@ -55,10 +55,10 @@ public class SyncGoodsTask extends QuartzJobBean {
                         }
                     }
                 }
-                logger.info("物料|添加：" + count[0] + "|更新：" + count[1]);
             } catch (Exception e) {
                 logger.error("物料数据同步失败 {}" + e.getMessage());
             }
         }
+        logger.info("物料|添加：" + count[0] + "|更新：" + count[1]);
     }
 }

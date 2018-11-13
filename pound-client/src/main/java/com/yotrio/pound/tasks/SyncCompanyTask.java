@@ -34,8 +34,8 @@ public class SyncCompanyTask extends QuartzJobBean {
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         logger.info("定时任务 同步供应商 SyncCompanyTask {}", new Date());
         List<Company> allCompany = httpService.findAllCompany();
+        int[] count = {0, 0};
         if (allCompany != null && allCompany.size() > 0) {
-            int[] count = {0, 0};
             try {
                 for (Company company : allCompany) {
                     Company companyInDB = companyService.findByCompCode(company.getCompCode());
@@ -55,10 +55,10 @@ public class SyncCompanyTask extends QuartzJobBean {
                         }
                     }
                 }
-                logger.info("供应商|添加：" + count[0] + "|更新：" + count[1]);
             } catch (Exception e) {
                 logger.error("供应商数据同步失败 {}" + e.getMessage());
             }
         }
+        logger.info("供应商|添加：" + count[0] + "|更新：" + count[1]);
     }
 }

@@ -575,7 +575,7 @@ layui.define(['table', 'form'], function (exports) {
                                             //监听提交
                                             iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
                                                 var field = data.field; //获取提交的字段
-                                                fieldRoot.goodsKind = field.goodsKind;
+                                                fieldRoot.goodsCode = field.goodsCode;
                                                 fieldRoot.plateNo = field.plateNo;
 
                                                 //提交 Ajax 成功后，静态更新表格中的数据
@@ -792,7 +792,7 @@ layui.define(['table', 'form'], function (exports) {
                         if (inspections.length > 0) {
                             var htmlStr = '<div class="layui-col-xs12">' +
                                 '<div class="layui-card-body" style="padding-left: 0">' +
-                                '<table id="LAY-inspection-print-manage" class="layui-table">' +
+                                '<table id="LAY-inspection-print-manage" style="color: #000000;border-color: #000000" class="layui-table">' +
                                 '<tr>' +
                                 '<th>报检单</th>' +
                                 '<th>单号</th>' +

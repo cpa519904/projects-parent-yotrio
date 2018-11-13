@@ -276,7 +276,7 @@ public class ApiController extends BaseController {
         }
         PoundInfo poundInfo = poundInfoService.findCacheById(poundId);
         if (poundInfo == null) {
-            return returnError("过去地磅信息失败");
+            return returnError("获取地磅信息失败");
         }
         if (plId == null) {
             return returnError("过磅单号为空");

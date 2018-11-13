@@ -189,6 +189,7 @@ public class PoundLogController extends BaseController {
         //获取组织名称
         if (StringUtils.isNotEmpty(poundLog.getOrgCode())) {
             String orgName = organizationService.findOrgNameByOrgCode(poundLog.getOrgCode());
+            poundLog.setUnitName(orgName);
         }
         //生成过磅单
         poundLog.setPoundId(sysProperties.getPoundClientId());
@@ -433,6 +434,16 @@ public class PoundLogController extends BaseController {
             return ResultUtil.error("过磅记录已存在");
         }
 
+        //获取物料名称
+        String goodsName = goodsService.findGoodsNameByGoodsCode(poundLog.getGoodsCode());
+        if (StringUtils.isNotEmpty(goodsName)) {
+            poundLog.setGoodsName(goodsName);
+        }
+        //获取组织名称
+        if (StringUtils.isNotEmpty(poundLog.getOrgCode())) {
+            String orgName = organizationService.findOrgNameByOrgCode(poundLog.getOrgCode());
+            poundLog.setUnitName(orgName);
+        }
         //生成退货过磅单
         poundLog.setPoundId(sysProperties.getPoundClientId());
         poundLog.setPoundName(sysProperties.getPoundClientName());

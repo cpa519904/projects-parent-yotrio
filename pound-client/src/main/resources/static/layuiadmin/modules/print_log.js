@@ -19,7 +19,6 @@ layui.define(['table', 'form'], function (exports) {
             title: null,
             doctype: '<!doctype html>'
         });
-
     });
 
     exports('print_log', {})

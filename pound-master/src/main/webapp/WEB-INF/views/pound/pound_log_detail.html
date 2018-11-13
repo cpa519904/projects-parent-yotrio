@@ -89,6 +89,16 @@
 
             <div class="layui-form-item">
                 <div class="layui-inline">
+                    <label class="layui-form-label">净重</label>
+                    <div class="layui-input-inline">
+                        <input type="number" name="netWeight" autocomplete="off" readonly="readonly"
+                               class="layui-input"
+                               th:value="${poundLog.netWeight}">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">不含样品</div>
+                </div>
+
+                <div class="layui-inline">
                     <label class="layui-form-label">毛重</label>
                     <div class="layui-input-inline">
                         <input type="number" name="grossWeight" autocomplete="off" readonly="readonly"
@@ -107,6 +117,24 @@
             </div>
             <div class="layui-form-item">
                 <div class="layui-inline">
+                    <label class="layui-form-label">报检单总重</label>
+                    <div class="layui-input-inline">
+                        <input type="number" name="inspWeightTotal" autocomplete="off" readonly="readonly"
+                               class="layui-input"
+                               th:value="${poundLog.inspWeightTotal}">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">磅差</label>
+                    <div class="layui-input-inline">
+                        <input type="number" name="diffWeight" autocomplete="off" readonly="readonly"
+                               class="layui-input"
+                               th:value="${poundLog.diffWeight}">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
                     <label class="layui-form-label">样品重量</label>
                     <div class="layui-input-inline">
                         <input type="number" name="sampleNetWeight" autocomplete="off" readonly="readonly"
@@ -115,15 +143,15 @@
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">净重</label>
+                    <label class="layui-form-label">随车退总重</label>
                     <div class="layui-input-inline">
-                        <input type="number" name="netWeight" autocomplete="off" readonly="readonly"
+                        <input type="number" name="returnWeightTotal" autocomplete="off" readonly="readonly"
                                class="layui-input"
-                               th:value="${poundLog.netWeight}">
+                               th:value="${poundLog.returnWeightTotal}">
                     </div>
-                    <div class="layui-form-mid layui-word-aux">不含样品</div>
                 </div>
             </div>
+
             <div class="layui-form-item">
                 <div class="layui-inline">
                     <label class="layui-form-label">过皮重时间</label>
@@ -147,38 +175,11 @@
                     </div>
                 </div>
             </div>
-            <div class="layui-form-item">
-                <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">磅差</label>
-                        <div class="layui-input-inline">
-                            <input type="number" name="diffWeight" autocomplete="off" readonly="readonly"
-                                   class="layui-input"
-                                   th:value="${poundLog.diffWeight}">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">报检单总重</label>
-                        <div class="layui-input-inline">
-                            <input type="number" name="inspWeightTotal" autocomplete="off" readonly="readonly"
-                                   class="layui-input"
-                                   th:value="${poundLog.inspWeightTotal}">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">随车退总重</label>
-                        <div class="layui-input-inline">
-                            <input type="number" name="returnWeightTotal" autocomplete="off" readonly="readonly"
-                                   class="layui-input"
-                                   th:value="${poundLog.returnWeightTotal}">
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="layui-form-item layui-form-text" th:if="${poundLog.remark}">
                 <label class="layui-form-label">备注</label>
                 <div class="layui-input-block">
-                    <textarea placeholder="" class="layui-textarea" readonly="readonly" th:value="${poundLog.remark}"></textarea>
+                    <textarea placeholder="" class="layui-textarea" readonly="readonly"
+                              th:text="${poundLog.remark}"></textarea>
                 </div>
             </div>
 

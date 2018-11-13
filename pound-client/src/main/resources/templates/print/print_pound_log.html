@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>打印过磅单</title>
@@ -10,42 +10,71 @@
     <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
 </head>
+<style>
+    body {
+        /*font-weight: bold;*/
+        color: #000000;
+        /*font-size: ;*/
+    }
+
+    .print-content-title {
+        text-align: center;
+        font-size: 18px;
+        color: #000000;
+    }
+
+    .print-content-title img {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 5px;
+    }
+
+    #btn-print {
+        margin: 0 auto;
+    }
+</style>
 <body>
 <div class="layui-container" id="print-content">
     <div class="layui-row">
-        <div class="layui-col-md12 ">
+        <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-form layui-card-header">
-                    <div style="text-align: center;font-size: 18px;"><span>浙江永强过磅单</span> </div>
+                <div class="layui-form layui-card-header" style="padding: 20px 0 5px 0">
+                    <div class="print-content-title"><img src="../layuiadmin/style/pound/logo.png"><span>浙江永强过磅单</span>
+                    </div>
                 </div>
-                <div class="layui-card-body">
+                <div class="layui-card-body" style="padding:10px 0 25px 20px">
                     <div class="layui-row">
                         <div class="layui-col-xs6">
                             <div class="layui-row">
                                 <div class="layui-col-xs6">
                                     <div class="layui-row">
                                         <div class="layui-col-xs12">
-                                            <div >单号：<span id="print-poundLogNo"></span></div>
+                                            <div>单号：<span id="print-poundLogNo" th:text="${poundLog.poundLogNo}"></span>
+                                            </div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div>车牌：<span id="print-plateNo"></span></div>
+                                            <div>车牌：<span id="print-plateNo" th:text="${poundLog.plateNo}"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div >毛重：<span id="print-gross-weight"></span></div>
+                                            <div>毛重：<span id="print-gross-weight"
+                                                          th:text="${poundLog.grossWeight}"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div >皮重：<span id="print-tare-weight"></span></div>
+                                            <div>皮重：<span id="print-tare-weight"
+                                                          th:text="${poundLog.tareWeight}"></span></div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div >净重：<span id="print-net-weight"></span></div>
+                                            <div>净重：<span id="print-net-weight" th:text="${poundLog.netWeight}"></span>
+                                            </div>
                                         </div>
-                                        <div class="layui-col-xs12">
-                                            <div >磅差：<span id="print-diff-weight"></span></div>
-                                        </div>
+                                        <!--<div class="layui-col-xs12">-->
+                                        <!--<div>磅差：<span id="print-diff-weight"></span></div>-->
+                                        <!--</div>-->
                                     </div>
                                 </div>
                                 <div class="layui-col-xs6">
-                                    <div class=""><img id="print-gross-img" src="" width="180px" height="120"></div>
+                                    <div><img id="print-gross-img" th:src="@{${poundLog.grossImgUrl}}" width="180px"
+                                              height="120"></div>
                                 </div>
                             </div>
                         </div>
@@ -54,68 +83,69 @@
                                 <div class="layui-col-xs6">
                                     <div class="layui-row">
                                         <div class="layui-col-xs12">
-                                            <div >收货单位：<span id="print-unit-name"></span></div>
+                                            <div>组织：<span id="print-unit-name" th:text="${poundLog.unitName}"></span>
+                                            </div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div >送货单位：<span id="print-comp-name"></span></div>
+                                            <div>供应商：<span id="print-comp-name" th:text="${poundLog.compName}"></span>
+                                            </div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div >称毛时间：<span id="print-gross-time"></span></div>
+                                            <div>称毛时间：<span id="print-gross-time"
+                                                            th:text="${#dates.format(poundLog.firstTime, 'yyyy-MM-dd hh:mm:ss')}"></span>
+                                            </div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div >称皮时间：<span id="print-tare-time"></span></div>
+                                            <div>称皮时间：<span id="print-tare-time"
+                                                            th:text="${#dates.format(poundLog.secondTime, 'yyyy-MM-dd hh:mm:ss')}"></span>
+                                            </div>
                                         </div>
                                         <div class="layui-col-xs12">
-                                            <div >打印时间：<span id="print-time"></span></div>
+                                            <div>打印时间：<span id="print-time"
+                                                            th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd hh:mm:ss')}"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-col-xs6">
-                                    <div class=""><img id="print-tare-img" src="" width="180px" height="120"></div>
+                                    <div class=""><img id="print-tare-img" th:src="@{${poundLog.tareImgUrl}}"
+                                                       width="180px" height="120"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="layui-col-xs12">
                             <div class="layui-row">
                                 <div class="layui-col-xs12">
-                                    <div >备注：<span id="print-remark"></span></div>
+                                    <div>备注：<span id="print-remark" th:text="${poundLog.remark}"></span></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="layui-row">
+                    <div class="layui-row" id="print-table-inspections" th:if="${inspections.size()>0}">
                         <div class="layui-col-xs12">
                             <div class="layui-card-body" style="padding-left: 0">
-                                <table id="LAY-inspection-manage" class="layui-table">
+                                <table id="LAY-inspection-print-manage" class="layui-table"
+                                       style="color: black;border-color: black">
                                     <tr>
                                         <th>报检单</th>
                                         <th>单号</th>
                                         <th>重量</th>
+                                        <th>结算重量</th>
                                         <th>退货重量</th>
                                     </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>20180306123512</td>
-                                        <td>100</td>
-                                        <td>0</td>
+                                    <tr th:each="item,itemState : ${inspections}">
+                                        <td th:text="${(itemState.index+1)}"/>
+                                        <td th:text="${item.inspNo}"/>
+                                        <td th:text="${item.inspWeight}"/>
+                                        <td th:text="${item.inspNetWeight}"/>
+                                        <td th:text="${item.returnWeight}"/>
                                     </tr>
                                     <tr>
-                                        <td>2</td>
-                                        <td>20180306123512</td>
-                                        <td>500</td>
-                                        <td>20</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>20180306123512</td>
-                                        <td>400</td>
-                                        <td>0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>合计</td>
+                                        <td>总计</td>
                                         <td></td>
-                                        <td>1100</td>
-                                        <td>20</td>
+                                        <td th:text="${poundLog.inspWeightTotal}"></td>
+                                        <td th:text="${totalInspNetWeight}"></td>
+                                        <td th:text="${poundLog.returnWeightTotal}"></td>
                                     </tr>
                                 </table>
                             </div>
@@ -126,13 +156,19 @@
                             <div class="layui-card-body" style="padding-left: 0">
                                 <div class="layui-row">
                                     <div class="layui-col-xs4">
-                                        <div class="grid-demo">司磅员：<input type="text" style="border:none;border-bottom: 1px solid #e6e6e6;width: 150px;outline: medium"></div>
+                                        <div class="grid-demo">司磅员：<input type="text"
+                                                                          style="border:none;border-bottom: 1px solid #000000;width: 150px;outline: medium">
+                                        </div>
                                     </div>
                                     <div class="layui-col-xs4">
-                                        <div class="grid-demo">监磅员：<input type="text" style="border:none;border-bottom: 1px solid #e6e6e6;width: 150px;outline: medium"></div>
+                                        <div class="grid-demo">监磅员：<input type="text"
+                                                                          style="border:none;border-bottom: 1px solid #000000;width: 150px;outline: medium">
+                                        </div>
                                     </div>
                                     <div class="layui-col-xs4">
-                                        <div class="grid-demo">送货人：<input type="text" style="border:none;border-bottom: 1px solid #e6e6e6;width: 150px;outline: medium"></div>
+                                        <div class="grid-demo">送货人：<input type="text"
+                                                                          style="border:none;border-bottom: 1px solid #000000;width: 150px;outline: medium">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -143,6 +179,13 @@
 
         </div>
     </div>
+</div>
+
+
+<div class="layui-container">
+    <fieldset class="layui-elem-field site-demo-button" style="margin-top: 30px;">
+        <button class="layui-btn layui-btn-lg layui-btn-normal" style="margin-left:50%;" id="btn-print">打印</button>
+    </fieldset>
 </div>
 
 
