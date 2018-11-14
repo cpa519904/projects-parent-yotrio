@@ -34,7 +34,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">物料</label>
                     <div class="layui-input-block">
-                        <select id="goodsKind" name="goodsKind" lay-search="">
+                        <select id="goodsCode" name="goodsCode" lay-search="">
                             <option value="">直接选择或搜索选择</option>
                             <option th:each="goods : ${goodsList}" th:value="${goods.goodsCode}"
                                     th:text="${goods.goodsName}"></option>

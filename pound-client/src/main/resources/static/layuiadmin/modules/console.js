@@ -413,7 +413,7 @@ layui.define(['table', 'form'], function (exports) {
                                     layer.open({
                                         type: 2
                                         , title: '请填写过磅相关信息'
-                                        , content: '/poundLog/outPoundLogForm.htm'
+                                        , content: '/poundLog/inPoundLogForm.htm'
                                         , maxmin: true
                                         , area: ['500px', '450px']
                                         , btn: ['确定', '取消']
@@ -428,8 +428,8 @@ layui.define(['table', 'form'], function (exports) {
                                                 var field = data.field; //获取提交的字段
                                                 fieldRoot.goodsCode = field.goodsCode;
                                                 fieldRoot.plateNo = field.plateNo;
+                                                fieldRoot.compName = field.compName;
 
-                                                //提交 Ajax 成功后，静态更新表格中的数据
                                                 $.ajax({
                                                     type: 'post',
                                                     url: '/poundLog/saveGrossWithoutInspection',
@@ -862,7 +862,7 @@ layui.define(['table', 'form'], function (exports) {
     form.on('submit(btn-destroy)', function (data) {
         if (!$("#btn-destroy").hasClass("layui-btn-disabled")) {
 
-            layer.confirm('您确定是要废弃此次过磅记录吗？', {icon: 3, title: '提示'}, function (index) {
+            layer.confirm('您确定要删除此次过磅记录吗？', {icon: 3, title: '提示'}, function (index) {
                 var field = data.field;
                 $.ajax({
                     type: 'get',

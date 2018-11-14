@@ -63,7 +63,7 @@
                                 <div class="layui-inline">
                                     <label class="layui-form-label">组织</label>
                                     <div class="layui-input-block">
-                                        <select id="orgCode" name="orgCode"  lay-search="" lay-verify="required">
+                                        <select id="orgCode" name="orgCode"  lay-search="" >
                                             <option value="">直接选择或搜索选择</option>
                                             <option th:each="organization : ${organizationList}" th:value="${organization.orgCode}" th:text="${organization.orgName}"></option>
                                         </select>

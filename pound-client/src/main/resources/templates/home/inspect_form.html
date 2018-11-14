@@ -41,8 +41,13 @@
         <div class="layui-inline">
             <label class="layui-form-label">供货商</label>
             <div class="layui-input-block" style="width: 212px">
-                <input type="text" id="compName" name="compName" lay-verify="required" autocomplete="off"
-                       placeholder="" class="layui-input">
+                <!--<input type="text" id="compName" name="compName" lay-verify="required" autocomplete="off"-->
+                       <!--placeholder="" class="layui-input">-->
+                <select id="compName" name="compName" lay-verify="required" lay-search="">
+                    <option value="">直接选择或搜索选择</option>
+                    <option th:each="company : ${companyList}" th:value="${company.compName}"
+                            th:text="${company.compName}"></option>
+                </select>
             </div>
         </div>
         <div class="layui-inline">

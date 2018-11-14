@@ -58,6 +58,7 @@ public class InspectionController extends BaseController {
     @RequestMapping(value = {"/form.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String inspection(Model model) {
         model.addAttribute("goodsList", goodsService.findAll());
+        model.addAttribute("companyList", companyService.findAll());
         return "home/inspect_form";
     }
 

@@ -13,10 +13,7 @@ import com.yotrio.common.utils.BeansUtil;
 import com.yotrio.common.utils.ImageUtil;
 import com.yotrio.pound.domain.Result;
 import com.yotrio.pound.domain.SystemProperties;
-import com.yotrio.pound.model.Goods;
-import com.yotrio.pound.model.Inspection;
-import com.yotrio.pound.model.PoundLog;
-import com.yotrio.pound.model.Task;
+import com.yotrio.pound.model.*;
 import com.yotrio.pound.service.*;
 import com.yotrio.pound.utils.ResultUtil;
 import org.apache.commons.lang.StringUtils;
@@ -59,6 +56,8 @@ public class PoundLogController extends BaseController {
     private IGoodsService goodsService;
     @Autowired
     private IOrganizationService organizationService;
+    @Autowired
+    private ICompanyService companyService;
 
 
     /**
@@ -72,6 +71,21 @@ public class PoundLogController extends BaseController {
         List<Goods> goodsList = goodsService.findAll();
         model.addAttribute("goodsList", goodsList);
         return "home/out_pound_log_form";
+    }
+
+    /**
+     * 进货不填报检单情况下，填写货品信息弹出的页面
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = {"/inPoundLogForm.htm"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String inPoundLogForm(Model model) {
+        List<Goods> goodsList = goodsService.findAll();
+        List<Company> companyList = companyService.findAll();
+        model.addAttribute("goodsList", goodsList);
+        model.addAttribute("companyList", companyList);
+        return "home/in_pound_log_form";
     }
 
     /**
@@ -480,9 +494,9 @@ public class PoundLogController extends BaseController {
         if (logInDB == null) {
             return ResultUtil.error("请先过磅或者填写报检单");
         }
-        if (StringUtils.isEmpty(poundLog.getOrgCode())) {
-            return ResultUtil.error("组织不能为空，请选择组织");
-        }
+//        if (StringUtils.isEmpty(poundLog.getOrgCode())) {
+//            return ResultUtil.error("组织不能为空，请选择组织");
+//        }
         //获取组织名称
         String orgName = organizationService.findOrgNameByOrgCode(poundLog.getOrgCode());
         poundLog.setUnitName(orgName);
@@ -523,8 +537,12 @@ public class PoundLogController extends BaseController {
         if (poundLog.getStatus() < PoundLogConstant.STATUS_POUND_SECOND) {
             return ResultUtil.error("请先完成两次称重操作再提交");
         }
+
         String unitName = organizationService.findOrgNameByOrgCode(orgCode);
+        poundLog.setOrgCode(orgCode);
         poundLog.setUnitName(unitName);
+        //保存组织信息
+        poundLogService.update(poundLog);
 
         String msg = "网络连接失败,联网后系统会自动为您提交";
         //获取关联的报检单
