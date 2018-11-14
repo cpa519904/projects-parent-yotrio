@@ -782,6 +782,7 @@ layui.define(['table', 'form'], function (exports) {
                         // $('#print-diff-weight').text(poundLog.diffWeight);
                         $('#print-remark').text(poundLog.remark);
                         $('#print-unit-name').text(poundLog.unitName);
+                        $('#print-comp-name').text(poundLog.compName);
                         $('#print-gross-img').attr("src", poundLog.grossImgUrl);
                         $('#print-tare-img').attr("src", poundLog.tareImgUrl);
                         $('#print-gross-time').text(poundLog.firstTime);

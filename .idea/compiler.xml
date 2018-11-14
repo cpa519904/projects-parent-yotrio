@@ -10,6 +10,7 @@
         <module name="pound-client" />
         <module name="pound-common" />
         <module name="pound-master" />
+        <module name="yotrio-touch" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -19,6 +20,7 @@
       <module name="pound-common" target="1.8" />
       <module name="pound-master" target="1.8" />
       <module name="projects-parent" target="1.8" />
+      <module name="yotrio-touch" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

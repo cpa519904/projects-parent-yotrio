@@ -16,10 +16,17 @@ public class QuartzConfig {
     /**
      * 同步任务执行时间/小时
      */
-    private static final int INTERVAL_IN_HOURS_SYNC = 4 ;
+    private static final int INTERVAL_IN_HOURS_SYNC = 1;
+
+
+    /**
+     * 同步任务执行时间/秒
+     */
+    private static final int INTERVAL_IN_Seconde_SYNC = 10 * 60;
 
     /**
      * 执行定时任务
+     *
      * @return
      */
     @Bean
@@ -29,6 +36,7 @@ public class QuartzConfig {
 
     /**
      * 执行定时任务
+     *
      * @return
      */
     @Bean

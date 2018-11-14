@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/pound-common/pound-common.iml" filepath="$PROJECT_DIR$/pound-common/pound-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/pound-master/pound-master.iml" filepath="$PROJECT_DIR$/pound-master/pound-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/projects-parent.iml" filepath="$PROJECT_DIR$/projects-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yotrio-touch/yotrio-touch.iml" filepath="$PROJECT_DIR$/yotrio-touch/yotrio-touch.iml" />
     </modules>
   </component>
 </project>

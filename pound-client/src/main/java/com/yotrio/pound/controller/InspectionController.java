@@ -166,14 +166,14 @@ public class InspectionController extends BaseController {
             return ResultUtil.error("过磅单已提交，不能再修改");
         }
 
-        //如果供应商名称为空，设置供应商名称
-        if (logInDB != null && StringUtils.isEmpty(logInDB.getCompName())) {
-            logInDB.setCompName(inspection.getCompName());
-            poundLogService.update(logInDB);
-        }
+
         int result = inspectionService.update(inspection);
         if (result >= 1) {
             //重新计算过磅记录中的重量信息
+            logInDB.setCompName(inspection.getCompName());
+            logInDB.setGoodsCode(inspection.getGoodsCode());
+            String goodsName = goodsService.findGoodsNameByGoodsCode(inspection.getGoodsCode());
+            logInDB.setGoodsName(goodsName);
             poundLogService.updateWeight(logInDB);
             return ResultUtil.success(logInDB);
         } else {

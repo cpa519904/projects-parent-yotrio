@@ -118,8 +118,8 @@ public class InspectionServiceImpl implements IInspectionService {
         if (StringUtils.isEmpty(inspection.getInspNo())) {
             return "报检单号不能为空";
         }
-        if (inspection.getGoodsKind() == null) {
-            return "货品类型不能为空";
+        if (inspection.getGoodsCode() == null) {
+            return "物料类型不能为空";
         }
         if (StringUtils.isEmpty(inspection.getCompName())) {
             return "供货商名称不能为空";

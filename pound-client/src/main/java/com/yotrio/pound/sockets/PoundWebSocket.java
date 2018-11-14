@@ -1,6 +1,5 @@
 package com.yotrio.pound.sockets;
 
-import cn.hutool.core.util.RandomUtil;
 import com.yotrio.common.exceptions.*;
 import com.yotrio.common.utils.SerialPortUtil;
 import gnu.io.SerialPort;
@@ -14,7 +13,6 @@ import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -48,12 +46,11 @@ public class PoundWebSocket {
     private static SerialPortEventListener serialPortEventListener = null;
 
     //监听串口
-//    private static final String PORT_NAME = "COM1";
-    private static final String PORT_NAME = "COM5";
+    private static final String PORT_NAME = "COM1";
+//    private static final String PORT_NAME = "COM5";
 
     //监听串口波特率
     private static final int BAUDRATE = 1200;
-//    private static final int BAUDRATE = 9600;
 
     /**
      * 处理连接建立
@@ -79,26 +76,26 @@ public class PoundWebSocket {
                             try {
                                 //读取串口数据
                                 byte[] bytes = SerialPortUtil.readFromPort(serialPort);
-//                                StringBuffer sb = new StringBuffer();
-//
-//                                //将ASCII码转成字符串
-//                                for (int i = 0; i < bytes.length; i++) {
-//                                    sb.append((char) Integer.parseInt(String.valueOf(bytes[i])));
-//                                }
-//                                //解析字符串
-//                                String[] strs = sb.toString().trim().split("\\+");
-//                                int weight = 0;
-//                                for (int j = 0; j < strs.length; j++) {
-//                                    if (strs[j].trim().length() >= 6) {
-//                                        weight = Integer.parseInt(strs[j].trim().substring(0, 6));
-//                                        //发送数据
-//                                        sendMessage(String.valueOf(weight));
-//                                        break;
-//                                    }
-//                                }
+                                StringBuffer sb = new StringBuffer();
 
-                                System.out.println("收到的数据：" + new String(bytes, "GB2312") + "----" + new Date());
-                                sendMessage(String.valueOf(Integer.valueOf(new String(bytes, "GB2312")) - RandomUtil.randomInt(1000, 10000)));
+                                //将ASCII码转成字符串
+                                for (int i = 0; i < bytes.length; i++) {
+                                    sb.append((char) Integer.parseInt(String.valueOf(bytes[i])));
+                                }
+                                //解析字符串
+                                String[] strs = sb.toString().trim().split("\\+");
+                                int weight = 0;
+                                for (int j = 0; j < strs.length; j++) {
+                                    if (strs[j].trim().length() >= 6) {
+                                        weight = Integer.parseInt(strs[j].trim().substring(0, 6));
+                                        //发送数据
+                                        sendMessage(String.valueOf(weight));
+                                        break;
+                                    }
+                                }
+
+//                                System.out.println("收到的数据：" + new String(bytes, "GB2312") + "----" + new Date());
+//                                sendMessage(String.valueOf(Integer.valueOf(new String(bytes, "GB2312")) - RandomUtil.randomInt(1000, 10000)));
 //                                String msg = new String(bytes, "GBK");
 //                                sendMessage(msg);
 

@@ -40,12 +40,14 @@
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/pound-master" />
+    <file type="web" url="file://$PROJECT_DIR$/yotrio-touch" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/pound-client/pom.xml" />
+        <option value="$PROJECT_DIR$/yotrio-touch/pom.xml" />
       </list>
     </option>
   </component>

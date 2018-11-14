@@ -9,7 +9,7 @@ layui.define(['table', 'form'], function (exports) {
         , url: '/task/list'
         , cols: [[
             {type: 'checkbox', fixed: 'left'}
-            , {field: 'id', width: 50, title: 'ID', sort: true}
+            , {field: 'id', width: 80, title: 'ID', sort: true}
             , {field: 'taskName', title: '任务'}
             , {field: 'description', title: '描述'}
             , {field: 'otherId', title: 'OtherId'}

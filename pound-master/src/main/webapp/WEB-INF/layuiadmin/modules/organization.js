@@ -9,7 +9,7 @@ layui.define(['table', 'form'], function (exports) {
         , url: '/organization/list'
         , cols: [[
             {type: 'checkbox', fixed: 'left'}
-            , {field: 'id', width: 50, title: 'ID', sort: true}
+            , {field: 'id', width: 80, title: 'ID', sort: true}
             , {field: 'orgCode', title: '组织编码'}
             , {field: 'orgName', title: '组织名称'}
             , {field: 'description', title: '描述'}

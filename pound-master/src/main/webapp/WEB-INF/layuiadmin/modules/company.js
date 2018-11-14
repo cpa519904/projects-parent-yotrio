@@ -9,7 +9,7 @@ layui.define(['table', 'form'], function (exports) {
         , url: '/company/list'
         , cols: [[
             {type: 'checkbox', fixed: 'left'}
-            , {field: 'id', width: 50, title: 'ID', sort: true}
+            , {field: 'id', width: 80, title: 'ID', sort: true}
             , {field: 'compCode', title: '供应商编码'}
             , {field: 'compName', title: '供应商名称'}
             , {field: 'description', title: '描述'}

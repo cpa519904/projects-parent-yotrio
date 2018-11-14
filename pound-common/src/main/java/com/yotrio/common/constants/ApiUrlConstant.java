@@ -96,4 +96,9 @@ public class ApiUrlConstant {
      */
     public static final String GET_ALL_GOODS = "/api/getAllGoods";
 
+    /**
+     * 获取过磅单和报检单数据根据过磅单id
+     */
+    public static final String GET_POUNDLOG_WITH_INSPECTIONS = "/api/getConfirmMessage";
+
 }

@@ -9,7 +9,7 @@ layui.define(['table', 'form'], function (exports) {
         , url: '/storeKeeper/list'
         , cols: [[
             {type: 'checkbox', fixed: 'left'}
-            , {field: 'id', width: 50, title: 'ID', sort: true}
+            , {field: 'id', width: 80, title: 'ID', sort: true}
             , {field: 'goodsName', title: '物料名称'}
             , {field: 'orgName', title: '组织名称'}
             , {field: 'keeperName', title: '仓管员'}
